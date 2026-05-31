@@ -1,13 +1,23 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-
-export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
-    <div className="container py-24 text-center">
-      <h1 className="text-3xl font-bold">문제가 발생했어요</h1>
-      <p className="mt-3 text-muted-foreground">{error.message}</p>
-      <Button onClick={reset} variant="outline" className="mt-6">다시 시도</Button>
+    <div className="container py-24 text-center max-w-md">
+      <p className="text-xs font-mono text-mute mb-4">ERROR</p>
+      <h1 className="text-xl font-semibold mb-2">오류가 발생했습니다</h1>
+      <p className="text-sm text-body mb-6">{error.message}</p>
+      <button
+        onClick={reset}
+        className="px-6 h-10 rounded-full bg-ink text-canvas text-sm font-medium"
+      >
+        다시 시도
+      </button>
     </div>
   );
 }

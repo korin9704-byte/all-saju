@@ -4,10 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 
 type Props = {
   productId: string;
@@ -15,43 +12,176 @@ type Props = {
   isLoggedIn: boolean;
 };
 
-const CONCERN_OPTIONS = ["연애", "결혼", "직장", "재물", "건강", "학업", "이직", "사업"];
+const DAEWUN_TILE_COLORS = ["#5C9EE8","#62B87A","#8BC34A","#FF8A65","#F06292","#BA68C8","#FFB74D","#90A4AE","#4DB6AC","#7986CB"];
+
+const EXAMPLE_SAJU_QUESTIONS = [
+  "올해 직장운과 재물운이 어떤지 궁금해요.",
+  "연애운이 언제 풀릴지 알고 싶어요.",
+  "제 성격과 타고난 재능이 궁금해요.",
+];
+
+const EXAMPLE_LOVE_QUESTIONS = [
+  "결혼해도 괜찮은 관계인지 알고 싶어요.",
+  "자꾸 싸우는데 우리가 잘 맞는 건지 모르겠어요.",
+  "오래 함께할 수 있는 관계인지 궁금해요.",
+];
+
+const EXAMPLE_FREE_QUESTIONS = [
+  "이직을 고민 중인데, 이 대운에 직장을 바꿔도 괜찮을까요?",
+  "이 대운 동안 사업을 시작해도 좋은 흐름인가요?",
+  "이 대운에 결혼 타이밍이 맞는지 알고 싶어요.",
+];
+
+const EXAMPLE_CONCERNS = [
+  "좋아하는 사람이 있는데 고백해도 될지 모르겠어요. 2026년에 용기 내면 잘 될까요?",
+  "작년 투자 실패로 빚이 생겨 마음이 무거워요. 2026년에 경제적으로 나아질 수 있을까요?",
+  "회사 다니면서 창업 준비 중인데 불안해요. 제게 사업운이 있을까요?",
+];
+
+const MAX_CONCERN = 350;
+const MAX_FREE_Q = 100;
+
+const RELATIONSHIP_OPTIONS = ["솔로", "연애중", "결혼했어요", "새로운 출발 (돌싱/기타)", "직접 입력할게요"];
+const LIFESTYLE_OPTIONS    = ["학생", "취업 준비중", "주부", "직장인", "자영업/프리랜서", "은퇴함", "직접 입력할게요"];
+
+// love-saju 관계 옵션 (2열 그리드용 — 마지막 "직접 입력"은 전체 너비)
+const LOVE_RELATION_OPTIONS = [
+  ["친구", "썸남 썸녀"],
+  ["연인", "배우자"],
+  ["전여친 전남친", "전아내 전남편"],
+  ["부모와 자녀", "형제/자매"],
+  ["직장 동료", "사업 파트너"],
+  ["아이돌과 팬", "아이돌과 아이돌"],
+  ["나와 반려묘", "주인과 강아지"],
+] as const;
+
+/* ── 공통 칩 버튼 ── */
+function ChipBtn({
+  label, selected, onClick,
+}: { label: string; selected: boolean; onClick: () => void }) {
+  return (
+    <label
+      className={`inline-flex items-center px-5 py-2.5 rounded-full border-2 text-sm cursor-pointer whitespace-nowrap transition-colors ${
+        selected
+          ? "bg-[#000000] border-[#000000] text-white"
+          : "bg-transparent border-[#e5e5e5] text-black hover:border-black"
+      }`}
+    >
+      <input
+        type="radio"
+        className="sr-only"
+        checked={selected}
+        onChange={onClick}
+      />
+      {label}
+    </label>
+  );
+}
 
 export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [birthTime, setBirthTime] = useState("");
-  const [timeUnknown, setTimeUnknown] = useState(false);
-  const [gender, setGender] = useState<"male" | "female">("male");
-  const [calendar, setCalendar] = useState<"solar" | "lunar">("solar");
-  const [concerns, setConcerns] = useState<string[]>([]);
+  const [name, setName]               = useState("");
+  const [birthDate, setBirthDate]     = useState("");
+  const [birthTime, setBirthTime]     = useState("");
+  const [timeUnknown, setTimeUnknown] = useState<boolean | null>(null);
+  const [gender, setGender]           = useState<"male" | "female" | null>(null);
+  const [calendar, setCalendar]       = useState<"solar" | "lunar" | null>(null);
+  const [concernText, setConcernText] = useState("");
+
+  // love-saju 전용 (상대방 정보)
+  const [partnerName, setPartnerName]           = useState("");
+  const [partnerBirthDate, setPartnerBirthDate] = useState("");
+  const [partnerBirthTime, setPartnerBirthTime] = useState("");
+  const [partnerTimeUnknown, setPartnerTimeUnknown] = useState<boolean | null>(null);
+  const [partnerGender, setPartnerGender]       = useState<"male" | "female" | null>(null);
+  const [partnerCalendar, setPartnerCalendar]   = useState<"solar" | "lunar">("solar");
+  const [relationship2, setRelationship2]       = useState<string | null>(null);
+  const [relationship2Custom, setRelationship2Custom] = useState("");
+  const [roleA, setRoleA]                       = useState("");
+  const [roleB, setRoleB]                       = useState("");
+
+  // premium-saju 전용
+  const [daewunStartAge, setDaewunStartAge]       = useState<number | null>(null);
+  const [relationship, setRelationship]           = useState<string | null>(null);
+  const [relationshipCustom, setRelationshipCustom] = useState("");
+  const [lifestyle, setLifestyle]                 = useState<string | null>(null);
+  const [lifestyleCustom, setLifestyleCustom]     = useState("");
+  const [freeQuestion, setFreeQuestion]           = useState("");
+
   const [submitting, setSubmitting] = useState(false);
 
-  function toggleConcern(c: string) {
-    setConcerns((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]));
-  }
+  const displayName = name.trim() ? `${name.trim()}님의` : "나의";
+
+  // 대운 시기 목록 (1~100세, 10년 단위)
+  const daewunPeriods = Array.from({ length: 10 }, (_, i) => {
+    const startAge  = i * 10 + 1;
+    const endAge    = startAge + 9;
+    const birthYear = birthDate ? parseInt(birthDate.split("-")[0]) : null;
+    const startYear = birthYear ? birthYear + startAge - 1 : null;
+    const endYear   = birthYear ? birthYear + endAge - 1 : null;
+    const currentYear = new Date().getFullYear();
+    const currentAge  = birthYear ? currentYear - birthYear + 1 : null;
+    const isCurrent   = currentAge !== null && currentAge >= startAge && currentAge <= endAge;
+    return { startAge, endAge, startYear, endYear, isCurrent };
+  });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!birthDate) {
-      toast.error("생년월일을 입력해 주세요");
-      return;
+    if (!birthDate) { toast.error("생년월일을 입력해 주세요"); return; }
+    if (!calendar) { toast.error("달력 종류를 선택해 주세요"); return; }
+    if (!gender) { toast.error("성별을 선택해 주세요"); return; }
+    if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
+    if (productSlug === "premium-saju" && !daewunStartAge) {
+      toast.error("분석할 대운 시기를 선택해 주세요"); return;
+    }
+    if (productSlug === "love-saju" && !partnerBirthDate) {
+      toast.error("상대방 생년월일을 입력해 주세요"); return;
+    }
+    if (productSlug === "love-saju" && !relationship2) {
+      toast.error("두 사람의 관계를 선택해 주세요"); return;
     }
     setSubmitting(true);
     try {
+      const concerns: string[] = [];
+
+      // worry-saju 고민
+      if (concernText.trim()) concerns.push(concernText.trim());
+
+      // premium-saju 추가 정보
+      if (daewunStartAge) {
+        const endAge    = daewunStartAge + 9;
+        const birthYear = birthDate ? parseInt(birthDate.split("-")[0]) : null;
+        const yearRange = birthYear
+          ? ` (${birthYear + daewunStartAge - 1}년~${birthYear + endAge - 1}년)` : "";
+        concerns.push(`[대운] ${daewunStartAge}세~${endAge}세${yearRange}`);
+      }
+      if (relationship) {
+        const val = relationship === "직접 입력할게요" ? relationshipCustom.trim() : relationship;
+        if (val) concerns.push(`[연애상황] ${val}`);
+      }
+      if (lifestyle) {
+        const val = lifestyle === "직접 입력할게요" ? lifestyleCustom.trim() : lifestyle;
+        if (val) concerns.push(`[일상] ${val}`);
+      }
+      if (freeQuestion.trim()) concerns.push(`[질문] ${freeQuestion.trim()}`);
+
+      // love-saju 상대방 정보
+      if (productSlug === "love-saju") {
+        const partnerTime = partnerTimeUnknown ? "시간모름" : (partnerBirthTime || "시간모름");
+        concerns.push(`[상대방] 이름:${partnerName || "미입력"} 생년월일:${partnerBirthDate} 시간:${partnerTime} 성별:${partnerGender === "male" ? "남성" : partnerGender === "female" ? "여성" : "미입력"} 달력:${partnerCalendar === "solar" ? "양력" : "음력"}`);
+        const rel2Val = relationship2 === "직접 입력" ? relationship2Custom.trim() : relationship2;
+        if (rel2Val) concerns.push(`[관계] ${rel2Val}`);
+        if (roleA.trim()) concerns.push(`[역할A] ${roleA.trim()}`);
+        if (roleB.trim()) concerns.push(`[역할B] ${roleB.trim()}`);
+      }
+
       const res = await fetch("/api/orders/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          productId,
-          name,
-          birthDate,
+          productId, name, birthDate,
           birthTime: timeUnknown ? null : birthTime || null,
-          timeUnknown,
-          gender,
-          calendar,
-          concerns,
+          timeUnknown, gender, calendar, concerns,
         }),
       });
       const json = await res.json();
@@ -65,90 +195,456 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+
+      {/* love-saju: 섹션 1 헤더 */}
+      {productSlug === "love-saju" && (
+        <p className="text-base font-bold text-ink">1. 첫 번째 사람</p>
+      )}
+
+      {/* 이름 */}
       <div className="space-y-2">
-        <Label htmlFor="name">이름 (선택)</Label>
-        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="홍길동" />
+        <div className="flex items-center justify-between">
+          <Label htmlFor="name" className="text-base font-bold text-ink">이름</Label>
+          {name.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+        </div>
+        <input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
+          className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
+          style={{ backgroundColor: name.trim() ? "#ebebeb" : "#f5f5f5" }} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="birthDate">생년월일</Label>
-          <Input id="birthDate" type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="birthTime">출생 시각</Label>
-          <Input
-            id="birthTime"
-            type="time"
-            value={birthTime}
-            onChange={(e) => setBirthTime(e.target.value)}
-            disabled={timeUnknown}
-          />
-          <label className="flex items-center gap-2 text-sm text-muted-foreground">
-            <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} />
-            시 모름
-          </label>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label>성별</Label>
-          <div className="flex gap-2">
-            {(["male", "female"] as const).map((g) => (
-              <button
-                type="button"
-                key={g}
-                onClick={() => setGender(g)}
-                className={`flex-1 h-10 rounded-full border text-sm transition-colors ${gender === g ? "border-ink bg-ink text-canvas" : "border-hairline text-ink hover:border-ink"}`}
-              >
-                {g === "male" ? "남성" : "여성"}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label>달력</Label>
-          <div className="flex gap-2">
-            {(["solar", "lunar"] as const).map((c) => (
-              <button
-                type="button"
-                key={c}
-                onClick={() => setCalendar(c)}
-                className={`flex-1 h-10 rounded-full border text-sm transition-colors ${calendar === c ? "border-ink bg-ink text-canvas" : "border-hairline text-ink hover:border-ink"}`}
-              >
-                {c === "solar" ? "양력" : "음력"}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
+      {/* 달력 종류 */}
       <div className="space-y-2">
-        <Label>고민 (복수 선택)</Label>
-        <div className="flex flex-wrap gap-2">
-          {CONCERN_OPTIONS.map((c) => (
-            <button
-              type="button"
-              key={c}
-              onClick={() => toggleConcern(c)}
-              className={`px-4 h-8 rounded-full border text-sm transition-colors ${concerns.includes(c) ? "border-ink bg-ink text-canvas" : "border-hairline text-ink hover:border-ink"}`}
-            >
-              {c}
-            </button>
+        <div className="flex items-center justify-between">
+          <Label className="text-base font-bold text-ink">달력 종류</Label>
+          {calendar !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {(["solar", "lunar"] as const).map((c) => (
+            <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${calendar === c ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+              <input type="radio" name="calendar" checked={calendar === c} onChange={() => setCalendar(c)} className="w-4 h-4 accent-black" />
+              <span className="text-sm text-ink">{c === "solar" ? "양력" : "음력"}</span>
+            </label>
           ))}
         </div>
       </div>
 
+      {/* 생년월일 */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="birthDate" className="text-base font-bold text-ink">생년월일</Label>
+          {birthDate && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+        </div>
+        <input id="birthDate" type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)}
+          className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+      </div>
+
+      {/* 성별 */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label className="text-base font-bold text-ink">성별</Label>
+          {gender !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {(["female", "male"] as const).map((g) => (
+            <label key={g} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${gender === g ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+              <input type="radio" name="gender" checked={gender === g} onChange={() => setGender(g)} className="w-4 h-4 accent-black" />
+              <span className="text-sm text-ink">{g === "female" ? "여자" : "남자"}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* 태어난 시간 */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label className="text-base font-bold text-ink">태어난 시간을 아시나요?</Label>
+          {(timeUnknown === true || (timeUnknown === false && birthTime)) && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {([false, true] as const).map((unknown) => (
+            <label key={String(unknown)} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${timeUnknown === unknown ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+              <input type="radio" name="timeKnown" checked={timeUnknown === unknown} onChange={() => setTimeUnknown(unknown)} className="w-4 h-4 accent-black" />
+              <span className="text-sm text-ink">{unknown ? "아니오" : "예"}</span>
+            </label>
+          ))}
+        </div>
+        {timeUnknown === false && (
+          <input id="birthTime" type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)}
+            className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+        )}
+      </div>
+
+      {/* ── love-saju 전용 섹션: 상대방 정보 ── */}
+      {productSlug === "love-saju" && (
+        <>
+          {/* 섹션 2 헤더 */}
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-base font-bold text-ink">2. 두 번째 사람</p>
+            {partnerBirthDate && partnerGender !== null && (
+              <span className="text-[#22c55e] text-lg leading-none">✓</span>
+            )}
+          </div>
+
+          {/* 상대방 이름 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">이름 <span className="text-sm font-normal text-body">(선택)</span></Label>
+              {partnerName.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <input value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
+              className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
+              style={{ backgroundColor: partnerName.trim() ? "#ebebeb" : "#f5f5f5" }} />
+          </div>
+
+          {/* 상대방 달력 종류 */}
+          <div className="space-y-2">
+            <Label className="text-base font-bold text-ink">달력 종류</Label>
+            <div className="grid grid-cols-2 gap-3">
+              {(["solar", "lunar"] as const).map((c) => (
+                <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerCalendar === c ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+                  <input type="radio" name="partnerCalendar" checked={partnerCalendar === c} onChange={() => setPartnerCalendar(c)} className="w-4 h-4 accent-black" />
+                  <span className="text-sm text-ink">{c === "solar" ? "양력" : "음력"}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* 상대방 생년월일 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">생년월일</Label>
+              {partnerBirthDate && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <input type="date" value={partnerBirthDate} onChange={(e) => setPartnerBirthDate(e.target.value)}
+              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+          </div>
+
+          {/* 상대방 성별 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">성별</Label>
+              {partnerGender !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {(["female", "male"] as const).map((g) => (
+                <label key={g} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerGender === g ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+                  <input type="radio" name="partnerGender" checked={partnerGender === g} onChange={() => setPartnerGender(g)} className="w-4 h-4 accent-black" />
+                  <span className="text-sm text-ink">{g === "female" ? "여자" : "남자"}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* 상대방 태어난 시간 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">태어난 시간을 아시나요?</Label>
+              {(partnerTimeUnknown === true || (partnerTimeUnknown === false && partnerBirthTime)) && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {([false, true] as const).map((unknown) => (
+                <label key={String(unknown)} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerTimeUnknown === unknown ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+                  <input type="radio" name="partnerTimeKnown" checked={partnerTimeUnknown === unknown} onChange={() => setPartnerTimeUnknown(unknown)} className="w-4 h-4 accent-black" />
+                  <span className="text-sm text-ink">{unknown ? "아니오" : "예"}</span>
+                </label>
+              ))}
+            </div>
+            {partnerTimeUnknown === false && (
+              <input type="time" value={partnerBirthTime} onChange={(e) => setPartnerBirthTime(e.target.value)}
+                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+            )}
+          </div>
+
+          {/* 섹션 3 헤더 */}
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-base font-bold text-ink">3. 두 사람은 어떤 관계인가요?</p>
+            {relationship2 !== null && (relationship2 !== "직접 입력" || relationship2Custom.trim()) && (
+              <span className="text-[#22c55e] text-lg leading-none">✓</span>
+            )}
+          </div>
+
+          {/* 관계 선택 그리드 */}
+          <div className="space-y-2">
+            {LOVE_RELATION_OPTIONS.map(([a, b]) => (
+              <div key={a} className="grid grid-cols-2 gap-2">
+                {[a, b].map((opt) => (
+                  <button
+                    type="button"
+                    key={opt}
+                    onClick={() => { setRelationship2(opt); setRelationship2Custom(""); }}
+                    className="h-11 rounded-xl text-sm font-medium transition-colors"
+                    style={relationship2 === opt
+                      ? { backgroundColor: "#000000", color: "#ffffff" }
+                      : { backgroundColor: "#f5f5f5", color: "#000000" }}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            ))}
+            {/* 직접 입력 — 전체 너비 */}
+            <button
+              type="button"
+              onClick={() => setRelationship2("직접 입력")}
+              className="w-full h-11 rounded-xl text-sm font-medium transition-colors"
+              style={relationship2 === "직접 입력"
+                ? { backgroundColor: "#000000", color: "#ffffff" }
+                : { backgroundColor: "#f5f5f5", color: "#000000" }}
+            >
+              직접 입력
+            </button>
+            {relationship2 === "직접 입력" && (
+              <input
+                value={relationship2Custom}
+                onChange={(e) => setRelationship2Custom(e.target.value)}
+                placeholder="예: 소개팅에서 만난 지 3주 된 사이"
+                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors"
+              />
+            )}
+          </div>
+
+          {/* 섹션 4 헤더 */}
+          <div className="pt-2">
+            <p className="text-base font-bold text-ink">4. 각자의 역할을 입력해주세요 <span className="text-sm font-normal text-body">(선택)</span></p>
+          </div>
+
+          {/* 내 역할 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">{name.trim() ? `${name.trim()}의 역할` : "내 역할"}</Label>
+              {roleA.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <div className="relative">
+              <input
+                value={roleA}
+                onChange={(e) => setRoleA(e.target.value.slice(0, 100))}
+                placeholder="예: 엄마, 남자친구, 팬"
+                className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
+                style={{ backgroundColor: roleA.trim() ? "#ebebeb" : "#f5f5f5" }}
+              />
+              <p className="absolute bottom-3 right-4 text-xs text-mute pointer-events-none">{roleA.length}/100</p>
+            </div>
+          </div>
+
+          {/* 상대방 역할 */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">{partnerName.trim() ? `${partnerName.trim()}의 역할` : "상대방의 역할"}</Label>
+              {roleB.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <div className="relative">
+              <input
+                value={roleB}
+                onChange={(e) => setRoleB(e.target.value.slice(0, 100))}
+                placeholder="예: 딸, 여자친구, 아이돌"
+                className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
+                style={{ backgroundColor: roleB.trim() ? "#ebebeb" : "#f5f5f5" }}
+              />
+              <p className="absolute bottom-3 right-4 text-xs text-mute pointer-events-none">{roleB.length}/100</p>
+            </div>
+          </div>
+
+          {/* 궁금한 점 */}
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
+              {freeQuestion.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <div className="relative">
+              <textarea value={freeQuestion}
+                onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
+                placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+                rows={6}
+                className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              />
+              <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── premium-saju 전용 섹션 ── */}
+      {productSlug === "premium-saju" && (
+        <>
+          {/* 대운 시기 */}
+          <div className="space-y-1.5">
+            <Label className="text-base font-bold text-ink">대운 시기</Label>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-body">어떤 시기의 대운을 볼까요?</p>
+              {daewunStartAge !== null && <span className="text-[#22c55e] text-xl leading-none">✓</span>}
+            </div>
+            <div className="overflow-y-auto max-h-[420px] rounded-2xl border border-hairline">
+              {daewunPeriods.map(({ startAge, endAge, startYear, endYear, isCurrent }, index) => (
+                <button
+                  type="button"
+                  key={startAge}
+                  onClick={() => setDaewunStartAge(startAge)}
+                  className="w-full flex items-center gap-4 px-4 py-3.5 border-b border-hairline last:border-b-0 text-left transition-all hover:bg-[#f5f5f5]"
+                  style={daewunStartAge === startAge ? { backgroundColor: "#000000" } : undefined}
+                >
+                  <div
+                    className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center text-white text-sm font-bold"
+                    style={{ backgroundColor: DAEWUN_TILE_COLORS[index % DAEWUN_TILE_COLORS.length] }}
+                  >
+                    {index + 1}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className="text-base font-bold"
+                      style={{ color: daewunStartAge === startAge ? "#ffffff" : "#000000" }}
+                    >
+                      {startAge}세 ~ {endAge}세
+                    </p>
+                    {startYear && (
+                      <p
+                        className="text-sm"
+                        style={{ color: daewunStartAge === startAge ? "rgba(255,255,255,0.6)" : "#a3a3a3" }}
+                      >
+                        {startYear}년 ~ {endYear}년
+                      </p>
+                    )}
+                  </div>
+                  {isCurrent && (
+                    <span
+                      className="text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap"
+                      style={daewunStartAge === startAge
+                        ? { backgroundColor: "#ffffff", color: "#000000" }
+                        : { backgroundColor: "#000000", color: "#ffffff" }}
+                    >현재</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 추가 정보 인트로 */}
+          <div className="pt-2 pb-1">
+            <p className="text-xl font-bold text-ink leading-snug">
+              {name.trim() ? `${name.trim()}님의` : ""} 다가올 10년,<br />
+              더 정확한 풀이를 위해<br />
+              몇 가지 여쭤볼게요.
+            </p>
+          </div>
+
+          {/* 애정 상황 */}
+          <div className="space-y-3">
+            <div className="flex justify-end h-5">
+              {relationship !== null && <span className="text-[#22c55e] text-xl leading-none">✓</span>}
+            </div>
+            <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
+              <p className="text-sm font-bold text-ink leading-relaxed">
+                애정운 분석을 위해,<br />
+                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려주세요. <span className="text-xs font-normal text-body">(선택)</span>
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {RELATIONSHIP_OPTIONS.map((opt) => (
+                <ChipBtn key={opt} label={opt} selected={relationship === opt}
+                  onClick={() => { setRelationship(opt); if (opt !== "직접 입력할게요") setRelationshipCustom(""); }} />
+              ))}
+            </div>
+            {relationship === "직접 입력할게요" && (
+              <input value={relationshipCustom}
+                onChange={(e) => setRelationshipCustom(e.target.value)}
+                placeholder="예: 장거리 연애 중이에요"
+                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+            )}
+          </div>
+
+          {/* 현재 생활 */}
+          <div className="space-y-3">
+            <div className="flex justify-end h-5">
+              {lifestyle !== null && <span className="text-[#22c55e] text-xl leading-none">✓</span>}
+            </div>
+            <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
+              <p className="text-sm font-bold text-ink leading-relaxed">
+                성공운과 재물운을 짚어보기 위해,<br />
+                주로 어떤 일상을 보내고 계신가요? <span className="text-xs font-normal text-body">(선택)</span>
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {LIFESTYLE_OPTIONS.map((opt) => (
+                <ChipBtn key={opt} label={opt} selected={lifestyle === opt}
+                  onClick={() => { setLifestyle(opt); if (opt !== "직접 입력할게요") setLifestyleCustom(""); }} />
+              ))}
+            </div>
+            {lifestyle === "직접 입력할게요" && (
+              <input value={lifestyleCustom}
+                onChange={(e) => setLifestyleCustom(e.target.value)}
+                placeholder="예: 유튜버로 활동 중이에요"
+                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+            )}
+          </div>
+
+          {/* 궁금한 점 */}
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
+              {freeQuestion.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+            </div>
+            <div className="relative">
+              <textarea value={freeQuestion}
+                onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
+                placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+                rows={6}
+                className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              />
+              <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── today-fortune 궁금한 점 섹션 ── */}
+      {productSlug === "today-fortune" && (
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
+            {freeQuestion.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+          </div>
+          <div className="relative">
+            <textarea value={freeQuestion}
+              onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
+              placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+              rows={6}
+              className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+            />
+            <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── worry-saju 고민 섹션 ── */}
+      {productSlug === "worry-saju" && (
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
+            {concernText.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
+          </div>
+          <div className="relative">
+            <textarea
+              value={concernText}
+              onChange={(e) => setConcernText(e.target.value.slice(0, MAX_CONCERN))}
+              placeholder="궁금한 점을 자유롭게 작성해주세요."
+              rows={6}
+              className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+            />
+            <p className="absolute bottom-4 right-5 text-xs text-mute">{concernText.length}/{MAX_CONCERN}자</p>
+          </div>
+        </div>
+      )}
+
+      {/* 제출 버튼 */}
       {isLoggedIn ? (
-        <Button type="submit" size="lg" className="w-full" disabled={submitting}>
+        <button type="submit" disabled={submitting}
+          className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
           {submitting ? "주문 생성 중..." : "결제하러 가기"}
-        </Button>
+        </button>
       ) : (
         <div className="space-y-2">
           <Link
             href={`/login?redirect=${encodeURIComponent(`/products/${productSlug}`)}`}
-            className={cn(buttonVariants({ size: "lg" }), "w-full")}
+            className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 inline-flex items-center justify-center"
           >
             로그인하고 결제하기
           </Link>
@@ -157,6 +653,14 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           </p>
         </div>
       )}
+
+      {/* 환불 보장 배너 */}
+      <img
+        src="/images/refund-banner.png"
+        alt="결제 후 불만족 시 100% 환불 보장 제도"
+        className="w-full h-auto rounded-2xl"
+      />
+
     </form>
   );
 }

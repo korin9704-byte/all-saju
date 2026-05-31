@@ -24,6 +24,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+      </head>
       <body suppressHydrationWarning>
         <SiteHeader isLoggedIn={isLoggedIn} />
         <main className="min-h-[calc(100vh-7rem)]">{children}</main>
@@ -39,8 +44,8 @@ function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
     <header className="border-b border-hairline bg-canvas">
       <div className="container flex h-14 items-center justify-between">
-        <Link href="/" className="font-semibold text-[15px] text-ink">
-          {siteConfig.name}
+        <Link href="/" className="font-bold text-[22px] text-ink tracking-[0.08em]">
+          냥점
         </Link>
         <nav className="flex items-center gap-6 text-[13px] font-medium">
           <Link href="/products" className="text-ink hover:text-body">상품</Link>

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
 import { computeMyeongsik, type Myeongsik } from "@/lib/saju/manseryeok";
-import { buildSajuPrompt } from "@/lib/saju/prompt";
+import { buildSajuPrompt, buildWorryPrompt, buildTodayFortunePrompt, buildDaewunPrompt, buildLoveSajuPrompt } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
   isSajuApiConfigured,
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
       myeongsik = await computeMyeongsik(toComputeInput(input));
     }
 
-    const { system, user } = buildSajuPrompt({
+    const promptInput = {
       productSlug: product.slug,
       productName: product.name,
       myeongsik,
@@ -157,9 +157,104 @@ export async function POST(request: NextRequest) {
       timeUnknown: input.time_unknown,
       gender: input.gender,
       concerns: input.concerns,
-    });
+      name: input.name ?? "",
+    };
 
-    const llm = await generateInterpretation({ system, user });
+    let llm;
+    if (product.slug === "worry-saju") {
+      const { system, user } = buildWorryPrompt(promptInput);
+      llm = await generateInterpretation({ system, user });
+    } else if (product.slug === "today-fortune") {
+      const { system, user } = buildTodayFortunePrompt(promptInput);
+      llm = await generateInterpretation({ system, user });
+    } else if (product.slug === "premium-saju") {
+      const { system, user } = buildDaewunPrompt(promptInput);
+      llm = await generateInterpretation({ system, user });
+    } else if (product.slug === "love-saju") {
+      // 상대방 사주 파싱 및 명식 계산
+      const partnerConcern = (input.concerns as string[]).find((c: string) => c.startsWith("[상대방]")) ?? "";
+      let partnerMyeongsik: Myeongsik | undefined;
+      let partnerName: string | undefined;
+      let partnerBirthDate: string | undefined;
+      let partnerGender: "male" | "female" | undefined;
+
+      if (partnerConcern) {
+        const nameMatch      = partnerConcern.match(/이름:([^\s]+)/);
+        const birthMatch     = partnerConcern.match(/생년월일:(\d{4}-\d{2}-\d{2})/);
+        const timeMatch      = partnerConcern.match(/시간:([^\s]+)/);
+        const genderMatch    = partnerConcern.match(/성별:(남성|여성)/);
+        const calendarMatch  = partnerConcern.match(/달력:(양력|음력)/);
+
+        partnerName      = nameMatch?.[1]  === "미입력" ? undefined : nameMatch?.[1];
+        partnerBirthDate = birthMatch?.[1];
+        partnerGender    = genderMatch?.[1] === "남성" ? "male" : "female";
+        const partnerCalendar: "solar" | "lunar" = calendarMatch?.[1] === "음력" ? "lunar" : "solar";
+        const partnerTimeRaw = timeMatch?.[1] ?? "";
+        const partnerTimeUnknown = !partnerTimeRaw || partnerTimeRaw === "시간모름" || partnerTimeRaw === "미입력";
+        const partnerBirthTime: string | null = partnerTimeUnknown ? null : partnerTimeRaw;
+
+        if (partnerBirthDate) {
+          try {
+            if (isSajuApiConfigured()) {
+              const pBirthInfo: BirthInfo = (() => {
+                const [py, pm, pd] = partnerBirthDate.split("-");
+                const hasT = !partnerTimeUnknown && !!partnerBirthTime;
+                const [phh, pmm] = hasT ? partnerBirthTime!.split(":") : [undefined, undefined];
+                return {
+                  birthYear: py,
+                  birthMonth: String(parseInt(pm, 10)),
+                  birthDay: String(parseInt(pd, 10)),
+                  ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
+                  calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
+                  gender: partnerGender ?? "female",
+                };
+              })();
+              try {
+                const pAnalysis = await fetchSajuAnalysis(pBirthInfo, [], { source: "confirm" });
+                const pConverted = ganjiToMyeongsik(pAnalysis);
+                partnerMyeongsik = pConverted ?? await computeMyeongsik({
+                  birthDate: partnerBirthDate,
+                  birthTime: partnerBirthTime,
+                  timeUnknown: partnerTimeUnknown,
+                  calendar: partnerCalendar,
+                  gender: partnerGender ?? "female",
+                });
+              } catch {
+                partnerMyeongsik = await computeMyeongsik({
+                  birthDate: partnerBirthDate,
+                  birthTime: partnerBirthTime,
+                  timeUnknown: partnerTimeUnknown,
+                  calendar: partnerCalendar,
+                  gender: partnerGender ?? "female",
+                });
+              }
+            } else {
+              partnerMyeongsik = await computeMyeongsik({
+                birthDate: partnerBirthDate,
+                birthTime: partnerBirthTime,
+                timeUnknown: partnerTimeUnknown,
+                calendar: partnerCalendar,
+                gender: partnerGender ?? "female",
+              });
+            }
+          } catch (e) {
+            console.error("[love-saju] partner myeongsik failed:", e);
+          }
+        }
+      }
+
+      const { system, user } = buildLoveSajuPrompt({
+        ...promptInput,
+        partnerMyeongsik,
+        partnerName,
+        partnerBirthDate,
+        partnerGender,
+      });
+      llm = await generateInterpretation({ system, user });
+    } else {
+      const { system, user } = buildSajuPrompt(promptInput);
+      llm = await generateInterpretation({ system, user });
+    }
 
     const { data: result, error: resultErr } = await service
       .from("saju_results")

@@ -40,6 +40,9 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // 명운원 브랜드 핑크
+        "brand-orange": "#E91E8C",
+        "brand-orange-dark": "#B8166E",
         // Ollama palette aliases (see DESIGN.md)
         ink: "#000000",
         canvas: "#ffffff",

@@ -11,7 +11,7 @@ const bodySchema = z.object({
   timeUnknown: z.boolean(),
   gender: z.enum(["male", "female"]),
   calendar: z.enum(["solar", "lunar"]),
-  concerns: z.array(z.string().max(20)).max(20),
+  concerns: z.array(z.string().max(350)).max(20),
 });
 
 export async function POST(request: NextRequest) {
@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (orderErr || !order) {
+    console.error("[orders/create] 주문 생성 실패:", orderErr);
     return NextResponse.json({ error: "주문 생성 실패", detail: orderErr?.message }, { status: 500 });
   }
 
@@ -72,6 +73,7 @@ export async function POST(request: NextRequest) {
   });
 
   if (inputErr) {
+    console.error("[orders/create] 사주 정보 저장 실패:", inputErr);
     await service.from("orders").delete().eq("id", order.id);
     return NextResponse.json({ error: "사주 정보 저장 실패", detail: inputErr.message }, { status: 500 });
   }

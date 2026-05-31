@@ -17,6 +17,11 @@ export type LlmResponse = {
   model: string;
 };
 
+export type LlmMultiRequest = {
+  system: string;
+  parts: string[]; // 섹션별 분할 프롬프트
+};
+
 export async function generateInterpretation(req: LlmRequest): Promise<LlmResponse> {
   const env = serverEnv();
   switch (env.LLM_PROVIDER) {
@@ -40,9 +45,46 @@ async function callOpenAI(req: LlmRequest, model: string, key: string | undefine
       { role: "user", content: req.user },
     ],
     temperature: 0.7,
+    max_completion_tokens: 16000,
   });
   const text = completion.choices[0]?.message?.content ?? "";
   return { text, provider: "openai", model };
+}
+
+// 섹션 분할 호출 — 각 파트를 순차적으로 호출하여 결과를 합침
+export async function generateInterpretationMultiPart(
+  req: LlmMultiRequest,
+  provider: string,
+  model: string,
+  key: string | undefined
+): Promise<LlmResponse> {
+  if (!key) throw new Error("API key is required");
+  const { default: OpenAI } = await import("openai");
+  const client = new OpenAI({ apiKey: key });
+
+  const results: string[] = [];
+
+  for (let i = 0; i < req.parts.length; i++) {
+    console.log(`[LLM] 파트 ${i + 1}/${req.parts.length} 호출 시작`);
+    const completion = await client.chat.completions.create({
+      model,
+      messages: [
+        { role: "system", content: req.system },
+        { role: "user", content: req.parts[i] },
+      ],
+      temperature: 0.7,
+      max_completion_tokens: 16000,
+    });
+    const text = completion.choices[0]?.message?.content ?? "";
+    console.log(`[LLM] 파트 ${i + 1} 완료 — ${text.length}자, finish_reason: ${completion.choices[0]?.finish_reason}`);
+    results.push(text);
+  }
+
+  return {
+    text: results.join("\n\n"),
+    provider,
+    model,
+  };
 }
 
 async function callAnthropic(req: LlmRequest, model: string, key: string | undefined): Promise<LlmResponse> {

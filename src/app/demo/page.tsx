@@ -15,6 +15,7 @@ import {
   isSajuApiConfigured,
   type BirthInfo,
 } from "@/lib/saju/saju-api";
+import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { buildSajuPrompt } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 
@@ -52,8 +53,24 @@ export default async function DemoPage({ searchParams }: { searchParams: SearchP
   let elapsedApi = 0;
 
   if (!isSajuApiConfigured()) {
-    stage = "api-missing";
-    stageDetail = "SAJU_API_KEY 가 .env.local 에 없습니다. 키를 채우고 서버를 재시작하세요.";
+    // SAJU API 없으면 내부 만세력으로 폴백
+    const t0 = Date.now();
+    try {
+      const birthDate = `${birthInfo.birthYear}-${birthInfo.birthMonth.padStart(2, "0")}-${birthInfo.birthDay.padStart(2, "0")}`;
+      const birthTime = birthInfo.birthHour ? `${birthInfo.birthHour.padStart(2, "0")}:${(birthInfo.birthMinute ?? "00").padStart(2, "0")}` : null;
+      myeongsik = await computeMyeongsik({
+        birthDate,
+        birthTime,
+        timeUnknown: !birthInfo.birthHour,
+        calendar: birthInfo.calendarType === "음력" ? "lunar" : "solar",
+        gender: birthInfo.gender,
+      });
+      elapsedApi = Date.now() - t0;
+      stage = "ok";
+    } catch (err) {
+      stage = "api-error";
+      stageDetail = err instanceof Error ? err.message : String(err);
+    }
   } else {
     const t0 = Date.now();
     try {
@@ -73,13 +90,13 @@ export default async function DemoPage({ searchParams }: { searchParams: SearchP
   let llmError = "";
   let elapsedLlm = 0;
 
-  if (myeongsik && manseryeokText) {
+  if (myeongsik) {
     try {
       const { system, user } = buildSajuPrompt({
-        productSlug: "basic-saju",
+        productSlug: "worry-saju",
         productName: "데모 — 기본 사주 풀이",
         myeongsik,
-        manseryeokText,
+        manseryeokText: manseryeokText || undefined,
         birthDate: `${birthInfo.birthYear}-${birthInfo.birthMonth.padStart(2, "0")}-${birthInfo.birthDay.padStart(2, "0")}`,
         birthTime: birthInfo.birthHour ? `${birthInfo.birthHour.padStart(2, "0")}:${(birthInfo.birthMinute ?? "00").padStart(2, "0")}` : null,
         timeUnknown: !birthInfo.birthHour,

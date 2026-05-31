@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { createServiceClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { TossWidget } from "@/components/checkout/TossWidget";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatKRW } from "@/lib/utils";
@@ -12,15 +12,29 @@ export default async function CheckoutPage({
   params: Promise<{ orderId: string }>;
 }) {
   const { orderId } = await params;
-  const service = createServiceClient();
 
-  const { data: order } = await service
+  // 유저 인증 클라이언트로 먼저 조회 (RLS: 본인 주문)
+  const supabase = await createClient();
+  const { data: userOrder } = await supabase
     .from("orders")
     .select("id, order_id, amount, status, user_id, guest_email, product_id")
     .eq("order_id", orderId)
     .maybeSingle();
 
+  // 못 찾으면 서비스 클라이언트로 재시도 (게스트 주문 등)
+  const service = createServiceClient();
+  let order = userOrder;
+  if (!order) {
+    const { data: serviceOrder } = await service
+      .from("orders")
+      .select("id, order_id, amount, status, user_id, guest_email, product_id")
+      .eq("order_id", orderId)
+      .maybeSingle();
+    order = serviceOrder;
+  }
+
   if (!order) notFound();
+
   if (order.status === "paid") {
     const { data: result } = await service
       .from("saju_results")

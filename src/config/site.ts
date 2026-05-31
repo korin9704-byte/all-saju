@@ -4,9 +4,9 @@
 // 운영 전 본인 정보로 반드시 교체하세요. 아래는 모두 더미 데이터입니다.
 
 export const siteConfig = {
-  name: "오늘의 사주",
-  tagline: "AI가 풀어주는 나의 사주",
-  description: "정통 만세력과 AI 해석이 만나, 가볍게 보는 오늘의 운세부터 깊이 있는 종합 풀이까지.",
+  name: "냥점",
+  tagline: "타고난 운명의 흐름을 읽는 곳",
+  description: "전통 명리학과 데이터를 결합한 분석",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   email: "support@example.com",
 };
