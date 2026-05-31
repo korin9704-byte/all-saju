@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -81,7 +81,12 @@ function ChipBtn({
 export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
   const router = useRouter();
   const [name, setName]               = useState("");
-  const [birthDate, setBirthDate]     = useState("");
+  const [birthYear, setBirthYear]     = useState("");
+  const [birthMonth, setBirthMonth]   = useState("");
+  const [birthDay, setBirthDay]       = useState("");
+  const birthDate = birthYear.length === 4 && birthMonth && birthDay
+    ? `${birthYear}-${birthMonth.padStart(2, "0")}-${birthDay.padStart(2, "0")}`
+    : "";
   const [birthTime, setBirthTime]     = useState("");
   const [timeUnknown, setTimeUnknown] = useState<boolean | null>(null);
   const [gender, setGender]           = useState<"male" | "female" | null>(null);
@@ -89,8 +94,13 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
   const [concernText, setConcernText] = useState("");
 
   // love-saju 전용 (상대방 정보)
-  const [partnerName, setPartnerName]           = useState("");
-  const [partnerBirthDate, setPartnerBirthDate] = useState("");
+  const [partnerName, setPartnerName]                 = useState("");
+  const [partnerBirthYear, setPartnerBirthYear]       = useState("");
+  const [partnerBirthMonth, setPartnerBirthMonth]     = useState("");
+  const [partnerBirthDay, setPartnerBirthDay]         = useState("");
+  const partnerBirthDate = partnerBirthYear.length === 4 && partnerBirthMonth && partnerBirthDay
+    ? `${partnerBirthYear}-${partnerBirthMonth.padStart(2, "0")}-${partnerBirthDay.padStart(2, "0")}`
+    : "";
   const [partnerBirthTime, setPartnerBirthTime] = useState("");
   const [partnerTimeUnknown, setPartnerTimeUnknown] = useState<boolean | null>(null);
   const [partnerGender, setPartnerGender]       = useState<"male" | "female" | null>(null);
@@ -110,17 +120,23 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
   const [submitting, setSubmitting] = useState(false);
 
+  // 생년월일 자동 포커스 이동
+  const birthMonthRef    = useRef<HTMLInputElement>(null);
+  const birthDayRef      = useRef<HTMLInputElement>(null);
+  const partnerBirthMonthRef = useRef<HTMLInputElement>(null);
+  const partnerBirthDayRef   = useRef<HTMLInputElement>(null);
+
   const displayName = name.trim() ? `${name.trim()}님의` : "나의";
 
   // 대운 시기 목록 (1~100세, 10년 단위)
   const daewunPeriods = Array.from({ length: 10 }, (_, i) => {
     const startAge  = i * 10 + 1;
     const endAge    = startAge + 9;
-    const birthYear = birthDate ? parseInt(birthDate.split("-")[0]) : null;
-    const startYear = birthYear ? birthYear + startAge - 1 : null;
-    const endYear   = birthYear ? birthYear + endAge - 1 : null;
+    const byear     = birthDate ? parseInt(birthDate.split("-")[0]) : null;
+    const startYear = byear ? byear + startAge - 1 : null;
+    const endYear   = byear ? byear + endAge - 1 : null;
     const currentYear = new Date().getFullYear();
-    const currentAge  = birthYear ? currentYear - birthYear + 1 : null;
+    const currentAge  = byear ? currentYear - byear + 1 : null;
     const isCurrent   = currentAge !== null && currentAge >= startAge && currentAge <= endAge;
     return { startAge, endAge, startYear, endYear, isCurrent };
   });
@@ -149,10 +165,10 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
       // premium-saju 추가 정보
       if (daewunStartAge) {
-        const endAge    = daewunStartAge + 9;
-        const birthYear = birthDate ? parseInt(birthDate.split("-")[0]) : null;
-        const yearRange = birthYear
-          ? ` (${birthYear + daewunStartAge - 1}년~${birthYear + endAge - 1}년)` : "";
+        const endAge = daewunStartAge + 9;
+        const byear  = birthDate ? parseInt(birthDate.split("-")[0]) : null;
+        const yearRange = byear
+          ? ` (${byear + daewunStartAge - 1}년~${byear + endAge - 1}년)` : "";
         concerns.push(`[대운] ${daewunStartAge}세~${endAge}세${yearRange}`);
       }
       if (relationship) {
@@ -231,11 +247,54 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       {/* 생년월일 */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="birthDate" className="text-base font-bold text-ink">생년월일</Label>
+          <Label className="text-base font-bold text-ink">생년월일</Label>
           {birthDate && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
-        <input id="birthDate" type="date" required value={birthDate} onChange={(e) => setBirthDate(e.target.value)}
-          className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+        <div className="grid grid-cols-3 gap-2">
+          <div className="relative">
+            <input
+              type="text" inputMode="numeric" maxLength={4} placeholder="1990"
+              value={birthYear}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                setBirthYear(v);
+                if (v.length === 4) birthMonthRef.current?.focus();
+              }}
+              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+              style={{ backgroundColor: birthYear.length === 4 ? "#ebebeb" : "#f5f5f5" }}
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
+          </div>
+          <div className="relative">
+            <input
+              ref={birthMonthRef}
+              type="text" inputMode="numeric" maxLength={2} placeholder="05"
+              value={birthMonth}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                setBirthMonth(v);
+                if (v.length === 2) birthDayRef.current?.focus();
+              }}
+              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-6 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+              style={{ backgroundColor: birthMonth.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
+          </div>
+          <div className="relative">
+            <input
+              ref={birthDayRef}
+              type="text" inputMode="numeric" maxLength={2} placeholder="15"
+              value={birthDay}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                setBirthDay(v);
+              }}
+              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+              style={{ backgroundColor: birthDay.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
+          </div>
+        </div>
       </div>
 
       {/* 성별 */}
@@ -269,8 +328,34 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           ))}
         </div>
         {timeUnknown === false && (
-          <input id="birthTime" type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)}
-            className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+          <div className="grid grid-cols-2 gap-2">
+            <div className="relative">
+              <input
+                type="text" inputMode="numeric" maxLength={2} placeholder="14"
+                value={birthTime.split(":")[0] ?? ""}
+                onChange={(e) => {
+                  const h = e.target.value.replace(/\D/g, "").slice(0, 2);
+                  const m = birthTime.split(":")[1] ?? "00";
+                  setBirthTime(`${h}:${m}`);
+                }}
+                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
+            </div>
+            <div className="relative">
+              <input
+                type="text" inputMode="numeric" maxLength={2} placeholder="30"
+                value={birthTime.split(":")[1] ?? ""}
+                onChange={(e) => {
+                  const h = birthTime.split(":")[0] ?? "00";
+                  const m = e.target.value.replace(/\D/g, "").slice(0, 2);
+                  setBirthTime(`${h}:${m}`);
+                }}
+                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
+            </div>
+          </div>
         )}
       </div>
 
@@ -315,8 +400,51 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
               <Label className="text-base font-bold text-ink">생년월일</Label>
               {partnerBirthDate && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
-            <input type="date" value={partnerBirthDate} onChange={(e) => setPartnerBirthDate(e.target.value)}
-              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+            <div className="grid grid-cols-3 gap-2">
+              <div className="relative">
+                <input
+                  type="text" inputMode="numeric" maxLength={4} placeholder="1990"
+                  value={partnerBirthYear}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                    setPartnerBirthYear(v);
+                    if (v.length === 4) partnerBirthMonthRef.current?.focus();
+                  }}
+                  className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                  style={{ backgroundColor: partnerBirthYear.length === 4 ? "#ebebeb" : "#f5f5f5" }}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
+              </div>
+              <div className="relative">
+                <input
+                  ref={partnerBirthMonthRef}
+                  type="text" inputMode="numeric" maxLength={2} placeholder="05"
+                  value={partnerBirthMonth}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                    setPartnerBirthMonth(v);
+                    if (v.length === 2) partnerBirthDayRef.current?.focus();
+                  }}
+                  className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-6 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                  style={{ backgroundColor: partnerBirthMonth.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
+              </div>
+              <div className="relative">
+                <input
+                  ref={partnerBirthDayRef}
+                  type="text" inputMode="numeric" maxLength={2} placeholder="15"
+                  value={partnerBirthDay}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                    setPartnerBirthDay(v);
+                  }}
+                  className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                  style={{ backgroundColor: partnerBirthDay.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
+              </div>
+            </div>
           </div>
 
           {/* 상대방 성별 */}
@@ -350,8 +478,34 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
               ))}
             </div>
             {partnerTimeUnknown === false && (
-              <input type="time" value={partnerBirthTime} onChange={(e) => setPartnerBirthTime(e.target.value)}
-                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+              <div className="grid grid-cols-2 gap-2">
+                <div className="relative">
+                  <input
+                    type="text" inputMode="numeric" maxLength={2} placeholder="14"
+                    value={partnerBirthTime.split(":")[0] ?? ""}
+                    onChange={(e) => {
+                      const h = e.target.value.replace(/\D/g, "").slice(0, 2);
+                      const m = partnerBirthTime.split(":")[1] ?? "00";
+                      setPartnerBirthTime(`${h}:${m}`);
+                    }}
+                    className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text" inputMode="numeric" maxLength={2} placeholder="30"
+                    value={partnerBirthTime.split(":")[1] ?? ""}
+                    onChange={(e) => {
+                      const h = partnerBirthTime.split(":")[0] ?? "00";
+                      const m = e.target.value.replace(/\D/g, "").slice(0, 2);
+                      setPartnerBirthTime(`${h}:${m}`);
+                    }}
+                    className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
+                </div>
+              </div>
             )}
           </div>
 
