@@ -144,7 +144,7 @@ export default async function DemoPage({ searchParams }: { searchParams: SearchP
         {myeongsik ? (
           <MyeongsikTable myeongsik={myeongsik} />
         ) : (
-          <ErrorBox title={stage === "api-missing" ? "사주 API 가 설정되지 않았어요" : "사주 API 호출 실패"} detail={stageDetail} />
+          <ErrorBox title={"사주 API 호출 실패"} detail={stageDetail} />
         )}
       </section>
 
