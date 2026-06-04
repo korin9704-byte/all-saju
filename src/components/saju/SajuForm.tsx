@@ -380,7 +380,10 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
           {/* 상대방 달력 종류 */}
           <div className="space-y-2">
-            <Label className="text-base font-bold text-ink">달력 종류</Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-bold text-ink">달력 종류</Label>
+              <span className="text-[#22c55e] text-lg leading-none">✓</span>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               {(["solar", "lunar"] as const).map((c) => (
                 <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerCalendar === c ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
