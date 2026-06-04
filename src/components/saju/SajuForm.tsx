@@ -104,7 +104,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
   const [partnerBirthTime, setPartnerBirthTime] = useState("");
   const [partnerTimeUnknown, setPartnerTimeUnknown] = useState<boolean | null>(null);
   const [partnerGender, setPartnerGender]       = useState<"male" | "female" | null>(null);
-  const [partnerCalendar, setPartnerCalendar]   = useState<"solar" | "lunar">("solar");
+  const [partnerCalendar, setPartnerCalendar]   = useState<"solar" | "lunar" | null>(null);
   const [relationship2, setRelationship2]       = useState<string | null>(null);
   const [relationship2Custom, setRelationship2Custom] = useState("");
   const [roleA, setRoleA]                       = useState("");
@@ -184,7 +184,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       // love-saju 상대방 정보
       if (productSlug === "love-saju") {
         const partnerTime = partnerTimeUnknown ? "시간모름" : (partnerBirthTime || "시간모름");
-        concerns.push(`[상대방] 이름:${partnerName || "미입력"} 생년월일:${partnerBirthDate} 시간:${partnerTime} 성별:${partnerGender === "male" ? "남성" : partnerGender === "female" ? "여성" : "미입력"} 달력:${partnerCalendar === "solar" ? "양력" : "음력"}`);
+        concerns.push(`[상대방] 이름:${partnerName || "미입력"} 생년월일:${partnerBirthDate} 시간:${partnerTime} 성별:${partnerGender === "male" ? "남성" : partnerGender === "female" ? "여성" : "미입력"} 달력:${(partnerCalendar ?? "solar") === "solar" ? "양력" : "음력"}`);
         const rel2Val = relationship2 === "직접 입력" ? relationship2Custom.trim() : relationship2;
         if (rel2Val) concerns.push(`[관계] ${rel2Val}`);
         if (roleA.trim()) concerns.push(`[역할A] ${roleA.trim()}`);
@@ -382,7 +382,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">달력 종류</Label>
-              <span className="text-[#22c55e] text-lg leading-none">✓</span>
+              {partnerCalendar !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="grid grid-cols-2 gap-3">
               {(["solar", "lunar"] as const).map((c) => (
