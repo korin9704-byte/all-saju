@@ -365,9 +365,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           {/* 섹션 2 헤더 */}
           <div className="flex items-center justify-between pt-2">
             <p className="text-base font-bold text-ink">2. 두 번째 사람</p>
-            {partnerBirthDate && partnerGender !== null && (
-              <span className="text-[#22c55e] text-lg leading-none">✓</span>
-            )}
           </div>
 
           {/* 상대방 이름 */}
