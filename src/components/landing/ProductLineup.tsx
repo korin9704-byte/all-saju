@@ -216,23 +216,6 @@ export async function ProductLineup() {
         ))}
       </div>
 
-      {/* 카카오 배너 */}
-      <div className="mt-10">
-        <img
-          src="/images/kakao-banner.png"
-          alt="카카오톡 1초 회원가입"
-          className="w-full h-auto rounded-2xl"
-        />
-      </div>
-
-      {/* 환불 보장 배너 */}
-      <div className="mt-10">
-        <img
-          src="/images/refund-banner.png"
-          alt="결제 후 불만족 시 100% 환불 보장 제도"
-          className="w-full h-auto rounded-2xl"
-        />
-      </div>
 
     </section>
   );

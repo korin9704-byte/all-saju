@@ -808,12 +808,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         </div>
       )}
 
-      {/* 환불 보장 배너 */}
-      <img
-        src="/images/refund-banner.png"
-        alt="결제 후 불만족 시 100% 환불 보장 제도"
-        className="w-full h-auto rounded-2xl"
-      />
 
     </form>
   );
