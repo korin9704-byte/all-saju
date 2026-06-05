@@ -790,13 +790,10 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
       {/* 제출 버튼 */}
       {isLoggedIn ? (
-        <div className="space-y-2">
-          <button type="submit" disabled={submitting}
-            className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
-            {submitting ? "주문 생성 중..." : "결제하러 가기"}
-          </button>
-          <p className="text-xs text-body text-center">* 결제 후 불만족 시 100% 환불 보장.</p>
-        </div>
+        <button type="submit" disabled={submitting}
+          className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
+          {submitting ? "주문 생성 중..." : "결제하러 가기"}
+        </button>
       ) : (
         <div className="space-y-2">
           <Link
