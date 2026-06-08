@@ -17,7 +17,7 @@ export const businessInfo = {
   companyName: "오라클랩",
   representative: "조재영",
   businessNumber: "535-08-03436",
-  mailOrderNumber: "0000-지역-0000",
+  mailOrderNumber: "2026-서울금천-1229",
   address: "서울특별시 금천구 디지털로 178, A동 지하 2층 M-B203호 21호(가산동)",
   phone: "010-7655-9704",
   phoneNote: "문자만", // 비우면 푸터에서 부가표시 없이 노출
