@@ -196,7 +196,9 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId, name, birthDate,
-          birthTime: timeUnknown ? null : birthTime || null,
+          birthTime: timeUnknown ? null : birthTime
+            ? birthTime.split(":").map((v) => v.padStart(2, "0")).join(":")
+            : null,
           timeUnknown, gender, calendar, concerns,
         }),
       });
