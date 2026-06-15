@@ -123,8 +123,10 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
   // 생년월일 자동 포커스 이동
   const birthMonthRef    = useRef<HTMLInputElement>(null);
   const birthDayRef      = useRef<HTMLInputElement>(null);
+  const birthMinuteRef   = useRef<HTMLInputElement>(null);
   const partnerBirthMonthRef = useRef<HTMLInputElement>(null);
   const partnerBirthDayRef   = useRef<HTMLInputElement>(null);
+  const partnerBirthMinuteRef = useRef<HTMLInputElement>(null);
 
   const displayName = name.trim() ? `${name.trim()}님의` : "나의";
 
@@ -339,6 +341,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
                   const h = e.target.value.replace(/\D/g, "").slice(0, 2);
                   const m = birthTime.split(":")[1] ?? "";
                   setBirthTime(`${h}:${m}`);
+                  if (h.length === 2) birthMinuteRef.current?.focus();
                 }}
                 className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
               />
@@ -346,6 +349,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
             </div>
             <div className="relative">
               <input
+                ref={birthMinuteRef}
                 type="text" inputMode="numeric" maxLength={2} placeholder="30"
                 value={birthTime.split(":")[1] ?? ""}
                 onChange={(e) => {
@@ -487,8 +491,9 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
                     value={partnerBirthTime.split(":")[0] ?? ""}
                     onChange={(e) => {
                       const h = e.target.value.replace(/\D/g, "").slice(0, 2);
-                      const m = partnerBirthTime.split(":")[1] ?? "00";
+                      const m = partnerBirthTime.split(":")[1] ?? "";
                       setPartnerBirthTime(`${h}:${m}`);
+                      if (h.length === 2) partnerBirthMinuteRef.current?.focus();
                     }}
                     className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
                   />
@@ -496,6 +501,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
                 </div>
                 <div className="relative">
                   <input
+                    ref={partnerBirthMinuteRef}
                     type="text" inputMode="numeric" maxLength={2} placeholder="30"
                     value={partnerBirthTime.split(":")[1] ?? ""}
                     onChange={(e) => {
