@@ -337,7 +337,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
                 value={birthTime.split(":")[0] ?? ""}
                 onChange={(e) => {
                   const h = e.target.value.replace(/\D/g, "").slice(0, 2);
-                  const m = birthTime.split(":")[1] ?? "00";
+                  const m = birthTime.split(":")[1] ?? "";
                   setBirthTime(`${h}:${m}`);
                 }}
                 className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
