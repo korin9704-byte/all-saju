@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { publicEnv } from "@/lib/env";
 
 export default function ResetPage() {
   const [email, setEmail] = useState("");
@@ -18,7 +17,7 @@ export default function ResetPage() {
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      redirectTo: `${window.location.origin}/auth/callback`,
     });
     setLoading(false);
     if (error) {
