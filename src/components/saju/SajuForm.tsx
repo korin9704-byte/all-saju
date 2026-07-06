@@ -802,7 +802,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       {/* 이메일 입력 (결과지 수령) */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일 <span className="text-sm font-normal text-body">(결과지 수령)</span></Label>
+          <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일</Label>
           {guestEmail.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <input
