@@ -243,10 +243,10 @@ export default async function ProductDetailPage({
         </div>
       )}
 
-      {/* 리뷰 섹션 — 숨김 처리 (원복 시 아래 주석 해제) */}
-      {/* {displayReviews.length > 0 && (
+      {/* 리뷰 섹션 */}
+      {displayReviews.length > 0 && (
         <ReviewList reviews={displayReviews} />
-      )} */}
+      )}
 
       {/* 후기 → 입력폼 귀여운 구분선 */}
       <div className="flex items-center gap-3 my-6">
