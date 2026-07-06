@@ -150,6 +150,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     if (!calendar) { toast.error("달력 종류를 선택해 주세요"); return; }
     if (!gender) { toast.error("성별을 선택해 주세요"); return; }
     if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
+    if (productSlug === "worry-saju" && !concernText.trim()) { toast.error("궁금한 점을 입력해 주세요"); return; }
     if (!guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요"); return; }
     if (productSlug === "premium-saju" && !daewunStartAge) {
       toast.error("분석할 대운 시기를 선택해 주세요"); return;
@@ -783,7 +784,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       {productSlug === "worry-saju" && (
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
-            <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
+            <Label className="text-base font-bold text-ink">궁금한 점</Label>
             {concernText.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
           </div>
           <div className="relative">
