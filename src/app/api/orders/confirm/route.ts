@@ -273,7 +273,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "결과 저장 실패", detail: resultErr?.message }, { status: 500 });
     }
 
-    // 비회원 이메일 발송
+    // 결과지 이메일 발송
     if (order.guest_email) {
       try {
         await sendResultEmail({

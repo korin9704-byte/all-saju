@@ -26,9 +26,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // 비회원이면 이메일 필수
-  if (!user && !body.guestEmail) {
-    return NextResponse.json({ error: "비회원 주문 시 이메일을 입력해 주세요" }, { status: 400 });
+  // 이메일 필수
+  if (!body.guestEmail) {
+    return NextResponse.json({ error: "결과지를 받을 이메일을 입력해 주세요" }, { status: 400 });
   }
 
   const service = createServiceClient();
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     .insert({
       order_id: orderId,
       user_id: user?.id ?? null,
-      guest_email: user ? null : (body.guestEmail ?? null),
+      guest_email: body.guestEmail ?? null,
       product_id: product.id,
       amount: product.price,
       status: "pending",

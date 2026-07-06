@@ -150,7 +150,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     if (!calendar) { toast.error("달력 종류를 선택해 주세요"); return; }
     if (!gender) { toast.error("성별을 선택해 주세요"); return; }
     if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
-    if (!isLoggedIn && !guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요"); return; }
+    if (!guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요"); return; }
     if (productSlug === "premium-saju" && !daewunStartAge) {
       toast.error("분석할 대운 시기를 선택해 주세요"); return;
     }
@@ -204,7 +204,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
             ? birthTime.split(":").map((v) => v.padStart(2, "0")).join(":")
             : null,
           timeUnknown, gender, calendar, concerns,
-          ...(!isLoggedIn && guestEmail.trim() ? { guestEmail: guestEmail.trim() } : {}),
+          guestEmail: guestEmail.trim(),
         }),
       });
       const json = await res.json();
@@ -222,23 +222,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       {/* love-saju: 섹션 1 헤더 */}
       {productSlug === "love-saju" && (
         <p className="text-base font-bold text-ink">1. 첫 번째 사람</p>
-      )}
-
-      {/* 비회원 이메일 입력 */}
-      {!isLoggedIn && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일 <span className="text-sm font-normal text-body">(결과지 수령)</span></Label>
-            {guestEmail.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
-          </div>
-          <input
-            id="guestEmail" type="email" value={guestEmail}
-            onChange={(e) => setGuestEmail(e.target.value)}
-            placeholder="결과지를 받을 이메일을 입력해 주세요"
-            className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
-            style={{ backgroundColor: guestEmail.trim() ? "#ebebeb" : "#f5f5f5" }}
-          />
-        </div>
       )}
 
       {/* 이름 */}
@@ -816,25 +799,26 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         </div>
       )}
 
-      {/* 제출 버튼 */}
-      {isLoggedIn ? (
-        <button type="submit" disabled={submitting}
-          className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
-          {submitting ? "주문 생성 중..." : "결제하러 가기"}
-        </button>
-      ) : (
-        <div className="space-y-2">
-          <Link
-            href={`/login?redirect=${encodeURIComponent(`/products/${productSlug}`)}`}
-            className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 inline-flex items-center justify-center"
-          >
-            로그인하고 결제하기
-          </Link>
-          <p className="text-xs text-body text-center">
-            결과는 로그인 후 <span className="text-ink">마이페이지</span> 에서 확인할 수 있어요.
-          </p>
+      {/* 이메일 입력 (결과지 수령) */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일 <span className="text-sm font-normal text-body">(결과지 수령)</span></Label>
+          {guestEmail.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
-      )}
+        <input
+          id="guestEmail" type="email" value={guestEmail}
+          onChange={(e) => setGuestEmail(e.target.value)}
+          placeholder="결과지를 받을 이메일을 입력해 주세요"
+          className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
+          style={{ backgroundColor: guestEmail.trim() ? "#ebebeb" : "#f5f5f5" }}
+        />
+      </div>
+
+      {/* 제출 버튼 */}
+      <button type="submit" disabled={submitting}
+        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
+        {submitting ? "주문 생성 중..." : "결제하러 가기"}
+      </button>
 
 
     </form>
