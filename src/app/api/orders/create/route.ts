@@ -12,6 +12,7 @@ const bodySchema = z.object({
   gender: z.enum(["male", "female"]),
   calendar: z.enum(["solar", "lunar"]),
   concerns: z.array(z.string().max(350)).max(20),
+  guestEmail: z.string().email().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -21,15 +22,15 @@ export async function POST(request: NextRequest) {
   }
   const body = parsed.data;
 
-  // 로그인 필수 — 결과는 마이페이지에서 수령
+  // 로그인 여부 확인 (비회원도 허용)
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) {
-    return NextResponse.json({ error: "로그인이 필요합니다" }, { status: 401 });
+  // 비회원이면 이메일 필수
+  if (!user && !body.guestEmail) {
+    return NextResponse.json({ error: "비회원 주문 시 이메일을 입력해 주세요" }, { status: 400 });
   }
 
-  // 가격은 서버에서만 (클라 변조 방지)
   const service = createServiceClient();
   const { data: product, error: productErr } = await service
     .from("products")
@@ -47,8 +48,8 @@ export async function POST(request: NextRequest) {
     .from("orders")
     .insert({
       order_id: orderId,
-      user_id: user.id,
-      guest_email: null,
+      user_id: user?.id ?? null,
+      guest_email: user ? null : (body.guestEmail ?? null),
       product_id: product.id,
       amount: product.price,
       status: "pending",

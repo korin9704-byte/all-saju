@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
 import { computeMyeongsik, type Myeongsik } from "@/lib/saju/manseryeok";
+import { sendResultEmail } from "@/lib/email";
 import { buildSajuPrompt, buildWorryPrompt, buildTodayFortunePrompt, buildDaewunPrompt, buildLoveSajuPrompt } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
@@ -270,6 +271,21 @@ export async function POST(request: NextRequest) {
 
     if (resultErr || !result) {
       return NextResponse.json({ error: "결과 저장 실패", detail: resultErr?.message }, { status: 500 });
+    }
+
+    // 비회원 이메일 발송
+    if (order.guest_email) {
+      try {
+        await sendResultEmail({
+          to: order.guest_email,
+          resultId: result.id,
+          productName: product.name,
+          name: input.name,
+        });
+      } catch (emailErr) {
+        console.error("[confirm] 이메일 발송 실패:", emailErr);
+        // 이메일 실패해도 결과는 반환
+      }
     }
 
     return NextResponse.json({ resultId: result.id });
