@@ -23,6 +23,10 @@ export async function GET(request: NextRequest) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // 비밀번호 재설정 flow는 새 비밀번호 입력 페이지로
+      if (type === "recovery") {
+        return NextResponse.redirect(`${origin}/auth/update-password`);
+      }
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
