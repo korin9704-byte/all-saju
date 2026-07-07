@@ -152,7 +152,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
 
       {/* ── 상세 해설 ── */}
       {parsed.details.length > 0 && (
-        <div>
+        <div className="border-t-2 border-border">
           {/* 섹션 헤더 */}
           <ul className="divide-y divide-border">
             {parsed.details.map((d, i) => {
@@ -191,7 +191,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
                       <div className="px-5 py-5">
                         {d.content.split("\n\n").map((para, pi) => (
                           <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0">
-                            {para.replace(/^#+\s*/, "").replace(/^[-•]\s?/, "")}
+                            {para.replace(/^#+\s*/, "").replace(/^[-•]\s?/, "").replace(/\*\*/g, "")}
                           </p>
                         ))}
                       </div>
@@ -206,7 +206,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
 
       {/* ── 연도별 해설 ── */}
       {parsed.yearly.length > 0 && (
-        <div>
+        <div className="border-t-2 border-border">
           <ul className="divide-y divide-border">
             {parsed.yearly.map((y, i) => {
               const isOpen = openYearIdx === i;
@@ -251,7 +251,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
 
       {/* ── 마지막 한마디 ── */}
       {parsed.final && (
-        <div>
+        <div className="border-t-2 border-border">
           {/* 섹션 헤더 */}
 
           {/* 아코디언 아이템 */}
