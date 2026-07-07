@@ -376,7 +376,9 @@ export default async function ResultPage({
   /* ── 일반 상품 레이아웃 (worry-saju 등) ── */
   const displayName = sajuInput?.name ? `${sajuInput.name}님의` : "";
   const generalConcerns = (sajuInput?.concerns ?? []) as string[];
-  const generalQuestion = generalConcerns.find((c: string) => !c.startsWith("["))?.trim() ?? "";
+  const generalQuestion =
+    generalConcerns.find((c: string) => !c.startsWith("["))?.trim() ||
+    (generalConcerns.find((c: string) => c.startsWith("[질문]")) ?? "").replace(/^\[질문\]\s*/, "").trim();
   const tags = [
     sajuInput?.birth_date ? formatBirthDate(sajuInput.birth_date) : null,
     sajuInput?.calendar === "lunar" ? "음력" : "양력",
