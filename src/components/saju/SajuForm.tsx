@@ -155,6 +155,9 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     if (productSlug === "premium-saju" && !daewunStartAge) {
       toast.error("분석할 대운 시기를 선택해 주세요"); return;
     }
+    if (productSlug === "love-saju" && !partnerName.trim()) {
+      toast.error("두 번째 사람의 이름을 입력해 주세요"); return;
+    }
     if (productSlug === "love-saju" && !partnerBirthDate) {
       toast.error("상대방 생년월일을 입력해 주세요"); return;
     }
@@ -380,7 +383,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           {/* 상대방 이름 */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-base font-bold text-ink">이름 <span className="text-sm font-normal text-body">(선택)</span></Label>
+              <Label className="text-base font-bold text-ink">이름</Label>
               {partnerName.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <input value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
@@ -761,8 +764,8 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         </>
       )}
 
-      {/* ── today-fortune 궁금한 점 섹션 ── */}
-      {productSlug === "today-fortune" && (
+      {/* ── today-fortune / realestate 궁금한 점 섹션 ── */}
+      {(productSlug === "today-fortune" || productSlug === "realestate") && (
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
