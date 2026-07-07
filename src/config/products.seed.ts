@@ -42,7 +42,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "worry-saju",
     name: "무엇이든 물어보세요",
     description: "더 궁금한 점이 있다면?",
-    price: 1900,
+    price: 3900,
     display_order: 40,
     is_active: true,
   },

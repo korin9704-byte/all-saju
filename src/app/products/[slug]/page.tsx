@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
@@ -12,7 +12,6 @@ import {
   todayFortuneReviews,
   premiumSajuReviews,
   loveSajuReviews,
-  realEstateReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
 
@@ -24,7 +23,6 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "today-fortune": todayFortuneReviews,
   "premium-saju":  premiumSajuReviews,
   "love-saju":     loveSajuReviews,
-  "realestate":    realEstateReviews,
 };
 
 export default async function ProductDetailPage({
@@ -148,15 +146,6 @@ export default async function ProductDetailPage({
         <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
           <div className="w-full aspect-[962/663] overflow-hidden">
             <img src="/images/worry-saju.png" alt="무엇이든 물어보세요" className="w-full h-full object-cover" />
-          </div>
-        </div>
-      )}
-
-      {/* 상품 소개 — realestate */}
-      {product.slug === "realestate" && (
-        <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
-          <div className="w-full aspect-[962/663] overflow-hidden">
-            <img src="/images/realestate.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />
           </div>
         </div>
       )}

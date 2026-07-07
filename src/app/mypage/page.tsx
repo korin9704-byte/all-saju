@@ -25,7 +25,7 @@ export default async function MyPage() {
       <header className="mb-10">
         <p className="text-xs font-mono text-mute mb-2">ACCOUNT</p>
         <h1 className="text-2xl font-semibold tracking-tight">
-          {profile?.display_name ?? user.email}
+          {profile?.display_name ?? "🐱"}
         </h1>
         <p className="text-sm text-body mt-1">{profile?.email ?? user.email}</p>
       </header>

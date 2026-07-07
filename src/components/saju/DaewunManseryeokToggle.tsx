@@ -18,7 +18,7 @@ export function DaewunManseryeokToggle({
   selectedStartAge: number | null;
 }) {
   return (
-    <section className="border-x border-border">
+    <section>
       {/* 만세력 — edge-to-edge */}
       <MyeongsikTable myeongsik={myeongsik} />
     </section>

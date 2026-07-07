@@ -50,7 +50,7 @@ export default async function CheckoutSuccessPage({
 
         {/* 메인 메시지 */}
         <h1 className="text-lg font-bold text-ink leading-snug mb-6" id="loading-msg">
-          행운의 냥이가 노이즈 캔슬링 켜고<br />집중해서 분석 중... 🐾
+          행운의 냥이가 노이즈 캔슬링 켜고<br />집중해서 분석 중...🐾
         </h1>
 
         {/* 프로그레스 바 */}

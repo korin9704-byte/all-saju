@@ -87,6 +87,8 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
         })}
 
       </div>
+
+
     </div>
   );
 }

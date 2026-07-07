@@ -17,8 +17,8 @@ export default function UpdatePasswordPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (password.length < 6) {
-      toast.error("비밀번호는 6자 이상이어야 합니다");
+    if (password.length < 8) {
+      toast.error("비밀번호는 8자 이상이어야 합니다");
       return;
     }
     if (password !== confirm) {
@@ -30,7 +30,12 @@ export default function UpdatePasswordPage() {
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
     if (error) {
-      toast.error(error.message);
+      const msg = error.message.toLowerCase();
+      if (msg.includes("different from the old password")) {
+        toast.error("이전 비밀번호와 다른 비밀번호를 입력해 주세요");
+      } else {
+        toast.error(error.message);
+      }
       return;
     }
     toast.success("비밀번호가 변경됐어요");
@@ -42,7 +47,7 @@ export default function UpdatePasswordPage() {
       <Card>
         <CardHeader>
           <CardTitle>새 비밀번호 설정</CardTitle>
-          <CardDescription>사용할 새 비밀번호를 입력해 주세요.</CardDescription>
+          <CardDescription>사용할 비밀번호를 입력해 주세요.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -52,7 +57,7 @@ export default function UpdatePasswordPage() {
                 id="password"
                 type="password"
                 required
-                placeholder="6자 이상"
+                placeholder="8자 이상"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

@@ -4,7 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
 import { computeMyeongsik, type Myeongsik } from "@/lib/saju/manseryeok";
 import { sendResultEmail } from "@/lib/email";
-import { buildSajuPrompt, buildWorryPrompt, buildTodayFortunePrompt, buildDaewunPrompt, buildLoveSajuPrompt, buildRealEstateSajuPrompt } from "@/lib/saju/prompt";
+import { buildSajuPrompt, buildWorryPrompt, buildTodayFortunePrompt, buildDaewunPrompt, buildLoveSajuPrompt } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
   isSajuApiConfigured,
@@ -251,9 +251,6 @@ export async function POST(request: NextRequest) {
         partnerBirthDate,
         partnerGender,
       });
-      llm = await generateInterpretation({ system, user });
-    } else if (product.slug === "realestate") {
-      const { system, user } = buildRealEstateSajuPrompt(promptInput);
       llm = await generateInterpretation({ system, user });
     } else {
       const { system, user } = buildSajuPrompt(promptInput);

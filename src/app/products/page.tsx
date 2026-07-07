@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { formatKRW } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -98,7 +98,6 @@ const thumbMap: Record<string, React.ReactNode> = {
   "premium-saju":  <img src="/images/premium-saju.png" alt="대운 해설" className="w-full h-full object-cover" />,
   "love-saju":     <img src="/images/love-saju.png" alt="궁합 해설" className="w-full h-full object-cover" />,
   "worry-saju":    <img src="/images/worry-saju.png" alt="무엇이든 물어보세요" className="w-full h-full object-cover" />,
-  "realestate":    <img src="/images/realestate.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />,
 };
 
 /* ── 상품 페이지 ── */
