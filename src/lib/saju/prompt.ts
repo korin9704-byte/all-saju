@@ -151,6 +151,11 @@ export function buildSajuPrompt(input: PromptInput): { system: string; user: str
 - 유리한 방향 / 색상 / 숫자 / 직업군 / 파트너 유형`,
   };
 
+  // realestate는 전용 함수에서 처리하지만, 혹시 여기로 오더라도 부동산 내용 생성
+  if (input.productSlug === "realestate" || input.productName?.includes("부동산")) {
+    const { system, user } = buildRealEstateSajuPrompt(input);
+    return { system, user };
+  }
   const sections = sectionMap[input.productSlug] ?? sectionMap["premium-saju"];
   const concernNote = input.concerns.length > 0
     ? "\n\n위 섹션을 모두 작성한 뒤, 마지막에 ## 고민 답변 섹션을 추가하여 내담자의 고민에 명식 데이터 근거와 함께 직접 답변하세요."
