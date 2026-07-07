@@ -170,7 +170,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
                     </p>
                     {d.sub && (
                       <p className="mt-1 text-sm text-muted-foreground">
-                        {d.sub}
+                        {d.sub.length > 60 ? d.sub.slice(0, 60) + "…" : d.sub}
                       </p>
                     )}
                     {/* 화살표 우측 고정 */}
