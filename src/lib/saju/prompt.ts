@@ -436,7 +436,10 @@ ${roleALabel || roleBLabel ? `각자의 역할(${nameA}: ${roleALabel || "미입
 // ─── 부동산 투자 풀이 (realestate — 부동산 중심 단일 호출) ──────────────────
 export function buildRealEstateSajuPrompt(input: PromptInput): { system: string; user: string } {
   const ctx = makeContext(input);
-  const concern = input.concerns.length > 0 ? input.concerns.join(" ") : "";
+  const concern = input.concerns
+    .map(c => c.replace(/^\[질문\]\s*/, ""))
+    .filter(Boolean)
+    .join(" ");
 
   const user = `${ctx}
 
