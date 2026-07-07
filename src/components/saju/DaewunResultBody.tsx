@@ -154,11 +154,6 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
       {parsed.details.length > 0 && (
         <div>
           {/* 섹션 헤더 */}
-          <div className="px-5 py-4 text-center border-b border-border" style={{ background: "#1a1a1a" }}>
-            <p className="text-sm font-semibold tracking-widest text-white">상세 해설</p>
-            <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 해설이 펼쳐져요</p>
-          </div>
-
           <ul className="divide-y divide-border">
             {parsed.details.map((d, i) => {
               const isOpen = openIdx === i;
@@ -174,7 +169,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
                       {d.title}
                     </p>
                     {d.sub && (
-                      <p className="mt-1 text-sm font-medium text-ink">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {d.sub}
                       </p>
                     )}
@@ -212,10 +207,6 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
       {/* ── 연도별 해설 ── */}
       {parsed.yearly.length > 0 && (
         <div>
-          <div className="px-5 py-4 text-center border-y border-border" style={{ background: "#1a1a1a" }}>
-            <p className="text-sm font-semibold tracking-widest text-white">10년 세운 연도별 해설</p>
-            <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 해설이 펼쳐져요</p>
-          </div>
           <ul className="divide-y divide-border">
             {parsed.yearly.map((y, i) => {
               const isOpen = openYearIdx === i;
@@ -262,10 +253,6 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
       {parsed.final && (
         <div>
           {/* 섹션 헤더 */}
-          <div className="px-5 py-4 text-center border-y border-border" style={{ background: "#1a1a1a" }}>
-            <p className="text-sm font-semibold tracking-widest text-white">마지막 한마디</p>
-            <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 해설이 펼쳐져요</p>
-          </div>
 
           {/* 아코디언 아이템 */}
           <button
