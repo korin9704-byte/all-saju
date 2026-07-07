@@ -7,6 +7,7 @@ import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
 import { computeMyeongsik } from "@/lib/saju/manseryeok";
+import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
 import { formatDate } from "@/lib/utils";
 
@@ -242,13 +243,29 @@ export default async function ResultPage({
     let partnerMyeongsik: Myeongsik | null = null;
     if (partnerBirthDate) {
       try {
-        partnerMyeongsik = await computeMyeongsik({
-          birthDate: partnerBirthDate,
-          birthTime: partnerBirthTime,
-          timeUnknown: partnerTimeUnknown,
-          calendar: partnerCalendar,
-          gender: partnerGender,
-        });
+        if (isSajuApiConfigured()) {
+          const [py, pm, pd] = partnerBirthDate.split("-");
+          const hasT = !partnerTimeUnknown && !!partnerBirthTime;
+          const [phh, pmm] = hasT ? partnerBirthTime!.split(":") : [undefined, undefined];
+          const pBirthInfo: BirthInfo = {
+            birthYear: py,
+            birthMonth: String(parseInt(pm, 10)),
+            birthDay: String(parseInt(pd, 10)),
+            ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
+            calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
+            gender: partnerGender,
+          };
+          const pAnalysis = await fetchSajuAnalysis(pBirthInfo, [], { source: "manual" });
+          partnerMyeongsik = ganjiToMyeongsik(pAnalysis) ?? await computeMyeongsik({
+            birthDate: partnerBirthDate, birthTime: partnerBirthTime,
+            timeUnknown: partnerTimeUnknown, calendar: partnerCalendar, gender: partnerGender,
+          });
+        } else {
+          partnerMyeongsik = await computeMyeongsik({
+            birthDate: partnerBirthDate, birthTime: partnerBirthTime,
+            timeUnknown: partnerTimeUnknown, calendar: partnerCalendar, gender: partnerGender,
+          });
+        }
       } catch {
         // 계산 실패 시 null 유지
       }
