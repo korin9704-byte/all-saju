@@ -414,7 +414,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden border-x border-b border-border">
-        <AccordionBody markdown={result.interpretation_md} headerTitle="질문 해설" limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={product?.slug === "realestate-saju" ? "해설" : "질문 해설"} limit={13} />
       </article>
 
       <footer className="mt-10 text-center">
