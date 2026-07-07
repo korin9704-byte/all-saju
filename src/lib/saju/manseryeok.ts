@@ -29,7 +29,10 @@ export type ManseryeokInput = {
 export async function computeMyeongsik(input: ManseryeokInput): Promise<Myeongsik> {
   const env = serverEnv();
   if (env.MANSERYEOK_API_URL) {
-    return callExternalManseryeok(input, env.MANSERYEOK_API_URL, env.MANSERYEOK_API_KEY);
+    try {
+      const result = await callExternalManseryeok(input, env.MANSERYEOK_API_URL, env.MANSERYEOK_API_KEY);
+      if (result.year && result.month && result.day) return result;
+    } catch {}
   }
   return mockMyeongsik(input);
 }
