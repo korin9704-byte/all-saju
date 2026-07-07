@@ -123,7 +123,7 @@ export default async function ResultPage({
         </section>
 
         <article className="rounded-b-2xl overflow-hidden border-x border-b border-border">
-          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" />
+          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
         </article>
 
         <footer className="mt-10 text-center">
