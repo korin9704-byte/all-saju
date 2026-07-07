@@ -85,6 +85,9 @@ export default async function ResultPage({
   /* ── today-fortune 전용 레이아웃 ── */
   if (isTodayFortune) {
     const displayName = sajuInput?.name ? `${sajuInput.name}님의` : "";
+    const todayConcerns = (sajuInput?.concerns ?? []) as string[];
+    const todayQuestionRaw = todayConcerns.find((c: string) => c.startsWith("[질문]")) ?? "";
+    const todayQuestion = todayQuestionRaw.replace(/^\[질문\]\s*/, "").trim();
     const tags = [
       sajuInput?.birth_date ? formatBirthDate(sajuInput.birth_date) : null,
       sajuInput?.calendar === "lunar" ? "음력" : "양력",
@@ -108,6 +111,11 @@ export default async function ResultPage({
               </span>
             ))}
           </div>
+          {todayQuestion && (
+            <div className="px-5 pb-5 text-center">
+              <p className="text-xs text-white leading-relaxed">Q. {todayQuestion}</p>
+            </div>
+          )}
         </header>
 
         <section className="border-x border-border">
