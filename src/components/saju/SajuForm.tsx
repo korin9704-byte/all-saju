@@ -764,8 +764,8 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         </>
       )}
 
-      {/* ── today-fortune 궁금한 점 섹션 ── */}
-      {productSlug === "today-fortune" && (
+      {/* ── today-fortune / realestate-saju 궁금한 점 섹션 ── */}
+      {(productSlug === "today-fortune" || productSlug === "realestate-saju") && (
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>

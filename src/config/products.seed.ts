@@ -46,4 +46,12 @@ export const productsSeed: ProductSeed[] = [
     display_order: 40,
     is_active: true,
   },
+  {
+    slug: "realestate-saju",
+    name: "부동산 투자로 재미 볼 수 있을까?",
+    description: "부동산 운명 미리 보기",
+    price: 3900,
+    display_order: 50,
+    is_active: true,
+  },
 ];

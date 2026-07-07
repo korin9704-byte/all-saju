@@ -12,6 +12,7 @@ import {
   todayFortuneReviews,
   premiumSajuReviews,
   loveSajuReviews,
+  realEstateReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
 
@@ -19,10 +20,11 @@ type Product = { id: string; slug: string; name: string; description: string; pr
 type Review = { id: string; rating: number; content: string; created_at: string };
 
 const dummyReviewsBySlug: Record<string, DummyReview[]> = {
-  "worry-saju":    worrySajuReviews,
-  "today-fortune": todayFortuneReviews,
-  "premium-saju":  premiumSajuReviews,
-  "love-saju":     loveSajuReviews,
+  "worry-saju":      worrySajuReviews,
+  "today-fortune":   todayFortuneReviews,
+  "premium-saju":    premiumSajuReviews,
+  "love-saju":       loveSajuReviews,
+  "realestate-saju": realEstateReviews,
 };
 
 export default async function ProductDetailPage({
@@ -150,7 +152,14 @@ export default async function ProductDetailPage({
         </div>
       )}
 
-
+      {/* 상품 소개 — realestate-saju */}
+      {product.slug === "realestate-saju" && (
+        <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
+          <div className="w-full aspect-[962/663] overflow-hidden">
+            <img src="/images/realestate-saju.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
 
       {/* 상품 설명 */}
       {productDescriptions[product.slug] && (
