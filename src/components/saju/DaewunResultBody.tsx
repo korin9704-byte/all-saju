@@ -152,7 +152,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
 
       {/* ── 상세 해설 ── */}
       {parsed.details.length > 0 && (
-        <div className="border-t-2 border-border">
+        <div className="border-t-2 border-gray-300">
           {/* 섹션 헤더 */}
           <ul className="divide-y divide-border">
             {parsed.details.map((d, i) => {
@@ -206,7 +206,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
 
       {/* ── 연도별 해설 ── */}
       {parsed.yearly.length > 0 && (
-        <div className="border-t-2 border-border">
+        <div className="border-t-2 border-gray-300">
           <ul className="divide-y divide-border">
             {parsed.yearly.map((y, i) => {
               const isOpen = openYearIdx === i;
@@ -251,7 +251,7 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
 
       {/* ── 마지막 한마디 ── */}
       {parsed.final && (
-        <div className="border-t-2 border-border">
+        <div className="border-t-2 border-gray-300">
           {/* 섹션 헤더 */}
 
           {/* 아코디언 아이템 */}
