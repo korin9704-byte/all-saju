@@ -34,15 +34,11 @@ export async function sendResultEmail({
           <span style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">냥점🐱</span>
         </td></tr>
         <tr><td style="padding:40px 40px 24px;">
-          <p style="margin:0 0 16px;font-size:15px;color:#555;">안녕하세요!</p>
           <h1 style="margin:0 0 24px;font-size:20px;font-weight:700;color:#111;line-height:1.6;">
             ${greeting}<br>
             <span style="color:#6366f1;">'${productName}'</span><br>
             결과가 도착했어요.
           </h1>
-          <p style="margin:0 0 32px;font-size:14px;color:#666;line-height:1.7;">
-            궁금했던 답을 지금 바로 확인해보세요.
-          </p>
           <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
             결과지 보러가기🐈
           </a>
