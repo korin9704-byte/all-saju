@@ -43,7 +43,7 @@ export async function sendResultEmail({
             링크는 언제든지 다시 접근하실 수 있어요.
           </p>
           <a href="${url}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;">
-            결과지 보러가기 →
+            결과지 보러가기
           </a>
         </td></tr>
         <tr><td style="padding:24px 40px 40px;border-top:1px solid #f0f0f0;">
