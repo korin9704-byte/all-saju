@@ -31,7 +31,7 @@ export async function sendResultEmail({
     <tr><td align="center">
       <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
         <tr><td style="background:#111111;padding:32px 40px;text-align:center;">
-          <span style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">냥점</span>
+          <span style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">냥점🐱</span>
         </td></tr>
         <tr><td style="padding:40px 40px 24px;">
           <p style="margin:0 0 16px;font-size:15px;color:#555;">안녕하세요!</p>
