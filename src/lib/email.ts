@@ -8,18 +8,15 @@ export async function sendResultEmail({
   to,
   resultId,
   productName,
-  productSlug,
   name,
 }: {
   to: string;
   resultId: string;
   productName: string;
-  productSlug?: string | null;
   name?: string | null;
 }) {
   const url = `${SITE_URL}/results/${resultId}`;
   const greeting = name ? `${name}님의` : "구매하신";
-  const imageUrl = productSlug ? `${SITE_URL}/images/${productSlug}.png` : null;
 
   await resend.emails.send({
     from: FROM,
@@ -37,7 +34,6 @@ export async function sendResultEmail({
           <span style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">냥점🐱</span>
         </td></tr>
         <tr><td style="padding:40px 40px 24px;">
-          ${imageUrl ? `<img src="${imageUrl}" alt="${productName}" width="440" style="display:block;width:100%;max-width:440px;border-radius:12px;margin-bottom:24px;" />` : ''}
           <h1 style="margin:0 0 24px;font-size:20px;font-weight:700;color:#111;line-height:1.6;">
             ${greeting}<br>
             <span style="color:#764ae6;">'${productName}'</span><br>
