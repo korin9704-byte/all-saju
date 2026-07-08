@@ -36,7 +36,7 @@ export async function sendResultEmail({
         <tr><td style="padding:40px 40px 24px;">
           <h1 style="margin:0 0 24px;font-size:20px;font-weight:700;color:#111;line-height:1.6;">
             ${greeting}<br>
-            <span style="color:#6366f1;">'${productName}'</span><br>
+            <span style="color:#bc9ded;">'${productName}'</span><br>
             결과가 도착했어요.
           </h1>
           <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
