@@ -34,7 +34,7 @@
     @apply border-border;
   }
   html {
-    font-size: 17px;
+    font-size: 18px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -86,7 +86,7 @@
 
   /* 본문 단락 */
   .result-p {
-    @apply leading-8 text-[16px] text-[#3a3a3a] mb-4;
+    @apply leading-8 text-[17px] text-[#3a3a3a] mb-4;
   }
 
   /* 불릿 리스트 */
@@ -94,7 +94,7 @@
     @apply my-3 space-y-2.5;
   }
   .result-li {
-    @apply flex items-start gap-2.5 text-[16px] text-[#3a3a3a] leading-7;
+    @apply flex items-start gap-2.5 text-[17px] text-[#3a3a3a] leading-7;
   }
   .result-li-dot {
     @apply mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0;
