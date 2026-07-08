@@ -85,6 +85,8 @@ export default async function CheckoutSuccessPage({
         dangerouslySetInnerHTML={{
           __html: `
 (function() {
+  if (window.fbq) { window.fbq('track', 'Purchase', { value: ${amount}, currency: 'KRW' }); }
+
   var pct = 2;
   var seconds = 90;
   var done = false;
@@ -132,9 +134,6 @@ export default async function CheckoutSuccessPage({
   .then(function(res) {
     done = true;
     clearInterval(timer);
-    if (res.ok) {
-      if (window.fbq) { window.fbq('track', 'Purchase', { value: ${amount}, currency: 'KRW' }); }
-    }
     if (res.ok && res.data.resultId) {
       var fill = document.getElementById('progress-fill');
       var pctEl = document.getElementById('progress-pct');
