@@ -47,7 +47,7 @@ export default function UpdatePasswordPage() {
       <Card>
         <CardHeader>
           <CardTitle>새 비밀번호 설정</CardTitle>
-          <CardDescription>사용할 비밀번호를 입력해 주세요.</CardDescription>
+          <CardDescription>안전하게 사용할 새 비밀번호를 입력해 주세요.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
