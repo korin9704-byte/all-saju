@@ -44,7 +44,7 @@ export async function sendResultEmail({
             궁금했던 답을 지금 바로 확인해보세요.
           </p>
           <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
-            결과지 보러가기 🐾
+            결과지 보러가기🐈
           </a>
         </td></tr>
         <tr><td style="padding:24px 40px 40px;border-top:1px solid #f0f0f0;">
