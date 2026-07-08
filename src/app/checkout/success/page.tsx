@@ -132,6 +132,9 @@ export default async function CheckoutSuccessPage({
   .then(function(res) {
     done = true;
     clearInterval(timer);
+    if (res.ok) {
+      if (window.fbq) { window.fbq('track', 'Purchase', { value: ${amount}, currency: 'KRW' }); }
+    }
     if (res.ok && res.data.resultId) {
       var fill = document.getElementById('progress-fill');
       var pctEl = document.getElementById('progress-pct');
@@ -139,7 +142,6 @@ export default async function CheckoutSuccessPage({
       if (fill) fill.style.width = '100%';
       if (pctEl) pctEl.textContent = '100%';
       if (msg) msg.innerHTML = '분석 완료! 결과 페이지로 이동할게요 🐾';
-      if (window.fbq) { window.fbq('track', 'Purchase', { value: ${amount}, currency: 'KRW' }); }
       setTimeout(function() {
         window.location.href = '/results/' + res.data.resultId;
       }, 600);
