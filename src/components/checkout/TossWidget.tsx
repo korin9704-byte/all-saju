@@ -45,9 +45,6 @@ export function TossWidget({ orderId, amount, customerKey, productName, customer
     const widgets = widgetsRef.current;
     if (!widgets) return;
     setPaying(true);
-    if (typeof window !== 'undefined' && (window as any).fbq) {
-      (window as any).fbq('track', 'InitiateCheckout', { value: amount, currency: 'KRW' });
-    }
     try {
       await widgets.requestPayment({
         orderId,

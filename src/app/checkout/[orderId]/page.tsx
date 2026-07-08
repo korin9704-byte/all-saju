@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { TossWidget } from "@/components/checkout/TossWidget";
+import Script from "next/script";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatKRW } from "@/lib/utils";
 
@@ -55,6 +56,9 @@ export default async function CheckoutPage({
 
   return (
     <div className="container py-12 max-w-2xl">
+      <Script id="pixel-initiate-checkout" strategy="afterInteractive">{`
+        if (window.fbq) { window.fbq('track', 'InitiateCheckout', { value: ${order.amount}, currency: 'KRW' }); }
+      `}</Script>
       <Card>
         <CardHeader>
           <CardTitle>결제</CardTitle>

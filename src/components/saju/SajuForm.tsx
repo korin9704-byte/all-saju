@@ -164,9 +164,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     if (productSlug === "love-saju" && !relationship2) {
       toast.error("두 사람의 관계를 선택해 주세요"); return;
     }
-    if (typeof window !== 'undefined' && (window as any).fbq) {
-      (window as any).fbq('track', 'InitiateCheckout');
-    }
     setSubmitting(true);
     try {
       const concerns: string[] = [];
