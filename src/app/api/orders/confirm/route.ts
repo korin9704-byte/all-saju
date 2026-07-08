@@ -283,6 +283,7 @@ export async function POST(request: NextRequest) {
           to: order.guest_email,
           resultId: result.id,
           productName: product.name,
+          productSlug: product.slug,
           name: input.name,
         });
       } catch (emailErr) {
