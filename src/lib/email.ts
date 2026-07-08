@@ -43,7 +43,7 @@ export async function sendResultEmail({
           <p style="margin:0 0 32px;font-size:14px;color:#666;line-height:1.7;">
             궁금했던 답을 지금 바로 확인해보세요.
           </p>
-          <a href="${url}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;">
+          <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
             결과지 보러가기
           </a>
         </td></tr>
