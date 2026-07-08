@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import Link from "next/link";
@@ -232,7 +232,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="name" className="text-base font-bold text-ink">이름</Label>
-          {name.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
           className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
@@ -243,7 +242,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label className="text-base font-bold text-ink">달력 종류</Label>
-          {calendar !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <div className="grid grid-cols-2 gap-3">
           {(["solar", "lunar"] as const).map((c) => (
@@ -259,7 +257,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label className="text-base font-bold text-ink">생년월일</Label>
-          {birthDate && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="relative">
@@ -312,7 +309,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label className="text-base font-bold text-ink">성별</Label>
-          {gender !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <div className="grid grid-cols-2 gap-3">
           {(["female", "male"] as const).map((g) => (
@@ -328,7 +324,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label className="text-base font-bold text-ink">태어난 시간을 아시나요?</Label>
-          {(timeUnknown === true || (timeUnknown === false && birthTime)) && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <div className="grid grid-cols-2 gap-3">
           {([false, true] as const).map((unknown) => (
@@ -384,7 +379,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">이름</Label>
-              {partnerName.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <input value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
               className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
@@ -395,7 +389,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">달력 종류</Label>
-              {partnerCalendar !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="grid grid-cols-2 gap-3">
               {(["solar", "lunar"] as const).map((c) => (
@@ -411,7 +404,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">생년월일</Label>
-              {partnerBirthDate && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="grid grid-cols-3 gap-2">
               <div className="relative">
@@ -464,7 +456,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">성별</Label>
-              {partnerGender !== null && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="grid grid-cols-2 gap-3">
               {(["female", "male"] as const).map((g) => (
@@ -480,7 +471,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">태어난 시간을 아시나요?</Label>
-              {(partnerTimeUnknown === true || (partnerTimeUnknown === false && partnerBirthTime)) && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="grid grid-cols-2 gap-3">
               {([false, true] as const).map((unknown) => (
@@ -528,7 +518,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="flex items-center justify-between pt-2">
             <p className="text-base font-bold text-ink">3. 두 사람은 어떤 관계인가요?</p>
             {relationship2 !== null && (relationship2 !== "직접 입력" || relationship2Custom.trim()) && (
-              <span className="text-[#22c55e] text-lg leading-none">✓</span>
             )}
           </div>
 
@@ -581,7 +570,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">{name.trim() ? `${name.trim()}의 역할` : "내 역할"}</Label>
-              {roleA.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="relative">
               <input
@@ -599,7 +587,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">{partnerName.trim() ? `${partnerName.trim()}의 역할` : "상대방의 역할"}</Label>
-              {roleB.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="relative">
               <input
@@ -617,7 +604,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-3 pt-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
-              {freeQuestion.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="relative">
               <textarea value={freeQuestion}
@@ -640,7 +626,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
             <Label className="text-base font-bold text-ink">대운 시기</Label>
             <div className="flex items-center justify-between">
               <p className="text-sm text-body">어떤 시기의 대운을 볼까요?</p>
-              {daewunStartAge !== null && <span className="text-[#22c55e] text-xl leading-none">✓</span>}
             </div>
             <div className="overflow-y-auto max-h-[420px] rounded-2xl border border-hairline">
               {daewunPeriods.map(({ startAge, endAge, startYear, endYear, isCurrent }, index) => (
@@ -698,7 +683,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           {/* 애정 상황 */}
           <div className="space-y-3">
             <div className="flex justify-end h-5">
-              {relationship !== null && <span className="text-[#22c55e] text-xl leading-none">✓</span>}
             </div>
             <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
               <p className="text-sm font-bold text-ink leading-relaxed">
@@ -723,7 +707,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           {/* 현재 생활 */}
           <div className="space-y-3">
             <div className="flex justify-end h-5">
-              {lifestyle !== null && <span className="text-[#22c55e] text-xl leading-none">✓</span>}
             </div>
             <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
               <p className="text-sm font-bold text-ink leading-relaxed">
@@ -749,7 +732,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           <div className="space-y-3 pt-2">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
-              {freeQuestion.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
             </div>
             <div className="relative">
               <textarea value={freeQuestion}
@@ -765,11 +747,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       )}
 
       {/* ── today-fortune / realestate-saju 궁금한 점 섹션 ── */}
-      {(productSlug === "today-fortune" || productSlug === "realestate-saju") && (
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between">
-            <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
-            {freeQuestion.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
           </div>
           <div className="relative">
             <textarea value={freeQuestion}
@@ -784,11 +761,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       )}
 
       {/* ── worry-saju 고민 섹션 ── */}
-      {productSlug === "worry-saju" && (
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between">
-            <Label className="text-base font-bold text-ink">궁금한 점</Label>
-            {concernText.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
           </div>
           <div className="relative">
             <textarea
@@ -807,7 +779,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일</Label>
-          {guestEmail.trim() && <span className="text-[#22c55e] text-lg leading-none">✓</span>}
         </div>
         <input
           id="guestEmail" type="email" value={guestEmail}
