@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { siteConfig, businessInfo } from "@/config/site";
 import { isSupabaseConfigured } from "@/lib/env";
 import { getCurrentUser } from "@/lib/auth";
+import MetaPixel from "@/components/MetaPixel";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning>
+        <MetaPixel pixelId="2209519539888659" />
         <SiteHeader isLoggedIn={isLoggedIn} />
         <main className="min-h-[calc(100vh-7rem)]">{children}</main>
         <SiteFooter />
