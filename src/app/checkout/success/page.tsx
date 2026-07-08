@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { PurchasePixel } from "@/components/checkout/PurchasePixel";
 
 export default async function CheckoutSuccessPage({
   searchParams,
@@ -46,6 +47,7 @@ export default async function CheckoutSuccessPage({
         #progress-fill { transition: width 1s linear; animation: barPulse 2s ease-in-out infinite; }
       `}</style>
 
+      <PurchasePixel amount={Number(amount)} />
       <div className="container py-16 max-w-sm text-center" id="loading-view">
 
         {/* 메인 메시지 */}
@@ -85,8 +87,6 @@ export default async function CheckoutSuccessPage({
         dangerouslySetInnerHTML={{
           __html: `
 (function() {
-  if (window.fbq) { window.fbq('track', 'Purchase', { value: ${amount}, currency: 'KRW' }); }
-
   var pct = 2;
   var seconds = 90;
   var done = false;
