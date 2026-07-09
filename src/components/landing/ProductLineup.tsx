@@ -150,6 +150,7 @@ const thumbMap: Record<string, React.ReactNode> = {
   "worry-saju":    <img src="/images/worry-saju.png" alt="무엇이든 물어보세요" className="w-full h-full object-cover" />,
   "realestate-saju": <img src="/images/realestate-saju.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />,
   "romance-saju":    <img src="/images/romance-saju.png" alt="이성이 많을 인생인가?" className="w-full h-full object-cover" />,
+  "job-saju":        <img src="/images/job-saju.png" alt="나는 어떤 직무가 맞을까?" className="w-full h-full object-cover" />,
 };
 
 /* ─────────────────────────────────────────────────────

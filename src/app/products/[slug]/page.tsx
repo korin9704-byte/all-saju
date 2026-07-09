@@ -14,6 +14,7 @@ import {
   loveSajuReviews,
   realEstateReviews,
   romanceSajuReviews,
+  jobSajuReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
 
@@ -27,6 +28,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "love-saju":       loveSajuReviews,
   "realestate-saju": realEstateReviews,
   "romance-saju":    romanceSajuReviews,
+  "job-saju":        jobSajuReviews,
 };
 
 export default async function ProductDetailPage({
@@ -112,6 +114,9 @@ export default async function ProductDetailPage({
     "romance-saju": [
       <>타고난 이성 매력이 어느 정도인지, 이성 인연이 많은 인생인지 적은 인생인지, 연애 운이 활발해지는 시기는 언제인지 — 내 사주로 풀어드려요. 이성한테 자꾸 끌리는 이유, 좋아하는 사람이 생겼을 때 어떻게 해야 할지, 왜 같은 패턴의 연애가 반복되는지까지 사주 근거를 바탕으로 솔직하게 알려드릴게요. 지금 짝사랑 중이거나 연애 운이 궁금하다면 궁금한 점도 자유롭게 적어주세요.</>,
     ],
+    "job-saju": [
+      <>내 사주에 맞는 직무가 따로 있어요. 어떤 환경에서 일해야 능력이 빛나는지, 리더형인지 전문가형인지, 혼자 집중하는 게 맞는지 팀으로 움직이는 게 맞는지 — 타고난 기질과 강점을 사주로 풀어드려요. 지금 하는 일이 맞는 방향인지, 이직이나 직무 전환 시기는 언제인지, 어떤 분야에서 성과가 나는지까지 사주 데이터 근거와 함께 솔직하게 알려드릴게요. 궁금한 점이 있다면 자유롭게 적어주세요.</>,
+    ],
   };
 
   return (
@@ -174,6 +179,15 @@ export default async function ProductDetailPage({
         <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
           <div className="w-full aspect-[962/663] overflow-hidden">
             <img src="/images/romance-saju.png" alt="이성이 많을 인생인가?" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
+      {/* 상품 소개 — job-saju */}
+      {product.slug === "job-saju" && (
+        <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
+          <div className="w-full aspect-[962/663] overflow-hidden">
+            <img src="/images/job-saju.png" alt="나는 어떤 직무가 맞을까?" className="w-full h-full object-cover" />
           </div>
         </div>
       )}

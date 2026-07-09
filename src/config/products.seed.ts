@@ -62,4 +62,12 @@ export const productsSeed: ProductSeed[] = [
     display_order: 60,
     is_active: true,
   },
+  {
+    slug: "job-saju",
+    name: "나는 어떤 직무가 맞을까?",
+    description: "내 적성은 어디에 있을까?",
+    price: 3900,
+    display_order: 70,
+    is_active: true,
+  },
 ];

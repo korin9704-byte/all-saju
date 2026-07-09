@@ -4,7 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
 import { computeMyeongsik, type Myeongsik } from "@/lib/saju/manseryeok";
 import { sendResultEmail } from "@/lib/email";
-import { buildSajuPrompt, buildWorryPrompt, buildTodayFortunePrompt, buildDaewunPrompt, buildLoveSajuPrompt, buildRealEstateSajuPrompt, buildRomanceSajuPrompt } from "@/lib/saju/prompt";
+import { buildSajuPrompt, buildWorryPrompt, buildTodayFortunePrompt, buildDaewunPrompt, buildLoveSajuPrompt, buildRealEstateSajuPrompt, buildRomanceSajuPrompt, buildJobSajuPrompt } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
   isSajuApiConfigured,
@@ -176,6 +176,9 @@ export async function POST(request: NextRequest) {
       llm = await generateInterpretation({ system, user });
     } else if (product.slug === "romance-saju") {
       const { system, user } = buildRomanceSajuPrompt(promptInput);
+      llm = await generateInterpretation({ system, user });
+    } else if (product.slug === "job-saju") {
+      const { system, user } = buildJobSajuPrompt(promptInput);
       llm = await generateInterpretation({ system, user });
     } else if (product.slug === "love-saju") {
       // 상대방 사주 파싱 및 명식 계산
