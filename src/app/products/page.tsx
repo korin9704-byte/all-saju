@@ -101,6 +101,7 @@ const thumbMap: Record<string, React.ReactNode> = {
   "realestate-saju": <img src="/images/realestate-saju.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />,
   "romance-saju":    <img src="/images/romance-saju.png" alt="이성이 많을 인생인가?" className="w-full h-full object-cover" />,
   "job-saju":        <img src="/images/job-saju.png" alt="나는 어떤 직무가 맞을까?" className="w-full h-full object-cover" />,
+  "business-saju":   <img src="/images/business-saju.png" alt="나는 사업해도 되는 사주일까?" className="w-full h-full object-cover" />,
 };
 
 /* ── 상품 페이지 ── */

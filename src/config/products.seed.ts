@@ -70,4 +70,12 @@ export const productsSeed: ProductSeed[] = [
     display_order: 70,
     is_active: true,
   },
+  {
+    slug: "business-saju",
+    name: "나는 사업해도 되는 사주일까?",
+    description: "사장 팔자인지 확인해보세요",
+    price: 3900,
+    display_order: 80,
+    is_active: true,
+  },
 ];

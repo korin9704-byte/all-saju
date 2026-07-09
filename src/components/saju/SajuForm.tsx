@@ -761,8 +761,8 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         </>
       )}
 
-      {/* ── today-fortune / realestate-saju / romance-saju / job-saju 궁금한 점 섹션 ── */}
-      {(productSlug === "today-fortune" || productSlug === "realestate-saju" || productSlug === "romance-saju" || productSlug === "job-saju") && (
+      {/* ── today-fortune / realestate-saju / romance-saju / job-saju / business-saju 궁금한 점 섹션 ── */}
+      {(productSlug === "today-fortune" || productSlug === "realestate-saju" || productSlug === "romance-saju" || productSlug === "job-saju" || productSlug === "business-saju") && (
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
