@@ -54,4 +54,12 @@ export const productsSeed: ProductSeed[] = [
     display_order: 50,
     is_active: true,
   },
+  {
+    slug: "romance-saju",
+    name: "이성이 많을 인생인가?",
+    description: "내 매력은 어느 정도일까?",
+    price: 3900,
+    display_order: 60,
+    is_active: true,
+  },
 ];
