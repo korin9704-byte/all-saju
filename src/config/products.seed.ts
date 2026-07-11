@@ -52,7 +52,7 @@ export const productsSeed: ProductSeed[] = [
     description: "부동산 운명 미리 보기",
     price: 3900,
     display_order: 50,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "romance-saju",
@@ -60,7 +60,7 @@ export const productsSeed: ProductSeed[] = [
     description: "내 매력은 어느 정도일까?",
     price: 3900,
     display_order: 60,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "job-saju",
@@ -68,7 +68,7 @@ export const productsSeed: ProductSeed[] = [
     description: "내 적성은 어디에 있을까?",
     price: 3900,
     display_order: 70,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "business-saju",
@@ -76,6 +76,6 @@ export const productsSeed: ProductSeed[] = [
     description: "사장 팔자인지 확인해보세요",
     price: 3900,
     display_order: 80,
-    is_active: true,
+    is_active: false,
   },
 ];
