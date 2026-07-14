@@ -14,22 +14,22 @@ const JIJI_HANJA: Record<string, string> = {
    木=green  火=red/pink  土=amber  金=gray  水=navy
 ──────────────────────────────────────────────────────── */
 const CG_BG: Record<string, string> = {
-  갑: "#16A34A", 을: "#22C55E",   // 木
-  병: "#EF4444", 정: "#EC4899",   // 火
-  무: "#D97706", 기: "#CA8A04",   // 土
-  경: "#9CA3AF", 신: "#6B7280",   // 金
-  임: "#1E40AF", 계: "#1D4ED8",   // 水
+  갑: "#A5D6B8", 을: "#BCE0C8",   // 木
+  병: "#F5B0AB", 정: "#F8B4CC",   // 火
+  무: "#F2C894", 기: "#EDD6A0",   // 土
+  경: "#D3D8DE", 신: "#C1C8D0",   // 金
+  임: "#A8BEE8", 계: "#B6C9EE",   // 水
 };
 
 const JJ_BG: Record<string, string> = {
-  인: "#16A34A", 묘: "#22C55E",                           // 木
-  사: "#EF4444", 오: "#EF4444",                           // 火
-  축: "#D97706", 진: "#D97706", 미: "#CA8A04", 술: "#CA8A04", // 土
-  신: "#6B7280", 유: "#9CA3AF",                           // 金
-  자: "#1E40AF", 해: "#1D4ED8",                           // 水
+  인: "#A5D6B8", 묘: "#BCE0C8",                           // 木
+  사: "#F5B0AB", 오: "#F5B0AB",                           // 火
+  축: "#F2C894", 진: "#F2C894", 미: "#EDD6A0", 술: "#EDD6A0", // 土
+  신: "#C1C8D0", 유: "#D3D8DE",                           // 金
+  자: "#A8BEE8", 해: "#B6C9EE",                           // 水
 };
 
-const DEFAULT_BG = "#d1d5db";
+const DEFAULT_BG = "#E5E7EB";
 
 export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
   const pillars = [
@@ -56,11 +56,11 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
           return (
             <div key={`gan-${label}`} className="py-5 text-center border-t border-white/10"
               style={{ background: bg }}>
-              <span className="text-4xl font-bold text-white leading-none">
+              <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (CHEONGAN_HANJA[data.cheongan] ?? data.cheongan) : "—"}
               </span>
               {data && (
-                <span className="block text-[11px] mt-1.5 text-white/60 tracking-wider">
+                <span className="block text-[11px] mt-1.5 text-[#3D3A34]/55 tracking-wider">
                   {data.cheongan}
                 </span>
               )}
@@ -74,11 +74,11 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
           return (
             <div key={`ji-${label}`} className="py-5 text-center border-t border-white/10"
               style={{ background: bg }}>
-              <span className="text-4xl font-bold text-white leading-none">
+              <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (JIJI_HANJA[data.jiji] ?? data.jiji) : "—"}
               </span>
               {data && (
-                <span className="block text-[11px] mt-1.5 text-white/60 tracking-wider">
+                <span className="block text-[11px] mt-1.5 text-[#3D3A34]/55 tracking-wider">
                   {data.jiji}
                 </span>
               )}
