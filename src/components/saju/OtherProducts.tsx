@@ -27,7 +27,11 @@ export async function OtherProducts({ currentSlug }: { currentSlug?: string | nu
 
   return (
     <section className="mt-12">
-      <hr className="border-hairline" />
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#e0d6cc]" />
+        <span className="text-base tracking-widest select-none">🐾 ✦ 🐾</span>
+        <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#e0d6cc]" />
+      </div>
       <p className="mt-10 mb-6 text-center text-xl font-bold text-ink">
         냥이가 답을 찾아드릴게요!
       </p>
