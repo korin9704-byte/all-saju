@@ -35,7 +35,7 @@ export async function OtherProducts({ currentSlug }: { currentSlug?: string | nu
       <p className="mt-10 mb-6 text-center text-xl font-bold text-ink">
         냥이가 답을 찾아드릴게요!
       </p>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 px-4">
         {others.map((p) => (
           <Link
             key={p.slug}
