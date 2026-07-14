@@ -6,6 +6,7 @@ import { AccordionBody } from "@/components/saju/AccordionBody";
 import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
+import { OtherProducts } from "@/components/saju/OtherProducts";
 import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
@@ -127,6 +128,8 @@ export default async function ResultPage({
           <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
         </article>
 
+        <OtherProducts currentSlug={product?.slug} />
+
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
         </footer>
@@ -210,6 +213,8 @@ export default async function ResultPage({
             <DaewunResultBody markdown={result.interpretation_md} />
           </article>
         </div>
+
+        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -391,6 +396,8 @@ export default async function ResultPage({
           />
         </article>
 
+        <OtherProducts currentSlug={product?.slug} />
+
         <footer className="mt-10 pb-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
         </footer>
@@ -443,6 +450,8 @@ export default async function ResultPage({
       <article className="rounded-b-2xl overflow-hidden">
         <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
       </article>
+
+      <OtherProducts currentSlug={product?.slug} />
 
       <footer className="mt-10 text-center">
         <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
