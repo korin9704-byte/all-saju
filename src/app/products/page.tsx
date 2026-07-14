@@ -127,7 +127,7 @@ export default async function ProductsPage() {
       <header className="mb-10">
         <p className="text-xs font-mono text-mute mb-2">PRODUCTS</p>
         <h1 className="text-3xl font-semibold tracking-tight">상품</h1>
-        <p className="mt-2 text-sm text-body">냥이가 답을 찾아드릴게요.</p>
+        <p className="mt-2 text-sm text-body">냥이가 답을 찾아드릴게요</p>
       </header>
 
       {!products || products.length === 0 ? (
