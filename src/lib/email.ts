@@ -31,20 +31,20 @@ export async function sendResultEmail({
     <tr><td align="center">
       <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
         <tr><td style="background:#111111;padding:32px 40px;text-align:center;">
-          <span style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">냥점🐱</span>
+          <span style="color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.5px;">냥점🐱</span>
         </td></tr>
         <tr><td style="padding:40px 40px 24px;">
-          <h1 style="margin:0 0 24px;font-size:20px;font-weight:700;color:#111;line-height:1.6;">
+          <h1 style="margin:0 0 24px;font-size:22px;font-weight:700;color:#111;line-height:1.6;">
             ${greeting}<br>
             <span style="color:#764ae6;">'${productName}'</span><br>
             결과가 도착했어요.
           </h1>
-          <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
+          <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:17px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
             지금 보러가기🐈
           </a>
         </td></tr>
         <tr><td style="padding:24px 40px 40px;border-top:1px solid #f0f0f0;">
-          <p style="margin:0;font-size:12px;color:#aaa;line-height:1.6;">
+          <p style="margin:0;font-size:13px;color:#aaa;line-height:1.6;">
             이 메일은 냥점(nyangjeom.com) 결제 완료 후 자동 발송됩니다.<br>
             문의: <a href="mailto:hspjcho9@naver.com" style="color:#6366f1;">hspjcho9@naver.com</a>
           </p>
