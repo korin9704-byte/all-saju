@@ -12,7 +12,7 @@ type Props = {
   isLoggedIn: boolean;
 };
 
-const DAEWUN_TILE_COLORS = ["#5C9EE8","#62B87A","#8BC34A","#FF8A65","#F06292","#BA68C8","#FFB74D","#90A4AE","#4DB6AC","#7986CB"];
+const DAEWUN_TILE_COLORS = ["#A8C8F0","#A5D6B8","#C5DE9E","#FFC4AE","#F8B4CC","#D9B8E8","#FFD9A8","#C1CDD6","#A8DBD4","#B9C2E8"];
 
 const EXAMPLE_SAJU_QUESTIONS = [
   "올해 직장운과 재물운이 어떤지 궁금해요.",
@@ -649,7 +649,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
                   style={daewunStartAge === startAge ? { backgroundColor: "#000000" } : undefined}
                 >
                   <div
-                    className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center text-white text-sm font-bold"
+                    className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center text-white/90 text-sm font-bold"
                     style={{ backgroundColor: DAEWUN_TILE_COLORS[index % DAEWUN_TILE_COLORS.length] }}
                   >
                     {index + 1}
