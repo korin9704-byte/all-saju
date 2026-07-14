@@ -119,11 +119,11 @@ export default async function ResultPage({
           )}
         </header>
 
-        <section className="border-x border-border">
+        <section>
           <MyeongsikTable myeongsik={myeongsik} />
         </section>
 
-        <article className="rounded-b-2xl overflow-hidden border-x border-b border-border">
+        <article className="rounded-b-2xl overflow-hidden">
           <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
         </article>
 
@@ -166,7 +166,7 @@ export default async function ResultPage({
 
     return (
       <div className="max-w-2xl mx-auto py-12">
-        <div className="rounded-2xl overflow-hidden border border-border">
+        <div className="rounded-2xl overflow-hidden">
           <header className="mb-0" style={{ background: "#000000" }}>
             <div className="px-6 pt-6 pb-3 text-center">
               {periodLabel && (
@@ -383,7 +383,7 @@ export default async function ResultPage({
         </div>
 
         {/* ── 아코디언 본문 ── */}
-        <article className="border-x border-b border-border rounded-b-2xl overflow-hidden">
+        <article className="rounded-b-2xl overflow-hidden">
           <AccordionBody
             markdown={bodyMd || result.interpretation_md}
             headerTitle="궁합 해설"
@@ -436,11 +436,11 @@ export default async function ResultPage({
         )}
       </header>
 
-      <section className="border-x border-border">
+      <section>
         <MyeongsikTable myeongsik={myeongsik} />
       </section>
 
-      <article className="rounded-b-2xl overflow-hidden border-x border-b border-border">
+      <article className="rounded-b-2xl overflow-hidden">
         <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
       </article>
 
