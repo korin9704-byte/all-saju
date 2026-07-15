@@ -688,7 +688,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
             <p className="text-xl font-bold text-ink leading-snug">
               {name.trim() ? `${name.trim()}님의` : ""} 다가올 10년,<br />
               더 정확한 풀이를 위해<br />
-              몇 가지 여쭤볼게요.
+              몇 가지 여쭤볼게요
             </p>
           </div>
 
@@ -697,7 +697,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
             <div>
               <p className="text-base font-bold text-ink leading-relaxed">
                 애정운 분석을 위해,<br />
-                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려주세요. <span className="text-sm font-normal text-body">(선택)</span>
+                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려주세요 <span className="text-sm font-normal text-body">(선택)</span>
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
