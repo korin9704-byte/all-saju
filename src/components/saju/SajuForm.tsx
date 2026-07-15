@@ -225,7 +225,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
       {/* love-saju: 섹션 1 헤더 */}
       {productSlug === "love-saju" && (
-        <p className="text-base font-bold text-ink">1. 첫 번째 사람</p>
+        <p className="text-base font-bold text-ink">첫 번째 사람</p>
       )}
 
       {/* 이름 */}
@@ -377,7 +377,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         <>
           {/* 섹션 2 헤더 */}
           <div className="flex items-center justify-between pt-2">
-            <p className="text-base font-bold text-ink">2. 두 번째 사람</p>
+            <p className="text-base font-bold text-ink">두 번째 사람</p>
           </div>
 
           {/* 상대방 이름 */}
@@ -526,7 +526,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
           {/* 섹션 3 헤더 */}
           <div className="flex items-center justify-between pt-2">
-            <p className="text-base font-bold text-ink">3. 두 사람은 어떤 관계인가요?</p>
+            <p className="text-base font-bold text-ink">두 사람은 어떤 관계인가요?</p>
           </div>
 
           {/* 관계 선택 그리드 */}
@@ -571,7 +571,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
           {/* 섹션 4 헤더 */}
           <div className="pt-2">
-            <p className="text-base font-bold text-ink">4. 각자의 역할을 입력해주세요 <span className="text-sm font-normal text-body">(선택)</span></p>
+            <p className="text-base font-bold text-ink">각자의 역할을 입력해주세요 <span className="text-sm font-normal text-body">(선택)</span></p>
           </div>
 
           {/* 내 역할 */}
