@@ -685,7 +685,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
 
           {/* 추가 정보 인트로 */}
           <div className="pt-2 pb-1">
-            <p className="text-xl font-bold text-ink leading-snug">
+            <p className="text-base font-bold text-ink leading-snug">
               {name.trim() ? `${name.trim()}님의` : ""} 다가올 10년,<br />
               더 정확한 풀이를 위해<br />
               몇 가지 여쭤볼게요
