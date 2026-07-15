@@ -693,14 +693,11 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           </div>
 
           {/* 애정 상황 */}
-          <div className="space-y-3">
-            <div className="flex justify-end h-5">
-
-            </div>
-            <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
-              <p className="text-sm font-bold text-ink leading-relaxed">
+          <div className="space-y-3 pt-2">
+            <div>
+              <p className="text-base font-bold text-ink leading-relaxed">
                 애정운 분석을 위해,<br />
-                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려주세요. <span className="text-xs font-normal text-body">(선택)</span>
+                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려주세요. <span className="text-sm font-normal text-body">(선택)</span>
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -718,14 +715,11 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
           </div>
 
           {/* 현재 생활 */}
-          <div className="space-y-3">
-            <div className="flex justify-end h-5">
-
-            </div>
-            <div className="bg-[#f5f5f5] rounded-2xl px-4 py-3">
-              <p className="text-sm font-bold text-ink leading-relaxed">
+          <div className="space-y-3 pt-2">
+            <div>
+              <p className="text-base font-bold text-ink leading-relaxed">
                 성공운과 재물운을 짚어보기 위해,<br />
-                주로 어떤 일상을 보내고 계신가요? <span className="text-xs font-normal text-body">(선택)</span>
+                주로 어떤 일상을 보내고 계신가요? <span className="text-sm font-normal text-body">(선택)</span>
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
