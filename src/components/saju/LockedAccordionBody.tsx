@@ -155,9 +155,9 @@ export function LockedAccordionBody({
     {/* 언락 카드 — 공유 카드와 동일한 스타일, 주제 목록 아래 배치 */}
     <section className="mt-8 rounded-2xl border-2 border-ink overflow-hidden">
       <div className="px-6 py-5" style={{ background: "#000" }}>
-        <p className="text-base font-bold text-white">아직 {locked.length}개 주제가 잠겨 있어요 🔒</p>
+        <p className="text-base font-bold text-white">아직 {locked.length}개 주제가 잠겨 있어요🔒</p>
         <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
-          재물운·연애운·건강운까지, <b className="text-white">나머지 해설 전부</b>를 확인해 보세요
+          나머지 해설 전부를 확인해 보세요
         </p>
       </div>
       <div className="px-6 py-5 bg-canvas">
@@ -165,10 +165,9 @@ export function LockedAccordionBody({
           type="button"
           onClick={startUnlock}
           disabled={unlocking}
-          className="w-full rounded-xl py-3 text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-60"
-          style={{ background: "#FEE500", color: "#191919" }}
+          className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none"
         >
-          {unlocking ? "결제 페이지로 이동 중..." : `${formatKRW(unlockPrice)}으로 전체 해설 열기`}
+          {unlocking ? "결제 페이지로 이동 중..." : `${formatKRW(unlockPrice)}으로 잠금 해제`}
         </button>
       </div>
     </section>
