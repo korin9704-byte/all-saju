@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { ShareRewardCard } from "@/components/saju/ShareRewardCard";
 
 export const metadata = { title: "마이페이지" };
 
@@ -29,6 +30,10 @@ export default async function MyPage() {
         </h1>
         <p className="text-sm text-body mt-1">{profile?.email ?? user.email}</p>
       </header>
+
+      <div className="mb-10">
+        <ShareRewardCard />
+      </div>
 
       <ul className="divide-y divide-hairline border-y border-hairline">
         {items.map((item) => (

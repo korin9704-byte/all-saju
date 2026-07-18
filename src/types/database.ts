@@ -19,6 +19,7 @@ type ProfileRow = {
   display_name: string | null;
   phone: string | null;
   is_admin: boolean;
+  referral_code: string | null;
   created_at: string;
 };
 
@@ -80,6 +81,16 @@ type ReviewRow = {
   created_at: string;
 };
 
+type ReferralRewardRow = {
+  id: string;
+  referrer_id: string;
+  referred_user_id: string;
+  mini_order_id: string | null;
+  used_order_id: string | null;
+  used_at: string | null;
+  created_at: string;
+};
+
 type SajuApiCallRow = {
   id: string;
   called_at: string;
@@ -98,6 +109,7 @@ export type Database = {
           display_name?: string | null;
           phone?: string | null;
           is_admin?: boolean;
+          referral_code?: string | null;
           created_at?: string;
         };
         Update: Partial<ProfileRow>;
@@ -179,6 +191,20 @@ export type Database = {
           created_at?: string;
         };
         Update: Partial<ReviewRow>;
+        Relationships: [];
+      };
+      referral_rewards: {
+        Row: ReferralRewardRow;
+        Insert: {
+          id?: string;
+          referrer_id: string;
+          referred_user_id: string;
+          mini_order_id?: string | null;
+          used_order_id?: string | null;
+          used_at?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<ReferralRewardRow>;
         Relationships: [];
       };
       saju_api_calls: {

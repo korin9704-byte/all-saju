@@ -22,14 +22,15 @@ export async function POST(request: NextRequest) {
   }
   const body = parsed.data;
 
-  // 로그인 여부 확인 (비회원도 허용)
+  // 결제는 카카오 1초 로그인 필수
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
-  // 이메일 필수
-  if (!body.guestEmail) {
-    return NextResponse.json({ error: "결과지를 받을 이메일을 입력해 주세요" }, { status: 400 });
+  if (!user) {
+    return NextResponse.json({ error: "로그인이 필요해요" }, { status: 401 });
   }
+
+  // 결과지 수신 이메일: 입력값 우선, 없으면 계정 이메일
+  const email = body.guestEmail?.trim() || user.email || null;
 
   const service = createServiceClient();
   const { data: product, error: productErr } = await service
@@ -48,8 +49,8 @@ export async function POST(request: NextRequest) {
     .from("orders")
     .insert({
       order_id: orderId,
-      user_id: user?.id ?? null,
-      guest_email: body.guestEmail ?? null,
+      user_id: user.id,
+      guest_email: email,
       product_id: product.id,
       amount: product.price,
       status: "pending",

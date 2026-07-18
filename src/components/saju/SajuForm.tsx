@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { createClient } from "@/lib/supabase/client";
 
 type Props = {
   productId: string;
@@ -78,8 +79,29 @@ function ChipBtn({
   );
 }
 
-export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
+export function SajuForm(props: Props) {
+  return (
+    <Suspense>
+      <SajuFormInner {...props} />
+    </Suspense>
+  );
+}
+
+/** 결제 페이로드 (orders/create · orders/redeem 공용) */
+type OrderPayload = {
+  productId: string;
+  name: string;
+  birthDate: string;
+  birthTime: string | null;
+  timeUnknown: boolean;
+  gender: "male" | "female";
+  calendar: "solar" | "lunar";
+  concerns: string[];
+};
+
+function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [name, setName]               = useState("");
   const [birthYear, setBirthYear]     = useState("");
   const [birthMonth, setBirthMonth]   = useState("");
@@ -118,8 +140,19 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
   const [lifestyleCustom, setLifestyleCustom]     = useState("");
   const [freeQuestion, setFreeQuestion]           = useState("");
 
-  const [guestEmail, setGuestEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // 무료권 (리퍼럴 보상)
+  const [credit, setCredit] = useState<{ available: number; earned: number; cap: number } | null>(null);
+  const [useFreeCredit, setUseFreeCredit] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    fetch("/api/referral/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => { if (json?.code) setCredit(json); })
+      .catch(() => { /* 무료권 조회 실패는 무시 */ });
+  }, [isLoggedIn]);
 
   // 생년월일 자동 포커스 이동
   const birthMonthRef    = useRef<HTMLInputElement>(null);
@@ -144,6 +177,51 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     return { startAge, endAge, startYear, endYear, isCurrent };
   });
 
+  // 주문 생성 → 결제(또는 무료권이면 바로 결과)
+  const submitOrder = useCallback(async (payload: OrderPayload, redeem: boolean) => {
+    setSubmitting(true);
+    try {
+      if (redeem) {
+        const res = await fetch("/api/orders/redeem", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "무료권 사용 실패");
+        router.push(`/results/${json.resultId}`);
+      } else {
+        const res = await fetch("/api/orders/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "주문 생성 실패");
+        router.push(`/checkout/${json.orderId}`);
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
+      setSubmitting(false);
+    }
+  }, [router]);
+
+  // 카카오 로그인에서 돌아온 경우: 저장해둔 입력으로 자동 이어서 진행
+  const resumedRef = useRef(false);
+  useEffect(() => {
+    if (searchParams.get("resume") !== "1" || !isLoggedIn || resumedRef.current) return;
+    resumedRef.current = true;
+    try {
+      const key = `saju_pending_${productSlug}`;
+      const raw = sessionStorage.getItem(key);
+      if (!raw) return;
+      sessionStorage.removeItem(key);
+      const payload = JSON.parse(raw) as OrderPayload;
+      toast.info("로그인 완료! 이어서 진행할게요");
+      void submitOrder(payload, false);
+    } catch { /* ignore */ }
+  }, [searchParams, isLoggedIn, productSlug, submitOrder]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!birthDate) { toast.error("생년월일을 입력해 주세요"); return; }
@@ -151,7 +229,6 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     if (!gender) { toast.error("성별을 선택해 주세요"); return; }
     if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
     if (productSlug === "worry-saju" && !concernText.trim()) { toast.error("궁금한 점을 입력해 주세요"); return; }
-    if (!guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요"); return; }
     if (productSlug === "premium-saju" && !daewunStartAge) {
       toast.error("분석할 대운 시기를 선택해 주세요"); return;
     }
@@ -164,8 +241,7 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
     if (productSlug === "love-saju" && !relationship2) {
       toast.error("두 사람의 관계를 선택해 주세요"); return;
     }
-    setSubmitting(true);
-    try {
+    {
       const concerns: string[] = [];
 
       // worry-saju 고민
@@ -199,24 +275,35 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         if (roleB.trim()) concerns.push(`[역할B] ${roleB.trim()}`);
       }
 
-      const res = await fetch("/api/orders/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          productId, name, birthDate,
-          birthTime: timeUnknown ? null : birthTime
-            ? birthTime.split(":").map((v) => v.padStart(2, "0")).join(":")
-            : null,
-          timeUnknown, gender, calendar, concerns,
-          guestEmail: guestEmail.trim(),
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "주문 생성 실패");
-      router.push(`/checkout/${json.orderId}`);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
-      setSubmitting(false);
+      const payload: OrderPayload = {
+        productId, name, birthDate,
+        birthTime: timeUnknown ? null : birthTime
+          ? birthTime.split(":").map((v) => v.padStart(2, "0")).join(":")
+          : null,
+        timeUnknown, gender, calendar, concerns,
+      };
+
+      // 미로그인 → 입력 저장 후 카카오 1초 로그인, 돌아와서 자동 이어서 진행
+      if (!isLoggedIn) {
+        try { sessionStorage.setItem(`saju_pending_${productSlug}`, JSON.stringify(payload)); } catch { /* ignore */ }
+        setSubmitting(true);
+        const supabase = createClient();
+        const next = `/products/${productSlug}?resume=1`;
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "kakao",
+          options: {
+            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+            scopes: "account_email profile_nickname",
+          },
+        });
+        if (error) {
+          setSubmitting(false);
+          toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해 주세요");
+        }
+        return;
+      }
+
+      await submitOrder(payload, useFreeCredit && (credit?.available ?? 0) > 0);
     }
   }
 
@@ -792,25 +879,43 @@ export function SajuForm({ productId, productSlug, isLoggedIn }: Props) {
         </div>
       )}
 
-      {/* 이메일 입력 (결과지 수령) */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일</Label>
-        </div>
-        <input
-          id="guestEmail" type="email" value={guestEmail}
-          onChange={(e) => setGuestEmail(e.target.value)}
-          placeholder="결과지를 받을 이메일을 입력해 주세요"
-          className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
-          style={{ backgroundColor: guestEmail.trim() ? "#ebebeb" : "#f5f5f5" }}
-        />
-      </div>
+      {/* 무료권 사용 (리퍼럴 보상 보유 시) */}
+      {(credit?.available ?? 0) > 0 && (
+        <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer">
+          <div>
+            <p className="text-sm font-bold text-ink">무료권 사용하기</p>
+            <p className="mt-0.5 text-xs text-mute">
+              보유 무료권 {credit!.available}개 — 결제 없이 바로 결과를 볼 수 있어요
+            </p>
+          </div>
+          <input
+            type="checkbox"
+            checked={useFreeCredit}
+            onChange={(e) => setUseFreeCredit(e.target.checked)}
+            className="w-5 h-5 accent-black"
+          />
+        </label>
+      )}
 
       {/* 제출 버튼 */}
       <button type="submit" disabled={submitting}
         className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
-        {submitting ? "주문 생성 중..." : "결제하러 가기"}
+        {submitting
+          ? (useFreeCredit ? "결과를 만들고 있어요..." : "주문 생성 중...")
+          : useFreeCredit && (credit?.available ?? 0) > 0
+            ? "무료권으로 결과보기"
+            : isLoggedIn
+              ? "결제하러 가기"
+              : "카카오 1초 로그인하고 결제하기"}
       </button>
+      {!isLoggedIn && (
+        <p className="text-xs text-center text-mute">
+          결과 저장을 위해 카카오 로그인이 필요해요 · 입력한 내용은 그대로 유지돼요
+          <br />
+          로그인 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
+          <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다
+        </p>
+      )}
 
 
     </form>
