@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 import { MyeongsikTable } from "@/components/saju/MyeongsikTable";
 import { ResultBody } from "@/components/saju/ResultBody";
 import { AccordionBody } from "@/components/saju/AccordionBody";
@@ -14,43 +14,7 @@ import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInf
 import type { Myeongsik } from "@/lib/saju/manseryeok";
 import { formatDate } from "@/lib/utils";
 
-// 카톡 미리보기용 동적 메타 (제목·설명 + opengraph-image 파일 컨벤션으로 OG 카드 자동 연결)
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ resultId: string }>;
-}) {
-  const { resultId } = await params;
-  const service = createServiceClient();
-  const { data: result } = await service
-    .from("saju_results")
-    .select("interpretation_md, order_id")
-    .eq("id", resultId)
-    .maybeSingle();
-  if (!result) return { title: "결과지" };
-
-  const { data: order } = await service
-    .from("orders")
-    .select("product_id")
-    .eq("id", result.order_id)
-    .maybeSingle();
-  const { data: product } = order
-    ? await service.from("products").select("name").eq("id", order.product_id).maybeSingle()
-    : { data: null };
-  const { data: input } = await service
-    .from("saju_inputs")
-    .select("name")
-    .eq("order_id", result.order_id)
-    .maybeSingle();
-
-  const firstTitle = result.interpretation_md.match(/^## (.+)$/m)?.[1]?.trim();
-  const who = input?.name ? `${input.name}님의` : "나의";
-  const title = `${who} ${product?.name ?? "사주 결과지"}`;
-  const description = firstTitle
-    ? `“${firstTitle}” — 3분 만에 보는 내 사주, 지금 무료로 확인해 보세요`
-    : "3분 만에 보는 내 사주, 지금 무료로 확인해 보세요";
-  return { title, description, openGraph: { title, description } };
-}
+export const metadata = { title: "결과지" };
 
 function formatBirthDate(dateStr: string) {
   const [y, m, d] = dateStr.split("-");
@@ -88,13 +52,10 @@ function parseLoveResult(md: string): {
 
 export default async function ResultPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ resultId: string }>;
-  searchParams: Promise<{ ref?: string }>;
 }) {
   const { resultId } = await params;
-  const { ref: refParam } = await searchParams;
   const service = createServiceClient();
 
   const { data: result } = await service
@@ -107,7 +68,7 @@ export default async function ResultPage({
 
   const { data: order } = await service
     .from("orders")
-    .select("product_id, paid_at, user_id")
+    .select("product_id, paid_at")
     .eq("id", result.order_id)
     .single();
   const { data: product } = order
@@ -126,20 +87,6 @@ export default async function ResultPage({
   const isDaewun       = product?.slug === "premium-saju";
   const isLoveSaju     = product?.slug === "love-saju";
   const isLocked       = isMiniLayout && result.locked === true;
-
-  // 공유로 유입된 방문자(비소유자)용 CTA — ref가 있으면 미니 랜딩에 어트리뷰션 연결
-  const supabaseAuth = await createClient();
-  const { data: { user: viewer } } = await supabaseAuth.auth.getUser();
-  const isOwner = !!viewer && viewer.id === order?.user_id;
-  const visitorCta = !isOwner ? (
-    <a
-      href={refParam ? `/free?ref=${encodeURIComponent(refParam)}` : "/free"}
-      className="block mb-6 rounded-2xl px-5 py-4 text-center text-sm font-bold transition-opacity hover:opacity-90"
-      style={{ background: "#FEE500", color: "#191919" }}
-    >
-      나도 내 사주 무료로 보기 🎁 — 생년월일만 넣으면 3분이면 끝
-    </a>
-  ) : null;
 
   /* ── today-fortune 전용 레이아웃 ── */
   if (isTodayFortune) {
@@ -166,7 +113,6 @@ export default async function ResultPage({
 
     return (
       <div className="max-w-2xl mx-auto py-12">
-        {visitorCta}
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
@@ -206,7 +152,7 @@ export default async function ResultPage({
           )}
         </article>
 
-        {isOwner && !isLocked && <ShareRewardCard resultId={result.id} />}
+        {!isLocked && <ShareRewardCard />}
 
         <OtherProducts currentSlug={product?.slug} />
 
@@ -249,7 +195,6 @@ export default async function ResultPage({
 
     return (
       <div className="max-w-2xl mx-auto py-12">
-        {visitorCta}
         <div className="rounded-2xl overflow-hidden">
           <header className="mb-0" style={{ background: "#000000" }}>
             <div className="px-6 pt-6 pb-3 text-center">
@@ -295,7 +240,7 @@ export default async function ResultPage({
           </article>
         </div>
 
-        {isOwner && <ShareRewardCard resultId={result.id} />}
+        <ShareRewardCard />
 
         <OtherProducts currentSlug={product?.slug} />
 
@@ -382,7 +327,6 @@ export default async function ResultPage({
 
     return (
       <div className="max-w-2xl mx-auto">
-        {visitorCta}
         {/* ── 헤더: 제목 + 점수 (핑크→오렌지) ── */}
         <div className="px-6 pt-10 pb-8 text-center rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           {title && (
@@ -480,7 +424,7 @@ export default async function ResultPage({
           />
         </article>
 
-        {isOwner && <ShareRewardCard resultId={result.id} />}
+        <ShareRewardCard />
 
         <OtherProducts currentSlug={product?.slug} />
 
@@ -506,7 +450,6 @@ export default async function ResultPage({
 
   return (
     <div className="max-w-2xl mx-auto py-12">
-      {visitorCta}
       <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
         <div className="px-6 pt-6 pb-5 text-center">
           <h1 className="text-xl font-bold text-white tracking-tight">
@@ -538,7 +481,7 @@ export default async function ResultPage({
         <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
       </article>
 
-      {isOwner && <ShareRewardCard resultId={result.id} />}
+      <ShareRewardCard />
 
         <OtherProducts currentSlug={product?.slug} />
 

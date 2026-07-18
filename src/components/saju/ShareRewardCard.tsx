@@ -7,10 +7,9 @@ type ReferralInfo = { code: string; canShare?: boolean; earned: number; availabl
 
 /**
  * 결과 페이지·마이페이지용 공유 카드.
- * 친구가 내 링크로 무료 미니 사주를 완료하면 무료권 1개 적립 (친구당 1회, 한도 없음).
- * resultId를 넘기면 "내 결과지 공유하기" 버튼도 함께 노출된다 (공유 URL에 ref 자동 포함).
+ * 친구가 내 링크로 무료 미니 사주를 완료하면 무료권 1개 적립 (친구당 1회, 누적 상한).
  */
-export function ShareRewardCard({ resultId }: { resultId?: string } = {}) {
+export function ShareRewardCard() {
   const [info, setInfo] = useState<ReferralInfo | null>(null);
   const [hidden, setHidden] = useState(false);
 
@@ -52,30 +51,6 @@ export function ShareRewardCard({ resultId }: { resultId?: string } = {}) {
     await copyLink();
   }
 
-  // 내 결과지 공유 (ref 자동 포함 → 받은 친구가 미니를 보면 이용권 적립으로 연결)
-  async function shareResult() {
-    if (!resultId || !info) return;
-    const resultUrl = `${window.location.origin}/results/${resultId}?ref=${info.code}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "내 사주 결과지",
-          text: "내 사주 결과 봐봐 👀 소름 돋는 부분 있음",
-          url: resultUrl,
-        });
-        return;
-      } catch {
-        return;
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(resultUrl);
-      toast.success("결과지 링크가 복사됐어요. 카카오톡에 붙여넣어 보내보세요!");
-    } catch {
-      toast.error("복사에 실패했어요");
-    }
-  }
-
   return (
     <section className="mt-8 rounded-2xl border-2 border-ink overflow-hidden">
       <div className="px-6 py-5 text-center" style={{ background: "#000" }}>
@@ -109,19 +84,6 @@ export function ShareRewardCard({ resultId }: { resultId?: string } = {}) {
           카카오톡으로 보내기
         </button>
         <p className="text-xs text-center text-mute">한도 없음 · 공유할수록 무료 이용권이 쌓여요</p>
-
-        {resultId && (
-          <div className="pt-2 space-y-2">
-            <button
-              type="button"
-              onClick={shareResult}
-              className="w-full h-14 rounded-full border-2 border-ink text-sm font-semibold text-ink hover:bg-ink hover:text-white transition-colors"
-            >
-              내 결과지 공유하기
-            </button>
-            <p className="text-xs text-center text-mute">이름·생년월일이 포함된 결과지가 공유돼요</p>
-          </div>
-        )}
       </div>
     </section>
   );
