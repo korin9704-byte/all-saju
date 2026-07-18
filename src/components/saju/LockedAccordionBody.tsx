@@ -84,9 +84,7 @@ export function LockedAccordionBody({
       {/* 헤더 */}
       <div className="px-5 py-4 text-center" style={{ background: "#1a1a1a" }}>
         <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>
-        <p className="mt-1 text-xs text-white/50">
-          {visible.length}개 주제는 무료로 볼 수 있어요 · 잠긴 {locked.length}개는 결제 후 공개돼요
-        </p>
+        <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 해설이 펼쳐져요</p>
       </div>
 
       {/* 열람 가능 주제 */}
