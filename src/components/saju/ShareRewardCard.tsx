@@ -56,7 +56,7 @@ export function ShareRewardCard() {
       <div className="px-6 py-5 text-center" style={{ background: "#000" }}>
         <p className="text-base font-bold text-white">친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기🎁</p>
         <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
-          친구가 내 링크로 &lsquo;무료 사주 해설 MINI&rsquo;를 보면, 나에게 <b className="text-white">무료 이용권 1개</b>가 쌓여요
+          친구가 내 링크로 &lsquo;무료 사주 해설 MINI&rsquo;를 볼 때마다, 나에게 <b className="text-white">무료 이용권 1개</b>가 쌓여요
         </p>
       </div>
       <div className="px-6 py-5 space-y-4 bg-canvas">
@@ -83,12 +83,6 @@ export function ShareRewardCard() {
         >
           카카오톡으로 보내기
         </button>
-        <div className="flex items-center justify-between text-xs text-mute">
-          <span>지금까지 적립 {info.earned}개</span>
-          <span>
-            사용 가능 무료권 <b className="text-ink">{info.available}개</b>
-          </span>
-        </div>
         <p className="text-xs text-center text-mute">한도 없음 · 공유할수록 무료 이용권이 쌓여요</p>
       </div>
     </section>
