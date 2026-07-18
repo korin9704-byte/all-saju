@@ -57,7 +57,7 @@ export function ShareRewardCard() {
       <div className="px-6 py-5 text-center" style={{ background: "#000" }}>
         <p className="text-base font-bold text-white">친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기🎁</p>
         <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
-          친구가 내 링크로 &lsquo;사주 해설 MINI&rsquo;를 보면, 나에게 <b className="text-white">무료 이용권 1개</b>가 쌓여요
+          친구가 내 링크로 &lsquo;무료 사주 해설 MINI&rsquo;를 보면, 나에게 <b className="text-white">무료 이용권 1개</b>가 쌓여요
         </p>
       </div>
       <div className="px-6 py-5 space-y-4 bg-canvas">
