@@ -79,7 +79,7 @@ export function ShareRewardCard() {
         <button
           type="button"
           onClick={share}
-          className="w-full rounded-xl py-3 text-sm font-semibold transition-opacity hover:opacity-90"
+          className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90"
           style={{ background: "#FEE500", color: "#191919" }}
         >
           카카오톡으로 보내기
