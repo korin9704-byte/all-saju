@@ -54,10 +54,10 @@ export function ShareRewardCard() {
 
   return (
     <section className="mt-8 rounded-2xl border-2 border-ink overflow-hidden">
-      <div className="px-6 py-5" style={{ background: "#000" }}>
-        <p className="text-base font-bold text-white">친구에게 사주 해설 MINI 선물하기 🎁</p>
+      <div className="px-6 py-5 text-center" style={{ background: "#000" }}>
+        <p className="text-base font-bold text-white">친구에게 무료 사주 해설 MINI 선물하기</p>
         <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
-          친구가 내 링크로 MINI를 보면, 나에게 <b className="text-white">상품 무료권 1개</b>가 쌓여요
+          친구가 내 링크로 사주 해설 MINI를 보면, 나에게 무료 이용권 1개가 쌓여요
         </p>
       </div>
       <div className="px-6 py-5 space-y-4 bg-canvas">
