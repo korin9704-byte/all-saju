@@ -1,20 +1,29 @@
 "use client";
 
-// 사주 해설 MINI 생성 진행 화면 — 결제 플로우(/checkout/success)와 동일한 로딩 UX
+// 무료 결과 생성 진행 화면 — 결제 플로우(/checkout/success)와 동일한 로딩 UX
+// sessionStorage 의 { kind, payload } 를 읽어 MINI(free-mini) 또는 무료 이용권(redeem) 생성을 수행한다.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const PAYLOAD_KEY = "freemini_generate";
+const PAYLOAD_KEY = "saju_generate";
 
-export default function FreeMiniGeneratingPage() {
+const KINDS = {
+  mini: { endpoint: "/api/free-mini", homeHref: "/free" },
+  redeem: { endpoint: "/api/orders/redeem", homeHref: "/products" },
+} as const;
+
+type Kind = keyof typeof KINDS;
+
+export default function GeneratingPage() {
   const router = useRouter();
   const [pct, setPct] = useState(2);
   const [seconds, setSeconds] = useState(90);
   const [phase, setPhase] = useState<"loading" | "done" | "error">("loading");
   const [errorMsg, setErrorMsg] = useState("");
+  const [homeHref, setHomeHref] = useState("/");
   const doneRef = useRef(false);
   const startedRef = useRef(false);
 
@@ -32,7 +41,7 @@ export default function FreeMiniGeneratingPage() {
     return () => clearInterval(timer);
   }, []);
 
-  // MINI 결과 생성 요청
+  // 결과 생성 요청
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
@@ -40,14 +49,29 @@ export default function FreeMiniGeneratingPage() {
     let raw: string | null = null;
     try { raw = sessionStorage.getItem(PAYLOAD_KEY); } catch { /* ignore */ }
     if (!raw) {
-      router.replace("/free");
+      router.replace("/");
       return;
     }
 
-    fetch("/api/free-mini", {
+    let kind: Kind = "mini";
+    let payload: unknown = null;
+    try {
+      const envelope = JSON.parse(raw) as { kind?: string; payload?: unknown };
+      if (envelope.kind === "redeem") kind = "redeem";
+      payload = envelope.payload ?? null;
+    } catch { /* ignore */ }
+    const config = KINDS[kind];
+    setHomeHref(config.homeHref);
+
+    if (!payload) {
+      router.replace(config.homeHref);
+      return;
+    }
+
+    fetch(config.endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: raw,
+      body: JSON.stringify(payload),
     })
       .then((r) => r.json().then((d) => ({ ok: r.ok, data: d })))
       .then((res) => {
@@ -83,7 +107,7 @@ export default function FreeMiniGeneratingPage() {
           >
             다시 시도하기
           </button>
-          <Link href="/free" className={cn(buttonVariants({ variant: "outline" }))}>처음으로</Link>
+          <Link href={homeHref} className={cn(buttonVariants({ variant: "outline" }))}>처음으로</Link>
         </div>
       </div>
     );

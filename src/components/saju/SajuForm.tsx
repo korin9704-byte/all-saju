@@ -198,21 +198,18 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   const submitOrder = useCallback(async (payload: OrderPayload, mode: "pay" | "redeem" | "mini") => {
     setSubmitting(true);
     try {
-      if (mode === "mini") {
-        // 진행률 화면(/free/generating)에서 생성 요청을 수행한다 (결제 플로우와 동일한 로딩 UX)
+      if (mode === "mini" || mode === "redeem") {
+        // 진행률 화면(/generating)에서 생성 요청을 수행한다 (결제 플로우와 동일한 로딩 UX)
         let ref: string | undefined;
-        try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
-        try { sessionStorage.setItem("freemini_generate", JSON.stringify({ ...payload, ref })); } catch { /* ignore */ }
-        router.push("/free/generating");
-      } else if (mode === "redeem") {
-        const res = await fetch("/api/orders/redeem", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error ?? "무료권 사용 실패");
-        router.push(`/results/${json.resultId}`);
+        if (mode === "mini") {
+          try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
+        }
+        const envelope = {
+          kind: mode,
+          payload: mode === "mini" ? { ...payload, ref } : payload,
+        };
+        try { sessionStorage.setItem("saju_generate", JSON.stringify(envelope)); } catch { /* ignore */ }
+        router.push("/generating");
       } else {
         const res = await fetch("/api/orders/create", {
           method: "POST",
