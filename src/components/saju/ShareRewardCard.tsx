@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type ReferralInfo = { code: string; earned: number; available: number; cap: number };
+type ReferralInfo = { code: string; canShare?: boolean; earned: number; available: number; cap: number };
 
 /**
  * 결과 페이지·마이페이지용 공유 카드.
@@ -23,10 +23,11 @@ export function ShareRewardCard() {
       .catch(() => setHidden(true));
   }, []);
 
-  if (hidden || !info) return null;
+  // 풀버전(유료) 열람자만 공유 링크 획득 — MINI만 본 사람에게는 노출하지 않음
+  if (hidden || !info || info.canShare === false) return null;
 
   const shareUrl = `${window.location.origin}/free?ref=${info.code}`;
-  const shareText = "너한테 무료 미니 사주 선물 도착 🎁 생년월일만 넣으면 3분 만에 나와";
+  const shareText = "너한테 사주 해설 MINI 선물 도착 🎁 13가지 주제 중 6가지를 무료로 볼 수 있어";
   const capped = info.earned >= info.cap;
 
   async function copyLink() {
@@ -54,9 +55,9 @@ export function ShareRewardCard() {
   return (
     <section className="mt-8 rounded-2xl border-2 border-ink overflow-hidden">
       <div className="px-6 py-5" style={{ background: "#000" }}>
-        <p className="text-base font-bold text-white">친구에게 무료 미니 사주 선물하기 🎁</p>
+        <p className="text-base font-bold text-white">친구에게 사주 해설 MINI 선물하기 🎁</p>
         <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
-          친구가 내 링크로 미니 사주를 보면, 나에게 <b className="text-white">상품 무료권 1개</b>가 쌓여요
+          친구가 내 링크로 MINI를 보면, 나에게 <b className="text-white">상품 무료권 1개</b>가 쌓여요
         </p>
       </div>
       <div className="px-6 py-5 space-y-4 bg-canvas">

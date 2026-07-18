@@ -17,7 +17,6 @@ import {
   buildRomanceSajuPrompt,
   buildJobSajuPrompt,
   buildBusinessSajuPrompt,
-  buildMiniSajuPrompt,
 } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
@@ -90,6 +89,11 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
 
   if (!input || !product) throw new Error("사주 입력 또는 상품 조회 실패");
 
+  // MINI 상품(slug 접미사 -mini)은 원본 상품과 동일한 결과지를 생성하고 잠금 상태로 저장한다
+  const isMini = product.slug.endsWith("-mini");
+  const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : product.slug;
+  const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : product.name;
+
   // 만세력/풀 분석: luckyloveme 키가 있으면 실제 API, 없거나 실패하면 mock 으로 fallback
   let myeongsik: Myeongsik;
   let manseryeokText: string | undefined;
@@ -116,8 +120,8 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
   }
 
   const promptInput = {
-    productSlug: product.slug,
-    productName: product.name,
+    productSlug: promptSlug,
+    productName: promptName,
     myeongsik,
     manseryeokText,
     birthDate: input.birth_date,
@@ -129,31 +133,28 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
   };
 
   let llm;
-  if (product.slug === "worry-saju") {
+  if (promptSlug === "worry-saju") {
     const { system, user } = buildWorryPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "today-fortune") {
+  } else if (promptSlug === "today-fortune") {
     const { system, user } = buildTodayFortunePrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "premium-saju") {
+  } else if (promptSlug === "premium-saju") {
     const { system, user } = buildDaewunPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "realestate-saju") {
+  } else if (promptSlug === "realestate-saju") {
     const { system, user } = buildRealEstateSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "romance-saju") {
+  } else if (promptSlug === "romance-saju") {
     const { system, user } = buildRomanceSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "job-saju") {
+  } else if (promptSlug === "job-saju") {
     const { system, user } = buildJobSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "business-saju") {
+  } else if (promptSlug === "business-saju") {
     const { system, user } = buildBusinessSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "free-mini") {
-    const { system, user } = buildMiniSajuPrompt(promptInput);
-    llm = await generateInterpretation({ system, user });
-  } else if (product.slug === "love-saju") {
+  } else if (promptSlug === "love-saju") {
     // 상대방 사주 파싱 및 명식 계산
     const partnerConcern = (input.concerns as string[]).find((c: string) => c.startsWith("[상대방]")) ?? "";
     let partnerMyeongsik: Myeongsik | undefined;
@@ -247,6 +248,7 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
       interpretation_md: llm.text,
       llm_provider: llm.provider,
       llm_model: llm.model,
+      locked: isMini,
     })
     .select("id")
     .single();

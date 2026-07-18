@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   // 1. DB의 주문과 amount 일치 검증 (위변조 차단)
   const { data: order, error: orderErr } = await service
     .from("orders")
-    .select("id, amount, status, product_id, user_id, guest_email")
+    .select("id, amount, status, product_id, user_id, guest_email, unlock_result_id")
     .eq("order_id", orderId)
     .maybeSingle();
 
@@ -31,6 +31,9 @@ export async function POST(request: NextRequest) {
   }
   if (order.status === "paid") {
     // idempotent: 이미 결제된 주문 — 결과 페이지로 안내
+    if (order.unlock_result_id) {
+      return NextResponse.json({ resultId: order.unlock_result_id, alreadyPaid: true });
+    }
     const { data: result } = await service
       .from("saju_results")
       .select("id")
@@ -62,7 +65,23 @@ export async function POST(request: NextRequest) {
     })
     .eq("id", order.id);
 
-  // 3. 사주 생성
+  // 3-a. 언락 주문: MINI 잠금 해제 (LLM 재생성 없음, 즉시 공개)
+  if (order.unlock_result_id) {
+    const { error: unlockErr } = await service
+      .from("saju_results")
+      .update({ locked: false })
+      .eq("id", order.unlock_result_id);
+    if (unlockErr) {
+      console.error("[confirm] 잠금 해제 실패:", unlockErr);
+      return NextResponse.json(
+        { error: "잠금 해제 실패", hint: "결제는 정상 승인되었습니다. /admin/orders 에서 확인하세요." },
+        { status: 500 },
+      );
+    }
+    return NextResponse.json({ resultId: order.unlock_result_id });
+  }
+
+  // 3-b. 사주 생성
   try {
     const { resultId } = await generateAndStoreResult(service, order.id);
     return NextResponse.json({ resultId });

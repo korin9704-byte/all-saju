@@ -18,7 +18,7 @@ export default async function CheckoutPage({
   const supabase = await createClient();
   const { data: userOrder } = await supabase
     .from("orders")
-    .select("id, order_id, amount, status, user_id, guest_email, product_id")
+    .select("id, order_id, amount, status, user_id, guest_email, product_id, unlock_result_id")
     .eq("order_id", orderId)
     .maybeSingle();
 
@@ -28,7 +28,7 @@ export default async function CheckoutPage({
   if (!order) {
     const { data: serviceOrder } = await service
       .from("orders")
-      .select("id, order_id, amount, status, user_id, guest_email, product_id")
+      .select("id, order_id, amount, status, user_id, guest_email, product_id, unlock_result_id")
       .eq("order_id", orderId)
       .maybeSingle();
     order = serviceOrder;
@@ -37,6 +37,7 @@ export default async function CheckoutPage({
   if (!order) notFound();
 
   if (order.status === "paid") {
+    if (order.unlock_result_id) redirect(`/results/${order.unlock_result_id}`);
     const { data: result } = await service
       .from("saju_results")
       .select("id")

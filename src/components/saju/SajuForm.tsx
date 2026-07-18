@@ -11,6 +11,8 @@ type Props = {
   productId: string;
   productSlug: string;
   isLoggedIn: boolean;
+  /** MINI 모드: 결제 대신 /api/free-mini 로 무료 잠금 결과 생성 (공유받은 친구용) */
+  miniMode?: boolean;
 };
 
 const DAEWUN_TILE_COLORS = ["#A8C8F0","#A5D6B8","#C5DE9E","#FFC4AE","#F8B4CC","#D9B8E8","#FFD9A8","#C1CDD6","#A8DBD4","#B9C2E8"];
@@ -99,9 +101,11 @@ type OrderPayload = {
   concerns: string[];
 };
 
-function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
+function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const refParam = searchParams.get("ref");
+  const pendingKey = miniMode ? "saju_pending_mini" : `saju_pending_${productSlug}`;
   const [name, setName]               = useState("");
   const [birthYear, setBirthYear]     = useState("");
   const [birthMonth, setBirthMonth]   = useState("");
@@ -147,12 +151,19 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
   const [useFreeCredit, setUseFreeCredit] = useState(false);
 
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || miniMode) return;
     fetch("/api/referral/me")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => { if (json?.code) setCredit(json); })
       .catch(() => { /* 무료권 조회 실패는 무시 */ });
-  }, [isLoggedIn]);
+  }, [isLoggedIn, miniMode]);
+
+  // 공유 링크의 추천 코드 저장 (로그인 왕복에도 유지되도록 localStorage)
+  useEffect(() => {
+    if (miniMode && refParam) {
+      try { localStorage.setItem("saju_ref", refParam); } catch { /* ignore */ }
+    }
+  }, [miniMode, refParam]);
 
   // 생년월일 자동 포커스 이동
   const birthMonthRef    = useRef<HTMLInputElement>(null);
@@ -177,11 +188,23 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
     return { startAge, endAge, startYear, endYear, isCurrent };
   });
 
-  // 주문 생성 → 결제(또는 무료권이면 바로 결과)
-  const submitOrder = useCallback(async (payload: OrderPayload, redeem: boolean) => {
+  // 주문 생성 → 결제 / 무료권 즉시 결과 / MINI 무료 잠금 결과
+  const submitOrder = useCallback(async (payload: OrderPayload, mode: "pay" | "redeem" | "mini") => {
     setSubmitting(true);
     try {
-      if (redeem) {
+      if (mode === "mini") {
+        let ref: string | undefined;
+        try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
+        const res = await fetch("/api/free-mini", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, ref }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "MINI 결과 생성 실패");
+        if (json.already) toast.info("이미 MINI 결과를 보셨어요. 결과로 이동할게요");
+        router.push(`/results/${json.resultId}`);
+      } else if (mode === "redeem") {
         const res = await fetch("/api/orders/redeem", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -212,15 +235,14 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
     if (searchParams.get("resume") !== "1" || !isLoggedIn || resumedRef.current) return;
     resumedRef.current = true;
     try {
-      const key = `saju_pending_${productSlug}`;
-      const raw = sessionStorage.getItem(key);
+      const raw = sessionStorage.getItem(pendingKey);
       if (!raw) return;
-      sessionStorage.removeItem(key);
+      sessionStorage.removeItem(pendingKey);
       const payload = JSON.parse(raw) as OrderPayload;
-      toast.info("로그인 완료! 이어서 진행할게요");
-      void submitOrder(payload, false);
+      toast.info(miniMode ? "로그인 완료! 결과를 만들고 있어요" : "로그인 완료! 이어서 진행할게요");
+      void submitOrder(payload, miniMode ? "mini" : "pay");
     } catch { /* ignore */ }
-  }, [searchParams, isLoggedIn, productSlug, submitOrder]);
+  }, [searchParams, isLoggedIn, pendingKey, miniMode, submitOrder]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -285,10 +307,12 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
 
       // 미로그인 → 입력 저장 후 카카오 1초 로그인, 돌아와서 자동 이어서 진행
       if (!isLoggedIn) {
-        try { sessionStorage.setItem(`saju_pending_${productSlug}`, JSON.stringify(payload)); } catch { /* ignore */ }
+        try { sessionStorage.setItem(pendingKey, JSON.stringify(payload)); } catch { /* ignore */ }
         setSubmitting(true);
         const supabase = createClient();
-        const next = `/products/${productSlug}?resume=1`;
+        const next = miniMode
+          ? `/free?resume=1${refParam ? `&ref=${encodeURIComponent(refParam)}` : ""}`
+          : `/products/${productSlug}?resume=1`;
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "kakao",
           options: {
@@ -303,7 +327,10 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
         return;
       }
 
-      await submitOrder(payload, useFreeCredit && (credit?.available ?? 0) > 0);
+      await submitOrder(
+        payload,
+        miniMode ? "mini" : useFreeCredit && (credit?.available ?? 0) > 0 ? "redeem" : "pay",
+      );
     }
   }
 
@@ -879,8 +906,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
         </div>
       )}
 
-      {/* 무료권 사용 (리퍼럴 보상 보유 시) */}
-      {(credit?.available ?? 0) > 0 && (
+      {/* 무료권 사용 (리퍼럴 보상 보유 시, MINI 모드 제외) */}
+      {!miniMode && (credit?.available ?? 0) > 0 && (
         <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer">
           <div>
             <p className="text-sm font-bold text-ink">무료권 사용하기</p>
@@ -901,16 +928,20 @@ function SajuFormInner({ productId, productSlug, isLoggedIn }: Props) {
       <button type="submit" disabled={submitting}
         className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
         {submitting
-          ? (useFreeCredit ? "결과를 만들고 있어요..." : "주문 생성 중...")
-          : useFreeCredit && (credit?.available ?? 0) > 0
-            ? "무료권으로 결과보기"
-            : isLoggedIn
-              ? "결제하러 가기"
-              : "카카오 1초 로그인하고 결제하기"}
+          ? (miniMode || useFreeCredit ? "결과를 만들고 있어요..." : "주문 생성 중...")
+          : miniMode
+            ? (isLoggedIn ? "무료로 결과보기" : "카카오 1초 로그인하고 무료로 결과보기")
+            : useFreeCredit && (credit?.available ?? 0) > 0
+              ? "무료권으로 결과보기"
+              : isLoggedIn
+                ? "결제하러 가기"
+                : "카카오 1초 로그인하고 결제하기"}
       </button>
       {!isLoggedIn && (
         <p className="text-xs text-center text-mute">
-          결과 저장을 위해 카카오 로그인이 필요해요 · 입력한 내용은 그대로 유지돼요
+          {miniMode
+            ? "결과 저장을 위해 카카오 로그인이 필요해요 · 결제 없음"
+            : "결과 저장을 위해 카카오 로그인이 필요해요 · 입력한 내용은 그대로 유지돼요"}
           <br />
           로그인 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
           <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다

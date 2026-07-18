@@ -211,3 +211,17 @@ alter table public.referral_rewards enable row level security;
 drop policy if exists "referral_rewards_select_own" on public.referral_rewards;
 create policy "referral_rewards_select_own" on public.referral_rewards
   for select using (auth.uid() = referrer_id);
+
+-- 0006_mini_lock.sql (상품별 MINI 잠금 모델)
+alter table public.saju_results add column if not exists locked boolean not null default false;
+alter table public.orders add column if not exists unlock_result_id uuid references public.saju_results(id) on delete set null;
+
+update public.products
+set slug = 'today-fortune-mini',
+    name = '사주 해설 MINI',
+    description = '사주 해설 13가지 주제 중 6가지를 무료로'
+where slug = 'free-mini';
+
+insert into public.products (slug, name, description, price, display_order, is_active)
+values ('today-fortune-mini', '사주 해설 MINI', '사주 해설 13가지 주제 중 6가지를 무료로', 0, 999, false)
+on conflict (slug) do nothing;

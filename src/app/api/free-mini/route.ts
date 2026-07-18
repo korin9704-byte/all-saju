@@ -12,8 +12,12 @@ const bodySchema = z.object({
   timeUnknown: z.boolean(),
   gender: z.enum(["male", "female"]),
   calendar: z.enum(["solar", "lunar"]),
+  concerns: z.array(z.string().max(350)).max(20).optional(),
   ref: z.string().max(32).optional(), // 추천인 코드
 });
+
+// 현재 제공 중인 MINI 상품 (추후 상품별 MINI 확장 시 여기에 추가)
+const MINI_SLUG = "today-fortune-mini";
 
 export async function POST(request: NextRequest) {
   const parsed = bodySchema.safeParse(await request.json());
@@ -33,10 +37,10 @@ export async function POST(request: NextRequest) {
   const { data: product } = await service
     .from("products")
     .select("id, name")
-    .eq("slug", "free-mini")
+    .eq("slug", MINI_SLUG)
     .maybeSingle();
   if (!product) {
-    return NextResponse.json({ error: "무료 미니 사주 상품이 없습니다. 마이그레이션을 확인하세요" }, { status: 500 });
+    return NextResponse.json({ error: "MINI 상품이 없습니다. 마이그레이션을 확인하세요" }, { status: 500 });
   }
 
   // 유저당 1회 — 이미 본 사람은 기존 결과로 (idempotent)
@@ -91,7 +95,7 @@ export async function POST(request: NextRequest) {
     time_unknown: body.timeUnknown,
     gender: body.gender,
     calendar: body.calendar,
-    concerns: [],
+    concerns: body.concerns ?? [],
   });
 
   if (inputErr) {

@@ -49,6 +49,23 @@ export async function GET() {
     return NextResponse.json({ error: "추천 코드 생성 실패" }, { status: 500 });
   }
 
+  // 공유 자격: MINI가 아닌 상품의 풀버전 결과를 가진 사람만 (유료 구매·언락·무료권 사용 포함)
+  const { data: paidOrders } = await service
+    .from("orders")
+    .select("product_id")
+    .eq("user_id", user.id)
+    .eq("status", "paid");
+
+  let canShare = false;
+  if (paidOrders && paidOrders.length > 0) {
+    const productIds = [...new Set(paidOrders.map((o) => o.product_id))];
+    const { data: prods } = await service
+      .from("products")
+      .select("slug")
+      .in("id", productIds);
+    canShare = (prods ?? []).some((p) => !p.slug.endsWith("-mini"));
+  }
+
   const { count: earned } = await service
     .from("referral_rewards")
     .select("id", { count: "exact", head: true })
@@ -62,6 +79,7 @@ export async function GET() {
 
   return NextResponse.json({
     code,
+    canShare,
     earned: earned ?? 0,
     available: available ?? 0,
     cap: REFERRAL_REWARD_CAP,

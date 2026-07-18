@@ -3,6 +3,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { MyeongsikTable } from "@/components/saju/MyeongsikTable";
 import { ResultBody } from "@/components/saju/ResultBody";
 import { AccordionBody } from "@/components/saju/AccordionBody";
+import { LockedAccordionBody } from "@/components/saju/LockedAccordionBody";
 import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
@@ -59,7 +60,7 @@ export default async function ResultPage({
 
   const { data: result } = await service
     .from("saju_results")
-    .select("id, myeongsik, interpretation_md, llm_provider, llm_model, created_at, order_id")
+    .select("id, myeongsik, interpretation_md, llm_provider, llm_model, created_at, order_id, locked")
     .eq("id", resultId)
     .maybeSingle();
 
@@ -81,12 +82,24 @@ export default async function ResultPage({
     .maybeSingle();
 
   const myeongsik     = result.myeongsik as unknown as Myeongsik;
-  const isTodayFortune = product?.slug === "today-fortune";
+  const isMiniLayout   = product?.slug === "today-fortune-mini";
+  const isTodayFortune = product?.slug === "today-fortune" || isMiniLayout;
   const isDaewun       = product?.slug === "premium-saju";
   const isLoveSaju     = product?.slug === "love-saju";
+  const isLocked       = isMiniLayout && result.locked === true;
 
   /* ── today-fortune 전용 레이아웃 ── */
   if (isTodayFortune) {
+    // MINI 잠금 결과: 언락 가격은 원본 상품 가격
+    let unlockPrice = 990;
+    if (isLocked) {
+      const { data: fullProduct } = await service
+        .from("products")
+        .select("price")
+        .eq("slug", "today-fortune")
+        .maybeSingle();
+      unlockPrice = fullProduct?.price ?? 990;
+    }
     const displayName = sajuInput?.name ? `${sajuInput.name}님의` : "";
     const todayConcerns = (sajuInput?.concerns ?? []) as string[];
     const todayQuestionRaw = todayConcerns.find((c: string) => c.startsWith("[질문]")) ?? "";
@@ -103,7 +116,7 @@ export default async function ResultPage({
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
-              {displayName} 사주해설
+              {displayName} {isLocked ? "사주 해설 MINI" : "사주해설"}
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -126,10 +139,20 @@ export default async function ResultPage({
         </section>
 
         <article className="rounded-b-2xl overflow-hidden">
-          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
+          {isLocked ? (
+            <LockedAccordionBody
+              markdown={result.interpretation_md}
+              resultId={result.id}
+              unlockPrice={unlockPrice}
+              visibleCount={6}
+              headerTitle="사주 해설"
+            />
+          ) : (
+            <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
+          )}
         </article>
 
-        <ShareRewardCard />
+        {!isLocked && <ShareRewardCard />}
 
         <OtherProducts currentSlug={product?.slug} />
 

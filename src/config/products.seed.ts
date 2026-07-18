@@ -79,10 +79,11 @@ export const productsSeed: ProductSeed[] = [
     is_active: false,
   },
   {
-    // 공유받은 친구용 무료 상품 — 목록/일반 결제 흐름에는 노출하지 않음
-    slug: "free-mini",
-    name: "무료 미니 사주",
-    description: "생년월일로 3분 만에 보는 무료 미니 사주",
+    // 공유받은 친구용 무료 MINI — 목록/일반 결제 흐름에는 노출하지 않음
+    // 결과지는 사주 해설과 동일(13주제)하되 6개만 공개, 990원 언락
+    slug: "today-fortune-mini",
+    name: "사주 해설 MINI",
+    description: "사주 해설 13가지 주제 중 6가지를 무료로",
     price: 0,
     display_order: 999,
     is_active: false,

@@ -44,6 +44,7 @@ type OrderRow = {
   status: OrderStatus;
   toss_payment_key: string | null;
   paid_at: string | null;
+  unlock_result_id: string | null;
   created_at: string;
 };
 
@@ -67,6 +68,7 @@ type SajuResultRow = {
   interpretation_md: string;
   llm_provider: string;
   llm_model: string;
+  locked: boolean;
   created_at: string;
 };
 
@@ -142,6 +144,7 @@ export type Database = {
           status?: OrderStatus;
           toss_payment_key?: string | null;
           paid_at?: string | null;
+          unlock_result_id?: string | null;
           created_at?: string;
         };
         Update: Partial<OrderRow>;
@@ -173,6 +176,7 @@ export type Database = {
           interpretation_md: string;
           llm_provider: string;
           llm_model: string;
+          locked?: boolean;
           created_at?: string;
         };
         Update: Partial<SajuResultRow>;
