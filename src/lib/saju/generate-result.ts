@@ -54,6 +54,19 @@ function toBirthInfo(input: SajuInputRow): BirthInfo {
   };
 }
 
+/** '## ' 섹션이 max개를 넘으면 초과분을 잘라낸다 (사주 해설 13개 고정) */
+function limitSections(markdown: string, max: number): string {
+  const parts = markdown.split(/\n(?=## )/);
+  const sections: string[] = [];
+  let preamble = "";
+  for (const part of parts) {
+    if (part.trim().startsWith("## ")) sections.push(part);
+    else if (sections.length === 0 && part.trim()) preamble = part;
+  }
+  if (sections.length <= max) return markdown;
+  return (preamble ? `${preamble}\n` : "") + sections.slice(0, max).join("\n");
+}
+
 function toComputeInput(input: SajuInputRow) {
   return {
     birthDate: input.birth_date,
@@ -240,12 +253,15 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
     llm = await generateInterpretation({ system, user });
   }
 
+  // 사주 해설(MINI 포함)은 주제를 항상 13개로 고정 — LLM이 넘치게 쓰면 잘라낸다
+  const interpretationMd = promptSlug === "today-fortune" ? limitSections(llm.text, 13) : llm.text;
+
   const { data: result, error: resultErr } = await service
     .from("saju_results")
     .insert({
       order_id: order.id,
       myeongsik: myeongsik as never,
-      interpretation_md: llm.text,
+      interpretation_md: interpretationMd,
       llm_provider: llm.provider,
       llm_model: llm.model,
       locked: isMini,
