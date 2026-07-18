@@ -154,7 +154,13 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     if (!isLoggedIn || miniMode) return;
     fetch("/api/referral/me")
       .then((res) => (res.ok ? res.json() : null))
-      .then((json) => { if (json?.code) setCredit(json); })
+      .then((json) => {
+        if (json?.code) {
+          setCredit(json);
+          // 이용권이 있으면 기본으로 사용하도록 체크 (결제 대신 무료 열람)
+          if ((json.available ?? 0) > 0) setUseFreeCredit(true);
+        }
+      })
       .catch(() => { /* 무료권 조회 실패는 무시 */ });
   }, [isLoggedIn, miniMode]);
 
@@ -233,8 +239,26 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       if (!raw) return;
       sessionStorage.removeItem(pendingKey);
       const payload = JSON.parse(raw) as OrderPayload;
-      toast.info(miniMode ? "로그인 완료! 결과를 만들고 있어요" : "로그인 완료! 이어서 진행할게요");
-      void submitOrder(payload, miniMode ? "mini" : "pay");
+
+      void (async () => {
+        // 로그인 직후에는 이용권 보유 여부를 알 수 없으므로 여기서 조회해 무료권 우선 사용
+        let redeem = false;
+        if (!miniMode) {
+          try {
+            const res = await fetch("/api/referral/me");
+            const json = res.ok ? await res.json() : null;
+            redeem = (json?.available ?? 0) > 0;
+          } catch { /* 조회 실패 시 결제 경로 */ }
+        }
+        toast.info(
+          miniMode
+            ? "로그인 완료! 결과를 만들고 있어요"
+            : redeem
+              ? "로그인 완료! 무료 이용권으로 결과를 만들어드릴게요"
+              : "로그인 완료! 이어서 진행할게요",
+        );
+        await submitOrder(payload, miniMode ? "mini" : redeem ? "redeem" : "pay");
+      })();
     } catch { /* ignore */ }
   }, [searchParams, isLoggedIn, pendingKey, miniMode, submitOrder]);
 
