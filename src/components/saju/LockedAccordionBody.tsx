@@ -79,6 +79,7 @@ export function LockedAccordionBody({
   }
 
   return (
+    <>
     <div className="divide-y divide-border">
       {/* 헤더 */}
       <div className="px-5 py-4 text-center" style={{ background: "#1a1a1a" }}>
@@ -132,25 +133,6 @@ export function LockedAccordionBody({
         })}
       </ul>
 
-      {/* 언락 CTA */}
-      <div className="px-5 py-6 text-center" style={{ background: "#1a1a1a" }}>
-        <p className="text-sm font-bold text-white">
-          아직 {locked.length}개 주제가 잠겨 있어요 🔒
-        </p>
-        <p className="mt-1 text-xs text-white/60">
-          재물운·연애운·건강운까지, 나머지 해설을 전부 확인해 보세요
-        </p>
-        <button
-          type="button"
-          onClick={startUnlock}
-          disabled={unlocking}
-          className="mt-4 w-full rounded-full py-3.5 text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-60"
-          style={{ background: "#FEE500", color: "#191919" }}
-        >
-          {unlocking ? "결제 페이지로 이동 중..." : `${formatKRW(unlockPrice)}으로 전체 해설 열기`}
-        </button>
-      </div>
-
       {/* 잠긴 주제 (제목만 노출) */}
       <ul className="divide-y divide-border">
         {locked.map((sec, i) => (
@@ -169,5 +151,27 @@ export function LockedAccordionBody({
         ))}
       </ul>
     </div>
+
+    {/* 언락 카드 — 공유 카드와 동일한 스타일, 주제 목록 아래 배치 */}
+    <section className="mt-8 rounded-2xl border-2 border-ink overflow-hidden">
+      <div className="px-6 py-5" style={{ background: "#000" }}>
+        <p className="text-base font-bold text-white">아직 {locked.length}개 주제가 잠겨 있어요 🔒</p>
+        <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
+          재물운·연애운·건강운까지, <b className="text-white">나머지 해설 전부</b>를 확인해 보세요
+        </p>
+      </div>
+      <div className="px-6 py-5 bg-canvas">
+        <button
+          type="button"
+          onClick={startUnlock}
+          disabled={unlocking}
+          className="w-full rounded-xl py-3 text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-60"
+          style={{ background: "#FEE500", color: "#191919" }}
+        >
+          {unlocking ? "결제 페이지로 이동 중..." : `${formatKRW(unlockPrice)}으로 전체 해설 열기`}
+        </button>
+      </div>
+    </section>
+    </>
   );
 }
