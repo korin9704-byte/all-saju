@@ -59,7 +59,7 @@ export default async function FreeMiniPage() {
       <header className="mb-10 pb-10 border-b border-hairline">
         <h1 className="text-2xl font-bold text-ink">사주 해설 MINI</h1>
         <p className="mt-2 text-sm text-body">용하다고 소문났어요</p>
-        <p className="mt-5 text-2xl font-mono font-medium text-ink">무료</p>
+        <p className="mt-5 text-2xl font-mono font-medium text-ink">0원</p>
       </header>
 
       {/* 상품 소개 이미지 (사주 해설과 동일) */}
