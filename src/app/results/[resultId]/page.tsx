@@ -116,7 +116,7 @@ export default async function ResultPage({
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
-              {displayName} {isLocked ? "사주 해설 MINI" : "사주 해설"}
+              {displayName} {isLocked ? "‘사주 해설 MINI’" : "‘사주 해설’"}
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -205,7 +205,7 @@ export default async function ResultPage({
                 </span>
               )}
               <h1 className="text-xl font-bold text-white tracking-tight">
-                {displayName} 대운 해설
+                {displayName} ‘대운 해설’
               </h1>
             </div>
             <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -453,7 +453,7 @@ export default async function ResultPage({
       <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
         <div className="px-6 pt-6 pb-5 text-center">
           <h1 className="text-xl font-bold text-white tracking-tight">
-            {displayName} {product?.name ?? "사주 풀이"}
+            {displayName} ‘{product?.name ?? "사주 풀이"}’
           </h1>
         </div>
         <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
