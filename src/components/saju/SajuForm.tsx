@@ -193,17 +193,11 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     setSubmitting(true);
     try {
       if (mode === "mini") {
+        // 진행률 화면(/free/generating)에서 생성 요청을 수행한다 (결제 플로우와 동일한 로딩 UX)
         let ref: string | undefined;
         try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
-        const res = await fetch("/api/free-mini", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...payload, ref }),
-        });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error ?? "MINI 결과 생성 실패");
-        if (json.already) toast.info("이미 MINI 결과를 보셨어요. 결과로 이동할게요");
-        router.push(`/results/${json.resultId}`);
+        try { sessionStorage.setItem("freemini_generate", JSON.stringify({ ...payload, ref })); } catch { /* ignore */ }
+        router.push("/free/generating");
       } else if (mode === "redeem") {
         const res = await fetch("/api/orders/redeem", {
           method: "POST",
