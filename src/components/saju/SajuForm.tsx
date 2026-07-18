@@ -147,7 +147,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   const [submitting, setSubmitting] = useState(false);
 
   // 무료권 (리퍼럴 보상)
-  const [credit, setCredit] = useState<{ available: number; earned: number; cap: number } | null>(null);
+  const [credit, setCredit] = useState<{ available: number; earned: number } | null>(null);
   const [useFreeCredit, setUseFreeCredit] = useState(false);
 
   useEffect(() => {

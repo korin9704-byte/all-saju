@@ -3,7 +3,6 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { generateAndStoreResult } from "@/lib/saju/generate-result";
-import { REFERRAL_REWARD_CAP } from "@/lib/referral";
 
 const bodySchema = z.object({
   name: z.string().max(50).optional(),
@@ -125,21 +124,14 @@ export async function POST(request: NextRequest) {
         .maybeSingle();
 
       if (referrer && referrer.id !== user.id) {
-        const { count } = await service
-          .from("referral_rewards")
-          .select("id", { count: "exact", head: true })
-          .eq("referrer_id", referrer.id);
-
-        if ((count ?? 0) < REFERRAL_REWARD_CAP) {
-          // referred_user_id unique — 같은 친구는 평생 1회만 적립됨 (충돌은 조용히 무시)
-          const { error: rewardErr } = await service.from("referral_rewards").insert({
-            referrer_id: referrer.id,
-            referred_user_id: user.id,
-            mini_order_id: order.id,
-          });
-          if (rewardErr && rewardErr.code !== "23505") {
-            console.error("[free-mini] 무료권 적립 실패:", rewardErr);
-          }
+        // 적립 한도 없음. referred_user_id unique — 같은 친구는 평생 1회만 적립됨 (충돌은 조용히 무시)
+        const { error: rewardErr } = await service.from("referral_rewards").insert({
+          referrer_id: referrer.id,
+          referred_user_id: user.id,
+          mini_order_id: order.id,
+        });
+        if (rewardErr && rewardErr.code !== "23505") {
+          console.error("[free-mini] 무료권 적립 실패:", rewardErr);
         }
       }
     } catch (rewardErr) {

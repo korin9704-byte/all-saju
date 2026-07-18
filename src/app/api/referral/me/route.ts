@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { REFERRAL_REWARD_CAP } from "@/lib/referral";
 
 /** 내 추천 코드(없으면 생성) + 무료권 적립/보유 현황 */
 export async function GET() {
@@ -82,6 +81,5 @@ export async function GET() {
     canShare,
     earned: earned ?? 0,
     available: available ?? 0,
-    cap: REFERRAL_REWARD_CAP,
   });
 }

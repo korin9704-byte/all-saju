@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type ReferralInfo = { code: string; canShare?: boolean; earned: number; available: number; cap: number };
+type ReferralInfo = { code: string; canShare?: boolean; earned: number; available: number };
 
 /**
  * 결과 페이지·마이페이지용 공유 카드.
@@ -28,7 +28,6 @@ export function ShareRewardCard() {
 
   const shareUrl = `${window.location.origin}/free?ref=${info.code}`;
   const shareText = "너한테 사주 해설 MINI 선물 도착 🎁 13가지 주제 중 6가지를 무료로 볼 수 있어";
-  const capped = info.earned >= info.cap;
 
   async function copyLink() {
     try {
@@ -85,14 +84,12 @@ export function ShareRewardCard() {
           카카오톡으로 보내기
         </button>
         <div className="flex items-center justify-between text-xs text-mute">
-          <span>
-            적립 {info.earned}/{info.cap}
-            {capped && " · 상한 도달"}
-          </span>
+          <span>지금까지 적립 {info.earned}개</span>
           <span>
             사용 가능 무료권 <b className="text-ink">{info.available}개</b>
           </span>
         </div>
+        <p className="text-xs text-center text-mute">한도 없음 · 공유할수록 무료 이용권이 쌓여요</p>
       </div>
     </section>
   );
