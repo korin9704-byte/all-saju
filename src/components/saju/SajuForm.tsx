@@ -930,7 +930,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         {submitting
           ? (miniMode || useFreeCredit ? "결과를 만들고 있어요..." : "주문 생성 중...")
           : miniMode
-            ? (isLoggedIn ? "무료로 결과보기" : "카카오 1초 로그인하고 무료로 결과보기")
+            ? (isLoggedIn ? "결과보기" : "카카오 로그인/회원가입 후 결과보기")
             : useFreeCredit && (credit?.available ?? 0) > 0
               ? "무료권으로 결과보기"
               : isLoggedIn
