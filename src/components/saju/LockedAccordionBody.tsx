@@ -151,7 +151,7 @@ export function LockedAccordionBody({
     </div>
 
     {/* 언락 버튼 — 주제 목록 아래 배치 */}
-    <section className="mt-8">
+    <section className="mt-8 px-4 sm:px-0">
       <button
           type="button"
           onClick={startUnlock}
