@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { AnalysisProgress } from "@/components/saju/AnalysisProgress";
 
 const RESUME_KEY = "saju_resume";
 
@@ -112,6 +111,10 @@ export default function ResumePage() {
     );
   }
 
-  // 분기하는 동안 분석 중 화면을 0% 고정으로 보여준다 (이후 /generating 또는 결제 페이지로 전환)
-  return <AnalysisProgress pct={0} seconds={90} title="잠시만요...🐾" />;
+  // 분기하는 동안 안내 문구만 보여준다 (이후 /generating 또는 결제 페이지로 전환)
+  return (
+    <div className="container py-16 max-w-sm text-center">
+      <h1 className="text-lg font-bold text-ink leading-snug">잠시만요...🐾</h1>
+    </div>
+  );
 }
