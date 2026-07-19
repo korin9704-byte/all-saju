@@ -152,7 +152,7 @@ export default function ResumePage() {
             disabled={choosing}
             className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50"
           >
-            {choosing ? "잠시만요..." : useCredit ? "무료 이용권으로 결과보기" : "990원 결제하기"}
+            {choosing ? "잠시만요..." : useCredit ? "무료 이용권으로 결과보기" : "결제하기"}
           </button>
         </div>
       </div>
