@@ -42,28 +42,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "MINI 상품이 없습니다. 마이그레이션을 확인하세요" }, { status: 500 });
   }
 
-  // 유저당 1회 — 이미 본 사람은 기존 결과로 (idempotent)
-  const { data: existing } = await service
-    .from("orders")
-    .select("id")
-    .eq("user_id", user.id)
-    .eq("product_id", product.id)
-    .eq("status", "paid")
-    .limit(1)
-    .maybeSingle();
-
-  if (existing) {
-    const { data: prevResult } = await service
-      .from("saju_results")
-      .select("id")
-      .eq("order_id", existing.id)
-      .maybeSingle();
-    if (prevResult) {
-      return NextResponse.json({ resultId: prevResult.id, already: true });
-    }
-    // 결과 없이 주문만 남은 비정상 상태 — 주문 제거 후 새로 진행
-    await service.from("orders").delete().eq("id", existing.id);
-  }
+  // MINI 생성은 계정당 무제한 — 매 요청마다 새 결과를 생성한다
+  // (단, 추천인 무료권 적립은 referred_user_id unique 제약으로 친구당 평생 1회 유지)
 
   // 0원 주문 생성 (결제 없음 → 바로 paid)
   const orderId = `free_${nanoid(20)}`;
