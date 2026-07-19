@@ -50,7 +50,7 @@ export function ShareRewardCard() {
   async function share() {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "‘무료 사주 해설 MINI’ 선물 도착~", url: shareUrl });
+        await navigator.share({ text: `‘무료 사주 해설 MINI’ 선물 도착~ ${shareUrl}` });
         return;
       } catch {
         // 사용자가 공유 시트를 닫은 경우 등 — 무시
@@ -63,7 +63,7 @@ export function ShareRewardCard() {
   async function shareResult() {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "내 ‘사주 해설’ 결과지 봐봐~", url: resultShareUrl });
+        await navigator.share({ text: `내 ‘사주 해설’ 결과지 봐봐~ ${resultShareUrl}` });
         return;
       } catch {
         return;
