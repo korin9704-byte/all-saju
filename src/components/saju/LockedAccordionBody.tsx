@@ -158,7 +158,7 @@ export function LockedAccordionBody({
           disabled={unlocking}
           className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none"
         >
-          {unlocking ? "결제 페이지로 이동 중..." : `${formatKRW(unlockPrice)}으로 잠금 해제`}
+          {unlocking ? "잠시만요..." : `${formatKRW(unlockPrice)}으로 잠금 해제`}
         </button>
     </section>
     </>
