@@ -150,6 +150,16 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   const [credit, setCredit] = useState<{ available: number; earned: number } | null>(null);
   const [useFreeCredit, setUseFreeCredit] = useState(false);
 
+  // 카카오 로그인 복귀 직후에는 폼 대신 전환 화면을 보여준다 (ssr:false 라 초기값에서 세션 확인 가능)
+  const [resuming, setResuming] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return isLoggedIn && searchParams.get("resume") === "1" && !!sessionStorage.getItem(pendingKey);
+    } catch {
+      return false;
+    }
+  });
+
   useEffect(() => {
     if (!isLoggedIn || miniMode) return;
     fetch("/api/referral/me")
@@ -223,6 +233,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
       setSubmitting(false);
+      setResuming(false);
     }
   }, [router]);
 
@@ -247,16 +258,11 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             redeem = (json?.available ?? 0) > 0;
           } catch { /* 조회 실패 시 결제 경로 */ }
         }
-        toast.info(
-          miniMode
-            ? "로그인 완료! 결과를 만들고 있어요"
-            : redeem
-              ? "로그인 완료! 무료 이용권으로 결과를 만들어드릴게요"
-              : "로그인 완료! 이어서 진행할게요",
-        );
         await submitOrder(payload, miniMode ? "mini" : redeem ? "redeem" : "pay");
       })();
-    } catch { /* ignore */ }
+    } catch {
+      setResuming(false);
+    }
   }, [searchParams, isLoggedIn, pendingKey, miniMode, submitOrder]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -347,6 +353,16 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         miniMode ? "mini" : useFreeCredit && (credit?.available ?? 0) > 0 ? "redeem" : "pay",
       );
     }
+  }
+
+  // 카카오 로그인 복귀 직후: 폼 대신 전환 화면 → 곧바로 결제/결과 페이지로 이동
+  if (resuming) {
+    return (
+      <div className="py-24 text-center">
+        <p className="text-lg font-bold text-ink">로그인 완료! 🎉</p>
+        <p className="mt-2 text-sm text-mute">잠시만요, 이어서 진행하고 있어요...</p>
+      </div>
+    );
   }
 
   return (
