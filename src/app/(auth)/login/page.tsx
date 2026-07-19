@@ -50,7 +50,7 @@ function LoginForm() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4 mb-6">
-            <KakaoLoginButton next={redirectTo} label="카카오로 1초 로그인" />
+            <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-border" />
               <span className="text-xs text-muted-foreground">또는 이메일로</span>
