@@ -79,6 +79,7 @@ export default function GeneratingPage() {
         if (res.ok && res.data.resultId) {
           try { sessionStorage.removeItem(PAYLOAD_KEY); } catch { /* ignore */ }
           setPct(100);
+          setSeconds(0);
           setPhase("done");
           setTimeout(() => router.replace(`/results/${res.data.resultId}`), 600);
         } else {

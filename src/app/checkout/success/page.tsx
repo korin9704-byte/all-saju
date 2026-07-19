@@ -138,8 +138,10 @@ export default async function CheckoutSuccessPage({
       var fill = document.getElementById('progress-fill');
       var pctEl = document.getElementById('progress-pct');
       var msg = document.getElementById('loading-msg');
+      var countdownEl = document.getElementById('countdown');
       if (fill) fill.style.width = '100%';
       if (pctEl) pctEl.textContent = '100%';
+      if (countdownEl) countdownEl.textContent = '0';
       if (msg) msg.innerHTML = '분석 완료! 결과 페이지로 이동할게요...🐾';
       setTimeout(function() {
         window.location.href = '/results/' + res.data.resultId;
