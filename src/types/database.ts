@@ -86,7 +86,7 @@ type ReviewRow = {
 type ReferralRewardRow = {
   id: string;
   referrer_id: string;
-  referred_user_id: string;
+  referred_user_id: string | null;
   mini_order_id: string | null;
   used_order_id: string | null;
   used_at: string | null;
@@ -202,7 +202,7 @@ export type Database = {
         Insert: {
           id?: string;
           referrer_id: string;
-          referred_user_id: string;
+          referred_user_id?: string | null;
           mini_order_id?: string | null;
           used_order_id?: string | null;
           used_at?: string | null;

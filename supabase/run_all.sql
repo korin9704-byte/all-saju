@@ -233,3 +233,10 @@ values
   ('love-saju-mini', '궁합 해설 MINI', '궁합 해설 일부를 무료로', 0, 999, false),
   ('worry-saju-mini', '무엇이든 물어보세요 MINI', '13가지 답변 중 6가지를 무료로', 0, 999, false)
 on conflict (slug) do nothing;
+
+-- 0008_admin_credit_grant.sql (관리자 무료 이용권 지급 지원)
+alter table public.referral_rewards alter column referred_user_id drop not null;
+update public.referral_rewards
+set referred_user_id = null
+where mini_order_id is null
+  and referred_user_id is not null;
