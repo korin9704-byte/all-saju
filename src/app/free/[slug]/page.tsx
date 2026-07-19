@@ -33,6 +33,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `‘무료 ${name} MINI’ 선물 도착~`,
       description: "냥이가 답을 찾아드릴게요!",
+      // v 파라미터는 카카오 등 미리보기 캐시 무효화용 — 이미지 교체 시 숫자를 올려줄 것
+      images: [{ url: `/images/${slug}.png?v=2` }],
     },
   };
 }
