@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { KakaoLoginButton } from "@/components/auth/KakaoLoginButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { publicEnv } from "@/lib/env";
 
 export default function SignupPage() {
@@ -45,9 +46,16 @@ export default function SignupPage() {
       <Card>
         <CardHeader>
           <CardTitle>회원가입</CardTitle>
-          <CardDescription>이메일 인증 없이 즉시 가입됩니다.</CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="space-y-4 mb-6">
+            <KakaoLoginButton label="카카오 1초 회원가입" />
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground">또는 이메일로</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+          </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">이름</Label>
