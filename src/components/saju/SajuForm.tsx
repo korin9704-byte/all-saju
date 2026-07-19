@@ -794,7 +794,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 추가 정보 인트로 */}
-          <div className="pt-5 pb-1">
+          <div className="pt-5">
             <p className="text-base font-bold text-ink leading-snug">
               {name.trim() ? `${name.trim()}님의` : ""} 다가올 10년,<br />
               더 정확한 풀이를 위해<br />
@@ -803,7 +803,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 애정 상황 */}
-          <div className="space-y-3 pt-5">
+          <div className="space-y-3">
             <div>
               <p className="text-base font-bold text-ink leading-relaxed">
                 애정운 분석을 위해,<br />
@@ -825,7 +825,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 현재 생활 */}
-          <div className="space-y-3 pt-5">
+          <div className="space-y-3">
             <div>
               <p className="text-base font-bold text-ink leading-relaxed">
                 성공운과 재물운을 짚어보기 위해,<br />
