@@ -687,7 +687,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           {/* 내 역할 */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-base font-bold text-ink">{name.trim() ? `${name.trim()}의 역할` : "내 역할"}</Label>
+              <Label className="text-base font-bold text-ink">{name.trim() ? `${name.trim()}님의 역할` : "내 역할"}</Label>
 
             </div>
             <div className="relative">
@@ -705,7 +705,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           {/* 상대방 역할 */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-base font-bold text-ink">{partnerName.trim() ? `${partnerName.trim()}의 역할` : "상대방의 역할"}</Label>
+              <Label className="text-base font-bold text-ink">{partnerName.trim() ? `${partnerName.trim()}님의 역할` : "상대방의 역할"}</Label>
 
             </div>
             <div className="relative">
