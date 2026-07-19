@@ -160,23 +160,18 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
   const [submitting, setSubmitting] = useState(false);
 
-  // 무료권 (리퍼럴 보상)
+  // 무료 이용권 (리퍼럴 보상) — 보유 시 결제 대신 자동 사용
   const [credit, setCredit] = useState<{ available: number; earned: number } | null>(null);
-  const [useFreeCredit, setUseFreeCredit] = useState(false);
-
+  const hasCredit = (credit?.available ?? 0) > 0;
 
   useEffect(() => {
     if (!isLoggedIn || miniMode) return;
     fetch("/api/referral/me")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
-        if (json?.code) {
-          setCredit(json);
-          // 이용권이 있으면 기본으로 사용하도록 체크 (결제 대신 무료 열람)
-          if ((json.available ?? 0) > 0) setUseFreeCredit(true);
-        }
+        if (json?.code) setCredit(json);
       })
-      .catch(() => { /* 무료권 조회 실패는 무시 */ });
+      .catch(() => { /* 이용권 조회 실패는 무시 */ });
   }, [isLoggedIn, miniMode]);
 
   // 공유 링크의 추천 코드 저장 (로그인 왕복에도 유지되도록 localStorage)
@@ -331,10 +326,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         return;
       }
 
-      await submitOrder(
-        payload,
-        miniMode ? "mini" : useFreeCredit && (credit?.available ?? 0) > 0 ? "redeem" : "pay",
-      );
+      await submitOrder(payload, miniMode ? "mini" : hasCredit ? "redeem" : "pay");
     }
   }
 
@@ -910,21 +902,6 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         </div>
       )}
 
-      {/* 무료권 사용 (리퍼럴 보상 보유 시, MINI 모드 제외) */}
-      {!miniMode && (credit?.available ?? 0) > 0 && (
-        <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer">
-          <div>
-            <p className="text-sm font-medium text-ink">무료 이용권 1개 사용하기</p>
-          </div>
-          <input
-            type="checkbox"
-            checked={useFreeCredit}
-            onChange={(e) => setUseFreeCredit(e.target.checked)}
-            className="w-5 h-5 accent-black"
-          />
-        </label>
-      )}
-
       {/* 제출 버튼 */}
       <button type="submit" disabled={submitting}
         className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
@@ -932,7 +909,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           ? "잠시만요..."
           : miniMode
             ? (isLoggedIn ? "결과보기" : "카카오 1초 로그인하고 결과보기")
-            : useFreeCredit && (credit?.available ?? 0) > 0
+            : hasCredit
               ? "무료 이용권으로 결과보기"
               : isLoggedIn
                 ? "결제하기"
