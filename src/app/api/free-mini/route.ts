@@ -3,12 +3,13 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { generateAndStoreResult } from "@/lib/saju/generate-result";
+import { birthDateSchema } from "@/lib/validation";
 
 const bodySchema = z.object({
   // MINI 원본 상품 (미지정 시 사주 해설 — 기존 링크 하위호환)
   productSlug: z.enum(["today-fortune", "premium-saju", "love-saju", "worry-saju"]).optional(),
   name: z.string().max(50).optional(),
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  birthDate: birthDateSchema,
   birthTime: z.string().regex(/^\d{2}:\d{2}$/).nullable(),
   timeUnknown: z.boolean(),
   gender: z.enum(["male", "female"]),

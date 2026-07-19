@@ -3,12 +3,13 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { generateAndStoreResult } from "@/lib/saju/generate-result";
+import { birthDateSchema } from "@/lib/validation";
 
 // 무료권으로 상품 열람: 0원 주문 생성 + 무료권 원자적 차감 + 결과 생성
 const bodySchema = z.object({
   productId: z.string().uuid(),
   name: z.string().max(50).optional(),
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  birthDate: birthDateSchema,
   birthTime: z.string().regex(/^\d{2}:\d{2}$/).nullable(),
   timeUnknown: z.boolean(),
   gender: z.enum(["male", "female"]),

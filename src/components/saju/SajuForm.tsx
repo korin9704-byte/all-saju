@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
+import { isValidBirthDate } from "@/lib/validation";
 
 type Props = {
   productId: string;
@@ -57,6 +58,20 @@ const LOVE_RELATION_OPTIONS = [
   ["아이돌과 팬", "아이돌과 아이돌"],
   ["나와 반려묘", "주인과 강아지"],
 ] as const;
+
+/** 월 입력: 숫자만, 12를 넘는 입력은 마지막 자리 무시 */
+function clampMonth(raw: string): string {
+  const v = raw.replace(/\D/g, "").slice(0, 2);
+  if (v.length === 2 && (parseInt(v) < 1 || parseInt(v) > 12)) return v.slice(0, 1);
+  return v;
+}
+
+/** 일 입력: 숫자만, 31을 넘는 입력은 마지막 자리 무시 */
+function clampDay(raw: string): string {
+  const v = raw.replace(/\D/g, "").slice(0, 2);
+  if (v.length === 2 && (parseInt(v) < 1 || parseInt(v) > 31)) return v.slice(0, 1);
+  return v;
+}
 
 /* ── 공통 칩 버튼 ── */
 function ChipBtn({
@@ -229,6 +244,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!birthDate) { toast.error("생년월일을 입력해 주세요"); return; }
+    if (!isValidBirthDate(birthDate)) { toast.error("생년월일을 다시 확인해 주세요"); return; }
     if (!calendar) { toast.error("달력 종류를 선택해 주세요"); return; }
     if (!gender) { toast.error("성별을 선택해 주세요"); return; }
     if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
@@ -241,6 +257,9 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     }
     if (productSlug === "love-saju" && !partnerBirthDate) {
       toast.error("상대방 생년월일을 입력해 주세요"); return;
+    }
+    if (productSlug === "love-saju" && partnerBirthDate && !isValidBirthDate(partnerBirthDate)) {
+      toast.error("상대방 생년월일을 다시 확인해 주세요"); return;
     }
     if (productSlug === "love-saju" && !relationship2) {
       toast.error("두 사람의 관계를 선택해 주세요"); return;
@@ -381,7 +400,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
               type="text" inputMode="numeric" maxLength={2} placeholder="05"
               value={birthMonth}
               onChange={(e) => {
-                const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                const v = clampMonth(e.target.value);
                 setBirthMonth(v);
                 if (v.length === 2) birthDayRef.current?.focus();
               }}
@@ -396,7 +415,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
               type="text" inputMode="numeric" maxLength={2} placeholder="15"
               value={birthDay}
               onChange={(e) => {
-                const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                const v = clampDay(e.target.value);
                 setBirthDay(v);
               }}
               className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
@@ -533,7 +552,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
                   type="text" inputMode="numeric" maxLength={2} placeholder="05"
                   value={partnerBirthMonth}
                   onChange={(e) => {
-                    const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                    const v = clampMonth(e.target.value);
                     setPartnerBirthMonth(v);
                     if (v.length === 2) partnerBirthDayRef.current?.focus();
                   }}
@@ -548,7 +567,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
                   type="text" inputMode="numeric" maxLength={2} placeholder="15"
                   value={partnerBirthDay}
                   onChange={(e) => {
-                    const v = e.target.value.replace(/\D/g, "").slice(0, 2);
+                    const v = clampDay(e.target.value);
                     setPartnerBirthDay(v);
                   }}
                   className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"

@@ -2,11 +2,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { birthDateSchema } from "@/lib/validation";
 
 const bodySchema = z.object({
   productId: z.string().uuid(),
   name: z.string().max(50).optional(),
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  birthDate: birthDateSchema,
   birthTime: z.string().regex(/^\d{2}:\d{2}$/).nullable(),
   timeUnknown: z.boolean(),
   gender: z.enum(["male", "female"]),
