@@ -3,25 +3,16 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type Props = {
-  /** 로그인 후 돌아갈 경로 (예: "/products/today-fortune?resume=1") */
+  /** 로그인 후 돌아갈 경로 (예: "/resume") */
   next?: string;
   label?: string;
 };
 
-function KakaoSymbol() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path
-        d="M12 3C6.48 3 2 6.36 2 10.5c0 2.64 1.74 4.96 4.36 6.3l-.9 3.32c-.08.3.26.54.52.37l3.98-2.64c.66.09 1.34.15 2.04.15 5.52 0 10-3.36 10-7.5S17.52 3 12 3Z"
-        fill="#191919"
-      />
-    </svg>
-  );
-}
-
-export function KakaoLoginButton({ next = "/mypage", label = "카카오로 1초 시작하기" }: Props) {
+export function KakaoLoginButton({ next = "/mypage", label = "카카오 1초 로그인" }: Props) {
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
@@ -47,10 +38,9 @@ export function KakaoLoginButton({ next = "/mypage", label = "카카오로 1초 
       type="button"
       onClick={handleClick}
       disabled={loading}
-      className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-60"
-      style={{ background: "#FEE500", color: "#191919" }}
+      className={cn(buttonVariants(), "w-full hover:opacity-90")}
+      style={{ background: "#ffd520", color: "#191919" }}
     >
-      <KakaoSymbol />
       {loading ? "카카오로 이동 중..." : label}
     </button>
   );

@@ -9,7 +9,7 @@ import { KakaoLoginButton } from "@/components/auth/KakaoLoginButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
@@ -47,7 +47,6 @@ function LoginForm() {
       <Card>
         <CardHeader>
           <CardTitle>로그인</CardTitle>
-          <CardDescription>이메일과 비밀번호로 로그인하세요.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 mb-6">
