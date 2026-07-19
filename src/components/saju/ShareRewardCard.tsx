@@ -64,7 +64,7 @@ export function ShareRewardCard() {
   async function shareResult() {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "내 사주 결과지", text: "내 사주 결과지 봐봐 👀", url: resultShareUrl });
+        await navigator.share({ title: "내 ‘사주 해설’ 결과지 봐봐~", url: resultShareUrl });
         return;
       } catch {
         return;

@@ -6,7 +6,7 @@
 export const siteConfig = {
   name: "냥점",
   tagline: "타고난 운명의 흐름을 읽는 곳",
-  description: "전통 명리학과 데이터를 결합한 분석",
+  description: "냥이가 답을 찾아드릴게요!",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   email: "hspjcho9@naver.com",
 };
