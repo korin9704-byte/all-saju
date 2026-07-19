@@ -12,11 +12,18 @@ const SHARE_BUTTON_STYLE = { background: "#ffd520", color: "#191919" } as const;
 const RESULT_BUTTON_STYLE = { background: "#191919", color: "#ffffff" } as const;
 
 /**
- * 결과 페이지·마이페이지용 공유 카드.
- * 친구가 내 링크로 무료 미니 사주를 완료하면 무료권 1개 적립 (친구당 1회, 한도 없음).
- * 결과 페이지(/results/*)에서는 결과지 공유 버튼도 함께 노출된다.
+ * 결과 페이지용 공유 카드 — 상품별 MINI 선물 링크(/free/[slug]?ref=) + 결과지 공유.
+ * 친구가 내 링크로 MINI를 완료하면 무료 이용권 1개 적립 (친구당 1회, 한도 없음).
  */
-export function ShareRewardCard() {
+export function ShareRewardCard({
+  productSlug = "today-fortune",
+  productName = "사주 해설",
+}: {
+  /** 선물할 MINI의 원본 상품 슬러그 */
+  productSlug?: string;
+  /** 공유 문구에 쓸 원본 상품명 */
+  productName?: string;
+} = {}) {
   const pathname = usePathname();
   const [info, setInfo] = useState<ReferralInfo | null>(null);
   const [hidden, setHidden] = useState(false);
@@ -35,7 +42,7 @@ export function ShareRewardCard() {
   if (hidden || !info || info.canShare === false) return null;
 
   const isResultPage = pathname?.startsWith("/results/") ?? false;
-  const shareUrl = `${window.location.origin}/free?ref=${info.code}`;
+  const shareUrl = `${window.location.origin}/free/${productSlug}?ref=${info.code}`;
   const resultShareUrl = `${window.location.origin}${pathname}?ref=${info.code}`;
 
   async function copyToClipboard(url: string, label: string) {
@@ -50,7 +57,7 @@ export function ShareRewardCard() {
   async function share() {
     if (navigator.share) {
       try {
-        await navigator.share({ text: `‘무료 사주 해설 MINI’ 선물 도착~ ${shareUrl}` });
+        await navigator.share({ text: `‘무료 ${productName} MINI’ 선물 도착~ ${shareUrl}` });
         return;
       } catch {
         // 사용자가 공유 시트를 닫은 경우 등 — 무시
@@ -63,7 +70,7 @@ export function ShareRewardCard() {
   async function shareResult() {
     if (navigator.share) {
       try {
-        await navigator.share({ text: `내 ‘사주 해설’ 결과지 봐봐~ ${resultShareUrl}` });
+        await navigator.share({ text: `내 ‘${productName}’ 결과지 봐봐~ ${resultShareUrl}` });
         return;
       } catch {
         return;

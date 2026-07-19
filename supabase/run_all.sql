@@ -225,3 +225,11 @@ where slug = 'free-mini';
 insert into public.products (slug, name, description, price, display_order, is_active)
 values ('today-fortune-mini', '사주 해설 MINI', '사주 해설 13가지 주제 중 6가지를 무료로', 0, 999, false)
 on conflict (slug) do nothing;
+
+-- 0007_more_minis.sql (MINI 상품 3종 추가)
+insert into public.products (slug, name, description, price, display_order, is_active)
+values
+  ('premium-saju-mini', '대운 해설 MINI', '대운 해설 미리보기를 무료로', 0, 999, false),
+  ('love-saju-mini', '궁합 해설 MINI', '궁합 해설 일부를 무료로', 0, 999, false),
+  ('worry-saju-mini', '무엇이든 물어보세요 MINI', '13가지 답변 중 6가지를 무료로', 0, 999, false)
+on conflict (slug) do nothing;

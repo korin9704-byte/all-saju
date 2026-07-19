@@ -5,6 +5,8 @@ import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { generateAndStoreResult } from "@/lib/saju/generate-result";
 
 const bodySchema = z.object({
+  // MINI 원본 상품 (미지정 시 사주 해설 — 기존 링크 하위호환)
+  productSlug: z.enum(["today-fortune", "premium-saju", "love-saju", "worry-saju"]).optional(),
   name: z.string().max(50).optional(),
   birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   birthTime: z.string().regex(/^\d{2}:\d{2}$/).nullable(),
@@ -14,9 +16,6 @@ const bodySchema = z.object({
   concerns: z.array(z.string().max(350)).max(20).optional(),
   ref: z.string().max(32).optional(), // 추천인 코드
 });
-
-// 현재 제공 중인 MINI 상품 (추후 상품별 MINI 확장 시 여기에 추가)
-const MINI_SLUG = "today-fortune-mini";
 
 export async function POST(request: NextRequest) {
   const parsed = bodySchema.safeParse(await request.json());
@@ -33,10 +32,11 @@ export async function POST(request: NextRequest) {
 
   const service = createServiceClient();
 
+  const miniSlug = `${body.productSlug ?? "today-fortune"}-mini`;
   const { data: product } = await service
     .from("products")
     .select("id, name")
-    .eq("slug", MINI_SLUG)
+    .eq("slug", miniSlug)
     .maybeSingle();
   if (!product) {
     return NextResponse.json({ error: "MINI 상품이 없습니다. 마이그레이션을 확인하세요" }, { status: 500 });

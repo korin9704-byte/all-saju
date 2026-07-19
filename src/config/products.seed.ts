@@ -80,10 +80,34 @@ export const productsSeed: ProductSeed[] = [
   },
   {
     // 공유받은 친구용 무료 MINI — 목록/일반 결제 흐름에는 노출하지 않음
-    // 결과지는 사주 해설과 동일(13주제)하되 6개만 공개, 990원 언락
+    // 결과지는 원본 상품과 동일하되 일부만 공개, 990원 언락 (slug 접미사 -mini 규칙)
     slug: "today-fortune-mini",
     name: "사주 해설 MINI",
     description: "사주 해설 13가지 주제 중 6가지를 무료로",
+    price: 0,
+    display_order: 999,
+    is_active: false,
+  },
+  {
+    slug: "premium-saju-mini",
+    name: "대운 해설 MINI",
+    description: "대운 해설 미리보기를 무료로",
+    price: 0,
+    display_order: 999,
+    is_active: false,
+  },
+  {
+    slug: "love-saju-mini",
+    name: "궁합 해설 MINI",
+    description: "궁합 해설 일부를 무료로",
+    price: 0,
+    display_order: 999,
+    is_active: false,
+  },
+  {
+    slug: "worry-saju-mini",
+    name: "무엇이든 물어보세요 MINI",
+    description: "13가지 답변 중 6가지를 무료로",
     price: 0,
     display_order: 999,
     is_active: false,

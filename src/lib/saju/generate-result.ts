@@ -253,8 +253,13 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
     llm = await generateInterpretation({ system, user });
   }
 
-  // 사주 해설(MINI 포함)은 주제를 항상 13개로 고정 — LLM이 넘치게 쓰면 잘라낸다
-  const interpretationMd = promptSlug === "today-fortune" ? limitSections(llm.text, 13) : llm.text;
+  // 섹션 수 고정 — LLM이 넘치게 쓰면 잘라낸다 (사주 해설·질문 13개, 궁합은 점수·제목 포함 15개)
+  const interpretationMd =
+    promptSlug === "today-fortune" || promptSlug === "worry-saju"
+      ? limitSections(llm.text, 13)
+      : promptSlug === "love-saju"
+        ? limitSections(llm.text, 15)
+        : llm.text;
 
   const { data: result, error: resultErr } = await service
     .from("saju_results")

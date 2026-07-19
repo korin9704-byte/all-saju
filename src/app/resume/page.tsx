@@ -60,7 +60,10 @@ export default function ResumePage() {
           let ref: string | undefined;
           try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
           try {
-            sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "mini", payload: { ...(payload as object), ref } }));
+            sessionStorage.setItem(
+              "saju_generate",
+              JSON.stringify({ kind: "mini", payload: { ...(payload as object), productSlug, ref } }),
+            );
             sessionStorage.removeItem(RESUME_KEY);
           } catch { /* ignore */ }
           router.replace("/generating");

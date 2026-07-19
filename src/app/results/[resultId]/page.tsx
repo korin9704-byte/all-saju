@@ -14,6 +14,7 @@ import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
 import { formatDate } from "@/lib/utils";
+import { MINI_PRODUCTS, isMiniBaseSlug } from "@/lib/mini";
 
 export const metadata = { title: "결과지" };
 
@@ -51,6 +52,26 @@ function parseLoveResult(md: string): {
   return { score, title, bodyMd };
 }
 
+/**
+ * 대운 해설 MINI 잠금 뷰용 마크다운 변환.
+ * ## 그룹 헤더(미리보기·상세 해설·연도별 해설·마지막 한마디)를 제거하고
+ * ### 소제목을 ## 로 승격해 아코디언 잠금 목록으로 만들 수 있게 한다.
+ * '제목'·'설명' 섹션은 '이 10년 미리보기' 하나로 병합.
+ */
+function daewunLockedMarkdown(md: string): string {
+  const lines = md.split("\n");
+  const out: string[] = [];
+  for (const line of lines) {
+    if (/^## /.test(line)) continue;
+    if (/^### /.test(line)) out.push(line.replace(/^### /, "## "));
+    else out.push(line);
+  }
+  return out
+    .join("\n")
+    .replace(/## 제목\s*\n/, "## 이 10년 미리보기\n")
+    .replace(/\n## 설명\s*\n/, "\n");
+}
+
 export default async function ResultPage({
   params,
   searchParams,
@@ -76,20 +97,9 @@ export default async function ResultPage({
     .eq("id", result.order_id)
     .single();
 
-  // 공유 링크로 유입된 방문자(비소유자)용 CTA — ref가 있으면 MINI 랜딩에 어트리뷰션 연결
   const supabaseAuth = await createClient();
   const { data: { user: viewer } } = await supabaseAuth.auth.getUser();
   const isOwner = !!viewer && viewer.id === order?.user_id;
-  const visitorCta = !isOwner ? (
-    <section className="mt-8 px-4 sm:px-0">
-      <Link
-        href={refParam ? `/free?ref=${encodeURIComponent(refParam)}` : "/free"}
-        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium inline-flex items-center justify-center transition-colors hover:bg-ink/80"
-      >
-        &lsquo;무료 사주 해설 MINI&rsquo; 보기
-      </Link>
-    </section>
-  ) : null;
   const { data: product } = order
     ? await service.from("products").select("name, slug").eq("id", order.product_id).single()
     : { data: null };
@@ -101,24 +111,104 @@ export default async function ResultPage({
     .maybeSingle();
 
   const myeongsik     = result.myeongsik as unknown as Myeongsik;
-  const isMiniLayout   = product?.slug === "today-fortune-mini";
-  const isTodayFortune = product?.slug === "today-fortune" || isMiniLayout;
-  const isDaewun       = product?.slug === "premium-saju";
-  const isLoveSaju     = product?.slug === "love-saju";
-  const isLocked       = isMiniLayout && result.locked === true;
+  // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
+  const rawSlug        = product?.slug ?? "";
+  const isMini         = rawSlug.endsWith("-mini");
+  const baseSlug       = isMini ? rawSlug.slice(0, -"-mini".length) : rawSlug;
+  const baseName       = (product?.name ?? "사주 풀이").replace(/\s*MINI$/i, "");
+  const isTodayFortune = baseSlug === "today-fortune";
+  const isDaewun       = baseSlug === "premium-saju";
+  const isLoveSaju     = baseSlug === "love-saju";
+  const isLocked       = isMini && result.locked === true;
+
+  // 공유 링크로 유입된 방문자(비소유자)용 CTA — 해당 상품의 MINI 랜딩으로 (ref 어트리뷰션 유지)
+  const miniLinkSlug = isMiniBaseSlug(baseSlug) ? baseSlug : "today-fortune";
+  const miniLinkName = isMiniBaseSlug(baseSlug) ? baseName : "사주 해설";
+  const visitorCta = !isOwner ? (
+    <section className="mt-8 px-4 sm:px-0">
+      <Link
+        href={`/free/${miniLinkSlug}${refParam ? `?ref=${encodeURIComponent(refParam)}` : ""}`}
+        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium inline-flex items-center justify-center transition-colors hover:bg-ink/80"
+      >
+        &lsquo;무료 {miniLinkName} MINI&rsquo; 보기
+      </Link>
+    </section>
+  ) : null;
+
+  /* ── MINI 잠금 결과지 (전 상품 공통) ── */
+  if (isLocked) {
+    const miniConf = isMiniBaseSlug(baseSlug) ? MINI_PRODUCTS[baseSlug] : { name: baseName, visible: 6 };
+    const { data: fullProduct } = await service
+      .from("products")
+      .select("price")
+      .eq("slug", baseSlug)
+      .maybeSingle();
+    const unlockPrice = fullProduct?.price ?? 990;
+    const lockedMarkdown = baseSlug === "premium-saju"
+      ? daewunLockedMarkdown(result.interpretation_md)
+      : result.interpretation_md;
+    const displayName = sajuInput?.name ? `${sajuInput.name}님의` : "";
+    const concernsArr = (sajuInput?.concerns ?? []) as string[];
+    const question = baseSlug === "worry-saju"
+      ? (concernsArr.find((c) => !c.startsWith("[")) ?? "")
+      : (concernsArr.find((c) => c.startsWith("[질문]"))?.replace(/^\[질문\]\s*/, "").trim() ?? "");
+    const tags = [
+      sajuInput?.birth_date ? formatBirthDate(sajuInput.birth_date) : null,
+      sajuInput?.calendar === "lunar" ? "음력" : "양력",
+      sajuInput?.time_unknown ? "시간 모름" : sajuInput?.birth_time ? formatTime(sajuInput.birth_time) : null,
+      sajuInput?.gender === "male" ? "남성" : "여성",
+    ].filter(Boolean) as string[];
+
+    return (
+      <div className="max-w-2xl mx-auto py-12">
+        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
+          <div className="px-6 pt-6 pb-5 text-center">
+            <h1 className="text-xl font-bold text-white tracking-tight">
+              {displayName} &lsquo;{miniConf.name} MINI&rsquo;
+            </h1>
+          </div>
+          <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
+            {tags.map((tag) => (
+              <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium"
+                style={{ background: "rgba(255,255,255,0.22)", color: "#fff" }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+          {question && (
+            <div className="px-5 pb-5 text-center">
+              <p className="text-xs text-white leading-relaxed">Q. {question}</p>
+            </div>
+          )}
+        </header>
+
+        <section>
+          <MyeongsikTable myeongsik={myeongsik} />
+        </section>
+
+        <article className="rounded-b-2xl overflow-hidden">
+          <LockedAccordionBody
+            markdown={lockedMarkdown}
+            resultId={result.id}
+            unlockPrice={unlockPrice}
+            visibleCount={miniConf.visible}
+            headerTitle={miniConf.name}
+          />
+        </article>
+
+        {visitorCta}
+
+        <OtherProducts currentSlug={product?.slug} />
+
+        <footer className="mt-10 text-center">
+          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
+        </footer>
+      </div>
+    );
+  }
 
   /* ── today-fortune 전용 레이아웃 ── */
   if (isTodayFortune) {
-    // MINI 잠금 결과: 언락 가격은 원본 상품 가격
-    let unlockPrice = 990;
-    if (isLocked) {
-      const { data: fullProduct } = await service
-        .from("products")
-        .select("price")
-        .eq("slug", "today-fortune")
-        .maybeSingle();
-      unlockPrice = fullProduct?.price ?? 990;
-    }
     const displayName = sajuInput?.name ? `${sajuInput.name}님의` : "";
     const todayConcerns = (sajuInput?.concerns ?? []) as string[];
     const todayQuestionRaw = todayConcerns.find((c: string) => c.startsWith("[질문]")) ?? "";
@@ -135,7 +225,7 @@ export default async function ResultPage({
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
-              {displayName} {isLocked ? "‘사주 해설 MINI’" : "‘사주 해설’"}
+              {displayName} &lsquo;사주 해설&rsquo;
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -158,20 +248,10 @@ export default async function ResultPage({
         </section>
 
         <article className="rounded-b-2xl overflow-hidden">
-          {isLocked ? (
-            <LockedAccordionBody
-              markdown={result.interpretation_md}
-              resultId={result.id}
-              unlockPrice={unlockPrice}
-              visibleCount={6}
-              headerTitle="사주 해설"
-            />
-          ) : (
-            <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
-          )}
+          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
         </article>
 
-        {!isLocked && <ShareRewardCard />}
+        <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
@@ -261,7 +341,7 @@ export default async function ResultPage({
           </article>
         </div>
 
-        <ShareRewardCard />
+        <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
@@ -447,7 +527,7 @@ export default async function ResultPage({
           />
         </article>
 
-        <ShareRewardCard />
+        <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
@@ -506,7 +586,7 @@ export default async function ResultPage({
         <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
       </article>
 
-      <ShareRewardCard />
+      <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
