@@ -16,6 +16,7 @@ export default function ResumePage() {
   const payloadRef = useRef<unknown>(null);
   const [phase, setPhase] = useState<"loading" | "choice" | "error">("loading");
   const [credits, setCredits] = useState(0);
+  const [useCredit, setUseCredit] = useState(true);
   const [choosing, setChoosing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [backHref, setBackHref] = useState("/products");
@@ -134,26 +135,24 @@ export default function ResumePage() {
   if (phase === "choice") {
     return (
       <div className="container py-24 max-w-md text-center">
-        <p className="text-lg font-bold text-ink">😽 로그인 완료!</p>
-        <p className="mt-2 text-sm text-body">
-          무료 이용권이 <b>{credits}개</b> 있어요. 사용해서 결제 없이 결과를 볼까요?
-        </p>
-        <div className="mt-8 space-y-3">
+        <p className="text-lg font-bold text-ink">😸 무료 이용권이 {credits}개 있네요!</p>
+        <div className="mt-8 space-y-4">
+          <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer text-left">
+            <p className="text-sm font-bold text-ink">무료 이용권 1개 사용하기</p>
+            <input
+              type="checkbox"
+              checked={useCredit}
+              onChange={(e) => setUseCredit(e.target.checked)}
+              className="w-5 h-5 accent-black"
+            />
+          </label>
           <button
             type="button"
-            onClick={chooseRedeem}
+            onClick={useCredit ? chooseRedeem : choosePay}
             disabled={choosing}
             className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50"
           >
-            {choosing ? "잠시만요..." : "무료 이용권 1개 사용하기"}
-          </button>
-          <button
-            type="button"
-            onClick={choosePay}
-            disabled={choosing}
-            className="w-full h-14 rounded-full border-2 border-ink text-ink text-sm font-medium transition-colors hover:bg-ink hover:text-white disabled:opacity-50"
-          >
-            {choosing ? "잠시만요..." : "990원 결제하기"}
+            {choosing ? "잠시만요..." : useCredit ? "무료 이용권으로 결과보기" : "990원 결제하기"}
           </button>
         </div>
       </div>
