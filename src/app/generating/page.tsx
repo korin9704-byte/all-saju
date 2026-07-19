@@ -129,7 +129,7 @@ export default function GeneratingPage() {
         <h1 className="text-lg font-bold text-ink leading-snug mb-6">
           {phase === "done"
             ? <>분석 완료! 결과 페이지로 이동할게요...🐾</>
-            : <>행운의 냥이가 노이즈 캔슬링 켜고<br />집중해서 분석 중...🐾</>}
+            : <>행운의 냥이가 집중해서 분석 중...🐾</>}
         </h1>
 
         {/* 프로그레스 바 */}
