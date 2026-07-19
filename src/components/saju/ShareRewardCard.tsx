@@ -57,7 +57,7 @@ export function ShareRewardCard() {
         type="button"
         onClick={share}
         className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90 border-2 border-ink inline-flex items-center justify-center gap-2"
-        style={{ background: "#FEE500", color: "#191919" }}
+        style={{ background: "#ffd520", color: "#191919" }}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
           <path
