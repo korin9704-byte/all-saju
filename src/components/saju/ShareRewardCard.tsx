@@ -1,15 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 type ReferralInfo = { code: string; canShare?: boolean; earned: number; available: number };
 
+function KakaoSymbol() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path
+        d="M12 3C6.48 3 2 6.36 2 10.5c0 2.64 1.74 4.96 4.36 6.3l-.9 3.32c-.08.3.26.54.52.37l3.98-2.64c.66.09 1.34.15 2.04.15 5.52 0 10-3.36 10-7.5S17.52 3 12 3Z"
+        fill="#191919"
+      />
+    </svg>
+  );
+}
+
+const SHARE_BUTTON_CLASS =
+  "w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90 border-2 border-ink inline-flex items-center justify-center gap-2";
+const SHARE_BUTTON_STYLE = { background: "#ffd520", color: "#191919" } as const;
+
 /**
  * 결과 페이지·마이페이지용 공유 카드.
- * 친구가 내 링크로 무료 미니 사주를 완료하면 무료권 1개 적립 (친구당 1회, 누적 상한).
+ * 친구가 내 링크로 무료 미니 사주를 완료하면 무료권 1개 적립 (친구당 1회, 한도 없음).
+ * 결과 페이지(/results/*)에서는 결과지 공유 버튼도 함께 노출된다.
  */
 export function ShareRewardCard() {
+  const pathname = usePathname();
   const [info, setInfo] = useState<ReferralInfo | null>(null);
   const [hidden, setHidden] = useState(false);
 
@@ -26,15 +44,17 @@ export function ShareRewardCard() {
   // 풀버전(유료) 열람자만 공유 링크 획득 — MINI만 본 사람에게는 노출하지 않음
   if (hidden || !info || info.canShare === false) return null;
 
+  const isResultPage = pathname?.startsWith("/results/") ?? false;
   const shareUrl = `${window.location.origin}/free?ref=${info.code}`;
   const shareText = "너한테 사주 해설 MINI 선물 도착 🎁 13가지 주제 중 6가지를 무료로 볼 수 있어";
+  const resultShareUrl = `${window.location.origin}${pathname}?ref=${info.code}`;
 
-  async function copyLink() {
+  async function copyToClipboard(url: string, label: string) {
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      toast.success("링크가 복사됐어요. 카카오톡에 붙여넣어 보내보세요!");
+      await navigator.clipboard.writeText(url);
+      toast.success(`${label} 링크가 복사됐어요. 카카오톡에 붙여넣어 보내보세요!`);
     } catch {
-      toast.error("복사에 실패했어요. 링크를 직접 선택해 주세요");
+      toast.error("복사에 실패했어요. 잠시 후 다시 시도해 주세요");
     }
   }
 
@@ -48,28 +68,38 @@ export function ShareRewardCard() {
         return;
       }
     }
-    await copyLink();
+    await copyToClipboard(shareUrl, "선물");
+  }
+
+  async function shareResult() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "내 사주 결과지", text: "내 사주 결과지 봐봐 👀", url: resultShareUrl });
+        return;
+      } catch {
+        return;
+      }
+    }
+    await copyToClipboard(resultShareUrl, "결과지");
   }
 
   return (
-    <section className="mt-8">
-      <button
-        type="button"
-        onClick={share}
-        className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90 border-2 border-ink inline-flex items-center justify-center gap-2"
-        style={{ background: "#ffd520", color: "#191919" }}
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-          <path
-            d="M12 3C6.48 3 2 6.36 2 10.5c0 2.64 1.74 4.96 4.36 6.3l-.9 3.32c-.08.3.26.54.52.37l3.98-2.64c.66.09 1.34.15 2.04.15 5.52 0 10-3.36 10-7.5S17.52 3 12 3Z"
-            fill="#191919"
-          />
-        </svg>
-        카카오톡으로 친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
-      </button>
-      <p className="mt-2 text-xs text-center text-mute">
-        친구가 &lsquo;무료 사주 해설 MINI&rsquo;를 보면 나에게 무료 이용권 1개가 쌓여요 · 한도 없음
-      </p>
+    <section className="mt-8 space-y-3">
+      {isResultPage && (
+        <button type="button" onClick={shareResult} className={SHARE_BUTTON_CLASS} style={SHARE_BUTTON_STYLE}>
+          <KakaoSymbol />
+          카카오톡으로 친구에게 &lsquo;내 결과지&rsquo; 공유하기
+        </button>
+      )}
+      <div>
+        <button type="button" onClick={share} className={SHARE_BUTTON_CLASS} style={SHARE_BUTTON_STYLE}>
+          <KakaoSymbol />
+          카카오톡으로 친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
+        </button>
+        <p className="mt-2 text-xs text-center text-mute">
+          친구가 &lsquo;무료 사주 해설 MINI&rsquo;를 보면 나에게 무료 이용권 1개가 쌓여요 · 한도 없음
+        </p>
+      </div>
     </section>
   );
 }
