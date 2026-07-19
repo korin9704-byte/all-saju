@@ -105,7 +105,6 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   const router = useRouter();
   const searchParams = useSearchParams();
   const refParam = searchParams.get("ref");
-  const pendingKey = miniMode ? "saju_pending_mini" : `saju_pending_${productSlug}`;
   const [name, setName]               = useState("");
   const [birthYear, setBirthYear]     = useState("");
   const [birthMonth, setBirthMonth]   = useState("");
@@ -150,15 +149,6 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   const [credit, setCredit] = useState<{ available: number; earned: number } | null>(null);
   const [useFreeCredit, setUseFreeCredit] = useState(false);
 
-  // 카카오 로그인 복귀 직후에는 폼 대신 전환 화면을 보여준다 (ssr:false 라 초기값에서 세션 확인 가능)
-  const [resuming, setResuming] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    try {
-      return isLoggedIn && searchParams.get("resume") === "1" && !!sessionStorage.getItem(pendingKey);
-    } catch {
-      return false;
-    }
-  });
 
   useEffect(() => {
     if (!isLoggedIn || miniMode) return;
@@ -233,37 +223,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
       setSubmitting(false);
-      setResuming(false);
     }
   }, [router]);
-
-  // 카카오 로그인에서 돌아온 경우: 저장해둔 입력으로 자동 이어서 진행
-  const resumedRef = useRef(false);
-  useEffect(() => {
-    if (searchParams.get("resume") !== "1" || !isLoggedIn || resumedRef.current) return;
-    resumedRef.current = true;
-    try {
-      const raw = sessionStorage.getItem(pendingKey);
-      if (!raw) return;
-      sessionStorage.removeItem(pendingKey);
-      const payload = JSON.parse(raw) as OrderPayload;
-
-      void (async () => {
-        // 로그인 직후에는 이용권 보유 여부를 알 수 없으므로 여기서 조회해 무료권 우선 사용
-        let redeem = false;
-        if (!miniMode) {
-          try {
-            const res = await fetch("/api/referral/me");
-            const json = res.ok ? await res.json() : null;
-            redeem = (json?.available ?? 0) > 0;
-          } catch { /* 조회 실패 시 결제 경로 */ }
-        }
-        await submitOrder(payload, miniMode ? "mini" : redeem ? "redeem" : "pay");
-      })();
-    } catch {
-      setResuming(false);
-    }
-  }, [searchParams, isLoggedIn, pendingKey, miniMode, submitOrder]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -326,14 +287,17 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         timeUnknown, gender, calendar, concerns,
       };
 
-      // 미로그인 → 입력 저장 후 카카오 1초 로그인, 돌아와서 자동 이어서 진행
+      // 미로그인 → 입력 저장 후 카카오 1초 로그인, /resume 전환 페이지에서 자동 이어서 진행
       if (!isLoggedIn) {
-        try { sessionStorage.setItem(pendingKey, JSON.stringify(payload)); } catch { /* ignore */ }
+        try {
+          sessionStorage.setItem(
+            "saju_resume",
+            JSON.stringify({ mode: miniMode ? "mini" : "pay", productSlug, payload }),
+          );
+        } catch { /* ignore */ }
         setSubmitting(true);
         const supabase = createClient();
-        const next = miniMode
-          ? `/free?resume=1${refParam ? `&ref=${encodeURIComponent(refParam)}` : ""}`
-          : `/products/${productSlug}?resume=1`;
+        const next = "/resume";
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "kakao",
           options: {
@@ -353,16 +317,6 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         miniMode ? "mini" : useFreeCredit && (credit?.available ?? 0) > 0 ? "redeem" : "pay",
       );
     }
-  }
-
-  // 카카오 로그인 복귀 직후: 폼 대신 전환 화면 → 곧바로 결제/결과 페이지로 이동
-  if (resuming) {
-    return (
-      <div className="py-24 text-center">
-        <p className="text-lg font-bold text-ink">로그인 완료!</p>
-        <p className="mt-2 text-sm text-mute">잠시만요, 이어서 진행하고 있어요...</p>
-      </div>
-    );
   }
 
   return (
