@@ -98,7 +98,7 @@ export function ShareRewardCard() {
           카카오톡으로 친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
         </button>
         <p className="mt-2 text-xs text-center text-ink">
-          <span style={{ background: "linear-gradient(transparent 55%, #ddd6fe 55%)" }}>
+          <span style={{ background: "linear-gradient(transparent 55%, #fde68a 55%)" }}>
             친구가 &lsquo;무료 사주 해설 MINI&rsquo;를 보면 나에게 무료 이용권 1개가 쌓여요 · 한도 없음
           </span>
         </p>
