@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { createServiceClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { MyeongsikTable } from "@/components/saju/MyeongsikTable";
 import { ResultBody } from "@/components/saju/ResultBody";
 import { AccordionBody } from "@/components/saju/AccordionBody";
@@ -52,10 +53,13 @@ function parseLoveResult(md: string): {
 
 export default async function ResultPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ resultId: string }>;
+  searchParams: Promise<{ ref?: string }>;
 }) {
   const { resultId } = await params;
+  const { ref: refParam } = await searchParams;
   const service = createServiceClient();
 
   const { data: result } = await service
@@ -68,9 +72,24 @@ export default async function ResultPage({
 
   const { data: order } = await service
     .from("orders")
-    .select("product_id, paid_at")
+    .select("product_id, paid_at, user_id")
     .eq("id", result.order_id)
     .single();
+
+  // 공유 링크로 유입된 방문자(비소유자)용 CTA — ref가 있으면 MINI 랜딩에 어트리뷰션 연결
+  const supabaseAuth = await createClient();
+  const { data: { user: viewer } } = await supabaseAuth.auth.getUser();
+  const isOwner = !!viewer && viewer.id === order?.user_id;
+  const visitorCta = !isOwner ? (
+    <section className="mt-8 px-4 sm:px-0">
+      <Link
+        href={refParam ? `/free?ref=${encodeURIComponent(refParam)}` : "/free"}
+        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium inline-flex items-center justify-center transition-colors hover:bg-ink/80"
+      >
+        &lsquo;무료 사주 해설 MINI&rsquo; 보기
+      </Link>
+    </section>
+  ) : null;
   const { data: product } = order
     ? await service.from("products").select("name, slug").eq("id", order.product_id).single()
     : { data: null };
@@ -153,6 +172,8 @@ export default async function ResultPage({
         </article>
 
         {!isLocked && <ShareRewardCard />}
+
+        {visitorCta}
 
         <OtherProducts currentSlug={product?.slug} />
 
@@ -241,6 +262,8 @@ export default async function ResultPage({
         </div>
 
         <ShareRewardCard />
+
+        {visitorCta}
 
         <OtherProducts currentSlug={product?.slug} />
 
@@ -426,6 +449,8 @@ export default async function ResultPage({
 
         <ShareRewardCard />
 
+        {visitorCta}
+
         <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 pb-10 text-center">
@@ -482,6 +507,8 @@ export default async function ResultPage({
       </article>
 
       <ShareRewardCard />
+
+        {visitorCta}
 
         <OtherProducts currentSlug={product?.slug} />
 
