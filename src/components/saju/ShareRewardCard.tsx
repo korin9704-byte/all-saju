@@ -56,10 +56,16 @@ export function ShareRewardCard() {
       <button
         type="button"
         onClick={share}
-        className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90"
+        className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90 border-2 border-ink inline-flex items-center justify-center gap-2"
         style={{ background: "#FEE500", color: "#191919" }}
       >
-        친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path
+            d="M12 3C6.48 3 2 6.36 2 10.5c0 2.64 1.74 4.96 4.36 6.3l-.9 3.32c-.08.3.26.54.52.37l3.98-2.64c.66.09 1.34.15 2.04.15 5.52 0 10-3.36 10-7.5S17.52 3 12 3Z"
+            fill="#191919"
+          />
+        </svg>
+        카카오톡으로 친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
       </button>
       <p className="mt-2 text-xs text-center text-mute">
         친구가 &lsquo;무료 사주 해설 MINI&rsquo;를 보면 나에게 무료 이용권 1개가 쌓여요 · 한도 없음
