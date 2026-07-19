@@ -1,7 +1,7 @@
 "use client";
 
 // 카카오 로그인 복귀 전용 페이지 — 저장해둔 입력으로 주문 생성/무료 결과를 이어서 진행한다.
-// 무료 이용권이 있으면 자동 사용하지 않고 사용 여부를 먼저 묻는다.
+// 무료 이용권이 있으면 바로 사용해서 분석 페이지로 넘어간다.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -13,11 +13,7 @@ const RESUME_KEY = "saju_resume";
 export default function ResumePage() {
   const router = useRouter();
   const startedRef = useRef(false);
-  const payloadRef = useRef<unknown>(null);
-  const [phase, setPhase] = useState<"loading" | "choice" | "error">("loading");
-  const [credits, setCredits] = useState(0);
-  const [useCredit, setUseCredit] = useState(true);
-  const [choosing, setChoosing] = useState(false);
+  const [phase, setPhase] = useState<"loading" | "error">("loading");
   const [error, setError] = useState<string | null>(null);
   const [backHref, setBackHref] = useState("/products");
 
@@ -51,7 +47,6 @@ export default function ResumePage() {
       router.replace("/");
       return;
     }
-    payloadRef.current = payload;
     setBackHref(mode === "mini" ? "/free" : productSlug ? `/products/${productSlug}` : "/products");
 
     void (async () => {
@@ -70,7 +65,7 @@ export default function ResumePage() {
           return;
         }
 
-        // 결제 경로: 이용권이 있으면 자동 사용하지 않고 사용 여부를 먼저 묻는다
+        // 결제 경로: 이용권이 있으면 바로 사용해서 결과 생성으로 진행
         let available = 0;
         try {
           const res = await fetch("/api/referral/me");
@@ -79,8 +74,11 @@ export default function ResumePage() {
         } catch { /* 조회 실패 시 결제 경로 */ }
 
         if (available > 0) {
-          setCredits(available);
-          setPhase("choice");
+          try {
+            sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "redeem", payload }));
+            sessionStorage.removeItem(RESUME_KEY);
+          } catch { /* ignore */ }
+          router.replace("/generating");
           return;
         }
 
@@ -92,28 +90,6 @@ export default function ResumePage() {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
-
-  async function chooseRedeem() {
-    if (choosing) return;
-    setChoosing(true);
-    try {
-      sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "redeem", payload: payloadRef.current }));
-      sessionStorage.removeItem(RESUME_KEY);
-    } catch { /* ignore */ }
-    router.replace("/generating");
-  }
-
-  async function choosePay() {
-    if (choosing) return;
-    setChoosing(true);
-    try {
-      await createOrderAndCheckout(payloadRef.current);
-    } catch (err) {
-      setChoosing(false);
-      setError(err instanceof Error ? err.message : "진행 중 오류가 발생했어요");
-      setPhase("error");
-    }
-  }
 
   if (phase === "error") {
     return (
@@ -130,33 +106,6 @@ export default function ResumePage() {
             다시 시도하기
           </button>
           <Link href={backHref} className={cn(buttonVariants({ variant: "outline" }))}>처음으로</Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (phase === "choice") {
-    return (
-      <div className="container py-24 max-w-md text-center">
-        <p className="text-lg font-bold text-ink">😸 무료 이용권이 {credits}개 있네요!</p>
-        <div className="mt-8 space-y-4">
-          <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer text-left">
-            <p className="text-sm font-medium text-ink">무료 이용권 1개 사용하기</p>
-            <input
-              type="checkbox"
-              checked={useCredit}
-              onChange={(e) => setUseCredit(e.target.checked)}
-              className="w-5 h-5 accent-black"
-            />
-          </label>
-          <button
-            type="button"
-            onClick={useCredit ? chooseRedeem : choosePay}
-            disabled={choosing}
-            className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50"
-          >
-            {choosing ? "잠시만요..." : useCredit ? "무료 이용권으로 결과보기" : "결제하기"}
-          </button>
         </div>
       </div>
     );
