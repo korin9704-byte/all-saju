@@ -949,7 +949,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             : useFreeCredit && (credit?.available ?? 0) > 0
               ? "무료권으로 결과보기"
               : isLoggedIn
-                ? "결제하러 가기"
+                ? "결제하기"
                 : "카카오 1초 로그인하고 결제하기"}
       </button>
       {!isLoggedIn && (
