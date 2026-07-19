@@ -301,17 +301,27 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         timeUnknown, gender, calendar, concerns,
       };
 
-      // 미로그인 → 입력 저장 후 카카오 1초 로그인, /resume 전환 페이지에서 자동 이어서 진행
+      // 미로그인 → 입력 저장 후 카카오 1초 로그인
+      // MINI는 로그인 후 바로 /generating(분석 중)으로, 결제는 /resume에서 이용권/결제 분기
       if (!isLoggedIn) {
         try {
-          sessionStorage.setItem(
-            "saju_resume",
-            JSON.stringify({ mode: miniMode ? "mini" : "pay", productSlug, payload }),
-          );
+          if (miniMode) {
+            let ref: string | undefined;
+            try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
+            sessionStorage.setItem(
+              "saju_generate",
+              JSON.stringify({ kind: "mini", payload: { ...payload, productSlug, ref } }),
+            );
+          } else {
+            sessionStorage.setItem(
+              "saju_resume",
+              JSON.stringify({ mode: "pay", productSlug, payload }),
+            );
+          }
         } catch { /* ignore */ }
         setSubmitting(true);
         const supabase = createClient();
-        const next = "/resume";
+        const next = miniMode ? "/generating" : "/resume";
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "kakao",
           options: {

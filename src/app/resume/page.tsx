@@ -111,10 +111,6 @@ export default function ResumePage() {
     );
   }
 
-  return (
-    <div className="container py-24 max-w-md text-center">
-      <p className="text-lg font-bold text-ink">😽 로그인 완료!</p>
-      <p className="mt-2 text-sm text-mute">잠시만요, 이어서 진행하고 있어요...</p>
-    </div>
-  );
+  // 전환 화면 없이 바로 다음 페이지(토스 결제 또는 분석 중)로 넘어간다
+  return null;
 }
