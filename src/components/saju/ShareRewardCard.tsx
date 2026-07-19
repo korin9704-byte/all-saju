@@ -36,7 +36,6 @@ export function ShareRewardCard() {
 
   const isResultPage = pathname?.startsWith("/results/") ?? false;
   const shareUrl = `${window.location.origin}/free?ref=${info.code}`;
-  const shareText = "너한테 사주 해설 MINI 선물 도착 🎁 13가지 주제 중 6가지를 무료로 볼 수 있어";
   const resultShareUrl = `${window.location.origin}${pathname}?ref=${info.code}`;
 
   async function copyToClipboard(url: string, label: string) {
@@ -51,7 +50,7 @@ export function ShareRewardCard() {
   async function share() {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "무료 미니 사주", text: shareText, url: shareUrl });
+        await navigator.share({ title: "‘무료 사주 해설 MINI’ 선물 도착~", url: shareUrl });
         return;
       } catch {
         // 사용자가 공유 시트를 닫은 경우 등 — 무시
