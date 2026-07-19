@@ -116,7 +116,7 @@ export default async function ResultPage({
   ) : null;
 
   /* ── MINI 잠금 결과지 (대운 제외 — 대운은 원본 레이아웃에서 잠금 처리) ── */
-  if (isLocked && baseSlug !== "premium-saju") {
+  if (isLocked && baseSlug !== "premium-saju" && baseSlug !== "love-saju") {
     const miniConf = isMiniBaseSlug(baseSlug) ? MINI_PRODUCTS[baseSlug] : { name: baseName, visible: 6 };
     const { data: fullProduct } = await service
       .from("products")
@@ -347,6 +347,17 @@ export default async function ResultPage({
   if (isLoveSaju) {
     const concerns = (sajuInput?.concerns ?? []) as string[];
 
+    // MINI 잠금 시 잠금 해제 가격 (원본 상품 가격)
+    let loveUnlockPrice = 990;
+    if (isLocked) {
+      const { data: fullProduct } = await service
+        .from("products")
+        .select("price")
+        .eq("slug", baseSlug)
+        .maybeSingle();
+      loveUnlockPrice = fullProduct?.price ?? 990;
+    }
+
     // 상대방 정보 파싱
     const partnerConcern   = concerns.find((c: string) => c.startsWith("[상대방]")) ?? "";
     const pNameMatch       = partnerConcern.match(/이름:([^\s]+)/);
@@ -509,14 +520,24 @@ export default async function ResultPage({
 
         {/* ── 아코디언 본문 ── */}
         <article className="rounded-b-2xl overflow-hidden">
-          <AccordionBody
-            markdown={bodyMd || result.interpretation_md}
-            headerTitle="궁합 해설"
-            limit={13}
-          />
+          {isLocked ? (
+            <LockedAccordionBody
+              markdown={bodyMd || result.interpretation_md}
+              resultId={result.id}
+              unlockPrice={loveUnlockPrice}
+              visibleCount={6}
+              headerTitle="궁합 해설"
+            />
+          ) : (
+            <AccordionBody
+              markdown={bodyMd || result.interpretation_md}
+              headerTitle="궁합 해설"
+              limit={13}
+            />
+          )}
         </article>
 
-        <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
+        {!isLocked && <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />}
 
         {visitorCta}
 
