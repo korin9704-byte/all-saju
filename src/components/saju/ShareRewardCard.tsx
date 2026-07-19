@@ -59,9 +59,11 @@ export function ShareRewardCard() {
         className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90"
         style={{ background: "#FEE500", color: "#191919" }}
       >
-        친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기🎁
+        친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
       </button>
-      <p className="mt-2 text-xs text-center text-mute">공유할수록 무료 이용권이 쌓여요 · 한도 없음</p>
+      <p className="mt-2 text-xs text-center text-mute">
+        친구가 &lsquo;무료 사주 해설 MINI&rsquo;를 보면 나에게 무료 이용권 1개가 쌓여요 · 한도 없음
+      </p>
     </section>
   );
 }
