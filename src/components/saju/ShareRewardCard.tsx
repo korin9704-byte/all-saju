@@ -82,11 +82,11 @@ export function ShareRewardCard() {
       )}
       <div>
         <button type="button" onClick={share} className={SHARE_BUTTON_CLASS} style={SHARE_BUTTON_STYLE}>
-          카카오톡으로 친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
+          카카오톡으로 친구에게 &lsquo;무료 해설 MINI&rsquo; 선물하기
         </button>
         <p className="mt-2 text-xs text-center text-ink">
           <span style={{ background: "linear-gradient(transparent 55%, #fde68a 55%)" }}>
-            친구가 &lsquo;MINI 해설&rsquo;을 보면 무료 이용권 1개 적립 · 한도 없음
+            친구가 &lsquo;무료 해설 MINI&rsquo;를 보면 무료 이용권 1개 적립 · 한도 없음
           </span>
         </p>
       </div>
