@@ -895,9 +895,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       {!miniMode && (credit?.available ?? 0) > 0 && (
         <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer">
           <div>
-            <p className="text-sm font-bold text-ink">
-              무료 이용권 사용하기 — 보유 무료 이용권 {credit!.available}개
-            </p>
+            <p className="text-sm font-bold text-ink">무료 이용권 1개 사용하기</p>
           </div>
           <input
             type="checkbox"
