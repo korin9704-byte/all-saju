@@ -359,7 +359,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   if (resuming) {
     return (
       <div className="py-24 text-center">
-        <p className="text-lg font-bold text-ink">로그인 완료! 🎉</p>
+        <p className="text-lg font-bold text-ink">로그인 완료!</p>
         <p className="mt-2 text-sm text-mute">잠시만요, 이어서 진행하고 있어요...</p>
       </div>
     );
@@ -959,7 +959,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       <button type="submit" disabled={submitting}
         className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
         {submitting
-          ? (miniMode || useFreeCredit ? "결과를 만들고 있어요..." : "주문 생성 중...")
+          ? (miniMode || useFreeCredit ? "결과를 만들고 있어요..." : "잠시만요...")
           : miniMode
             ? (isLoggedIn ? "결과보기" : "카카오 1초 로그인하고 결과보기")
             : useFreeCredit && (credit?.available ?? 0) > 0
