@@ -5,10 +5,12 @@ export function AnalysisProgress({
   pct,
   seconds,
   done = false,
+  title,
 }: {
   pct: number;
   seconds: number;
   done?: boolean;
+  title?: string;
 }) {
   return (
     <>
@@ -25,7 +27,7 @@ export function AnalysisProgress({
         <h1 className="text-lg font-bold text-ink leading-snug mb-6">
           {done
             ? <>분석 완료! 결과 페이지로 이동할게요...🐾</>
-            : <>행운의 냥이가 집중해서 분석 중...🐾</>}
+            : <>{title ?? "행운의 냥이가 집중해서 분석 중...🐾"}</>}
         </h1>
 
         {/* 프로그레스 바 */}

@@ -113,5 +113,5 @@ export default function ResumePage() {
   }
 
   // 분기하는 동안 분석 중 화면을 0% 고정으로 보여준다 (이후 /generating 또는 결제 페이지로 전환)
-  return <AnalysisProgress pct={0} seconds={90} />;
+  return <AnalysisProgress pct={0} seconds={90} title="잠시만요...🐾" />;
 }
