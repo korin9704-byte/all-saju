@@ -18,7 +18,7 @@ function KakaoSymbol() {
 }
 
 const SHARE_BUTTON_CLASS =
-  "w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90 border-2 border-ink inline-flex items-center justify-center gap-2";
+  "w-full h-14 rounded-full text-sm font-medium transition-opacity hover:opacity-90 border-2 border-ink inline-flex items-center justify-center gap-2";
 const SHARE_BUTTON_STYLE = { background: "#ffd520", color: "#191919" } as const;
 
 /**
