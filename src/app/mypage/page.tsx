@@ -22,7 +22,7 @@ export default async function MyPage() {
   ];
 
   return (
-    <div className="container py-12 max-w-xl">
+    <div className="container py-12 max-w-2xl">
       <header className="mb-10">
         <p className="text-xs font-mono text-mute mb-2">ACCOUNT</p>
         <h1 className="text-2xl font-semibold tracking-tight">

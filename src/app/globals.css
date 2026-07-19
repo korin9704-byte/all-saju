@@ -37,6 +37,9 @@
     font-size: 18px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* 모바일(안드로이드 인앱 브라우저 등) 자동 글자 확대 방지 — 페이지마다 버튼·문구 크기가 달라지는 문제 */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
     @apply bg-background text-foreground;
