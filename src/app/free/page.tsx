@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
 import { SajuFormNoSSR as SajuForm } from "@/components/saju/SajuFormNoSSR";
 import { ReviewList } from "@/components/reviews/ReviewList";
@@ -19,11 +20,39 @@ type Review = { id: string; rating: number; content: string; created_at: string 
 export default async function FreeMiniPage() {
   let isLoggedIn = false;
   let reviews: Review[] | null = null;
+  let existingResultId: string | null = null; // 계정당 1회 — 이미 이용했으면 기존 결과 안내
 
   if (isSupabaseConfigured()) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     isLoggedIn = !!user;
+
+    if (user) {
+      const service = createServiceClient();
+      const { data: miniProduct } = await service
+        .from("products")
+        .select("id")
+        .eq("slug", "today-fortune-mini")
+        .maybeSingle();
+      if (miniProduct) {
+        const { data: miniOrder } = await service
+          .from("orders")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("product_id", miniProduct.id)
+          .eq("status", "paid")
+          .limit(1)
+          .maybeSingle();
+        if (miniOrder) {
+          const { data: miniResult } = await service
+            .from("saju_results")
+            .select("id")
+            .eq("order_id", miniOrder.id)
+            .maybeSingle();
+          existingResultId = miniResult?.id ?? null;
+        }
+      }
+    }
 
     // 후기는 원본 상품(사주 해설)의 실제 후기를 그대로 노출
     const { data: fullProduct } = await supabase
@@ -92,7 +121,27 @@ export default async function FreeMiniPage() {
       </div>
 
       <section className="mt-2">
-        <SajuForm productId="" productSlug="today-fortune" isLoggedIn={isLoggedIn} miniMode />
+        {existingResultId ? (
+          <div className="text-center space-y-4 px-4 sm:px-0 py-6">
+            <p className="text-lg font-bold text-ink">이미 무료 MINI를 이용하셨어요</p>
+            <p className="text-sm text-body">무료 사주 해설 MINI는 계정당 1회 제공돼요</p>
+            <Link
+              href={`/results/${existingResultId}`}
+              className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium inline-flex items-center justify-center transition-colors hover:bg-ink/80"
+            >
+              내 MINI 결과 보기
+            </Link>
+            <Link
+              href="/products/today-fortune"
+              className="w-full h-14 rounded-full text-sm font-medium inline-flex items-center justify-center transition-opacity hover:opacity-90"
+              style={{ background: "#ffd520", color: "#191919" }}
+            >
+              다른 사주가 궁금하다면 &lsquo;사주 해설&rsquo; 보기 · 990원
+            </Link>
+          </div>
+        ) : (
+          <SajuForm productId="" productSlug="today-fortune" isLoggedIn={isLoggedIn} miniMode />
+        )}
       </section>
     </div>
   );
