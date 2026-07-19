@@ -55,15 +55,21 @@ export function ShareRewardCard({
   }
 
   // 1순위: 카카오톡 공유(인앱 브라우저 포함 동작) → 2순위: 기기 공유 시트 → 3순위: 링크 복사
-  function kakaoShare(text: string, url: string, buttonTitle: string): boolean {
+  // 피드형 템플릿: 상품 이미지 + 제목 + 설명 + 이동 버튼 (URL 미리보기 카드와 같은 구성)
+  function kakaoShare(title: string, url: string, buttonTitle: string): boolean {
     const kakao = window.Kakao;
     if (!kakao?.isInitialized?.() || !kakao.Share) return false;
+    const link = { mobileWebUrl: url, webUrl: url };
     try {
       kakao.Share.sendDefault({
-        objectType: "text",
-        text,
-        link: { mobileWebUrl: url, webUrl: url },
-        buttonTitle,
+        objectType: "feed",
+        content: {
+          title,
+          description: "냥이가 답을 찾아드릴게요!",
+          imageUrl: `${window.location.origin}/images/${productSlug}.png`,
+          link,
+        },
+        buttons: [{ title: buttonTitle, link }],
       });
       return true;
     } catch {

@@ -10,10 +10,14 @@ declare global {
       isInitialized: () => boolean;
       Share?: {
         sendDefault: (settings: {
-          objectType: "text";
-          text: string;
-          link: { mobileWebUrl: string; webUrl: string };
-          buttonTitle?: string;
+          objectType: "feed";
+          content: {
+            title: string;
+            description?: string;
+            imageUrl: string;
+            link: { mobileWebUrl: string; webUrl: string };
+          };
+          buttons?: { title: string; link: { mobileWebUrl: string; webUrl: string } }[];
         }) => void;
       };
     };
