@@ -6,17 +6,6 @@ import { toast } from "sonner";
 
 type ReferralInfo = { code: string; canShare?: boolean; earned: number; available: number };
 
-function KakaoSymbol({ fill = "#191919" }: { fill?: string }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path
-        d="M12 3C6.48 3 2 6.36 2 10.5c0 2.64 1.74 4.96 4.36 6.3l-.9 3.32c-.08.3.26.54.52.37l3.98-2.64c.66.09 1.34.15 2.04.15 5.52 0 10-3.36 10-7.5S17.52 3 12 3Z"
-        fill={fill}
-      />
-    </svg>
-  );
-}
-
 const SHARE_BUTTON_CLASS =
   "w-full h-14 rounded-full text-sm font-medium transition-opacity hover:opacity-90 inline-flex items-center justify-center gap-2";
 const SHARE_BUTTON_STYLE = { background: "#ffd520", color: "#191919" } as const;
@@ -85,21 +74,19 @@ export function ShareRewardCard() {
   }
 
   return (
-    <section className="mt-8 space-y-3">
+    <section className="mt-8 space-y-3 px-4 sm:px-0">
       {isResultPage && (
         <button type="button" onClick={shareResult} className={SHARE_BUTTON_CLASS} style={RESULT_BUTTON_STYLE}>
-          <KakaoSymbol fill="#ffffff" />
           카카오톡으로 친구에게 &lsquo;내 결과지&rsquo; 공유하기
         </button>
       )}
       <div>
         <button type="button" onClick={share} className={SHARE_BUTTON_CLASS} style={SHARE_BUTTON_STYLE}>
-          <KakaoSymbol />
           카카오톡으로 친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기
         </button>
         <p className="mt-2 text-xs text-center text-ink">
           <span style={{ background: "linear-gradient(transparent 55%, #fde68a 55%)" }}>
-            친구가 &lsquo;무료 사주 해설 MINI&rsquo;를 보면 나에게 무료 이용권 1개가 쌓여요 · 한도 없음
+            친구가 &lsquo;MINI 해설&rsquo;을 보면 무료 이용권 1개 적립 · 한도 없음
           </span>
         </p>
       </div>
