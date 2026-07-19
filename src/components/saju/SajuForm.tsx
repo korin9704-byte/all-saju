@@ -743,7 +743,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       {productSlug === "premium-saju" && (
         <>
           {/* 대운 시기 */}
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 pt-5">
             <Label className="text-base font-bold text-ink">대운 시기</Label>
             <div className="flex items-center justify-between">
               <p className="text-sm text-body">어떤 시기의 대운을 볼까요?</p>
