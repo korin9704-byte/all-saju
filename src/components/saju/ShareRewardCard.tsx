@@ -52,39 +52,16 @@ export function ShareRewardCard() {
   }
 
   return (
-    <section className="mt-8 rounded-2xl border-2 border-ink overflow-hidden">
-      <div className="px-6 py-5 text-center" style={{ background: "#000" }}>
-        <p className="text-base font-bold text-white">친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기🎁</p>
-        <p className="mt-1 text-xs" style={{ color: "#bbb" }}>
-          친구가 내 링크로 &lsquo;무료 사주 해설 MINI&rsquo;를 볼 때마다, 나에게 <b className="text-white">무료 이용권 1개</b>가 쌓여요
-        </p>
-      </div>
-      <div className="px-6 py-5 space-y-4 bg-canvas">
-        <div className="flex items-center gap-2">
-          <input
-            readOnly
-            value={shareUrl}
-            onFocus={(e) => e.currentTarget.select()}
-            className="flex-1 rounded-xl bg-[#f5f5f5] px-4 py-2.5 text-xs text-ink focus:outline-none"
-          />
-          <button
-            type="button"
-            onClick={copyLink}
-            className="shrink-0 rounded-xl border-2 border-ink px-4 py-2.5 text-xs font-semibold text-ink hover:bg-ink hover:text-white transition-colors"
-          >
-            복사
-          </button>
-        </div>
-        <button
-          type="button"
-          onClick={share}
-          className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90"
-          style={{ background: "#FEE500", color: "#191919" }}
-        >
-          카카오톡으로 보내기
-        </button>
-        <p className="text-xs text-center text-mute">한도 없음 · 공유할수록 무료 이용권이 쌓여요</p>
-      </div>
+    <section className="mt-8">
+      <button
+        type="button"
+        onClick={share}
+        className="w-full h-14 rounded-full text-sm font-semibold transition-opacity hover:opacity-90"
+        style={{ background: "#FEE500", color: "#191919" }}
+      >
+        친구에게 &lsquo;무료 사주 해설 MINI&rsquo; 선물하기🎁
+      </button>
+      <p className="mt-2 text-xs text-center text-mute">공유할수록 무료 이용권이 쌓여요 · 한도 없음</p>
     </section>
   );
 }
