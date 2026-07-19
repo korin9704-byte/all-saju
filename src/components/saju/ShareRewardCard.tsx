@@ -54,7 +54,25 @@ export function ShareRewardCard({
     }
   }
 
+  // 1순위: 카카오톡 공유(인앱 브라우저 포함 동작) → 2순위: 기기 공유 시트 → 3순위: 링크 복사
+  function kakaoShare(text: string, url: string, buttonTitle: string): boolean {
+    const kakao = window.Kakao;
+    if (!kakao?.isInitialized?.() || !kakao.Share) return false;
+    try {
+      kakao.Share.sendDefault({
+        objectType: "text",
+        text,
+        link: { mobileWebUrl: url, webUrl: url },
+        buttonTitle,
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   async function share() {
+    if (kakaoShare(`‘무료 ${productName} MINI’ 선물 도착~`, shareUrl, "무료 MINI 보기")) return;
     if (navigator.share) {
       try {
         await navigator.share({ text: `‘무료 ${productName} MINI’ 선물 도착~ ${shareUrl}` });
@@ -68,6 +86,7 @@ export function ShareRewardCard({
   }
 
   async function shareResult() {
+    if (kakaoShare(`내 ‘${productName}’ 결과지 봐봐~`, resultShareUrl, "결과지 보기")) return;
     if (navigator.share) {
       try {
         await navigator.share({ text: `내 ‘${productName}’ 결과지 봐봐~ ${resultShareUrl}` });
