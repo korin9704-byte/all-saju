@@ -47,7 +47,7 @@ export function KakaoLoginButton({ next = "/mypage", label = "카카오로 1초 
       type="button"
       onClick={handleClick}
       disabled={loading}
-      className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-60"
+      className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-60"
       style={{ background: "#FEE500", color: "#191919" }}
     >
       <KakaoSymbol />

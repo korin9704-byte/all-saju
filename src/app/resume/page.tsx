@@ -138,7 +138,7 @@ export default function ResumePage() {
         <p className="text-lg font-bold text-ink">😸 무료 이용권이 {credits}개 있네요!</p>
         <div className="mt-8 space-y-4">
           <label className="flex items-center justify-between rounded-2xl border-2 border-ink px-5 py-4 cursor-pointer text-left">
-            <p className="text-sm font-bold text-ink">무료 이용권 1개 사용하기</p>
+            <p className="text-sm font-medium text-ink">무료 이용권 1개 사용하기</p>
             <input
               type="checkbox"
               checked={useCredit}
