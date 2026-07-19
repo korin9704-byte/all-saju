@@ -6,10 +6,10 @@ import { todayFortuneReviews } from "@/config/dummy-reviews";
 
 export const metadata = {
   title: "사주 해설 MINI",
-  description: "사주 해설 13가지 주제 중 6가지를 무료로. 생년월일만 입력하면 3분 만에 확인할 수 있어요.",
+  description: "냥이가 답을 찾아드릴게요!",
   openGraph: {
-    title: "사주 해설 MINI가 도착했어요 🎁",
-    description: "13가지 주제 중 6가지를 무료로 볼 수 있어요. 생년월일만 입력하면 3분이면 끝!",
+    title: "‘무료 사주 해설 MINI’ 선물 도착~",
+    description: "냥이가 답을 찾아드릴게요!",
   },
 };
 
