@@ -486,7 +486,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       {productSlug === "love-saju" && (
         <>
           {/* 섹션 2 헤더 */}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center justify-between pt-5">
             <p className="text-base font-bold text-ink">두 번째 사람</p>
           </div>
 
@@ -635,7 +635,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 섹션 3 헤더 */}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center justify-between pt-5">
             <p className="text-base font-bold text-ink">두 사람은 어떤 관계인가요?</p>
           </div>
 
@@ -680,7 +680,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 섹션 4 헤더 */}
-          <div className="pt-2">
+          <div className="pt-5">
             <p className="text-base font-bold text-ink">각자의 역할을 입력해주세요 <span className="text-sm font-normal text-body">(선택)</span></p>
           </div>
 
@@ -721,7 +721,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 궁금한 점 */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-5">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
 
@@ -794,7 +794,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 추가 정보 인트로 */}
-          <div className="pt-2 pb-1">
+          <div className="pt-5 pb-1">
             <p className="text-base font-bold text-ink leading-snug">
               {name.trim() ? `${name.trim()}님의` : ""} 다가올 10년,<br />
               더 정확한 풀이를 위해<br />
@@ -803,7 +803,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 애정 상황 */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-5">
             <div>
               <p className="text-base font-bold text-ink leading-relaxed">
                 애정운 분석을 위해,<br />
@@ -825,7 +825,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 현재 생활 */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-5">
             <div>
               <p className="text-base font-bold text-ink leading-relaxed">
                 성공운과 재물운을 짚어보기 위해,<br />
@@ -847,7 +847,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 궁금한 점 */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-5">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
 
@@ -867,7 +867,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* ── today-fortune / realestate-saju / romance-saju / job-saju / business-saju 궁금한 점 섹션 ── */}
       {(productSlug === "today-fortune" || productSlug === "realestate-saju" || productSlug === "romance-saju" || productSlug === "job-saju" || productSlug === "business-saju") && (
-        <div className="space-y-3 pt-2">
+        <div className="space-y-3 pt-5">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
           </div>
@@ -885,7 +885,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* ── worry-saju 고민 섹션 ── */}
       {productSlug === "worry-saju" && (
-        <div className="space-y-3 pt-2">
+        <div className="space-y-3 pt-5">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점</Label>
           </div>
@@ -904,7 +904,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* 제출 버튼 */}
       <button type="submit" disabled={submitting}
-        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
+        className="w-full h-14 !mt-10 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
         {submitting
           ? "잠시만요..."
           : miniMode
