@@ -4,7 +4,6 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { KakaoLoginButton } from "@/components/auth/KakaoLoginButton";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
@@ -20,18 +19,11 @@ function LoginForm() {
 
   return (
     <div className="container py-16 max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle>로그인</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
-          <p className="mt-4 text-xs text-center text-muted-foreground">
-            로그인 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
-            <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다
-          </p>
-        </CardContent>
-      </Card>
+      <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
+      <p className="mt-4 text-xs text-center text-muted-foreground">
+        로그인 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
+        <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다
+      </p>
     </div>
   );
 }
