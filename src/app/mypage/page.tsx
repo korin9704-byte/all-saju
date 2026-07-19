@@ -43,12 +43,6 @@ export default async function MyPage() {
           </Link>
         </li>
         <li>
-          <div className="flex items-center justify-between py-4 text-[15px] font-medium text-ink">
-            <span>무료 이용권</span>
-            <span>{availableCredits ?? 0}개</span>
-          </div>
-        </li>
-        <li>
           <Link
             href="/mypage/reviews"
             className="flex items-center justify-between py-4 text-[15px] font-medium text-ink hover:text-body"
@@ -56,6 +50,12 @@ export default async function MyPage() {
             <span>내 후기</span>
             <span className="text-mute">→</span>
           </Link>
+        </li>
+        <li>
+          <div className="flex items-center justify-between py-4 text-[15px] font-medium text-ink">
+            <span>무료 이용권</span>
+            <span>{availableCredits ?? 0}개</span>
+          </div>
         </li>
         <li>
           <form action="/api/auth/signout" method="post">
