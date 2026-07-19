@@ -959,7 +959,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       <button type="submit" disabled={submitting}
         className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
         {submitting
-          ? (miniMode || useFreeCredit ? "결과를 만들고 있어요..." : "잠시만요...")
+          ? "잠시만요..."
           : miniMode
             ? (isLoggedIn ? "결과보기" : "카카오 1초 로그인하고 결과보기")
             : useFreeCredit && (credit?.available ?? 0) > 0
