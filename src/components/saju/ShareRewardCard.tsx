@@ -55,11 +55,10 @@ export function ShareRewardCard({
   }
 
   // 1순위: 카카오톡 공유(인앱 브라우저 포함 동작) → 2순위: 기기 공유 시트 → 3순위: 링크 복사
-  // 피드형 템플릿: 상품 이미지 + 제목 + 설명 + 버튼 (버튼 미지정 시 카카오가 "자세히 보기"를 강제 표시 — 제거 불가)
-  function kakaoShare(title: string, url: string, buttonTitle: string): boolean {
+  // 피드형 템플릿: 상품 이미지 + 제목 + 설명. 버튼 미지정 → 카카오 기본 버튼 "자세히 보기" 표시
+  function kakaoShare(title: string, url: string): boolean {
     const kakao = window.Kakao;
     if (!kakao?.isInitialized?.() || !kakao.Share) return false;
-    const link = { mobileWebUrl: url, webUrl: url };
     try {
       kakao.Share.sendDefault({
         objectType: "feed",
@@ -67,9 +66,8 @@ export function ShareRewardCard({
           title,
           description: "냥이가 답을 찾아드릴게요!",
           imageUrl: `${window.location.origin}/images/${productSlug}.png`,
-          link,
+          link: { mobileWebUrl: url, webUrl: url },
         },
-        buttons: [{ title: buttonTitle, link }],
       });
       return true;
     } catch {
@@ -78,7 +76,7 @@ export function ShareRewardCard({
   }
 
   async function share() {
-    if (kakaoShare(`‘무료 ${productName} MINI’ 선물 도착~`, shareUrl, "무료 MINI 보기")) return;
+    if (kakaoShare(`‘무료 ${productName} MINI’ 선물 도착~`, shareUrl)) return;
     if (navigator.share) {
       try {
         await navigator.share({ text: `‘무료 ${productName} MINI’ 선물 도착~ ${shareUrl}` });
@@ -92,7 +90,7 @@ export function ShareRewardCard({
   }
 
   async function shareResult() {
-    if (kakaoShare(`내 ‘${productName}’ 결과지 봐봐~`, resultShareUrl, "결과지 보기")) return;
+    if (kakaoShare(`내 ‘${productName}’ 결과지 봐봐~`, resultShareUrl)) return;
     if (navigator.share) {
       try {
         await navigator.share({ text: `내 ‘${productName}’ 결과지 봐봐~ ${resultShareUrl}` });
