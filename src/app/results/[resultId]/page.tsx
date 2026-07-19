@@ -52,26 +52,6 @@ function parseLoveResult(md: string): {
   return { score, title, bodyMd };
 }
 
-/**
- * 대운 해설 MINI 잠금 뷰용 마크다운 변환.
- * ## 그룹 헤더(미리보기·상세 해설·연도별 해설·마지막 한마디)를 제거하고
- * ### 소제목을 ## 로 승격해 아코디언 잠금 목록으로 만들 수 있게 한다.
- * '제목'·'설명' 섹션은 '이 10년 미리보기' 하나로 병합.
- */
-function daewunLockedMarkdown(md: string): string {
-  const lines = md.split("\n");
-  const out: string[] = [];
-  for (const line of lines) {
-    if (/^## /.test(line)) continue;
-    if (/^### /.test(line)) out.push(line.replace(/^### /, "## "));
-    else out.push(line);
-  }
-  return out
-    .join("\n")
-    .replace(/## 제목\s*\n/, "## 이 10년 미리보기\n")
-    .replace(/\n## 설명\s*\n/, "\n");
-}
-
 export default async function ResultPage({
   params,
   searchParams,
@@ -135,8 +115,8 @@ export default async function ResultPage({
     </section>
   ) : null;
 
-  /* ── MINI 잠금 결과지 (전 상품 공통) ── */
-  if (isLocked) {
+  /* ── MINI 잠금 결과지 (대운 제외 — 대운은 원본 레이아웃에서 잠금 처리) ── */
+  if (isLocked && baseSlug !== "premium-saju") {
     const miniConf = isMiniBaseSlug(baseSlug) ? MINI_PRODUCTS[baseSlug] : { name: baseName, visible: 6 };
     const { data: fullProduct } = await service
       .from("products")
@@ -144,9 +124,7 @@ export default async function ResultPage({
       .eq("slug", baseSlug)
       .maybeSingle();
     const unlockPrice = fullProduct?.price ?? 990;
-    const lockedMarkdown = baseSlug === "premium-saju"
-      ? daewunLockedMarkdown(result.interpretation_md)
-      : result.interpretation_md;
+    const lockedMarkdown = result.interpretation_md;
     const displayName = sajuInput?.name ? `${sajuInput.name}님의` : "";
     const concernsArr = (sajuInput?.concerns ?? []) as string[];
     const question = baseSlug === "worry-saju"
@@ -294,6 +272,17 @@ export default async function ResultPage({
       sajuInput?.gender === "male" ? "남성" : "여성",
     ].filter(Boolean) as string[];
 
+    // MINI 잠금: 연도별 앞 2개까지 공개, 언락 가격은 원본 상품 기준
+    let daewunLock: { yearlyVisible: number; resultId: string; unlockPrice: number } | undefined;
+    if (isLocked) {
+      const { data: fullProduct } = await service
+        .from("products")
+        .select("price")
+        .eq("slug", baseSlug)
+        .maybeSingle();
+      daewunLock = { yearlyVisible: 2, resultId: result.id, unlockPrice: fullProduct?.price ?? 990 };
+    }
+
     return (
       <div className="max-w-2xl mx-auto py-12">
         <div className="rounded-2xl overflow-hidden">
@@ -306,7 +295,7 @@ export default async function ResultPage({
                 </span>
               )}
               <h1 className="text-xl font-bold text-white tracking-tight">
-                {displayName} ‘대운 해설’
+                {displayName} {isLocked ? "‘대운 해설 MINI’" : "‘대운 해설’"}
               </h1>
             </div>
             <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -337,11 +326,11 @@ export default async function ResultPage({
               <p className="text-sm font-semibold tracking-widest text-white">대운 해설</p>
               <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 해설이 펼쳐져요</p>
             </div>
-            <DaewunResultBody markdown={result.interpretation_md} />
+            <DaewunResultBody markdown={result.interpretation_md} lock={daewunLock} />
           </article>
         </div>
 
-        <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
+        {!isLocked && <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />}
 
         {visitorCta}
 

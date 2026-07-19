@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { formatKRW } from "@/lib/utils";
 
 type Preview = { title: string; desc: string };
 type Detail  = { icon: string; title: string; sub: string; content: string };
@@ -103,12 +106,47 @@ function parseDaewun(md: string): Parsed {
   return result;
 }
 
-export function DaewunResultBody({ markdown }: { markdown: string }) {
+export function DaewunResultBody({
+  markdown,
+  lock,
+}: {
+  markdown: string;
+  /** MINI 잠금: 연도별 앞 yearlyVisible개까지만 공개, 이후 연도·시크릿 솔루션 잠금 */
+  lock?: { yearlyVisible: number; resultId: string; unlockPrice: number };
+}) {
+  const router = useRouter();
   const parsed = parseDaewun(markdown);
   const [openPreview, setOpenPreview] = useState(false);
   const [openIdx, setOpenIdx]         = useState<number | null>(null);
   const [openYearIdx, setOpenYearIdx] = useState<number | null>(null);
   const [openFinal, setOpenFinal]     = useState(false);
+  const [unlocking, setUnlocking]     = useState(false);
+
+  async function startUnlock() {
+    if (!lock || unlocking) return;
+    setUnlocking(true);
+    try {
+      const res = await fetch("/api/orders/unlock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resultId: lock.resultId }),
+      });
+      const json = await res.json();
+      if (res.status === 401) {
+        router.push(`/login?redirect=/results/${lock.resultId}`);
+        return;
+      }
+      if (res.status === 409 && json.resultId) {
+        router.refresh();
+        return;
+      }
+      if (!res.ok) throw new Error(json.error ?? "주문 생성 실패");
+      router.push(`/checkout/${json.orderId}`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "오류가 발생했어요");
+      setUnlocking(false);
+    }
+  }
 
   // 파싱 실패 시 raw 텍스트 표시
   if (!parsed.preview.title && parsed.details.length === 0 && parsed.yearly.length === 0 && !parsed.final) {
@@ -210,6 +248,26 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
           <ul className="divide-y divide-border">
             {parsed.yearly.map((y, i) => {
               const isOpen = openYearIdx === i;
+              const isLockedItem = !!lock && i >= lock.yearlyVisible;
+              if (isLockedItem) {
+                return (
+                  <li key={i}>
+                    <button
+                      type="button"
+                      onClick={startUnlock}
+                      className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+                    >
+                      <p className="text-sm font-semibold text-ink/40">{y.label}</p>
+                      {y.preview && (
+                        <p className="mt-1 text-sm text-ink/30">
+                          {y.preview.length > 60 ? y.preview.slice(0, 60) + "…" : y.preview}
+                        </p>
+                      )}
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base" aria-label="잠김">🔒</span>
+                    </button>
+                  </li>
+                );
+              }
               return (
                 <li key={i}>
                   <button
@@ -250,7 +308,24 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
       )}
 
       {/* ── 마지막 한마디 ── */}
-      {parsed.final && (
+      {parsed.final && lock && (
+        <div className="border-t-2 border-gray-300">
+          <button
+            type="button"
+            onClick={startUnlock}
+            className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+          >
+            <p className="text-sm font-semibold text-ink/40">시크릿 솔루션</p>
+            {parsed.final.sub && (
+              <p className="mt-1 text-sm text-ink/30">
+                {parsed.final.sub.length > 40 ? parsed.final.sub.slice(0, 40) + "…" : parsed.final.sub}
+              </p>
+            )}
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base" aria-label="잠김">🔒</span>
+          </button>
+        </div>
+      )}
+      {parsed.final && !lock && (
         <div className="border-t-2 border-gray-300">
           {/* 섹션 헤더 */}
 
@@ -291,6 +366,20 @@ export function DaewunResultBody({ markdown }: { markdown: string }) {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* ── 언락 버튼 (MINI 잠금) ── */}
+      {lock && (
+        <div className="mt-8 px-4 sm:px-0">
+          <button
+            type="button"
+            onClick={startUnlock}
+            disabled={unlocking}
+            className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none"
+          >
+            {unlocking ? "잠시만요..." : `${formatKRW(lock.unlockPrice)}으로 잠금 해제`}
+          </button>
         </div>
       )}
     </div>
