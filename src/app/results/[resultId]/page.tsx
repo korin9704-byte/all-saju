@@ -593,7 +593,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden">
-        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={product?.slug === "trouble-saju" ? "고민 해설" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
       </article>
 
       <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />

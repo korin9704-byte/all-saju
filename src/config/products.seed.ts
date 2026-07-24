@@ -79,6 +79,14 @@ export const productsSeed: ProductSeed[] = [
     is_active: false,
   },
   {
+    slug: "trouble-saju",
+    name: "고민 사주",
+    description: "용하다고 소문났어요",
+    price: 3900,
+    display_order: 90,
+    is_active: true,
+  },
+  {
     // 공유받은 친구용 무료 MINI — 목록/일반 결제 흐름에는 노출하지 않음
     // 결과지는 원본 상품과 동일하되 일부만 공개, 990원 언락 (slug 접미사 -mini 규칙)
     slug: "today-fortune-mini",

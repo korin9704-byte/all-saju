@@ -17,6 +17,7 @@ import {
   romanceSajuReviews,
   jobSajuReviews,
   businessSajuReviews,
+  troubleSajuReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
 
@@ -32,6 +33,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "romance-saju":    romanceSajuReviews,
   "job-saju":        jobSajuReviews,
   "business-saju":   businessSajuReviews,
+  "trouble-saju":    troubleSajuReviews,
 };
 
 export default async function ProductDetailPage({
@@ -176,6 +178,15 @@ export default async function ProductDetailPage({
         <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
           <div className="w-full aspect-[962/663] overflow-hidden">
             <img src="/images/business-saju.png" alt="나는 사업해도 되는 사주일까?" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
+      {/* 상품 소개 — trouble-saju */}
+      {product.slug === "trouble-saju" && (
+        <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
+          <div className="w-full aspect-[962/663] overflow-hidden">
+            <img src="/images/trouble-saju.png" alt="고민 사주" className="w-full h-full object-cover" />
           </div>
         </div>
       )}

@@ -244,6 +244,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     if (!gender) { toast.error("성별을 선택해 주세요"); return; }
     if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
     if (productSlug === "worry-saju" && !concernText.trim()) { toast.error("궁금한 점을 입력해 주세요"); return; }
+    if (productSlug === "trouble-saju" && !freeQuestion.trim()) { toast.error("고민을 입력해 주세요"); return; }
     if (productSlug === "premium-saju" && !daewunStartAge) {
       toast.error("분석할 대운 시기를 선택해 주세요"); return;
     }
@@ -885,6 +886,24 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             <textarea value={freeQuestion}
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
               placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+              rows={6}
+              className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+            />
+            <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── trouble-saju 고민 섹션 (필수) ── */}
+      {productSlug === "trouble-saju" && (
+        <div className="space-y-3 pt-5">
+          <div className="flex items-center justify-between">
+            <Label className="text-base font-bold text-ink">고민</Label>
+          </div>
+          <div className="relative">
+            <textarea value={freeQuestion}
+              onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
+              placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해주세요."
               rows={6}
               className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />

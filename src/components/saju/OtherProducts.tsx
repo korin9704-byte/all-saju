@@ -11,6 +11,7 @@ const THUMB_SRC: Record<string, string> = {
   "romance-saju":    "/images/romance-saju.png",
   "job-saju":        "/images/job-saju.png",
   "business-saju":   "/images/business-saju.png",
+  "trouble-saju":    "/images/trouble-saju.png",
 };
 
 /** 결과지 하단 — 다른 상품 진열 섹션 */

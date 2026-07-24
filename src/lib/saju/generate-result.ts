@@ -17,6 +17,7 @@ import {
   buildRomanceSajuPrompt,
   buildJobSajuPrompt,
   buildBusinessSajuPrompt,
+  buildTroubleSajuPrompt,
 } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
@@ -166,6 +167,9 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "business-saju") {
     const { system, user } = buildBusinessSajuPrompt(promptInput);
+    llm = await generateInterpretation({ system, user });
+  } else if (promptSlug === "trouble-saju") {
+    const { system, user } = buildTroubleSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "love-saju") {
     // 상대방 사주 파싱 및 명식 계산
