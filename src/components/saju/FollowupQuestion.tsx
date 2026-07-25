@@ -67,12 +67,12 @@ export function FollowupQuestion({
         <span className="text-base tracking-widest select-none">🐾 ✦ 🐾</span>
         <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#e0d6cc]" />
       </div>
-      <p className="text-base font-bold text-ink">더 궁금한 점 있으세요?</p>
+      <p className="text-base font-bold text-ink">또 다른 고민이 있으세요?</p>
       <div className="relative">
         <textarea
           value={question}
           onChange={(e) => setQuestion(e.target.value.slice(0, MAX_Q))}
-          placeholder="추가 질문이나 고민을 자유롭게 작성해 주세요."
+          placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
           rows={6}
           className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
         />

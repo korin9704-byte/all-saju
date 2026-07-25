@@ -602,7 +602,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden">
-        <AccordionBody markdown={result.interpretation_md} headerTitle={product?.slug === "trouble-saju" ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "followup-question") ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
       {followupSection}

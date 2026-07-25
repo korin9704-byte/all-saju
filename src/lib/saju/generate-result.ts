@@ -147,7 +147,7 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
   };
 
   let llm;
-  if (promptSlug === "worry-saju" || promptSlug === "followup-question") {
+  if (promptSlug === "worry-saju") {
     const { system, user } = buildWorryPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "today-fortune") {
@@ -168,7 +168,7 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
   } else if (promptSlug === "business-saju") {
     const { system, user } = buildBusinessSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
-  } else if (promptSlug === "trouble-saju") {
+  } else if (promptSlug === "trouble-saju" || promptSlug === "followup-question") {
     const { system, user } = buildTroubleSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "love-saju") {
