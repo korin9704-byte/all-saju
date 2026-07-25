@@ -8,7 +8,7 @@ type Section = { title: string; content: string };
 export function renderEmphasis(text: string): React.ReactNode[] {
   return text.split(/\*\*(.+?)\*\*/g).map((seg, i) =>
     i % 2 === 1
-      ? <span key={i} style={{ background: "linear-gradient(transparent 55%, #fde68a 55%)" }}>{seg}</span>
+      ? <span key={i} style={{ background: "#fde68a", padding: "1px 3px", borderRadius: "4px", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>{seg}</span>
       : seg
   );
 }
