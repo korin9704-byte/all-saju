@@ -191,7 +191,7 @@ export default async function ResultPage({
 
 
         <footer className="mt-10 text-center">
-          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
+          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
         </footer>
       </div>
     );
@@ -247,7 +247,7 @@ export default async function ResultPage({
 
 
         <footer className="mt-10 text-center">
-          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
+          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
         </footer>
       </div>
     );
@@ -347,7 +347,7 @@ export default async function ResultPage({
 
 
         <footer className="mt-10 text-center">
-          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
+          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
         </footer>
       </div>
     );
@@ -553,7 +553,7 @@ export default async function ResultPage({
 
 
         <footer className="mt-10 pb-10 text-center">
-          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
+          <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
         </footer>
       </div>
     );
@@ -611,7 +611,7 @@ export default async function ResultPage({
 
 
       <footer className="mt-10 text-center">
-        <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
+        <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
       </footer>
     </div>
   );

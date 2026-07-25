@@ -828,7 +828,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             {relationship === "직접 입력할게요" && (
               <input value={relationshipCustom}
                 onChange={(e) => setRelationshipCustom(e.target.value)}
-                placeholder="예: 장거리 연애 중이에요"
+                placeholder="예: 장거리 연애 중이에요."
                 className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors" />
             )}
           </div>
@@ -850,7 +850,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             {lifestyle === "직접 입력할게요" && (
               <input value={lifestyleCustom}
                 onChange={(e) => setLifestyleCustom(e.target.value)}
-                placeholder="예: 유튜버로 활동 중이에요"
+                placeholder="예: 유튜버로 활동 중이에요."
                 className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors" />
             )}
           </div>
@@ -940,7 +940,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             type="email"
             value={guestEmail}
             onChange={(e) => setGuestEmail(e.target.value)}
-            placeholder="결과지를 받을 이메일을 입력해 주세요"
+            placeholder="결과지를 받을 이메일을 입력해 주세요."
             className="w-full rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:bg-[#ebebeb] transition-colors"
           />
         </div>

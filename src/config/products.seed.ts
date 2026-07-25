@@ -17,7 +17,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "today-fortune",
     name: "사주 풀이",
-    description: "용하다고 소문났어요",
+    description: "용하다고 소문났어요.",
     price: 990,
     display_order: 10,
     is_active: false,
@@ -73,7 +73,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "business-saju",
     name: "나는 사업해도 되는 사주일까?",
-    description: "사장 팔자인지 확인해보세요",
+    description: "사장 팔자인지 확인해보세요.",
     price: 990,
     display_order: 80,
     is_active: false,
@@ -81,7 +81,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "trouble-saju",
     name: "고민 사주",
-    description: "오늘 해결해 드릴게요",
+    description: "오늘 해결해 드릴게요.",
     price: 3900,
     display_order: 90,
     is_active: true,
@@ -90,7 +90,7 @@ export const productsSeed: ProductSeed[] = [
     // 결과지 하단 추가 질문 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
     slug: "followup-question",
     name: "추가 질문",
-    description: "결과지를 보고 더 궁금한 점을 물어보세요",
+    description: "결과지를 보고 더 궁금한 점을 물어보세요.",
     price: 1900,
     display_order: 998,
     is_active: true,

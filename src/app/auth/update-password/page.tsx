@@ -68,7 +68,7 @@ export default function UpdatePasswordPage() {
                 id="confirm"
                 type="password"
                 required
-                placeholder="비밀번호를 다시 입력해 주세요"
+                placeholder="비밀번호를 다시 입력해 주세요."
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
               />
