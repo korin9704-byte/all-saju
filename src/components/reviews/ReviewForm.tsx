@@ -74,7 +74,7 @@ export function ReviewForm({ orderId, productName }: Props) {
           onChange={(e) => setContent(e.target.value)}
           rows={6}
           maxLength={2000}
-          placeholder="결과가 어떠셨나요? 다른 분들께 도움이 되는 후기를 남겨주세요."
+          placeholder="결과가 어떠셨나요? 다른 분들께 도움이 되는 후기를 남겨 주세요."
         />
         <p className="text-xs text-mute text-right">{content.length} / 2000</p>
       </div>

@@ -44,7 +44,7 @@ export default function RefundPolicyPage() {
       <h2>4. 환불 절차</h2>
       <ol>
         <li>
-          <strong>{businessInfo.email}</strong> 로 주문번호와 환불 사유를 보내주세요.
+          <strong>{businessInfo.email}</strong> 로 주문번호와 환불 사유를 보내 주세요.
           {businessInfo.phone ? (
             <>
               {" "}또는 {businessInfo.phone}

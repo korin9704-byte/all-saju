@@ -32,7 +32,7 @@ export default function ResetPage() {
       <Card>
         <CardHeader>
           <CardTitle>비밀번호 재설정</CardTitle>
-          <CardDescription>이메일로 재설정 링크를 보내드립니다.</CardDescription>
+          <CardDescription>이메일로 재설정 링크를 보내 드립니다.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

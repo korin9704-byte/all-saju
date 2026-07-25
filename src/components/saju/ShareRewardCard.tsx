@@ -64,7 +64,7 @@ export function ShareRewardCard({
         objectType: "feed",
         content: {
           title,
-          description: "냥이가 답을 찾아드릴게요!",
+          description: "냥이가 답을 찾아 드릴게요!",
           imageUrl: `${window.location.origin}/images/${productSlug}.png`,
           link: { mobileWebUrl: url, webUrl: url },
         },

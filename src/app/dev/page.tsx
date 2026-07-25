@@ -49,7 +49,7 @@ export default function DevPage() {
         <div className="rounded-xl border border-gray-100 p-8 text-center">
           <div className="text-3xl mb-3 animate-pulse">🔮</div>
           <p className="text-sm font-medium text-gray-700">결과 생성 중...</p>
-          <p className="text-xs text-gray-400 mt-1">LLM이 사주를 해석하고 있어요. 잠시 기다려주세요.</p>
+          <p className="text-xs text-gray-400 mt-1">LLM이 사주를 해석하고 있어요. 잠시 기다려 주세요.</p>
         </div>
       ) : (
         <div className="space-y-3">

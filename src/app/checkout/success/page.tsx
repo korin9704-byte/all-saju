@@ -72,7 +72,7 @@ export default async function CheckoutSuccessPage({
         <p className="text-sm text-muted-foreground mb-2">
           예상 남은 시간: 약 <span id="countdown">90</span>초
         </p>
-        <p className="text-xs text-muted-foreground">잠시만 기다려주세요...</p>
+        <p className="text-xs text-muted-foreground">잠시만 기다려 주세요...</p>
       </div>
 
       {/* 에러 UI */}
