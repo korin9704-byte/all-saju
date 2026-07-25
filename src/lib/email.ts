@@ -21,7 +21,7 @@ export async function sendResultEmail({
   await resend.emails.send({
     from: FROM,
     to,
-    subject: `[냥점] ${greeting} ${productName} 결과지가 도착했어요`,
+    subject: `[냥점] ${greeting} ${productName} 결과가 도착했어요`,
     html: `
 <!DOCTYPE html>
 <html lang="ko">
