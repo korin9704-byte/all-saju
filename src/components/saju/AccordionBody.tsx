@@ -4,11 +4,11 @@ import { useState } from "react";
 
 type Section = { title: string; content: string };
 
-/** **강조** 구간을 노란색 형광펜 하이라이트로 렌더링 */
+/** **강조** 구간을 빨간 글자색으로 렌더링 */
 export function renderEmphasis(text: string): React.ReactNode[] {
   return text.split(/\*\*(.+?)\*\*/g).map((seg, i) =>
     i % 2 === 1
-      ? <span key={i} style={{ background: "#fde68a", padding: "1px 3px", borderRadius: "4px", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>{seg}</span>
+      ? <span key={i} style={{ color: "#e11d48" }}>{seg}</span>
       : seg
   );
 }
