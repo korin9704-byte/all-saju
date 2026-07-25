@@ -335,7 +335,7 @@ export default async function ResultPage({
           <article>
             <div className="px-5 py-4 text-center" style={{ background: "#1a1a1a" }}>
               <p className="text-sm font-semibold tracking-widest text-white">대운 풀이</p>
-              <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 내용이 펼쳐져요</p>
+              <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 내용이 펼쳐져요.</p>
             </div>
             <DaewunResultBody markdown={result.interpretation_md} lock={daewunLock} />
           </article>
