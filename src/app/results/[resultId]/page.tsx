@@ -73,7 +73,7 @@ export default async function ResultPage({
 
   const { data: order } = await service
     .from("orders")
-    .select("product_id, paid_at, user_id")
+    .select("product_id, paid_at, user_id, guest_email")
     .eq("id", result.order_id)
     .single();
 
@@ -91,6 +91,17 @@ export default async function ResultPage({
     .maybeSingle();
 
   const myeongsik     = result.myeongsik as unknown as Myeongsik;
+
+  // 추가 질문(1,900원) 결제용 — 이 결과지의 사주 입력 정보 재사용
+  const followupSaju = sajuInput ? {
+    name: sajuInput.name ?? null,
+    birthDate: sajuInput.birth_date as string,
+    birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
+    timeUnknown: !!sajuInput.time_unknown,
+    calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+    gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
+  } : null;
+
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
   const rawSlug        = product?.slug ?? "";
   const isMini         = rawSlug.endsWith("-mini");
@@ -176,7 +187,7 @@ export default async function ResultPage({
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
+        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -233,7 +244,7 @@ export default async function ResultPage({
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
+        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -334,7 +345,7 @@ export default async function ResultPage({
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
+        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -541,7 +552,7 @@ export default async function ResultPage({
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
+        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
 
         <footer className="mt-10 pb-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -600,7 +611,7 @@ export default async function ResultPage({
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
+        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
 
       <footer className="mt-10 text-center">
         <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>

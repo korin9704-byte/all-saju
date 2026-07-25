@@ -87,6 +87,15 @@ export const productsSeed: ProductSeed[] = [
     is_active: true,
   },
   {
+    // 결과지 하단 추가 질문 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
+    slug: "followup-question",
+    name: "추가 질문",
+    description: "결과지를 보고 더 궁금한 점을 물어보세요",
+    price: 1900,
+    display_order: 998,
+    is_active: true,
+  },
+  {
     // 공유받은 친구용 무료 MINI — 목록/일반 결제 흐름에는 노출하지 않음
     // 결과지는 원본 상품과 동일하되 일부만 공개, 990원 언락 (slug 접미사 -mini 규칙)
     slug: "today-fortune-mini",
