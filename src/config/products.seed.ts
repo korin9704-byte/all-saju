@@ -73,7 +73,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "business-saju",
     name: "나는 사업해도 되는 사주일까?",
-    description: "사장 팔자인지 확인해보세요.",
+    description: "사장 팔자인지 확인해 보세요.",
     price: 990,
     display_order: 80,
     is_active: false,

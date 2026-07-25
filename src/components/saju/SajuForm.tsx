@@ -45,8 +45,8 @@ const EXAMPLE_CONCERNS = [
 const MAX_CONCERN = 350;
 const MAX_FREE_Q = 100;
 
-const RELATIONSHIP_OPTIONS = ["솔로", "연애중", "결혼했어요", "새로운 출발 (돌싱/기타)", "직접 입력할게요"];
-const LIFESTYLE_OPTIONS    = ["학생", "취업 준비중", "주부", "직장인", "자영업/프리랜서", "은퇴함", "직접 입력할게요"];
+const RELATIONSHIP_OPTIONS = ["솔로", "연애 중", "결혼했어요", "새로운 출발 (돌싱/기타)", "직접 입력할게요"];
+const LIFESTYLE_OPTIONS    = ["학생", "취업 준비 중", "주부", "직장인", "자영업/프리랜서", "은퇴함", "직접 입력할게요"];
 
 // love-saju 관계 옵션 (2열 그리드용 — 마지막 "직접 입력"은 전체 너비)
 const LOVE_RELATION_OPTIONS = [
