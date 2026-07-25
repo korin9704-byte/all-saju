@@ -33,7 +33,7 @@ export function FollowupQuestion({
   const [submitting, setSubmitting] = useState(false);
 
   async function submit() {
-    if (!question.trim()) { toast.error("궁금한 점을 입력해 주세요"); return; }
+    if (!question.trim()) { toast.error("궁금한 점을 입력해 주세요."); return; }
     setSubmitting(true);
     try {
       const res = await fetch("/api/orders/create", {
@@ -55,7 +55,7 @@ export function FollowupQuestion({
       if (!res.ok) throw new Error(json.error ?? "주문 생성 실패");
       router.push(`/checkout/${json.orderId}`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다.");
       setSubmitting(false);
     }
   }

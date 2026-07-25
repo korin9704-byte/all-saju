@@ -21,7 +21,7 @@ export function ReviewForm({ orderId, productName }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (content.trim().length < 5) {
-      toast.error("후기는 5자 이상 작성해 주세요");
+      toast.error("후기는 5자 이상 작성해 주세요.");
       return;
     }
     setSubmitting(true);
@@ -33,11 +33,11 @@ export function ReviewForm({ orderId, productName }: Props) {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "후기 저장 실패");
-      toast.success("후기가 등록되었습니다");
+      toast.success("후기가 등록되었습니다.");
       router.push("/mypage/reviews");
       router.refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다.");
       setSubmitting(false);
     }
   }

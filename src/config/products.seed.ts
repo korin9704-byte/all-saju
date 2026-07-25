@@ -25,7 +25,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "premium-saju",
     name: "대운 풀이",
-    description: "물 들어올때 노젓는 방법",
+    description: "물 들어올 때 노 젓는 방법",
     price: 990,
     display_order: 20,
     is_active: false,
@@ -33,7 +33,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "love-saju",
     name: "궁합 풀이",
-    description: "우리 사이는 몇점?",
+    description: "우리 사이는 몇 점?",
     price: 990,
     display_order: 30,
     is_active: false,

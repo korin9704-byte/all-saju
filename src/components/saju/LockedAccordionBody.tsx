@@ -70,7 +70,7 @@ export function LockedAccordionBody({
       if (!res.ok) throw new Error(json.error ?? "주문 생성 실패");
       router.push(`/checkout/${json.orderId}`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "오류가 발생했어요");
+      toast.error(err instanceof Error ? err.message : "오류가 발생했어요.");
       setUnlocking(false);
     }
   }

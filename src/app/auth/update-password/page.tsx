@@ -18,11 +18,11 @@ export default function UpdatePasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password.length < 8) {
-      toast.error("비밀번호는 8자 이상이어야 합니다");
+      toast.error("비밀번호는 8자 이상이어야 합니다.");
       return;
     }
     if (password !== confirm) {
-      toast.error("비밀번호가 일치하지 않습니다");
+      toast.error("비밀번호가 일치하지 않습니다.");
       return;
     }
     setLoading(true);
@@ -32,13 +32,13 @@ export default function UpdatePasswordPage() {
     if (error) {
       const msg = error.message.toLowerCase();
       if (msg.includes("different from the old password")) {
-        toast.error("이전 비밀번호와 다른 비밀번호를 입력해 주세요");
+        toast.error("이전 비밀번호와 다른 비밀번호를 입력해 주세요.");
       } else {
         toast.error(error.message);
       }
       return;
     }
-    toast.success("비밀번호가 변경됐어요");
+    toast.success("비밀번호가 변경됐어요.");
     router.replace("/mypage");
   }
 

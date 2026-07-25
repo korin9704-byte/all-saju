@@ -233,38 +233,38 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         router.push(`/checkout/${json.orderId}`);
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다");
+      toast.error(err instanceof Error ? err.message : "오류가 발생했습니다.");
       setSubmitting(false);
     }
   }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!birthDate) { toast.error("생년월일을 입력해 주세요"); return; }
-    if (!isValidBirthDate(birthDate)) { toast.error("생년월일을 다시 확인해 주세요"); return; }
-    if (!calendar) { toast.error("달력 종류를 선택해 주세요"); return; }
-    if (!gender) { toast.error("성별을 선택해 주세요"); return; }
-    if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요"); return; }
-    if (productSlug === "worry-saju" && !concernText.trim()) { toast.error("궁금한 점을 입력해 주세요"); return; }
-    if (productSlug === "trouble-saju" && !freeQuestion.trim()) { toast.error("고민을 입력해 주세요"); return; }
+    if (!birthDate) { toast.error("생년월일을 입력해 주세요."); return; }
+    if (!isValidBirthDate(birthDate)) { toast.error("생년월일을 다시 확인해 주세요."); return; }
+    if (!calendar) { toast.error("달력 종류를 선택해 주세요."); return; }
+    if (!gender) { toast.error("성별을 선택해 주세요."); return; }
+    if (timeUnknown === null) { toast.error("태어난 시간 여부를 선택해 주세요."); return; }
+    if (productSlug === "worry-saju" && !concernText.trim()) { toast.error("궁금한 점을 입력해 주세요."); return; }
+    if (productSlug === "trouble-saju" && !freeQuestion.trim()) { toast.error("고민을 입력해 주세요."); return; }
     if (productSlug === "premium-saju" && !daewunStartAge) {
-      toast.error("분석할 대운 시기를 선택해 주세요"); return;
+      toast.error("분석할 대운 시기를 선택해 주세요."); return;
     }
     if (productSlug === "love-saju" && !partnerName.trim()) {
-      toast.error("두 번째 사람의 이름을 입력해 주세요"); return;
+      toast.error("두 번째 사람의 이름을 입력해 주세요."); return;
     }
     if (productSlug === "love-saju" && !partnerBirthDate) {
-      toast.error("상대방 생년월일을 입력해 주세요"); return;
+      toast.error("상대방 생년월일을 입력해 주세요."); return;
     }
     if (productSlug === "love-saju" && partnerBirthDate && !isValidBirthDate(partnerBirthDate)) {
-      toast.error("상대방 생년월일을 다시 확인해 주세요"); return;
+      toast.error("상대방 생년월일을 다시 확인해 주세요."); return;
     }
     if (productSlug === "love-saju" && !relationship2) {
-      toast.error("두 사람의 관계를 선택해 주세요"); return;
+      toast.error("두 사람의 관계를 선택해 주세요."); return;
     }
     if (!miniMode) {
-      if (!guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요"); return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail.trim())) { toast.error("이메일 형식을 다시 확인해 주세요"); return; }
+      if (!guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요."); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
     }
     {
       const concerns: string[] = [];
@@ -330,7 +330,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         });
         if (error) {
           setSubmitting(false);
-          toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해 주세요");
+          toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해 주세요.");
         }
         return;
       }

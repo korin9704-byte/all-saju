@@ -50,7 +50,7 @@ export function ShareRewardCard({
       await navigator.clipboard.writeText(url);
       toast.success(`${label} 링크가 복사됐어요. 카카오톡에 붙여넣어 보내보세요!`);
     } catch {
-      toast.error("복사에 실패했어요. 잠시 후 다시 시도해 주세요");
+      toast.error("복사에 실패했어요. 잠시 후 다시 시도해 주세요.");
     }
   }
 

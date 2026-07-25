@@ -27,7 +27,7 @@ export function KakaoLoginButton({ next = "/mypage", label = "카카오 1초 로
     });
     if (error) {
       setLoading(false);
-      toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해 주세요");
+      toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해 주세요.");
       console.error("[kakao] signInWithOAuth:", error.message);
     }
     // 성공 시 카카오로 리다이렉트되므로 loading 해제 불필요
