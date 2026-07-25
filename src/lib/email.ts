@@ -42,7 +42,7 @@ export async function sendResultEmail({
           <h1 style="margin:0 0 24px;font-size:22px;font-weight:700;color:#111;line-height:1.6;">
             ${greeting}<br>
             <span style="color:#764ae6;">'${productName}'</span><br>
-            결과지가 도착했어요.
+            결과가 도착했어요.
           </h1>
           <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:17px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
             지금 보러가기
