@@ -62,6 +62,11 @@ export function FollowupQuestion({
 
   return (
     <div className="mt-10 mb-2 px-4 space-y-3">
+      <div className="flex items-center gap-3 pb-4">
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#e0d6cc]" />
+        <span className="text-base tracking-widest select-none">🐾 ✦ 🐾</span>
+        <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#e0d6cc]" />
+      </div>
       <p className="text-base font-bold text-ink">더 궁금한 점 있으세요?</p>
       <div className="relative">
         <textarea
