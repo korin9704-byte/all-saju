@@ -965,12 +965,6 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다.
         </p>
       )}
-      {!isLoggedIn && !miniMode && (
-        <p className="text-xs text-center text-mute">
-          결제 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
-          <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다.
-        </p>
-      )}
 
 
     </form>
