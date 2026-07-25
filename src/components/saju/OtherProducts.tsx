@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { createServiceClient } from "@/lib/supabase/server";
 import { formatKRW } from "@/lib/utils";
-import { FollowupQuestion, type FollowupSaju } from "@/components/saju/FollowupQuestion";
 
 const FOLLOWUP_SLUG = "followup-question";
 
@@ -17,26 +16,17 @@ const THUMB_SRC: Record<string, string> = {
   "trouble-saju":    "/images/trouble-saju.png",
 };
 
-/** 결과지 하단 — 추가 질문 + 다른 상품 진열 섹션 */
-export async function OtherProducts({
-  currentSlug,
-  followupSaju,
-  guestEmail,
-}: {
-  currentSlug?: string | null;
-  followupSaju?: FollowupSaju | null;
-  guestEmail?: string | null;
-}) {
+/** 결과지 하단 — 다른 상품 진열 섹션 */
+export async function OtherProducts({ currentSlug }: { currentSlug?: string | null }) {
   const service = createServiceClient();
   const { data: products } = await service
     .from("products")
-    .select("id, slug, name, description, price")
+    .select("slug, name, description, price")
     .eq("is_active", true)
     .order("display_order", { ascending: true });
 
-  const followupProduct = (products ?? []).find((p) => p.slug === FOLLOWUP_SLUG);
   const others = (products ?? []).filter((p) => p.slug !== currentSlug && p.slug !== FOLLOWUP_SLUG);
-  if (others.length === 0 && !followupProduct) return null;
+  if (others.length === 0) return null;
 
   return (
     <section className="mt-12">
@@ -45,14 +35,6 @@ export async function OtherProducts({
         <span className="text-base tracking-widest select-none">🐾 ✦ 🐾</span>
         <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#e0d6cc]" />
       </div>
-      {followupProduct && followupSaju && (
-        <FollowupQuestion
-          productId={followupProduct.id}
-          price={followupProduct.price}
-          saju={followupSaju}
-          guestEmail={guestEmail}
-        />
-      )}
       <p className="mt-10 mb-6 text-center text-xl font-bold text-ink">
         냥이가 답을 찾아 드릴게요
       </p>

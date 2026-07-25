@@ -9,6 +9,7 @@ import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
 import { OtherProducts } from "@/components/saju/OtherProducts";
+import { FollowupQuestion } from "@/components/saju/FollowupQuestion";
 import { ShareRewardCard } from "@/components/saju/ShareRewardCard";
 import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
@@ -102,6 +103,23 @@ export default async function ResultPage({
     gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
   } : null;
 
+  // 추가 질문 상품 (결과지 하단 결제 섹션)
+  const { data: followupProduct } = await service
+    .from("products")
+    .select("id, price")
+    .eq("slug", "followup-question")
+    .eq("is_active", true)
+    .maybeSingle();
+
+  const followupSection = followupProduct && followupSaju ? (
+    <FollowupQuestion
+      productId={followupProduct.id}
+      price={followupProduct.price}
+      saju={followupSaju}
+      guestEmail={order?.guest_email}
+    />
+  ) : null;
+
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
   const rawSlug        = product?.slug ?? "";
   const isMini         = rawSlug.endsWith("-mini");
@@ -185,9 +203,11 @@ export default async function ResultPage({
           />
         </article>
 
+        {followupSection}
+
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
+        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -240,11 +260,13 @@ export default async function ResultPage({
           <AccordionBody markdown={result.interpretation_md} headerTitle="사주 풀이" limit={13} />
         </article>
 
+        {followupSection}
+
         <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
+        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -341,11 +363,13 @@ export default async function ResultPage({
           </article>
         </div>
 
+        {followupSection}
+
         {!isLocked && <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />}
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
+        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -548,11 +572,13 @@ export default async function ResultPage({
           )}
         </article>
 
+        {followupSection}
+
         {!isLocked && <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />}
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
+        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 pb-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -607,11 +633,13 @@ export default async function ResultPage({
         <AccordionBody markdown={result.interpretation_md} headerTitle={product?.slug === "trouble-saju" ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
+      {followupSection}
+
       <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} followupSaju={followupSaju} guestEmail={order?.guest_email} />
+        <OtherProducts currentSlug={product?.slug} />
 
       <footer className="mt-10 text-center">
         <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
