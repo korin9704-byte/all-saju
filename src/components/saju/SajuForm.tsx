@@ -740,7 +740,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
                 onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
                 placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
                 rows={6}
-                className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+                className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
               />
               <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
             </div>
@@ -866,7 +866,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
                 onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
                 placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
                 rows={6}
-                className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+                className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
               />
               <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
             </div>
@@ -885,7 +885,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
               placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
               rows={6}
-              className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
           </div>
@@ -903,7 +903,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
               placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
               rows={6}
-              className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
           </div>
@@ -922,7 +922,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
               onChange={(e) => setConcernText(e.target.value.slice(0, MAX_CONCERN))}
               placeholder="궁금한 점을 자유롭게 작성해 주세요."
               rows={6}
-              className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{concernText.length}/{MAX_CONCERN}자</p>
           </div>
