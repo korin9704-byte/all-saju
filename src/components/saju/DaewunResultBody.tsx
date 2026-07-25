@@ -48,7 +48,7 @@ function parseDaewun(md: string): Parsed {
         result.preview.title = bodyLines[0] ?? "";
         result.preview.desc  = bodyLines.slice(1).join(" ").trim();
       }
-    } else if (heading.includes("상세 해설")) {
+    } else if (heading.includes("상세 풀이")) {
       const subSecs = body.split(/\n(?=### )/);
       for (const sub of subSecs) {
         if (!sub.trim().startsWith("###")) continue;
@@ -188,7 +188,7 @@ export function DaewunResultBody({
         </div>
       )}
 
-      {/* ── 상세 해설 ── */}
+      {/* ── 상세 풀이 ── */}
       {parsed.details.length > 0 && (
         <div className="border-t-2 border-gray-300">
           {/* 섹션 헤더 */}
@@ -242,7 +242,7 @@ export function DaewunResultBody({
         </div>
       )}
 
-      {/* ── 연도별 해설 ── */}
+      {/* ── 연도별 풀이 ── */}
       {parsed.yearly.length > 0 && (
         <div className="border-t-2 border-gray-300">
           <ul className="divide-y divide-border">

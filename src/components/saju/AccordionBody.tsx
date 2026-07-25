@@ -21,7 +21,7 @@ function parseSections(markdown: string): Section[] {
 
 export function AccordionBody({
   markdown,
-  headerTitle = "사주 해설",
+  headerTitle = "사주 풀이",
   headerColor = "#1a1a1a",
   showHeader = true,
   limit,
@@ -46,7 +46,7 @@ export function AccordionBody({
       {showHeader && (
         <div className="px-5 py-4 text-center" style={{ background: headerColor }}>
           <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>
-          <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 해설이 펼쳐져요</p>
+          <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 내용이 펼쳐져요</p>
         </div>
       )}
 

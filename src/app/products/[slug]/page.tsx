@@ -114,7 +114,7 @@ export default async function ProductDetailPage({
       {product.slug === "today-fortune" && (
         <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
           <div className="w-full aspect-[962/663] overflow-hidden">
-            <img src="/images/today-fortune.png" alt="사주 해설" className="w-full h-full object-cover" />
+            <img src="/images/today-fortune.png" alt="사주 풀이" className="w-full h-full object-cover" />
           </div>
         </div>
       )}
@@ -123,7 +123,7 @@ export default async function ProductDetailPage({
       {product.slug === "premium-saju" && (
         <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
           <div className="w-full aspect-[962/663] overflow-hidden">
-            <img src="/images/premium-saju.png" alt="대운 해설" className="w-full h-full object-cover" />
+            <img src="/images/premium-saju.png" alt="대운 풀이" className="w-full h-full object-cover" />
           </div>
         </div>
       )}
@@ -132,7 +132,7 @@ export default async function ProductDetailPage({
       {product.slug === "love-saju" && (
         <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
           <div className="w-full aspect-[962/663] overflow-hidden">
-            <img src="/images/love-saju.png" alt="궁합 해설" className="w-full h-full object-cover" />
+            <img src="/images/love-saju.png" alt="궁합 풀이" className="w-full h-full object-cover" />
           </div>
         </div>
       )}

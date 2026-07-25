@@ -16,7 +16,7 @@ export type ProductSeed = {
 export const productsSeed: ProductSeed[] = [
   {
     slug: "today-fortune",
-    name: "사주 해설",
+    name: "사주 풀이",
     description: "용하다고 소문났어요",
     price: 990,
     display_order: 10,
@@ -24,7 +24,7 @@ export const productsSeed: ProductSeed[] = [
   },
   {
     slug: "premium-saju",
-    name: "대운 해설",
+    name: "대운 풀이",
     description: "물 들어올때 노젓는 방법",
     price: 990,
     display_order: 20,
@@ -32,7 +32,7 @@ export const productsSeed: ProductSeed[] = [
   },
   {
     slug: "love-saju",
-    name: "궁합 해설",
+    name: "궁합 풀이",
     description: "우리 사이는 몇점?",
     price: 990,
     display_order: 30,
@@ -99,24 +99,24 @@ export const productsSeed: ProductSeed[] = [
     // 공유받은 친구용 무료 MINI — 목록/일반 결제 흐름에는 노출하지 않음
     // 결과지는 원본 상품과 동일하되 일부만 공개, 990원 언락 (slug 접미사 -mini 규칙)
     slug: "today-fortune-mini",
-    name: "사주 해설 MINI",
-    description: "사주 해설 13가지 주제 중 6가지를 무료로",
+    name: "사주 풀이 MINI",
+    description: "사주 풀이 13가지 주제 중 6가지를 무료로",
     price: 0,
     display_order: 999,
     is_active: false,
   },
   {
     slug: "premium-saju-mini",
-    name: "대운 해설 MINI",
-    description: "대운 해설 미리보기를 무료로",
+    name: "대운 풀이 MINI",
+    description: "대운 풀이 미리보기를 무료로",
     price: 0,
     display_order: 999,
     is_active: false,
   },
   {
     slug: "love-saju-mini",
-    name: "궁합 해설 MINI",
-    description: "궁합 해설 일부를 무료로",
+    name: "궁합 풀이 MINI",
+    description: "궁합 풀이 일부를 무료로",
     price: 0,
     display_order: 999,
     is_active: false,

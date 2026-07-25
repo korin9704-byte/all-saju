@@ -114,7 +114,7 @@ export default async function ResultPage({
 
   // 공유 링크로 유입된 방문자(비소유자)용 CTA — 해당 상품의 MINI 랜딩으로 (ref 어트리뷰션 유지)
   const miniLinkSlug = isMiniBaseSlug(baseSlug) ? baseSlug : "today-fortune";
-  const miniLinkName = isMiniBaseSlug(baseSlug) ? baseName : "사주 해설";
+  const miniLinkName = isMiniBaseSlug(baseSlug) ? baseName : "사주 풀이";
   const visitorCta = !isOwner ? (
     <section className="mt-8 px-4 sm:px-0">
       <Link
@@ -214,7 +214,7 @@ export default async function ResultPage({
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
-              {displayName} &lsquo;사주 해설&rsquo;
+              {displayName} &lsquo;사주 풀이&rsquo;
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -237,7 +237,7 @@ export default async function ResultPage({
         </section>
 
         <article className="rounded-b-2xl overflow-hidden">
-          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 해설" limit={13} />
+          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 풀이" limit={13} />
         </article>
 
         <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
@@ -253,7 +253,7 @@ export default async function ResultPage({
     );
   }
 
-  /* ── premium-saju (대운 해설) 레이아웃 ── */
+  /* ── premium-saju (대운 풀이) 레이아웃 ── */
   if (isDaewun) {
     const concerns       = (sajuInput?.concerns ?? []) as string[];
     const daewunConcern  = concerns.find((c: string) => c.startsWith("[대운]")) ?? "";
@@ -306,7 +306,7 @@ export default async function ResultPage({
                 </span>
               )}
               <h1 className="text-xl font-bold text-white tracking-tight">
-                {displayName} {isLocked ? "‘대운 해설 MINI’" : "‘대운 해설’"}
+                {displayName} {isLocked ? "‘대운 풀이 MINI’" : "‘대운 풀이’"}
               </h1>
             </div>
             <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -334,8 +334,8 @@ export default async function ResultPage({
 
           <article>
             <div className="px-5 py-4 text-center" style={{ background: "#1a1a1a" }}>
-              <p className="text-sm font-semibold tracking-widest text-white">대운 해설</p>
-              <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 해설이 펼쳐져요</p>
+              <p className="text-sm font-semibold tracking-widest text-white">대운 풀이</p>
+              <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 내용이 펼쳐져요</p>
             </div>
             <DaewunResultBody markdown={result.interpretation_md} lock={daewunLock} />
           </article>
@@ -537,12 +537,12 @@ export default async function ResultPage({
               resultId={result.id}
               unlockPrice={loveUnlockPrice}
               visibleCount={6}
-              headerTitle="궁합 해설"
+              headerTitle="궁합 풀이"
             />
           ) : (
             <AccordionBody
               markdown={bodyMd || result.interpretation_md}
-              headerTitle="궁합 해설"
+              headerTitle="궁합 풀이"
               limit={13}
             />
           )}
@@ -604,7 +604,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden">
-        <AccordionBody markdown={result.interpretation_md} headerTitle={product?.slug === "trouble-saju" ? "고민 해설" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "해설" : "질문 해설"} limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={product?.slug === "trouble-saju" ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
       <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />

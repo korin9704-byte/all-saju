@@ -94,9 +94,9 @@ function ThumbDaewun() {
 }
 
 const thumbMap: Record<string, React.ReactNode> = {
-  "today-fortune": <img src="/images/today-fortune.png" alt="사주 해설" className="w-full h-full object-cover" />,
-  "premium-saju":  <img src="/images/premium-saju.png" alt="대운 해설" className="w-full h-full object-cover" />,
-  "love-saju":     <img src="/images/love-saju.png" alt="궁합 해설" className="w-full h-full object-cover" />,
+  "today-fortune": <img src="/images/today-fortune.png" alt="사주 풀이" className="w-full h-full object-cover" />,
+  "premium-saju":  <img src="/images/premium-saju.png" alt="대운 풀이" className="w-full h-full object-cover" />,
+  "love-saju":     <img src="/images/love-saju.png" alt="궁합 풀이" className="w-full h-full object-cover" />,
   "worry-saju":    <img src="/images/worry-saju.png" alt="무엇이든 물어보세요" className="w-full h-full object-cover" />,
   "realestate-saju": <img src="/images/realestate-saju.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />,
   "romance-saju":    <img src="/images/romance-saju.png" alt="이성이 많을 인생인가?" className="w-full h-full object-cover" />,

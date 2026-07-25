@@ -17,7 +17,7 @@ const RESULT_BUTTON_STYLE = { background: "#191919", color: "#ffffff" } as const
  */
 export function ShareRewardCard({
   productSlug = "today-fortune",
-  productName = "사주 해설",
+  productName = "사주 풀이",
 }: {
   /** 선물할 MINI의 원본 상품 슬러그 */
   productSlug?: string;

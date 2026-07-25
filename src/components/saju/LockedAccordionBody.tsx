@@ -31,7 +31,7 @@ export function LockedAccordionBody({
   resultId,
   unlockPrice,
   visibleCount = 6,
-  headerTitle = "사주 해설",
+  headerTitle = "사주 풀이",
 }: {
   markdown: string;
   resultId: string;
@@ -84,7 +84,7 @@ export function LockedAccordionBody({
       {/* 헤더 */}
       <div className="px-5 py-4 text-center" style={{ background: "#1a1a1a" }}>
         <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>
-        <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 해설이 펼쳐져요</p>
+        <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 내용이 펼쳐져요</p>
       </div>
 
       {/* 열람 가능 주제 */}

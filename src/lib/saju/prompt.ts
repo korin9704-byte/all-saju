@@ -162,14 +162,14 @@ export function buildSajuPrompt(input: PromptInput): { system: string; user: str
   };
 }
 
-// ─── 사주 해설 (today-fortune — 주제별 아코디언, 주제당 850자) ──────────
+// ─── 사주 풀이 (today-fortune — 주제별 아코디언, 주제당 850자) ──────────
 export function buildTodayFortunePrompt(input: PromptInput): { system: string; user: string } {
   const ctx = makeContext(input);
 
   const user = `${ctx}
 
 ---
-이 사람의 사주를 분석하여 정확히 13개의 주제별 사주 해설을 작성해 주세요.
+이 사람의 사주를 분석하여 정확히 13개의 주제별 사주 풀이을 작성해 주세요.
 
 ⚠️ 필수 규칙:
 - 주제는 반드시 정확히 13개를 작성하세요. 12개도 14개도 안 됩니다. 13개보다 많거나 적으면 절대 안 됩니다. 반드시 딱 13개.
@@ -233,7 +233,7 @@ export function buildWorryPrompt(input: PromptInput): { system: string; user: st
   return { system: SYSTEM_BASE, user };
 }
 
-// ─── 대운 해설 (premium-saju — 선택한 10년 대운 집중 분석) ──────────────────
+// ─── 대운 풀이 (premium-saju — 선택한 10년 대운 집중 분석) ──────────────────
 export function buildDaewunPrompt(input: PromptInput): { system: string; user: string } {
   const ctx = makeContext(input);
 
@@ -246,7 +246,7 @@ export function buildDaewunPrompt(input: PromptInput): { system: string; user: s
   const lifestyle       = lifestyleRaw.replace("[일상] ", "").trim();
   const question        = questionRaw.replace("[질문] ", "").trim();
 
-  // 연도 목록 생성 (연도별 해설용)
+  // 연도 목록 생성 (연도별 풀이용)
   const yearMatch = periodLabel.match(/\((\d+)년~(\d+)년\)/);
   const ageMatch  = periodLabel.match(/(\d+)세~(\d+)세/);
   const startYear = yearMatch ? parseInt(yearMatch[1]) : null;
@@ -277,7 +277,7 @@ ${question     ? `꼭 답해야 할 질문: "${question}"` : ""}
 ### 설명
 이 대운의 전반적인 분위기와 핵심 흐름을 친근하게 3~4문장으로 서술. 전문용어 없이.
 
-## 상세 해설
+## 상세 풀이
 
 ### ✦ 이 10년의 챕터명
 이 시기 전체를 시적으로 표현하는 부제 한 줄
@@ -299,7 +299,7 @@ ${lifestyle ? `직업(${lifestyle})을 반영하여 ` : ""}직업·수입·투�
 이 시기 개운 방향을 시적으로 표현하는 부제 한 줄
 ${question ? `질문("${question}")에 사주 근거로 답하면서 ` : ""}이 시기를 잘 보내는 구체적 행동 지침을 630자 이상 서술.
 
-## 연도별 해설
+## 연도별 풀이
 
 ${yearlyTemplate}
 
@@ -315,19 +315,19 @@ ${yearlyTemplate}
 ---
 ⚠️ 필수 규칙:
 - 반드시 ## 와 ### 헤딩 구조를 위 형식 그대로 지키세요.
-- 상세 해설 각 항목은 630자 이상 서술하세요.
-- 연도별 해설 각 연도는 핵심 한 줄 제목 + 350자 이상의 상세 내용을 서술하세요.
+- 상세 풀이 각 항목은 630자 이상 서술하세요.
+- 연도별 풀이 각 연도는 핵심 한 줄 제목 + 350자 이상의 상세 내용을 서술하세요.
 - 마지막 한마디는 제목 + 캐치프레이즈 + 3개 단락(각 300자 이상, 총 900자 이상)으로 구성하세요.
 - ### 바로 아래 줄(부제/캐치프레이즈)에 **bold**, "따옴표", 대괄호[] 를 절대 사용하지 마세요. 깨끗한 텍스트만 쓰세요.
-- 연도별 해설에서 ### 헤딩은 연도(예: ### 2032년 (41세)) 에만 사용하고, 그 안에 ### 소제목을 추가로 넣지 마세요.
+- 연도별 풀이에서 ### 헤딩은 연도(예: ### 2032년 (41세)) 에만 사용하고, 그 안에 ### 소제목을 추가로 넣지 마세요.
 - 전문 용어(천간, 지지, 십성 등)는 쓰지 마세요.
 - 친한 선배처럼 따뜻하고 직접적인 말투로 쓰세요.
-- [명리학 근거 필수] 각 섹션과 연도별 해설에서 반드시 대운·세운·사주 구조가 어떻게 이 시기에 영향을 주는지 자연스럽게 언급하세요. 예: "이 10년 동안 흘러오는 대운의 기운이 당신 사주의 핵심 에너지와 맞닿아서", "이 해에는 그해의 운이 당신 사주와 힘을 합치는 구조라", "타고난 사주와 이 시기 에너지가 서로 충돌하기 때문에". 근거 없이 "좋아요 / 조심하세요"만 쓰는 것은 금지합니다.`;
+- [명리학 근거 필수] 각 섹션과 연도별 풀이에서 반드시 대운·세운·사주 구조가 어떻게 이 시기에 영향을 주는지 자연스럽게 언급하세요. 예: "이 10년 동안 흘러오는 대운의 기운이 당신 사주의 핵심 에너지와 맞닿아서", "이 해에는 그해의 운이 당신 사주와 힘을 합치는 구조라", "타고난 사주와 이 시기 에너지가 서로 충돌하기 때문에". 근거 없이 "좋아요 / 조심하세요"만 쓰는 것은 금지합니다.`;
 
   return { system: SYSTEM_BASE, user };
 }
 
-// ─── 궁합 해설 (love-saju — 두 사람 사주 비교 분석) ──────────────────────────
+// ─── 궁합 풀이 (love-saju — 두 사람 사주 비교 분석) ──────────────────────────
 export function buildLoveSajuPrompt(input: PromptInput): { system: string; user: string } {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
@@ -626,7 +626,7 @@ export function buildMiniSajuPrompt(input: PromptInput): { system: string; user:
   return { system: SYSTEM_BASE, user };
 }
 
-// ─── 고민 사주 (trouble-saju — 사주 해설 형식 + 고민 집중) ──────────────
+// ─── 고민 사주 (trouble-saju — 사주 풀이 형식 + 고민 집중) ──────────────
 export function buildTroubleSajuPrompt(input: PromptInput): { system: string; user: string } {
   const ctx = makeContext(input);
   const concern = input.concerns
@@ -639,7 +639,7 @@ export function buildTroubleSajuPrompt(input: PromptInput): { system: string; us
 ---
 내담자의 고민: "${concern || "삶의 전반적인 방향"}"
 
-이 사람의 사주를 분석하여 정확히 13개의 주제별 사주 해설을 작성해 주세요.
+이 사람의 사주를 분석하여 정확히 13개의 주제별 사주 풀이을 작성해 주세요.
 단, 위에 적힌 내담자의 고민을 리포트 전체의 중심축으로 삼으세요. 모든 주제가 고민과 자연스럽게 연결되어야 하고, 고민에 대한 답이 리포트를 읽고 나면 분명해져야 합니다.
 
 ⚠️ 필수 규칙:

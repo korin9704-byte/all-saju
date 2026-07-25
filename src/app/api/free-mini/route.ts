@@ -6,7 +6,7 @@ import { generateAndStoreResult } from "@/lib/saju/generate-result";
 import { birthDateSchema } from "@/lib/validation";
 
 const bodySchema = z.object({
-  // MINI 원본 상품 (미지정 시 사주 해설 — 기존 링크 하위호환)
+  // MINI 원본 상품 (미지정 시 사주 풀이 — 기존 링크 하위호환)
   productSlug: z.enum(["today-fortune", "premium-saju", "love-saju", "worry-saju"]).optional(),
   name: z.string().max(50).optional(),
   birthDate: birthDateSchema,

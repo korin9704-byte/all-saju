@@ -5,9 +5,9 @@
 // =====================================================
 
 export const MINI_PRODUCTS = {
-  "today-fortune": { name: "사주 해설", visible: 6 },
-  "premium-saju": { name: "대운 해설", visible: 2 },
-  "love-saju": { name: "궁합 해설", visible: 6 },
+  "today-fortune": { name: "사주 풀이", visible: 6 },
+  "premium-saju": { name: "대운 풀이", visible: 2 },
+  "love-saju": { name: "궁합 풀이", visible: 6 },
   "worry-saju": { name: "무엇이든 물어보세요", visible: 6 },
 } as const;
 

@@ -55,7 +55,7 @@ function toBirthInfo(input: SajuInputRow): BirthInfo {
   };
 }
 
-/** '## ' 섹션이 max개를 넘으면 초과분을 잘라낸다 (사주 해설 13개 고정) */
+/** '## ' 섹션이 max개를 넘으면 초과분을 잘라낸다 (사주 풀이 13개 고정) */
 function limitSections(markdown: string, max: number): string {
   const parts = markdown.split(/\n(?=## )/);
   const sections: string[] = [];
@@ -257,7 +257,7 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
     llm = await generateInterpretation({ system, user });
   }
 
-  // 섹션 수 고정 — LLM이 넘치게 쓰면 잘라낸다 (사주 해설·질문 13개, 궁합은 점수·제목 포함 15개)
+  // 섹션 수 고정 — LLM이 넘치게 쓰면 잘라낸다 (사주 풀이·질문 13개, 궁합은 점수·제목 포함 15개)
   const interpretationMd =
     promptSlug === "today-fortune" || promptSlug === "worry-saju"
       ? limitSections(llm.text, 13)

@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const PRODUCTS = [
-  { slug: "today-fortune", name: "사주 해설" },
-  { slug: "premium-saju",  name: "대운 해설" },
-  { slug: "love-saju",     name: "궁합 해설" },
+  { slug: "today-fortune", name: "사주 풀이" },
+  { slug: "premium-saju",  name: "대운 풀이" },
+  { slug: "love-saju",     name: "궁합 풀이" },
   { slug: "worry-saju",    name: "무엇이든 물어보세요" },
 ];
 

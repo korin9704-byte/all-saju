@@ -11,7 +11,7 @@ const landingDummyReviews = [
   { id: "l3", rating: 4, content: "친구 추천으로 봤는데 내용이 꽤 구체적이에요. 연애 부분이 특히 공감 갔어요. 만족합니다!", created_at: "2026-05-27T00:00:00Z" },
   { id: "l4", rating: 5, content: "올해 운세가 이렇게 잘 맞을 줄 몰랐어요. 직장 관련 내용이 특히 정확해서 깜짝 놀랐어요.", created_at: "2026-05-26T00:00:00Z" },
   { id: "l5", rating: 5, content: "처음엔 반신반의했는데 읽다 보니 너무 공감돼서 눈물이 다 났어요. 강력 추천합니다.", created_at: "2026-05-25T00:00:00Z" },
-  { id: "l6", rating: 4, content: "내용이 충실하고 읽기 쉽게 잘 정리돼 있어요. 다음에 대운 해설도 볼 예정이에요!", created_at: "2026-05-24T00:00:00Z" },
+  { id: "l6", rating: 4, content: "내용이 충실하고 읽기 쉽게 잘 정리돼 있어요. 다음에 대운 풀이도 볼 예정이에요!", created_at: "2026-05-24T00:00:00Z" },
   { id: "l7", rating: 5, content: "사주 봐야지 생각만 하다가 처음 봤는데 이렇게 잘 맞을 줄이야. 앞으로 매년 볼 것 같아요.", created_at: "2026-05-23T00:00:00Z" },
   { id: "l8", rating: 5, content: "제 고민이랑 딱 맞는 내용이 나와서 위로받은 느낌이에요. 좋은 서비스 감사해요 🙏", created_at: "2026-05-22T00:00:00Z" },
   { id: "l9", rating: 4, content: "전반적으로 만족해요. 다음에 궁합도 보고 싶어요.", created_at: "2026-05-21T00:00:00Z" },
@@ -33,7 +33,7 @@ function LandingReviews() {
 const VW = 240, VH = 168;
 
 /* ─────────────────────────────────────────────────────
-   1. 사주 해설 — 사주(四柱) 네 기둥
+   1. 사주 풀이 — 사주(四柱) 네 기둥
 ───────────────────────────────────────────────────── */
 function ThumbSun() {
   // 네 기둥: [x, height] — 바닥 y=138 기준
@@ -119,7 +119,7 @@ function ThumbUnion() {
 }
 
 /* ─────────────────────────────────────────────────────
-   4. 대운 해설 — 파도 + 상승 곡선 (물 들어올 때 노 젓기)
+   4. 대운 풀이 — 파도 + 상승 곡선 (물 들어올 때 노 젓기)
 ───────────────────────────────────────────────────── */
 function ThumbDaewun() {
   return (
@@ -144,9 +144,9 @@ function ThumbDaewun() {
    슬러그 → 썸네일 매핑
 ───────────────────────────────────────────────────── */
 const thumbMap: Record<string, React.ReactNode> = {
-  "today-fortune": <img src="/images/today-fortune.png" alt="사주 해설" className="w-full h-full object-cover" />,
-  "premium-saju":  <img src="/images/premium-saju.png" alt="대운 해설" className="w-full h-full object-cover" />,
-  "love-saju":     <img src="/images/love-saju.png" alt="궁합 해설" className="w-full h-full object-cover" />,
+  "today-fortune": <img src="/images/today-fortune.png" alt="사주 풀이" className="w-full h-full object-cover" />,
+  "premium-saju":  <img src="/images/premium-saju.png" alt="대운 풀이" className="w-full h-full object-cover" />,
+  "love-saju":     <img src="/images/love-saju.png" alt="궁합 풀이" className="w-full h-full object-cover" />,
   "worry-saju":    <img src="/images/worry-saju.png" alt="무엇이든 물어보세요" className="w-full h-full object-cover" />,
   "realestate-saju": <img src="/images/realestate-saju.png" alt="부동산 투자로 재미 볼 수 있을까?" className="w-full h-full object-cover" />,
   "romance-saju":    <img src="/images/romance-saju.png" alt="이성이 많을 인생인가?" className="w-full h-full object-cover" />,
