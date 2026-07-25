@@ -699,7 +699,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
           {/* 섹션 4 헤더 */}
           <div className="pt-5">
-            <p className="text-base font-bold text-ink">각자의 역할을 입력해주세요 <span className="text-sm font-normal text-body">(선택)</span></p>
+            <p className="text-base font-bold text-ink">각자의 역할을 입력해 주세요 <span className="text-sm font-normal text-body">(선택)</span></p>
           </div>
 
           {/* 내 역할 */}
@@ -747,7 +747,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             <div className="relative">
               <textarea value={freeQuestion}
                 onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
-                placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+                placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
                 rows={6}
                 className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
               />
@@ -825,7 +825,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             <div>
               <p className="text-base font-bold text-ink leading-relaxed">
                 애정운 분석을 위해,<br />
-                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려주세요 <span className="text-sm font-normal text-body">(선택)</span>
+                지금 {name.trim() ? `${name.trim()}님의` : "나의"} 상황을 알려 주세요 <span className="text-sm font-normal text-body">(선택)</span>
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -873,7 +873,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             <div className="relative">
               <textarea value={freeQuestion}
                 onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
-                placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+                placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
                 rows={6}
                 className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
               />
@@ -892,7 +892,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           <div className="relative">
             <textarea value={freeQuestion}
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
-              placeholder="궁금한 점을 자유롭게 작성해주세요. 없다면 그냥 넘어가셔도 좋아요."
+              placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
               rows={6}
               className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
@@ -910,7 +910,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           <div className="relative">
             <textarea value={freeQuestion}
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
-              placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해주세요."
+              placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
               rows={6}
               className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
@@ -929,7 +929,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             <textarea
               value={concernText}
               onChange={(e) => setConcernText(e.target.value.slice(0, MAX_CONCERN))}
-              placeholder="궁금한 점을 자유롭게 작성해주세요."
+              placeholder="궁금한 점을 자유롭게 작성해 주세요."
               rows={6}
               className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
