@@ -4,6 +4,15 @@ import { useState } from "react";
 
 type Section = { title: string; content: string };
 
+/** **강조** 구간을 밑줄로 렌더링 */
+export function renderEmphasis(text: string): React.ReactNode[] {
+  return text.split(/\*\*(.+?)\*\*/g).map((seg, i) =>
+    i % 2 === 1
+      ? <u key={i} className="underline underline-offset-4 decoration-[1.5px]">{seg}</u>
+      : seg
+  );
+}
+
 function parseSections(markdown: string): Section[] {
   const parts = markdown.split(/\n(?=## )/);
   const sections: Section[] = [];
@@ -90,7 +99,7 @@ export function AccordionBody({
                       key={pi}
                       className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0"
                     >
-                      {para.replace(/^[-•]\s?/, "").replace(/\*\*/g, "")}
+                      {renderEmphasis(para.replace(/^[-•]\s?/, ""))}
                     </p>
                   ))}
                 </div>

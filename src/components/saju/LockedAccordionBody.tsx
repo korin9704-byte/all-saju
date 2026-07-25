@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { formatKRW } from "@/lib/utils";
+import { renderEmphasis } from "@/components/saju/AccordionBody";
 
 type Section = { title: string; content: string };
 
@@ -121,7 +122,7 @@ export function LockedAccordionBody({
                 <div className="px-5 pb-6 pt-1 bg-[#fafafa] border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
                     <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0">
-                      {para.replace(/^[-•]\s?/, "").replace(/\*\*/g, "")}
+                      {renderEmphasis(para.replace(/^[-•]\s?/, ""))}
                     </p>
                   ))}
                 </div>
