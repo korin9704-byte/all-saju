@@ -4,12 +4,10 @@ import { useState } from "react";
 
 type Section = { title: string; content: string };
 
-/** **강조** 구간을 빨간 글자색으로 렌더링 */
+/** **강조** 구간을 큰따옴표로 감싸 렌더링 (색상 없음) */
 export function renderEmphasis(text: string): React.ReactNode[] {
   return text.split(/\*\*(.+?)\*\*/g).map((seg, i) =>
-    i % 2 === 1
-      ? <span key={i} style={{ color: "#e11d48" }}>{seg}</span>
-      : seg
+    i % 2 === 1 ? `“${seg}”` : seg
   );
 }
 
