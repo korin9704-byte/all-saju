@@ -309,31 +309,22 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         guestEmail: guestEmail.trim() || undefined,
       };
 
-      // 미로그인 → 입력 저장 후 카카오 1초 로그인
-      // MINI는 로그인 후 바로 /generating(분석 중)으로, 결제는 /resume에서 이용권/결제 분기
-      if (!isLoggedIn) {
+      // MINI만 로그인 필요 (결과 저장이 계정 기반) — 결제는 비회원(이메일)으로 바로 진행
+      if (!isLoggedIn && miniMode) {
         try {
-          if (miniMode) {
-            let ref: string | undefined;
-            try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
-            sessionStorage.setItem(
-              "saju_generate",
-              JSON.stringify({ kind: "mini", payload: { ...payload, productSlug, ref } }),
-            );
-          } else {
-            sessionStorage.setItem(
-              "saju_resume",
-              JSON.stringify({ mode: "pay", productSlug, payload }),
-            );
-          }
+          let ref: string | undefined;
+          try { ref = localStorage.getItem("saju_ref") ?? undefined; } catch { /* ignore */ }
+          sessionStorage.setItem(
+            "saju_generate",
+            JSON.stringify({ kind: "mini", payload: { ...payload, productSlug, ref } }),
+          );
         } catch { /* ignore */ }
         setSubmitting(true);
         const supabase = createClient();
-        const next = miniMode ? "/generating" : "/resume";
         const { error } = await supabase.auth.signInWithOAuth({
           provider: "kakao",
           options: {
-            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+            redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/generating")}`,
             scopes: "account_email profile_nickname",
           },
         });
@@ -964,17 +955,19 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             ? (isLoggedIn ? "결과보기" : "카카오 1초 로그인하고 결과보기")
             : hasCredit
               ? "무료 이용권으로 결과보기"
-              : isLoggedIn
-                ? "결제하기"
-                : "카카오 1초 로그인하고 결제하기"}
+              : "결제하기"}
       </button>
-      {!isLoggedIn && (
+      {!isLoggedIn && miniMode && (
         <p className="text-xs text-center text-mute">
-          {miniMode
-            ? "결과 저장을 위해 카카오 로그인이 필요해요 · 결제 없음"
-            : "결과 저장을 위해 카카오 로그인이 필요해요 · 입력한 내용은 그대로 유지돼요"}
+          결과 저장을 위해 카카오 로그인이 필요해요 · 결제 없음
           <br />
           로그인 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
+          <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다
+        </p>
+      )}
+      {!isLoggedIn && !miniMode && (
+        <p className="text-xs text-center text-mute">
+          결제 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
           <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다
         </p>
       )}
