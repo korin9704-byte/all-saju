@@ -20,7 +20,7 @@ export const productsSeed: ProductSeed[] = [
     description: "용하다고 소문났어요",
     price: 990,
     display_order: 10,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "premium-saju",
@@ -28,7 +28,7 @@ export const productsSeed: ProductSeed[] = [
     description: "물 들어올때 노젓는 방법",
     price: 990,
     display_order: 20,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "love-saju",
@@ -36,7 +36,7 @@ export const productsSeed: ProductSeed[] = [
     description: "우리 사이는 몇점?",
     price: 990,
     display_order: 30,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "worry-saju",
@@ -44,7 +44,7 @@ export const productsSeed: ProductSeed[] = [
     description: "더 궁금한 점이 있다면?",
     price: 990,
     display_order: 40,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "realestate-saju",
