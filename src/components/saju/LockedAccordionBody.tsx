@@ -121,7 +121,7 @@ export function LockedAccordionBody({
                 <div className="px-5 pb-6 pt-1 bg-[#fafafa] border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
                     <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0">
-                      {para.replace(/^[-•]\s?/, "")}
+                      {para.replace(/^[-•]\s?/, "").replace(/\*\*/g, "")}
                     </p>
                   ))}
                 </div>

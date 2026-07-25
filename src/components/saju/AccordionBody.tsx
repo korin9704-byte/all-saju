@@ -90,7 +90,7 @@ export function AccordionBody({
                       key={pi}
                       className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0"
                     >
-                      {para.replace(/^[-•]\s?/, "")}
+                      {para.replace(/^[-•]\s?/, "").replace(/\*\*/g, "")}
                     </p>
                   ))}
                 </div>
