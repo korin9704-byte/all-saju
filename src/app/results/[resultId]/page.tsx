@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { MyeongsikTable } from "@/components/saju/MyeongsikTable";
 import { ResultBody } from "@/components/saju/ResultBody";
@@ -128,20 +127,6 @@ export default async function ResultPage({
   const isLoveSaju     = baseSlug === "love-saju";
   const isLocked       = isMini && result.locked === true;
 
-  // 공유 링크로 유입된 방문자(비소유자)용 CTA — 해당 상품의 MINI 랜딩으로 (ref 어트리뷰션 유지)
-  const miniLinkSlug = isMiniBaseSlug(baseSlug) ? baseSlug : "today-fortune";
-  const miniLinkName = isMiniBaseSlug(baseSlug) ? baseName : "사주 풀이";
-  const visitorCta = !isOwner ? (
-    <section className="mt-8 px-4 sm:px-0">
-      <Link
-        href={`/free/${miniLinkSlug}${refParam ? `?ref=${encodeURIComponent(refParam)}` : ""}`}
-        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium inline-flex items-center justify-center transition-colors hover:bg-ink/80"
-      >
-        &lsquo;무료 {miniLinkName} MINI&rsquo; 보기
-      </Link>
-    </section>
-  ) : null;
-
   /* ── MINI 잠금 결과지 (대운 제외 — 대운은 원본 레이아웃에서 잠금 처리) ── */
   if (isLocked && baseSlug !== "premium-saju" && baseSlug !== "love-saju") {
     const miniConf = isMiniBaseSlug(baseSlug) ? MINI_PRODUCTS[baseSlug] : { name: baseName, visible: 6 };
@@ -203,7 +188,6 @@ export default async function ResultPage({
 
         {followupSection}
 
-        {visitorCta}
 
 
         <footer className="mt-10 text-center">
@@ -260,7 +244,6 @@ export default async function ResultPage({
         {followupSection}
 
 
-        {visitorCta}
 
 
         <footer className="mt-10 text-center">
@@ -361,7 +344,6 @@ export default async function ResultPage({
         {followupSection}
 
 
-        {visitorCta}
 
 
         <footer className="mt-10 text-center">
@@ -568,7 +550,6 @@ export default async function ResultPage({
         {followupSection}
 
 
-        {visitorCta}
 
 
         <footer className="mt-10 pb-10 text-center">
@@ -627,7 +608,6 @@ export default async function ResultPage({
       {followupSection}
 
 
-        {visitorCta}
 
 
       <footer className="mt-10 text-center">
