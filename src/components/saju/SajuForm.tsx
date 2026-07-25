@@ -730,7 +730,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 궁금한 점 */}
-          <div className="space-y-3 pt-5">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
 
@@ -856,7 +856,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           </div>
 
           {/* 궁금한 점 */}
-          <div className="space-y-3 pt-5">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
 
@@ -876,7 +876,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* ── today-fortune / realestate-saju / romance-saju / job-saju / business-saju 궁금한 점 섹션 ── */}
       {(productSlug === "today-fortune" || productSlug === "realestate-saju" || productSlug === "romance-saju" || productSlug === "job-saju" || productSlug === "business-saju") && (
-        <div className="space-y-3 pt-5">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점 <span className="text-sm font-normal text-body">(선택)</span></Label>
           </div>
@@ -894,7 +894,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* ── trouble-saju 고민 섹션 (필수) ── */}
       {productSlug === "trouble-saju" && (
-        <div className="space-y-3 pt-5">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">어떤 고민이 있으세요?</Label>
           </div>
@@ -912,7 +912,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* ── worry-saju 고민 섹션 ── */}
       {productSlug === "worry-saju" && (
-        <div className="space-y-3 pt-5">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label className="text-base font-bold text-ink">궁금한 점</Label>
           </div>
@@ -931,7 +931,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
 
       {/* ── 이메일 입력 (결과지 수령) ── */}
       {!miniMode && (
-        <div className="space-y-3 pt-5">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일</Label>
           </div>
