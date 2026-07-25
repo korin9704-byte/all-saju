@@ -87,10 +87,10 @@ export const productsSeed: ProductSeed[] = [
     is_active: true,
   },
   {
-    // 결과지 하단 추가 질문 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
+    // 결과지 하단 추가 고민 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
     slug: "followup-question",
-    name: "추가 질문",
-    description: "결과지를 보고 더 궁금한 점을 물어보세요.",
+    name: "고민 사주",
+    description: "결과지를 보고 또 다른 고민을 물어보세요.",
     price: 1900,
     display_order: 998,
     is_active: true,
