@@ -114,6 +114,7 @@ type OrderPayload = {
   gender: "male" | "female";
   calendar: "solar" | "lunar";
   concerns: string[];
+  guestEmail?: string;
 };
 
 function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }: Props) {
@@ -132,6 +133,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
   const [gender, setGender]           = useState<"male" | "female" | null>(null);
   const [calendar, setCalendar]       = useState<"solar" | "lunar" | null>(null);
   const [concernText, setConcernText] = useState("");
+  const [guestEmail, setGuestEmail]   = useState("");
 
   // love-saju 전용 (상대방 정보)
   const [partnerName, setPartnerName]                 = useState("");
@@ -260,6 +262,10 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
     if (productSlug === "love-saju" && !relationship2) {
       toast.error("두 사람의 관계를 선택해 주세요"); return;
     }
+    if (!miniMode) {
+      if (!guestEmail.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요"); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail.trim())) { toast.error("이메일 형식을 다시 확인해 주세요"); return; }
+    }
     {
       const concerns: string[] = [];
 
@@ -300,6 +306,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
           ? birthTime.split(":").map((v) => v.padStart(2, "0")).join(":")
           : null,
         timeUnknown, gender, calendar, concerns,
+        guestEmail: guestEmail.trim() || undefined,
       };
 
       // 미로그인 → 입력 저장 후 카카오 1초 로그인
@@ -928,6 +935,23 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{concernText.length}/{MAX_CONCERN}자</p>
           </div>
+        </div>
+      )}
+
+      {/* ── 이메일 입력 (결과지 수령) ── */}
+      {!miniMode && (
+        <div className="space-y-3 pt-5">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="guestEmail" className="text-base font-bold text-ink">이메일</Label>
+          </div>
+          <input
+            id="guestEmail"
+            type="email"
+            value={guestEmail}
+            onChange={(e) => setGuestEmail(e.target.value)}
+            placeholder="결과지를 받을 이메일을 입력해 주세요"
+            className="w-full rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:bg-[#ebebeb] transition-colors"
+          />
         </div>
       )}
 

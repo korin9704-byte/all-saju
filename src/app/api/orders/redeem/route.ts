@@ -15,6 +15,7 @@ const bodySchema = z.object({
   gender: z.enum(["male", "female"]),
   calendar: z.enum(["solar", "lunar"]),
   concerns: z.array(z.string().max(350)).max(20),
+  guestEmail: z.string().email().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
     .insert({
       order_id: orderId,
       user_id: user.id,
-      guest_email: user.email ?? null,
+      guest_email: body.guestEmail?.trim() || user.email || null,
       product_id: product.id,
       amount: 0,
       status: "paid",
