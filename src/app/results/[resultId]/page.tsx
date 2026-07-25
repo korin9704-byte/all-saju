@@ -8,9 +8,7 @@ import { LockedAccordionBody } from "@/components/saju/LockedAccordionBody";
 import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
-import { OtherProducts } from "@/components/saju/OtherProducts";
 import { FollowupQuestion } from "@/components/saju/FollowupQuestion";
-import { ShareRewardCard } from "@/components/saju/ShareRewardCard";
 import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
@@ -207,7 +205,6 @@ export default async function ResultPage({
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -262,11 +259,9 @@ export default async function ResultPage({
 
         {followupSection}
 
-        <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -365,11 +360,9 @@ export default async function ResultPage({
 
         {followupSection}
 
-        {!isLocked && <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />}
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -574,11 +567,9 @@ export default async function ResultPage({
 
         {followupSection}
 
-        {!isLocked && <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />}
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
 
         <footer className="mt-10 pb-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
@@ -635,11 +626,9 @@ export default async function ResultPage({
 
       {followupSection}
 
-      <ShareRewardCard productSlug={miniLinkSlug} productName={miniLinkName} />
 
         {visitorCta}
 
-        <OtherProducts currentSlug={product?.slug} />
 
       <footer className="mt-10 text-center">
         <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다</p>
