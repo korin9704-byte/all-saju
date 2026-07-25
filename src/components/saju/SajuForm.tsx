@@ -898,7 +898,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
       {productSlug === "trouble-saju" && (
         <div className="space-y-3 pt-5">
           <div className="flex items-center justify-between">
-            <Label className="text-base font-bold text-ink">고민</Label>
+            <Label className="text-base font-bold text-ink">어떤 고민이 있으세요?</Label>
           </div>
           <div className="relative">
             <textarea value={freeQuestion}
