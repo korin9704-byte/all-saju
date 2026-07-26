@@ -11,7 +11,7 @@ export function renderEmphasis(text: string): React.ReactNode[] {
     const m = seg.match(/^(.*?)([.,!?…~]+)$/);
     const body = m ? m[1] : seg;
     const punct = m ? m[2] : "";
-    return [<span key={i} style={{ color: "#9469ba" }}>{body}</span>, punct];
+    return [<span key={i} style={{ color: "#800080" }}>{body}</span>, punct];
   });
 }
 
