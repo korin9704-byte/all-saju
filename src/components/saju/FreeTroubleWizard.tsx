@@ -105,7 +105,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
         className="w-full max-w-lg px-4 py-10 flex flex-col rounded-2xl overflow-hidden"
         style={{
           minHeight: "88vh",
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.55) 58%, rgba(255,255,255,0.96) 72%), url('/images/free-trouble-bg.webp')",
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.75) 56%, rgba(255,255,255,0.97) 70%), url('/images/free-trouble-bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}
@@ -128,7 +128,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
         <div className="mt-auto pt-96">
           {step === "birth" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">태어난 날이 언제인가요?</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 날이 언제인가요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
                 {radioRow(calendar === "lunar", "음력", () => setCalendar("lunar"), "lunar")}
@@ -156,7 +156,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "time" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">태어난 시간을 아시나요?</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 시간을 아시나요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {radioRow(knowsTime === true, "예", () => setKnowsTime(true), "yes")}
                 {radioRow(knowsTime === false, "아니오", () => setKnowsTime(false), "no")}
@@ -184,7 +184,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "gender" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">성별을 알려주세요.</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>성별을 알려주세요.</h1>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
                 {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
@@ -198,7 +198,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "name" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">이름을 알려주세요.</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이름을 알려주세요.</h1>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="풀이에서 이렇게 불러드릴게요."
@@ -212,7 +212,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "email" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">이메일을 알려주세요.</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이메일을 알려주세요.</h1>
               <input type="email" value={email} placeholder="결과지를 보내드려요."
                 onChange={(e) => setEmail(e.target.value)}
                 className={`${textInputCls} mb-8`} />
@@ -225,7 +225,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "concern" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">어떤 고민이 있으세요?</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>어떤 고민이 있으세요?</h1>
               <div className="relative mb-8">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
