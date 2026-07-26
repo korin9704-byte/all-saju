@@ -110,7 +110,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
         className="w-full max-w-lg px-4 py-10 flex flex-col rounded-2xl overflow-hidden"
         style={{
           minHeight: "88vh",
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.75) 56%, rgba(255,255,255,0.97) 70%), url('/images/free-trouble-bg.webp')",
+          backgroundImage: "linear-gradient(rgba(255,255,255,0) 42%, rgba(255,255,255,0.78) 60%, rgba(255,255,255,0.97) 72%), url('/images/free-trouble-bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}
