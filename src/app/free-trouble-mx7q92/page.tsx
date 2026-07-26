@@ -40,6 +40,7 @@ export default async function FreeTroublePage() {
         .ft-theme .text-body { color: #7A6B9E; }
         .ft-theme .text-charcoal { color: #4A3A72; }
         .ft-theme .text-mute { color: #9C8FBF; }
+        .ft-theme span[style*="rgb(103, 32, 145)"], .ft-theme span[style*="#672091"] { color: #C95FC0 !important; }
         .ft-theme li[class*="f5f5f5"] { background: #FFFFFF; border: 1px solid #E7DDF8; }
         .ft-theme button[class*="f5f5f5"] { background: #FFFFFF; border: 1px solid #E7DDF8; }
         .ft-theme button[class*="f5f5f5"]:hover { background: #F3EDFB; }
