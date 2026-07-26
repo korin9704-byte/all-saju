@@ -176,7 +176,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "gender" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">성별을 선택해주세요</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6">성별을 알려주세요</h1>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
                 {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
