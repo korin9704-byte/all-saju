@@ -34,38 +34,45 @@ export default async function FreeTroublePage() {
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
 
   return (
-    <div className="container py-12 max-w-lg">
-      <header className="mb-10 pb-10 border-b border-hairline">
-        <h1 className="text-2xl font-bold text-ink">{product.name}</h1>
-        {product.description && (
-          <p className="mt-2 text-sm text-body">{product.description}</p>
-        )}
-        <p className="mt-5 text-2xl font-mono font-medium text-ink">무료</p>
-      </header>
+    <div className="min-h-screen bg-white flex justify-center">
+      <div className="w-full max-w-lg">
+        {/* 상단 일러스트 — 아래로 갈수록 흰색으로 페이드 (위저드와 동일 스타일) */}
+        <div
+          className="w-full h-[440px]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.55) 72%, rgba(255,255,255,1) 96%), url('/images/free-trouble-bg.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+          }}
+        />
 
-      {/* 상품 소개 이미지 (고민 사주와 동일) */}
-      <div className="mb-10 rounded-3xl overflow-hidden border-2 border-[#eeeeee] shadow-sm">
-        <div className="w-full aspect-[962/663] overflow-hidden">
-          <img src="/images/trouble-saju.png" alt="무료 고민 사주" className="w-full h-full object-cover" />
+        <div className="px-4 pb-14 -mt-10">
+          <h1 className="text-2xl font-bold text-ink">{product.name}</h1>
+          {product.description && (
+            <p className="mt-2 text-sm text-body">{product.description}</p>
+          )}
+
+          {/* 상품 설명 (고민 사주와 동일) */}
+          {productDescriptions["trouble-saju"] && (
+            <div className="mt-8 space-y-3 text-base text-ink leading-relaxed">
+              {productDescriptions["trouble-saju"].map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+          )}
+
+          {/* 이용 후기 (고민 사주와 동일) */}
+          <div className="mt-10">
+            <ReviewList reviews={dummyReviews} />
+          </div>
+
+          {/* 시작하기 → 단계형 위저드 */}
+          <section className="mt-8">
+            <FreeTroubleStart productId={product.id} />
+          </section>
         </div>
       </div>
-
-      {/* 상품 설명 (고민 사주와 동일) */}
-      {productDescriptions["trouble-saju"] && (
-        <div className="mb-8 space-y-3 text-base text-ink leading-relaxed">
-          {productDescriptions["trouble-saju"].map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-        </div>
-      )}
-
-      {/* 이용 후기 (고민 사주와 동일) */}
-      <ReviewList reviews={dummyReviews} />
-
-      {/* 시작하기 → 단계형 위저드 */}
-      <section className="mt-8">
-        <FreeTroubleStart productId={product.id} />
-      </section>
     </div>
   );
 }
