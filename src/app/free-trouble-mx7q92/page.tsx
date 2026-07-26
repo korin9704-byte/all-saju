@@ -34,7 +34,16 @@ export default async function FreeTroublePage() {
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
 
   return (
-    <div className="min-h-screen bg-white flex justify-center">
+    <div className="min-h-screen flex justify-center ft-theme" style={{ backgroundColor: "#F8F4FD" }}>
+      <style>{`
+        .ft-theme .text-ink { color: #4A3A72; }
+        .ft-theme .text-body { color: #7A6B9E; }
+        .ft-theme .text-charcoal { color: #4A3A72; }
+        .ft-theme .text-mute { color: #9C8FBF; }
+        .ft-theme li[class*="f5f5f5"] { background: #FFFFFF; border: 1px solid #E7DDF8; }
+        .ft-theme button[class*="f5f5f5"] { background: #FFFFFF; border: 1px solid #E7DDF8; }
+        .ft-theme button[class*="f5f5f5"]:hover { background: #F3EDFB; }
+      `}</style>
       <div className="w-full max-w-lg">
         {/* 상단 일러스트 — 위저드와 동일 비율(88vh) + 하단에 제목 오버레이 */}
         <div
@@ -42,7 +51,7 @@ export default async function FreeTroublePage() {
           style={{
             minHeight: "88vh",
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0) 55%, rgba(255,255,255,0.75) 76%, rgba(255,255,255,0.97) 90%), url('/images/trouble.webp')",
+              "linear-gradient(rgba(248,244,253,0) 55%, rgba(248,244,253,0.78) 76%, rgba(248,244,253,0.97) 90%), url('/images/trouble.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}
