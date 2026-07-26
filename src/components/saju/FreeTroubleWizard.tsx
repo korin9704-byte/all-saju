@@ -204,10 +204,8 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "email" && (
             <>
-              <h1 className="text-2xl font-bold text-ink">결과지를 어디로 보내드릴까요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-body">입력하신 이메일로 결과지 링크를 보내드려요.</p>
-              <p className="text-sm font-bold text-ink mb-2">이메일</p>
-              <input type="email" value={email} placeholder="결과지를 받을 이메일을 입력해 주세요."
+              <h1 className="text-2xl font-bold text-ink mb-6">이메일을 알려주세요.</h1>
+              <input type="email" value={email} placeholder="결과지를 보내드려요."
                 onChange={(e) => setEmail(e.target.value)}
                 className={`${textInputCls} mb-8`} />
               <div className="flex gap-3">
