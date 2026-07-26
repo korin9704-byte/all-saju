@@ -1,12 +1,11 @@
 "use client";
 
 // 무료 고민 사주 전용 단계형 입력 위저드 (/free-trouble-mx7q92)
-// 배경 이미지: public/images/free-trouble-bg.png (없으면 어두운 그라데이션)
+// 디자인: 사이트 공통 입력폼 스타일 (흰 배경 + #f5f5f5 라운드 입력칸)
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const TAN = "#E0AC7E";
 const MAX_CONCERN = 200;
 
 const STEPS = ["birth", "time", "gender", "name", "email", "concern"] as const;
@@ -85,175 +84,158 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
     router.push("/generating");
   }
 
-  const inputCls = "w-full h-14 rounded-xl bg-black/45 border border-white/15 text-white text-center text-base placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors";
-  const tanBtnCls = "flex-1 h-14 rounded-xl text-base font-bold text-[#1a1a1a] transition-opacity hover:opacity-90 disabled:opacity-50";
-  const prevBtnCls = "w-24 h-14 rounded-xl bg-[#2a2a2a] text-white text-base font-bold transition-colors hover:bg-[#3a3a3a]";
+  const numInputCls = "w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink text-center placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors disabled:opacity-40";
+  const textInputCls = "w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors";
+  const nextBtnCls = "flex-1 h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none";
+  const prevBtnCls = "w-24 h-14 rounded-full bg-[#f5f5f5] text-ink text-sm font-medium transition-colors hover:bg-[#ebebeb]";
+
+  const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
+    <label key={key ?? label}
+      className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${selected ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+      <input type="radio" checked={selected} onChange={onClick} className="w-4 h-4 accent-black" />
+      <span className="text-sm text-ink">{label}</span>
+    </label>
+  );
 
   return (
-    <div className="min-h-screen bg-[#141414] py-6 px-3 flex justify-center">
-      <div
-        className="relative w-full max-w-2xl rounded-2xl overflow-hidden flex flex-col"
-        style={{
-          minHeight: "88vh",
-          backgroundImage: "linear-gradient(rgba(10,10,12,0.25), rgba(10,10,12,0.92) 78%), url('/images/free-trouble-bg.png')",
-          backgroundColor: "#17181d",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-        }}
-      >
+    <div className="min-h-screen bg-white flex justify-center">
+      <div className="w-full max-w-lg px-4 py-10 flex flex-col" style={{ minHeight: "88vh" }}>
         {/* 진행 표시 */}
-        <div className="flex justify-center gap-2 pt-5">
+        <div className="flex justify-center gap-2 pt-2">
           {STEPS.map((s, i) => (
             <div
               key={s}
               className="h-1.5 rounded-full transition-all duration-300"
               style={{
                 width: i === stepIdx ? 34 : 18,
-                backgroundColor: i === stepIdx ? TAN : "rgba(255,255,255,0.22)",
+                backgroundColor: i === stepIdx ? "#111111" : "#e5e5e5",
               }}
             />
           ))}
         </div>
 
-        {/* 본문 (하단 정렬) */}
-        <div className="mt-auto px-6 pb-8 pt-24">
-          <p className="text-sm font-bold mb-2" style={{ color: TAN }}>사주 고민풀이</p>
+        {/* 본문 */}
+        <div className="mt-16">
+          <p className="text-sm font-bold text-body mb-2">사주 고민풀이</p>
 
           {step === "birth" && (
             <>
-              <h1 className="text-2xl font-bold text-white">언제 태어나셨나요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-white/60">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink">언제 태어나셨나요?</h1>
+              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
               <div className="grid grid-cols-2 gap-3 mb-5">
-                {(["solar", "lunar"] as const).map((c) => (
-                  <button key={c} type="button" onClick={() => setCalendar(c)}
-                    className="h-14 rounded-xl text-base font-bold transition-colors"
-                    style={calendar === c
-                      ? { backgroundColor: TAN, color: "#1a1a1a" }
-                      : { backgroundColor: "rgba(0,0,0,0.45)", color: "#fff", border: "1px solid rgba(255,255,255,0.15)" }}>
-                    {c === "solar" ? "양력" : "음력"}
-                  </button>
-                ))}
+                {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
+                {radioRow(calendar === "lunar", "음력", () => setCalendar("lunar"), "lunar")}
               </div>
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <div>
-                  <p className="text-sm font-bold mb-2" style={{ color: TAN }}>년</p>
-                  <input inputMode="numeric" value={year} placeholder="1990"
-                    onChange={(e) => setYear(e.target.value.replace(/\D/g, "").slice(0, 4))} className={inputCls} />
+              <div className="grid grid-cols-3 gap-2 mb-8">
+                <div className="relative">
+                  <input type="text" inputMode="numeric" maxLength={4} value={year} placeholder="1990"
+                    onChange={(e) => setYear(e.target.value.replace(/\D/g, "").slice(0, 4))} className={`${numInputCls} pr-8`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
                 </div>
-                <div>
-                  <p className="text-sm font-bold mb-2" style={{ color: TAN }}>월</p>
-                  <input inputMode="numeric" value={month} placeholder="05"
-                    onChange={(e) => setMonth(clamp2(e.target.value, 12))} className={inputCls} />
+                <div className="relative">
+                  <input type="text" inputMode="numeric" maxLength={2} value={month} placeholder="05"
+                    onChange={(e) => setMonth(clamp2(e.target.value, 12))} className={`${numInputCls} pr-6`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
                 </div>
-                <div>
-                  <p className="text-sm font-bold mb-2" style={{ color: TAN }}>일</p>
-                  <input inputMode="numeric" value={day} placeholder="15"
-                    onChange={(e) => setDay(clamp2(e.target.value, 31))} className={inputCls} />
+                <div className="relative">
+                  <input type="text" inputMode="numeric" maxLength={2} value={day} placeholder="15"
+                    onChange={(e) => setDay(clamp2(e.target.value, 31))} className={`${numInputCls} pr-6`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
               </div>
-              <button type="button" onClick={next} className={`${tanBtnCls} w-full`} style={{ backgroundColor: TAN }}>다음</button>
+              <button type="button" onClick={next} className={`${nextBtnCls} w-full`}>다음</button>
             </>
           )}
 
           {step === "time" && (
             <>
-              <h1 className="text-2xl font-bold text-white">태어난 시간을 알려주세요</h1>
-              <p className="mt-1.5 mb-6 text-sm text-white/60">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink">태어난 시간을 알려주세요</h1>
+              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div>
-                  <p className="text-sm font-bold mb-2" style={{ color: TAN }}>시 (0~23)</p>
-                  <input inputMode="numeric" value={hour} placeholder="10" disabled={timeUnknown}
-                    onChange={(e) => setHour(clamp2(e.target.value, 23))} className={`${inputCls} disabled:opacity-40`} />
+                  <p className="text-sm font-bold text-ink mb-2">시 (0~23)</p>
+                  <input type="text" inputMode="numeric" maxLength={2} value={hour} placeholder="10" disabled={timeUnknown}
+                    onChange={(e) => setHour(clamp2(e.target.value, 23))} className={numInputCls} />
                 </div>
                 <div>
-                  <p className="text-sm font-bold mb-2" style={{ color: TAN }}>분 (0~59)</p>
-                  <input inputMode="numeric" value={minute} placeholder="30" disabled={timeUnknown}
-                    onChange={(e) => setMinute(clamp2(e.target.value, 59))} className={`${inputCls} disabled:opacity-40`} />
+                  <p className="text-sm font-bold text-ink mb-2">분 (0~59)</p>
+                  <input type="text" inputMode="numeric" maxLength={2} value={minute} placeholder="30" disabled={timeUnknown}
+                    onChange={(e) => setMinute(clamp2(e.target.value, 59))} className={numInputCls} />
                 </div>
               </div>
-              <label className="flex items-center gap-2.5 mb-6 cursor-pointer select-none">
-                <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} className="sr-only" />
-                <span className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold"
-                  style={timeUnknown ? { backgroundColor: TAN, color: "#1a1a1a" } : { border: "1.5px solid rgba(255,255,255,0.35)" }}>
-                  {timeUnknown ? "✓" : ""}
-                </span>
-                <span className="text-sm text-white/75">시간을 몰라요 · 입력 없이 넘어가도 괜찮아요</span>
+              <label className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 mb-8 transition-colors ${timeUnknown ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
+                <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} className="w-4 h-4 accent-black" />
+                <span className="text-sm text-ink">시간을 몰라요 · 입력 없이 넘어가도 괜찮아요</span>
               </label>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={next} className={tanBtnCls} style={{ backgroundColor: TAN }}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls}>다음</button>
               </div>
             </>
           )}
 
           {step === "gender" && (
             <>
-              <h1 className="text-2xl font-bold text-white">성별을 선택해주세요</h1>
-              <p className="mt-1.5 mb-6 text-sm text-white/60">정확히 입력할수록 더 깊이 봐드려요.</p>
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {(["male", "female"] as const).map((g) => (
-                  <button key={g} type="button" onClick={() => setGender(g)}
-                    className="h-14 rounded-xl text-base font-bold transition-colors"
-                    style={gender === g
-                      ? { backgroundColor: TAN, color: "#1a1a1a" }
-                      : { backgroundColor: "rgba(0,0,0,0.45)", color: "#fff", border: "1px solid rgba(255,255,255,0.15)" }}>
-                    {g === "male" ? "남성" : "여성"}
-                  </button>
-                ))}
+              <h1 className="text-2xl font-bold text-ink">성별을 선택해주세요</h1>
+              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <div className="grid grid-cols-2 gap-3 mb-8">
+                {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
+                {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
               </div>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={next} className={tanBtnCls} style={{ backgroundColor: TAN }}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls}>다음</button>
               </div>
             </>
           )}
 
           {step === "name" && (
             <>
-              <h1 className="text-2xl font-bold text-white">어떻게 불러드릴까요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-white/60">정확히 입력할수록 더 깊이 봐드려요.</p>
-              <p className="text-sm font-bold mb-2" style={{ color: TAN }}>이름 / 닉네임</p>
+              <h1 className="text-2xl font-bold text-ink">어떻게 불러드릴까요?</h1>
+              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <p className="text-sm font-bold text-ink mb-2">이름 / 닉네임</p>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
-                className={`${inputCls} !text-left px-5`} />
-              <p className="mt-2 mb-6 text-sm text-white/50">풀이에서 이렇게 불러드릴게요.</p>
+                placeholder="이름을 입력해 주세요."
+                className={textInputCls} />
+              <p className="mt-2 mb-8 text-sm text-body">풀이에서 이렇게 불러드릴게요.</p>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={next} className={tanBtnCls} style={{ backgroundColor: TAN }}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls}>다음</button>
               </div>
             </>
           )}
 
           {step === "email" && (
             <>
-              <h1 className="text-2xl font-bold text-white">결과지를 어디로 보내드릴까요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-white/60">입력하신 이메일로 결과지 링크를 보내드려요.</p>
-              <p className="text-sm font-bold mb-2" style={{ color: TAN }}>이메일</p>
-              <input type="email" value={email} placeholder="nyang@example.com"
+              <h1 className="text-2xl font-bold text-ink">결과지를 어디로 보내드릴까요?</h1>
+              <p className="mt-1.5 mb-6 text-sm text-body">입력하신 이메일로 결과지 링크를 보내드려요.</p>
+              <p className="text-sm font-bold text-ink mb-2">이메일</p>
+              <input type="email" value={email} placeholder="결과지를 받을 이메일을 입력해 주세요."
                 onChange={(e) => setEmail(e.target.value)}
-                className={`${inputCls} !text-left px-5 mb-6`} />
+                className={`${textInputCls} mb-8`} />
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={next} className={tanBtnCls} style={{ backgroundColor: TAN }}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls}>다음</button>
               </div>
             </>
           )}
 
           {step === "concern" && (
             <>
-              <h1 className="text-2xl font-bold text-white">어떤 고민이 있으세요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-white/60">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink">어떤 고민이 있으세요?</h1>
+              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
               <div className="relative mb-2">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
                   placeholder={"(예시) 남자친구랑 헤어지고 다음 인연은 언제 올지, 재회는 가능할지 궁금해요.\n직장은 마케팅 쪽으로 옮겨도 될까요?"}
-                  className="block w-full rounded-xl bg-black/45 border border-white/15 text-white text-base leading-relaxed px-5 py-4 placeholder:text-white/30 focus:outline-none focus:border-white/40 resize-none transition-colors" />
-                <p className="absolute -bottom-6 right-1 text-sm text-white/40">{concern.length}/{MAX_CONCERN}</p>
+                  className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink leading-relaxed placeholder:text-ink/30 focus:outline-none transition-colors" />
+                <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
-              <p className="mt-8 mb-6 text-sm text-white/60">자세히 적을수록 고민에 더 정확히 맞춰 드려요.</p>
+              <p className="mt-3 mb-8 text-sm text-body">자세히 적을수록 고민에 더 정확히 맞춰 드려요.</p>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={submit} disabled={submitting} className={tanBtnCls} style={{ backgroundColor: TAN }}>
+                <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls}>
                   {submitting ? "잠시만요..." : "내 사주 풀어보기"}
                 </button>
               </div>
