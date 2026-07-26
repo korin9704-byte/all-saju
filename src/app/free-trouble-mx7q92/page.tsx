@@ -41,7 +41,7 @@ export default async function FreeTroublePage() {
           className="w-full h-[440px]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.55) 72%, rgba(255,255,255,1) 96%), url('/images/free-trouble-bg.webp')",
+              "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.55) 72%, rgba(255,255,255,1) 96%), url('/images/trouble-saju.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}
