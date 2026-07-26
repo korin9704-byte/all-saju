@@ -14,6 +14,8 @@ type Props = {
   isLoggedIn: boolean;
   /** MINI 모드: 결제 대신 /api/free-mini 로 무료 잠금 결과 생성 (공유받은 친구용) */
   miniMode?: boolean;
+  /** 무료 고민 사주 모드: 결제 대신 /api/orders/free-trouble 로 전체 결과 무료 생성 (비공개 링크 전용) */
+  freeTroubleMode?: boolean;
 };
 
 const DAEWUN_TILE_COLORS = ["#A8C8F0","#A5D6B8","#C5DE9E","#FFC4AE","#F8B4CC","#D9B8E8","#FFD9A8","#C1CDD6","#A8DBD4","#B9C2E8"];
@@ -117,7 +119,7 @@ type OrderPayload = {
   guestEmail?: string;
 };
 
-function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }: Props) {
+function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, freeTroubleMode = false }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const refParam = searchParams.get("ref");
@@ -308,6 +310,16 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         timeUnknown, gender, calendar, concerns,
         guestEmail: guestEmail.trim() || undefined,
       };
+
+      // 무료 고민 사주 — 결제 없이 바로 생성 (/generating 진행 화면 재사용)
+      if (freeTroubleMode) {
+        try {
+          sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "free-trouble", payload }));
+        } catch { /* ignore */ }
+        setSubmitting(true);
+        router.push("/generating");
+        return;
+      }
 
       // MINI만 로그인 필요 (결과 저장이 계정 기반) — 결제는 비회원(이메일)으로 바로 진행
       if (!isLoggedIn && miniMode) {
@@ -951,11 +963,13 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false }:
         className="w-full h-14 !mt-10 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
         {submitting
           ? "잠시만요..."
-          : miniMode
-            ? (isLoggedIn ? "결과보기" : "카카오 1초 로그인하고 결과보기")
-            : hasCredit
-              ? "무료 이용권으로 결과보기"
-              : "결제하기"}
+          : freeTroubleMode
+            ? "무료로 결과보기"
+            : miniMode
+              ? (isLoggedIn ? "결과보기" : "카카오 1초 로그인하고 결과보기")
+              : hasCredit
+                ? "무료 이용권으로 결과보기"
+                : "결제하기"}
       </button>
       {!isLoggedIn && miniMode && (
         <p className="text-xs text-center text-mute">

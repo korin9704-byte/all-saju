@@ -14,6 +14,7 @@ const PAYLOAD_KEY = "saju_generate";
 const KINDS = {
   mini: { endpoint: "/api/free-mini", homeHref: "/free" },
   redeem: { endpoint: "/api/orders/redeem", homeHref: "/products" },
+  "free-trouble": { endpoint: "/api/orders/free-trouble", homeHref: "/" },
 } as const;
 
 type Kind = keyof typeof KINDS;
@@ -59,6 +60,7 @@ export default function GeneratingPage() {
     try {
       const envelope = JSON.parse(raw) as { kind?: string; payload?: unknown };
       if (envelope.kind === "redeem") kind = "redeem";
+      if (envelope.kind === "free-trouble") kind = "free-trouble";
       payload = envelope.payload ?? null;
     } catch { /* ignore */ }
     const config = KINDS[kind];

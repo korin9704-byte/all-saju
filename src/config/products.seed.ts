@@ -87,6 +87,15 @@ export const productsSeed: ProductSeed[] = [
     is_active: true,
   },
   {
+    // 비공개 링크 전용 무료 버전 (/free-trouble-mx7q92) — 목록 비노출
+    slug: "trouble-saju-free",
+    name: "무료 고민 사주",
+    description: "오늘 해결해 드릴게요.",
+    price: 0,
+    display_order: 997,
+    is_active: false,
+  },
+  {
     // 결과지 하단 추가 고민 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
     slug: "followup-question",
     name: "고민 사주",
