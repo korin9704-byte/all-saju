@@ -2,7 +2,7 @@
 
 // 무료 고민 사주 전용 단계형 입력 위저드 (/free-trouble-mx7q92)
 // 디자인: 사이트 공통 입력폼 스타일 (흰 배경 + #f5f5f5 라운드 입력칸)
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -35,6 +35,11 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // 입력 완료 시 자동 포커스 이동
+  const monthRef = useRef<HTMLInputElement>(null);
+  const dayRef = useRef<HTMLInputElement>(null);
+  const minuteRef = useRef<HTMLInputElement>(null);
 
   const birthDate = year.length === 4 && month && day
     ? `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
@@ -136,16 +141,16 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
               <div className="grid grid-cols-3 gap-2 mb-8">
                 <div className="relative">
                   <input type="text" inputMode="numeric" maxLength={4} value={year} placeholder="1990"
-                    onChange={(e) => setYear(e.target.value.replace(/\D/g, "").slice(0, 4))} className={`${numInputCls} pr-8`} />
+                    onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setYear(v); if (v.length === 4) monthRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
                 </div>
                 <div className="relative">
-                  <input type="text" inputMode="numeric" maxLength={2} value={month} placeholder="05"
-                    onChange={(e) => setMonth(clamp2(e.target.value, 12))} className={`${numInputCls} pr-6`} />
+                  <input ref={monthRef} type="text" inputMode="numeric" maxLength={2} value={month} placeholder="05"
+                    onChange={(e) => { const v = clamp2(e.target.value, 12); setMonth(v); if (v.length === 2) dayRef.current?.focus(); }} className={`${numInputCls} pr-6`} />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
                 </div>
                 <div className="relative">
-                  <input type="text" inputMode="numeric" maxLength={2} value={day} placeholder="15"
+                  <input ref={dayRef} type="text" inputMode="numeric" maxLength={2} value={day} placeholder="15"
                     onChange={(e) => setDay(clamp2(e.target.value, 31))} className={`${numInputCls} pr-6`} />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
@@ -165,11 +170,11 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="relative">
                     <input type="text" inputMode="numeric" maxLength={2} value={hour} placeholder="14"
-                      onChange={(e) => setHour(clamp2(e.target.value, 23))} className={`${numInputCls} pr-8`} />
+                      onChange={(e) => { const v = clamp2(e.target.value, 23); setHour(v); if (v.length === 2) minuteRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
                   </div>
                   <div className="relative">
-                    <input type="text" inputMode="numeric" maxLength={2} value={minute} placeholder="30"
+                    <input ref={minuteRef} type="text" inputMode="numeric" maxLength={2} value={minute} placeholder="30"
                       onChange={(e) => setMinute(clamp2(e.target.value, 59))} className={`${numInputCls} pr-8`} />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
                   </div>
