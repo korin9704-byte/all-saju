@@ -105,7 +105,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
         className="w-full max-w-lg px-4 py-10 flex flex-col rounded-2xl overflow-hidden"
         style={{
           minHeight: "88vh",
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.6) 42%, rgba(255,255,255,0.97) 58%), url('/images/free-trouble-bg.webp')",
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.55) 58%, rgba(255,255,255,0.96) 72%), url('/images/free-trouble-bg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}
@@ -125,7 +125,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
         </div>
 
         {/* 본문 (하단 정렬 — 상단은 배경 그림 노출) */}
-        <div className="mt-auto pt-64">
+        <div className="mt-auto pt-96">
           {step === "birth" && (
             <>
               <h1 className="text-2xl font-bold text-ink mb-6">태어난 날이 언제인가요?</h1>
