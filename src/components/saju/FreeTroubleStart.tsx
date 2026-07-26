@@ -10,7 +10,7 @@ export function FreeTroubleStart({ productId }: { productId: string }) {
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} />
+        <FreeTroubleWizard productId={productId} onBack={() => setStarted(false)} />
       </div>
     );
   }

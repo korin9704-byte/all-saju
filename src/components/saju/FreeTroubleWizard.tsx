@@ -17,7 +17,7 @@ function clamp2(raw: string, max: number): string {
   return v;
 }
 
-export function FreeTroubleWizard({ productId }: { productId: string }) {
+export function FreeTroubleWizard({ productId, onBack }: { productId: string; onBack?: () => void }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
   const step: Step = STEPS[stepIdx];
@@ -156,7 +156,12 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
               </div>
-              <button type="button" onClick={next} className={`${nextBtnCls} w-full`} style={nextBtnStyle}>다음</button>
+              <div className="flex gap-3">
+                {onBack && (
+                  <button type="button" onClick={onBack} className={prevBtnCls}>이전</button>
+                )}
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+              </div>
             </>
           )}
 
