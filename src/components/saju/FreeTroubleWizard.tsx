@@ -190,13 +190,11 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "name" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">어떻게 불러드릴까요?</h1>
-              <p className="text-sm font-bold text-ink mb-2">이름 / 닉네임</p>
+              <h1 className="text-2xl font-bold text-ink mb-6">이름을 알려주세요.</h1>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="이름을 입력해 주세요."
-                className={textInputCls} />
-              <p className="mt-2 mb-8 text-sm text-body">풀이에서 이렇게 불러드릴게요.</p>
+                placeholder="풀이에서 이렇게 불러드릴게요."
+                className={`${textInputCls} mb-8`} />
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={next} className={nextBtnCls}>다음</button>
