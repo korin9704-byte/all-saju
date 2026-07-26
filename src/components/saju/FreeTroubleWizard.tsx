@@ -116,12 +116,9 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
         {/* 본문 */}
         <div className="mt-16">
-          <p className="text-sm font-bold text-body mb-2">사주 고민풀이</p>
-
           {step === "birth" && (
             <>
-              <h1 className="text-2xl font-bold text-ink">언제 태어나셨나요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink mb-6">태어난 날이 언제인가요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
                 {radioRow(calendar === "lunar", "음력", () => setCalendar("lunar"), "lunar")}
@@ -149,8 +146,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "time" && (
             <>
-              <h1 className="text-2xl font-bold text-ink">태어난 시간을 알려주세요</h1>
-              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink mb-6">태어난 시간을 알려주세요</h1>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div>
                   <p className="text-sm font-bold text-ink mb-2">시 (0~23)</p>
@@ -176,8 +172,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "gender" && (
             <>
-              <h1 className="text-2xl font-bold text-ink">성별을 선택해주세요</h1>
-              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink mb-6">성별을 선택해주세요</h1>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
                 {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
@@ -191,8 +186,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "name" && (
             <>
-              <h1 className="text-2xl font-bold text-ink">어떻게 불러드릴까요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink mb-6">어떻게 불러드릴까요?</h1>
               <p className="text-sm font-bold text-ink mb-2">이름 / 닉네임</p>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
@@ -223,8 +217,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "concern" && (
             <>
-              <h1 className="text-2xl font-bold text-ink">어떤 고민이 있으세요?</h1>
-              <p className="mt-1.5 mb-6 text-sm text-body">정확히 입력할수록 더 깊이 봐드려요.</p>
+              <h1 className="text-2xl font-bold text-ink mb-6">어떤 고민이 있으세요?</h1>
               <div className="relative mb-2">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
