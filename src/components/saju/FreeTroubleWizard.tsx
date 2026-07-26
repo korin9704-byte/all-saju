@@ -28,7 +28,8 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
   const [day, setDay] = useState("");
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
-  const [timeUnknown, setTimeUnknown] = useState(false);
+  const [knowsTime, setKnowsTime] = useState<boolean | null>(null);
+  const timeUnknown = knowsTime === false;
   const [gender, setGender] = useState<"male" | "female" | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -48,8 +49,9 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
     if (step === "birth") {
       if (!birthDate || !isValidDate(birthDate)) { toast.error("생년월일을 다시 확인해 주세요."); return; }
     }
-    if (step === "time" && !timeUnknown) {
-      if (hour === "" || minute === "") { toast.error("태어난 시간을 입력하거나 '시간을 몰라요'를 선택해 주세요."); return; }
+    if (step === "time") {
+      if (knowsTime === null) { toast.error("태어난 시간 여부를 선택해 주세요."); return; }
+      if (knowsTime && (hour === "" || minute === "")) { toast.error("태어난 시간을 입력해 주세요."); return; }
     }
     if (step === "gender" && !gender) { toast.error("성별을 선택해 주세요."); return; }
     if (step === "name" && !name.trim()) { toast.error("이름 또는 닉네임을 입력해 주세요."); return; }
@@ -146,24 +148,26 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
 
           {step === "time" && (
             <>
-              <h1 className="text-2xl font-bold text-ink mb-6">태어난 시간을 알려주세요</h1>
+              <h1 className="text-2xl font-bold text-ink mb-6">태어난 시간을 아시나요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <div>
-                  <p className="text-sm font-bold text-ink mb-2">시 (0~23)</p>
-                  <input type="text" inputMode="numeric" maxLength={2} value={hour} placeholder="10" disabled={timeUnknown}
-                    onChange={(e) => setHour(clamp2(e.target.value, 23))} className={numInputCls} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-ink mb-2">분 (0~59)</p>
-                  <input type="text" inputMode="numeric" maxLength={2} value={minute} placeholder="30" disabled={timeUnknown}
-                    onChange={(e) => setMinute(clamp2(e.target.value, 59))} className={numInputCls} />
-                </div>
+                {radioRow(knowsTime === true, "예", () => setKnowsTime(true), "yes")}
+                {radioRow(knowsTime === false, "아니오", () => setKnowsTime(false), "no")}
               </div>
-              <label className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 mb-8 transition-colors ${timeUnknown ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-                <input type="checkbox" checked={timeUnknown} onChange={(e) => setTimeUnknown(e.target.checked)} className="w-4 h-4 accent-black" />
-                <span className="text-sm text-ink">시간을 몰라요 · 입력 없이 넘어가도 괜찮아요</span>
-              </label>
-              <div className="flex gap-3">
+              {knowsTime === true && (
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="relative">
+                    <input type="text" inputMode="numeric" maxLength={2} value={hour} placeholder="14"
+                      onChange={(e) => setHour(clamp2(e.target.value, 23))} className={`${numInputCls} pr-8`} />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
+                  </div>
+                  <div className="relative">
+                    <input type="text" inputMode="numeric" maxLength={2} value={minute} placeholder="30"
+                      onChange={(e) => setMinute(clamp2(e.target.value, 59))} className={`${numInputCls} pr-8`} />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
+                  </div>
+                </div>
+              )}
+              <div className="flex gap-3 mt-8">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={next} className={nextBtnCls}>다음</button>
               </div>
