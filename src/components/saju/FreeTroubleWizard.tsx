@@ -228,7 +228,7 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls}>
-                  {submitting ? "잠시만요..." : "내 사주 풀어보기"}
+                  {submitting ? "잠시만요..." : "결제하기"}
                 </button>
               </div>
             </>
