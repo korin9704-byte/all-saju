@@ -218,14 +218,13 @@ export function FreeTroubleWizard({ productId }: { productId: string }) {
           {step === "concern" && (
             <>
               <h1 className="text-2xl font-bold text-ink mb-6">어떤 고민이 있으세요?</h1>
-              <div className="relative mb-2">
+              <div className="relative mb-8">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
-                  placeholder={"(예시) 남자친구랑 헤어지고 다음 인연은 언제 올지, 재회는 가능할지 궁금해요.\n직장은 마케팅 쪽으로 옮겨도 될까요?"}
+                  placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
                   className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink leading-relaxed placeholder:text-ink/30 focus:outline-none transition-colors" />
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
-              <p className="mt-3 mb-8 text-sm text-body">자세히 적을수록 고민에 더 정확히 맞춰 드려요.</p>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls}>
