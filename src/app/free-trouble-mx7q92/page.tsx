@@ -36,23 +36,27 @@ export default async function FreeTroublePage() {
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className="w-full max-w-lg">
-        {/* 상단 일러스트 — 아래로 갈수록 흰색으로 페이드 (위저드와 동일 스타일) */}
+        {/* 상단 일러스트 — 위저드와 동일 비율(88vh) + 하단에 제목 오버레이 */}
         <div
-          className="w-full h-[440px]"
+          className="w-full flex flex-col px-4"
           style={{
+            minHeight: "88vh",
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.55) 72%, rgba(255,255,255,1) 96%), url('/images/trouble-saju.webp')",
+              "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.75) 56%, rgba(255,255,255,0.97) 70%), url('/images/trouble-saju.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}
-        />
+        >
+          <div className="mt-auto pb-2">
+            <h1 className="text-2xl font-bold text-ink" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>{product.name}</h1>
+            {product.description && (
+              <p className="mt-2 text-sm text-body">{product.description}</p>
+            )}
+            <p className="mt-5 text-2xl font-mono font-medium text-ink">0원</p>
+          </div>
+        </div>
 
-        <div className="px-4 pb-14 -mt-10">
-          <h1 className="text-2xl font-bold text-ink">{product.name}</h1>
-          {product.description && (
-            <p className="mt-2 text-sm text-body">{product.description}</p>
-          )}
-          <p className="mt-5 text-2xl font-mono font-medium text-ink">0원</p>
+        <div className="px-4 pb-14">
 
           {/* 상품 설명 (고민 사주와 동일) */}
           {productDescriptions["trouble-saju"] && (
