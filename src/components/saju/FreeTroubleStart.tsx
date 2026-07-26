@@ -19,8 +19,7 @@ export function FreeTroubleStart({ productId }: { productId: string }) {
     <button
       type="button"
       onClick={() => setStarted(true)}
-      className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90"
-      style={{ backgroundColor: "#800080" }}
+      className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80"
     >
       시작하기
     </button>
