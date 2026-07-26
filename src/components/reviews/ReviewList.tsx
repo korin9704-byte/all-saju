@@ -37,7 +37,7 @@ export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#f5f5f5] text-sm text-body hover:bg-[#ebebeb] transition-colors"
           >
-            <span>후기 더 보기 ({reviews.length - visibleCount}개 남음)</span>
+            <span>더 보기 ({reviews.length - visibleCount}개 남음)</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="10" cy="10" r="9" fill="#d0d0d0" />
               <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke="#888" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
