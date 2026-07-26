@@ -42,7 +42,7 @@ export default async function FreeTroublePage() {
           style={{
             minHeight: "88vh",
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.75) 56%, rgba(255,255,255,0.97) 70%), url('/images/trouble.webp')",
+              "linear-gradient(rgba(255,255,255,0) 55%, rgba(255,255,255,0.75) 76%, rgba(255,255,255,0.97) 90%), url('/images/trouble.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center top",
           }}
