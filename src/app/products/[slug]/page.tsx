@@ -8,6 +8,7 @@ import { formatKRW } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/env";
 import { productsSeed } from "@/config/products.seed";
 import { productDescriptions } from "@/config/product-copy";
+import { FreeTroubleStart } from "@/components/saju/FreeTroubleStart";
 import {
   worrySajuReviews,
   todayFortuneReviews,
@@ -87,6 +88,68 @@ export default async function ProductDetailPage({
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
 
   const displayReviews = (reviews && reviews.length > 0) ? reviews : dummyReviews;
+
+  /* ── trouble-saju: 무료 고민 사주와 동일한 디자인 (히어로 + 설명 + 리뷰 + 시작하기 위저드) ── */
+  if (product.slug === "trouble-saju") {
+    return (
+      <div className="min-h-screen flex justify-center ft-theme" style={{ backgroundColor: "#F8F4FD" }}>
+        <style>{`
+          .ft-theme .text-ink { color: #4A3A72; }
+          .ft-theme .text-body { color: #7A6B9E; }
+          .ft-theme .text-charcoal { color: #4A3A72; }
+          .ft-theme .text-mute { color: #9C8FBF; }
+          .ft-theme span[style*="rgb(103, 32, 145)"], .ft-theme span[style*="#672091"] { color: #C95FC0 !important; }
+          .ft-theme .text-\\[\\#f59e0b\\] { color: #EFBE68; }
+          .ft-theme .text-\\[\\#e0e0e0\\] { color: #EFE7FA; }
+          .ft-theme li[class*="f5f5f5"] { background: #F3EDFB; border: 1px solid #E7DDF8; }
+          .ft-theme button[class*="f5f5f5"] { background: #F3EDFB; border: 1px solid #E7DDF8; }
+          .ft-theme button[class*="f5f5f5"]:hover { background: #E7DDF8; }
+        `}</style>
+        <div className="w-full max-w-lg">
+          {/* 상단 일러스트 — 하단에 제목 오버레이 */}
+          <div
+            className="w-full flex flex-col px-4"
+            style={{
+              minHeight: "88vh",
+              backgroundImage:
+                "linear-gradient(rgba(248,244,253,0) 55%, rgba(248,244,253,0.78) 76%, rgba(248,244,253,0.97) 90%), url('/images/trouble.webp')",
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+            }}
+          >
+            <div className="mt-auto pb-2">
+              <h1 className="text-2xl font-bold text-ink" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>{product.name}</h1>
+              {product.description && (
+                <p className="mt-2 text-sm text-body">{product.description}</p>
+              )}
+              <p className="mt-5 text-2xl font-mono font-medium text-ink">{formatKRW(product.price)}</p>
+            </div>
+          </div>
+
+          <div className="px-4 pb-14">
+            {/* 상품 설명 */}
+            {productDescriptions["trouble-saju"] && (
+              <div className="mt-8 space-y-3 text-base text-ink leading-relaxed">
+                {productDescriptions["trouble-saju"].map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            )}
+
+            {/* 리뷰 */}
+            <div className="mt-10">
+              <ReviewList reviews={displayReviews} />
+            </div>
+
+            {/* 시작하기 → 단계형 위저드 (결제) */}
+            <section className="mt-8">
+              <FreeTroubleStart productId={product.id} mode="paid" />
+            </section>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // 상품별 하이라이트 색상 (이미지 색상에 맞춤)
   const hlColors: Record<string, string> = {

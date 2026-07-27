@@ -17,7 +17,16 @@ function clamp2(raw: string, max: number): string {
   return v;
 }
 
-export function FreeTroubleWizard({ productId, onBack }: { productId: string; onBack?: () => void }) {
+export function FreeTroubleWizard({
+  productId,
+  onBack,
+  mode = "free",
+}: {
+  productId: string;
+  onBack?: () => void;
+  /** free: 무료 생성(/generating), paid: 주문 생성 후 결제 페이지로 이동 */
+  mode?: "free" | "paid";
+}) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
   const step: Step = STEPS[stepIdx];
@@ -71,7 +80,7 @@ export function FreeTroubleWizard({ productId, onBack }: { productId: string; on
     setStepIdx((i) => Math.max(i - 1, 0));
   }
 
-  function submit() {
+  async function submit() {
     if (!concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     const payload = {
       productId,
@@ -84,6 +93,28 @@ export function FreeTroubleWizard({ productId, onBack }: { productId: string; on
       concerns: [concern.trim()],
       guestEmail: email.trim(),
     };
+
+    // 유료: 주문 생성 → 결제 페이지
+    if (mode === "paid") {
+      if (submitting) return;
+      setSubmitting(true);
+      try {
+        const res = await fetch("/api/orders/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? "주문 생성에 실패했어요.");
+        router.push(`/checkout/${json.orderId}`);
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : "오류가 발생했어요.");
+        setSubmitting(false);
+      }
+      return;
+    }
+
+    // 무료: 결과 생성 페이지로 이동
     try {
       sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "free-trouble", payload }));
     } catch { /* ignore */ }
