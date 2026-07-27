@@ -81,7 +81,7 @@ export function LockedAccordionBody({
 
   return (
     <>
-    <div className="divide-y divide-border">
+    <div className="divide-y divide-border bg-canvas rounded-b-2xl overflow-hidden">
       {/* 헤더 */}
       <div className="px-5 py-4 text-center" style={{ background: "#4A3A72" }}>
         <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>

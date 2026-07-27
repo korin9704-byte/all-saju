@@ -52,7 +52,7 @@ export function AccordionBody({
   }
 
   return (
-    <div className="divide-y divide-border">
+    <div className="divide-y divide-border bg-canvas rounded-b-2xl overflow-hidden">
       {/* 헤더 (선택) */}
       {showHeader && (
         <div className="px-5 py-4 text-center" style={{ background: headerColor }}>
