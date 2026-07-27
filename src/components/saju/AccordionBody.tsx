@@ -4,14 +4,11 @@ import { useState } from "react";
 
 type Section = { title: string; content: string };
 
-/** **강조** 구간을 보라색 글자색으로 렌더링 (끝 문장부호는 검정 유지) */
+/** **강조** 구간을 핑크 글자색으로 렌더링 (끝 문장부호까지 포함) */
 export function renderEmphasis(text: string): React.ReactNode[] {
   return text.split(/\*\*(.+?)\*\*/g).flatMap((seg, i) => {
     if (i % 2 === 0) return [seg];
-    const m = seg.match(/^(.*?)([.,!?…~]+)$/);
-    const body = m ? m[1] : seg;
-    const punct = m ? m[2] : "";
-    return [<span key={i} style={{ color: "#C95FC0" }}>{body}</span>, punct];
+    return [<span key={i} style={{ color: "#C95FC0" }}>{seg}</span>];
   });
 }
 
