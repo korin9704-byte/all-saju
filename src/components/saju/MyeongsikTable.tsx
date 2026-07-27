@@ -42,11 +42,11 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
   return (
     <div className="overflow-hidden">
       {/* divide-x는 첫 자식 외 모든 칸에 왼쪽 선을 그림 — 각 행의 첫 칸(4n+1)은 선 제거 */}
-      <div className="grid grid-cols-4 divide-x divide-white/60 [&>*:nth-child(4n+1)]:!border-l-0">
+      <div className="grid grid-cols-4 divide-x divide-[#D8CCEE] [&>*:nth-child(4n+1)]:!border-l-0">
 
         {/* 헤더 라벨 */}
         {pillars.map(({ label }) => (
-          <div key={label} className="py-3 text-center border-t border-white/60" style={{ background: "#E7DDF8" }}>
+          <div key={label} className="py-3 text-center border-t border-[#D8CCEE]" style={{ background: "#E7DDF8" }}>
             <span className="text-[11px] font-semibold tracking-widest text-[#4A3A72]/60">{label}</span>
           </div>
         ))}
@@ -55,7 +55,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
         {pillars.map(({ label, data }) => {
           const bg = data ? (CG_BG[data.cheongan] ?? DEFAULT_BG) : DEFAULT_BG;
           return (
-            <div key={`gan-${label}`} className="py-5 text-center border-t border-white/60"
+            <div key={`gan-${label}`} className="py-5 text-center border-t border-[#D8CCEE]"
               style={{ background: bg }}>
               <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (CHEONGAN_HANJA[data.cheongan] ?? data.cheongan) : "—"}
@@ -73,7 +73,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
         {pillars.map(({ label, data }) => {
           const bg = data ? (JJ_BG[data.jiji] ?? DEFAULT_BG) : DEFAULT_BG;
           return (
-            <div key={`ji-${label}`} className="py-5 text-center border-t border-white/60"
+            <div key={`ji-${label}`} className="py-5 text-center border-t border-[#D8CCEE]"
               style={{ background: bg }}>
               <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (JIJI_HANJA[data.jiji] ?? data.jiji) : "—"}
