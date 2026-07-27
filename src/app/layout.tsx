@@ -5,6 +5,7 @@ import { siteConfig, businessInfo } from "@/config/site";
 import { isSupabaseConfigured } from "@/lib/env";
 import { getCurrentUser } from "@/lib/auth";
 import MetaPixel from "@/components/MetaPixel";
+import { HeaderMenu } from "@/components/HeaderMenu";
 import { KakaoScript } from "@/components/KakaoScript";
 import "./globals.css";
 
@@ -54,22 +55,7 @@ function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
         <Link href="/" className="font-bold text-[22px] text-ink tracking-[0.08em]">
           냥점
         </Link>
-        <nav className="flex items-center gap-6 text-[13px] font-medium">
-          <Link href="/products" className="text-ink hover:text-body">상품</Link>
-          {isLoggedIn ? (
-            <>
-              <Link href="/mypage" className="text-ink hover:text-body">마이페이지</Link>
-              <form action="/api/auth/signout" method="post">
-                <button type="submit" className="text-ink hover:text-body">로그아웃</button>
-              </form>
-            </>
-          ) : (
-            <>
-              <Link href="/signup" className="text-ink hover:text-body">회원가입</Link>
-              <Link href="/login" className="text-ink hover:text-body">로그인</Link>
-            </>
-          )}
-        </nav>
+        <HeaderMenu isLoggedIn={isLoggedIn} />
       </div>
     </header>
   );
