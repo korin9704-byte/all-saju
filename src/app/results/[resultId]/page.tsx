@@ -7,7 +7,6 @@ import { LockedAccordionBody } from "@/components/saju/LockedAccordionBody";
 import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
-import { FollowupQuestion } from "@/components/saju/FollowupQuestion";
 import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
@@ -90,33 +89,6 @@ export default async function ResultPage({
 
   const myeongsik     = result.myeongsik as unknown as Myeongsik;
 
-  // 추가 질문(1,900원) 결제용 — 이 결과지의 사주 입력 정보 재사용
-  const followupSaju = sajuInput ? {
-    name: sajuInput.name ?? null,
-    birthDate: sajuInput.birth_date as string,
-    birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
-    timeUnknown: !!sajuInput.time_unknown,
-    calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
-    gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
-  } : null;
-
-  // 추가 질문 상품 (결과지 하단 결제 섹션)
-  const { data: followupProduct } = await service
-    .from("products")
-    .select("id, price")
-    .eq("slug", "followup-question")
-    .eq("is_active", true)
-    .maybeSingle();
-
-  const followupSection = followupProduct && followupSaju ? (
-    <FollowupQuestion
-      productId={followupProduct.id}
-      price={followupProduct.price}
-      saju={followupSaju}
-      guestEmail={order?.guest_email}
-    />
-  ) : null;
-
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
   const rawSlug        = product?.slug ?? "";
   const isMini         = rawSlug.endsWith("-mini");
@@ -186,7 +158,6 @@ export default async function ResultPage({
           />
         </article>
 
-        {followupSection}
 
 
 
@@ -241,7 +212,6 @@ export default async function ResultPage({
           <AccordionBody markdown={result.interpretation_md} headerTitle="사주 풀이" limit={13} />
         </article>
 
-        {followupSection}
 
 
 
@@ -341,7 +311,6 @@ export default async function ResultPage({
           </article>
         </div>
 
-        {followupSection}
 
 
 
@@ -547,7 +516,6 @@ export default async function ResultPage({
           )}
         </article>
 
-        {followupSection}
 
 
 
@@ -605,7 +573,6 @@ export default async function ResultPage({
         <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question") ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
-      {followupSection}
 
 
 
