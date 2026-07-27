@@ -35,7 +35,7 @@ function Cell({ hanja, hangul, color }: { hanja: string; hangul: string; color: 
 
 function EmptyCell() {
   return (
-    <div className="flex items-center justify-center py-3 bg-[#F3EDFB]">
+    <div className="flex items-center justify-center py-3 bg-[#E8B7D8]">
       <span className="text-lg font-bold text-[#ccc]">-</span>
     </div>
   );
@@ -64,7 +64,7 @@ export function LoveSajuTable({ myeongsik }: { myeongsik: Myeongsik }) {
       <div className="grid grid-cols-4 gap-px bg-[#D8CCEE]">
         {pillars.map(({ label, data }) =>
           data ? (
-            <Cell key={`cg-${label}`} hanja={CG_HANJA[data.cheongan] ?? data.cheongan} hangul={data.cheongan} color="#F3EDFB" />
+            <Cell key={`cg-${label}`} hanja={CG_HANJA[data.cheongan] ?? data.cheongan} hangul={data.cheongan} color="#E8B7D8" />
           ) : (
             <EmptyCell key={`cg-${label}`} />
           )
@@ -75,7 +75,7 @@ export function LoveSajuTable({ myeongsik }: { myeongsik: Myeongsik }) {
       <div className="grid grid-cols-4 gap-px bg-[#D8CCEE]">
         {pillars.map(({ label, data }) =>
           data ? (
-            <Cell key={`jj-${label}`} hanja={JJ_HANJA[data.jiji] ?? data.jiji} hangul={data.jiji} color="#F3EDFB" />
+            <Cell key={`jj-${label}`} hanja={JJ_HANJA[data.jiji] ?? data.jiji} hangul={data.jiji} color="#E8B7D8" />
           ) : (
             <EmptyCell key={`jj-${label}`} />
           )

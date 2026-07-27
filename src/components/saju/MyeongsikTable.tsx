@@ -30,7 +30,7 @@ const JJ_BG: Record<string, string> = {
 };
 
 const DEFAULT_BG = "#E5E7EB";
-const CELL_BG = "#F3EDFB"; // 오행색 대신 보라 톤으로 통일
+const CELL_BG = "#E8B7D8"; // 사이트 포인트 핑크(Secondary)
 
 export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
   const pillars = [
