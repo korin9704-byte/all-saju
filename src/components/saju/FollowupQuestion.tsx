@@ -74,7 +74,7 @@ export function FollowupQuestion({
           onChange={(e) => setQuestion(e.target.value.slice(0, MAX_Q))}
           placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
           rows={6}
-          className="w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+          className="w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
         />
         <p className="absolute bottom-4 right-5 text-xs text-mute">{question.length}/{MAX_Q}자</p>
       </div>
@@ -82,7 +82,8 @@ export function FollowupQuestion({
         type="button"
         onClick={submit}
         disabled={submitting}
-        className="w-full h-14 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none"
+        className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
+        style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
       >
         {submitting ? "잠시만요..." : `${formatKRW(price)} 결제하기`}
       </button>

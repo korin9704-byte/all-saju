@@ -367,7 +367,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
         </div>
         <input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
           className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
-          style={{ backgroundColor: name.trim() ? "#ebebeb" : "#f5f5f5" }} />
+          style={{ backgroundColor: name.trim() ? "#ffffff" : "#ffffff" }} />
       </div>
 
       {/* 달력 종류 */}
@@ -378,8 +378,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
         </div>
         <div className="grid grid-cols-2 gap-3">
           {(["solar", "lunar"] as const).map((c) => (
-            <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${calendar === c ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-              <input type="radio" name="calendar" checked={calendar === c} onChange={() => setCalendar(c)} className="w-4 h-4 accent-black" />
+            <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl border px-4 py-3 transition-colors ${calendar === c ? "bg-[#E7DDF8] border-[#8F7BD6]" : "bg-white border-[#E7DDF8]"}`}>
+              <input type="radio" name="calendar" checked={calendar === c} onChange={() => setCalendar(c)} className="w-4 h-4 accent-[#7761C8]" />
               <span className="text-sm text-ink">{c === "solar" ? "양력" : "음력"}</span>
             </label>
           ))}
@@ -402,8 +402,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 setBirthYear(v);
                 if (v.length === 4) birthMonthRef.current?.focus();
               }}
-              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
-              style={{ backgroundColor: birthYear.length === 4 ? "#ebebeb" : "#f5f5f5" }}
+              className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
+              style={{ backgroundColor: birthYear.length === 4 ? "#ffffff" : "#ffffff" }}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
           </div>
@@ -417,8 +417,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 setBirthMonth(v);
                 if (v.length === 2) birthDayRef.current?.focus();
               }}
-              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-6 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
-              style={{ backgroundColor: birthMonth.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+              className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-6 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
+              style={{ backgroundColor: birthMonth.length >= 1 ? "#ffffff" : "#ffffff" }}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
           </div>
@@ -431,8 +431,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 const v = clampDay(e.target.value);
                 setBirthDay(v);
               }}
-              className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
-              style={{ backgroundColor: birthDay.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+              className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
+              style={{ backgroundColor: birthDay.length >= 1 ? "#ffffff" : "#ffffff" }}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
           </div>
@@ -447,8 +447,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
         </div>
         <div className="grid grid-cols-2 gap-3">
           {(["female", "male"] as const).map((g) => (
-            <label key={g} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${gender === g ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-              <input type="radio" name="gender" checked={gender === g} onChange={() => setGender(g)} className="w-4 h-4 accent-black" />
+            <label key={g} className={`flex items-center gap-3 cursor-pointer rounded-2xl border px-4 py-3 transition-colors ${gender === g ? "bg-[#E7DDF8] border-[#8F7BD6]" : "bg-white border-[#E7DDF8]"}`}>
+              <input type="radio" name="gender" checked={gender === g} onChange={() => setGender(g)} className="w-4 h-4 accent-[#7761C8]" />
               <span className="text-sm text-ink">{g === "female" ? "여자" : "남자"}</span>
             </label>
           ))}
@@ -463,8 +463,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
         </div>
         <div className="grid grid-cols-2 gap-3">
           {([false, true] as const).map((unknown) => (
-            <label key={String(unknown)} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${timeUnknown === unknown ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-              <input type="radio" name="timeKnown" checked={timeUnknown === unknown} onChange={() => setTimeUnknown(unknown)} className="w-4 h-4 accent-black" />
+            <label key={String(unknown)} className={`flex items-center gap-3 cursor-pointer rounded-2xl border px-4 py-3 transition-colors ${timeUnknown === unknown ? "bg-[#E7DDF8] border-[#8F7BD6]" : "bg-white border-[#E7DDF8]"}`}>
+              <input type="radio" name="timeKnown" checked={timeUnknown === unknown} onChange={() => setTimeUnknown(unknown)} className="w-4 h-4 accent-[#7761C8]" />
               <span className="text-sm text-ink">{unknown ? "아니오" : "예"}</span>
             </label>
           ))}
@@ -481,7 +481,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                   setBirthTime(`${h}:${m}`);
                   if (h.length === 2) birthMinuteRef.current?.focus();
                 }}
-                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
             </div>
@@ -495,7 +495,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                   const m = e.target.value.replace(/\D/g, "").slice(0, 2);
                   setBirthTime(`${h}:${m}`);
                 }}
-                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
             </div>
@@ -519,7 +519,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
             </div>
             <input value={partnerName} onChange={(e) => setPartnerName(e.target.value)} placeholder="이름을 입력해 주세요. (최대 4글자)"
               className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
-              style={{ backgroundColor: partnerName.trim() ? "#ebebeb" : "#f5f5f5" }} />
+              style={{ backgroundColor: partnerName.trim() ? "#ffffff" : "#ffffff" }} />
           </div>
 
           {/* 상대방 달력 종류 */}
@@ -530,8 +530,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
             </div>
             <div className="grid grid-cols-2 gap-3">
               {(["solar", "lunar"] as const).map((c) => (
-                <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerCalendar === c ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-                  <input type="radio" name="partnerCalendar" checked={partnerCalendar === c} onChange={() => setPartnerCalendar(c)} className="w-4 h-4 accent-black" />
+                <label key={c} className={`flex items-center gap-3 cursor-pointer rounded-2xl border px-4 py-3 transition-colors ${partnerCalendar === c ? "bg-[#E7DDF8] border-[#8F7BD6]" : "bg-white border-[#E7DDF8]"}`}>
+                  <input type="radio" name="partnerCalendar" checked={partnerCalendar === c} onChange={() => setPartnerCalendar(c)} className="w-4 h-4 accent-[#7761C8]" />
                   <span className="text-sm text-ink">{c === "solar" ? "양력" : "음력"}</span>
                 </label>
               ))}
@@ -554,8 +554,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                     setPartnerBirthYear(v);
                     if (v.length === 4) partnerBirthMonthRef.current?.focus();
                   }}
-                  className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
-                  style={{ backgroundColor: partnerBirthYear.length === 4 ? "#ebebeb" : "#f5f5f5" }}
+                  className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
+                  style={{ backgroundColor: partnerBirthYear.length === 4 ? "#ffffff" : "#ffffff" }}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
               </div>
@@ -569,8 +569,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                     setPartnerBirthMonth(v);
                     if (v.length === 2) partnerBirthDayRef.current?.focus();
                   }}
-                  className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-6 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
-                  style={{ backgroundColor: partnerBirthMonth.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+                  className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-6 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
+                  style={{ backgroundColor: partnerBirthMonth.length >= 1 ? "#ffffff" : "#ffffff" }}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
               </div>
@@ -583,8 +583,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                     const v = clampDay(e.target.value);
                     setPartnerBirthDay(v);
                   }}
-                  className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
-                  style={{ backgroundColor: partnerBirthDay.length >= 1 ? "#ebebeb" : "#f5f5f5" }}
+                  className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-5 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
+                  style={{ backgroundColor: partnerBirthDay.length >= 1 ? "#ffffff" : "#ffffff" }}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
               </div>
@@ -599,8 +599,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
             </div>
             <div className="grid grid-cols-2 gap-3">
               {(["female", "male"] as const).map((g) => (
-                <label key={g} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerGender === g ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-                  <input type="radio" name="partnerGender" checked={partnerGender === g} onChange={() => setPartnerGender(g)} className="w-4 h-4 accent-black" />
+                <label key={g} className={`flex items-center gap-3 cursor-pointer rounded-2xl border px-4 py-3 transition-colors ${partnerGender === g ? "bg-[#E7DDF8] border-[#8F7BD6]" : "bg-white border-[#E7DDF8]"}`}>
+                  <input type="radio" name="partnerGender" checked={partnerGender === g} onChange={() => setPartnerGender(g)} className="w-4 h-4 accent-[#7761C8]" />
                   <span className="text-sm text-ink">{g === "female" ? "여자" : "남자"}</span>
                 </label>
               ))}
@@ -615,8 +615,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
             </div>
             <div className="grid grid-cols-2 gap-3">
               {([false, true] as const).map((unknown) => (
-                <label key={String(unknown)} className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${partnerTimeUnknown === unknown ? "bg-[#ebebeb]" : "bg-[#f5f5f5]"}`}>
-                  <input type="radio" name="partnerTimeKnown" checked={partnerTimeUnknown === unknown} onChange={() => setPartnerTimeUnknown(unknown)} className="w-4 h-4 accent-black" />
+                <label key={String(unknown)} className={`flex items-center gap-3 cursor-pointer rounded-2xl border px-4 py-3 transition-colors ${partnerTimeUnknown === unknown ? "bg-[#E7DDF8] border-[#8F7BD6]" : "bg-white border-[#E7DDF8]"}`}>
+                  <input type="radio" name="partnerTimeKnown" checked={partnerTimeUnknown === unknown} onChange={() => setPartnerTimeUnknown(unknown)} className="w-4 h-4 accent-[#7761C8]" />
                   <span className="text-sm text-ink">{unknown ? "아니오" : "예"}</span>
                 </label>
               ))}
@@ -633,7 +633,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                       setPartnerBirthTime(`${h}:${m}`);
                       if (h.length === 2) partnerBirthMinuteRef.current?.focus();
                     }}
-                    className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                    className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
                 </div>
@@ -647,7 +647,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                       const m = e.target.value.replace(/\D/g, "").slice(0, 2);
                       setPartnerBirthTime(`${h}:${m}`);
                     }}
-                    className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                    className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 pr-8 text-sm text-ink text-center focus:outline-none focus:border-[#8F7BD6] transition-colors"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
                 </div>
@@ -671,8 +671,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                     onClick={() => { setRelationship2(opt); setRelationship2Custom(""); }}
                     className="h-11 rounded-xl text-sm font-medium transition-colors"
                     style={relationship2 === opt
-                      ? { backgroundColor: "#4A3A72", color: "#ffffff" }
-                      : { backgroundColor: "#f5f5f5", color: "#4A3A72" }}
+                      ? { backgroundColor: "#E7DDF8", color: "#4A3A72", border: "1px solid #8F7BD6" }
+                      : { backgroundColor: "#ffffff", color: "#4A3A72", border: "1px solid #E7DDF8" }}
                   >
                     {opt}
                   </button>
@@ -685,8 +685,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               onClick={() => setRelationship2("직접 입력")}
               className="w-full h-11 rounded-xl text-sm font-medium transition-colors"
               style={relationship2 === "직접 입력"
-                ? { backgroundColor: "#4A3A72", color: "#ffffff" }
-                : { backgroundColor: "#f5f5f5", color: "#4A3A72" }}
+                ? { backgroundColor: "#E7DDF8", color: "#4A3A72", border: "1px solid #8F7BD6" }
+                : { backgroundColor: "#ffffff", color: "#4A3A72", border: "1px solid #E7DDF8" }}
             >
               직접 입력
             </button>
@@ -695,7 +695,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 value={relationship2Custom}
                 onChange={(e) => setRelationship2Custom(e.target.value)}
                 placeholder="예: 소개팅에서 만난 지 3주 된 사이"
-                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors"
+                className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:border-[#8F7BD6] transition-colors"
               />
             )}
           </div>
@@ -717,7 +717,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 onChange={(e) => setRoleA(e.target.value.slice(0, 100))}
                 placeholder="예: 엄마, 남자친구, 팬"
                 className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
-                style={{ backgroundColor: roleA.trim() ? "#ebebeb" : "#f5f5f5" }}
+                style={{ backgroundColor: roleA.trim() ? "#ffffff" : "#ffffff" }}
               />
               <p className="absolute bottom-3 right-4 text-xs text-mute pointer-events-none">{roleA.length}/100</p>
             </div>
@@ -735,7 +735,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 onChange={(e) => setRoleB(e.target.value.slice(0, 100))}
                 placeholder="예: 딸, 여자친구, 아이돌"
                 className="w-full rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none transition-colors"
-                style={{ backgroundColor: roleB.trim() ? "#ebebeb" : "#f5f5f5" }}
+                style={{ backgroundColor: roleB.trim() ? "#ffffff" : "#ffffff" }}
               />
               <p className="absolute bottom-3 right-4 text-xs text-mute pointer-events-none">{roleB.length}/100</p>
             </div>
@@ -752,7 +752,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
                 placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
                 rows={6}
-                className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+                className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
               />
               <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
             </div>
@@ -776,7 +776,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                   type="button"
                   key={startAge}
                   onClick={() => setDaewunStartAge(startAge)}
-                  className="w-full flex items-center gap-4 px-4 py-3.5 border-b border-hairline last:border-b-0 text-left transition-all hover:bg-[#f5f5f5]"
+                  className="w-full flex items-center gap-4 px-4 py-3.5 border-b border-hairline last:border-b-0 text-left transition-all hover:bg-[#F3EDFB]"
                   style={daewunStartAge === startAge ? { backgroundColor: "#4A3A72" } : undefined}
                 >
                   <div
@@ -806,7 +806,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                       className="text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap"
                       style={daewunStartAge === startAge
                         ? { backgroundColor: "#ffffff", color: "#4A3A72" }
-                        : { backgroundColor: "#4A3A72", color: "#ffffff" }}
+                        : { backgroundColor: "#E7DDF8", color: "#4A3A72", border: "1px solid #8F7BD6" }}
                     >현재</span>
                   )}
                 </button>
@@ -841,7 +841,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               <input value={relationshipCustom}
                 onChange={(e) => setRelationshipCustom(e.target.value)}
                 placeholder="예: 장거리 연애 중이에요."
-                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+                className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
             )}
           </div>
 
@@ -863,7 +863,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               <input value={lifestyleCustom}
                 onChange={(e) => setLifestyleCustom(e.target.value)}
                 placeholder="예: 유튜버로 활동 중이에요."
-                className="w-full bg-[#f5f5f5] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:bg-[#ebebeb] transition-colors" />
+                className="w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
             )}
           </div>
 
@@ -878,7 +878,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                 onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
                 placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
                 rows={6}
-                className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+                className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
               />
               <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
             </div>
@@ -897,7 +897,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
               placeholder="궁금한 점을 자유롭게 작성해 주세요. 없다면 그냥 넘어가셔도 좋아요."
               rows={6}
-              className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
           </div>
@@ -915,7 +915,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               onChange={(e) => setFreeQuestion(e.target.value.slice(0, MAX_FREE_Q))}
               placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
               rows={6}
-              className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{freeQuestion.length}/{MAX_FREE_Q}자</p>
           </div>
@@ -934,7 +934,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               onChange={(e) => setConcernText(e.target.value.slice(0, MAX_CONCERN))}
               placeholder="궁금한 점을 자유롭게 작성해 주세요."
               rows={6}
-              className="block w-full resize-none rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
+              className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none transition-colors"
             />
             <p className="absolute bottom-4 right-5 text-xs text-mute">{concernText.length}/{MAX_CONCERN}자</p>
           </div>
@@ -953,14 +953,15 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
             value={guestEmail}
             onChange={(e) => setGuestEmail(e.target.value)}
             placeholder="결과지를 받을 이메일을 입력해 주세요."
-            className="w-full rounded-2xl bg-[#f5f5f5] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:bg-[#ebebeb] transition-colors"
+            className="w-full rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-ink placeholder:text-ink/30 focus:outline-none focus:border-[#8F7BD6] transition-colors"
           />
         </div>
       )}
 
       {/* 제출 버튼 */}
       <button type="submit" disabled={submitting}
-        className="w-full h-14 !mt-10 rounded-full bg-ink text-white text-sm font-medium transition-colors hover:bg-ink/80 disabled:opacity-50 disabled:pointer-events-none">
+        className="w-full h-14 !mt-10 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
+        style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
         {submitting
           ? "잠시만요..."
           : freeTroubleMode
