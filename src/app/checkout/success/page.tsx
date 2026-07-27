@@ -48,11 +48,8 @@ export default async function CheckoutSuccessPage({
       `}</style>
 
       <PurchasePixel amount={Number(amount)} />
-      {/* 로딩: 냥이 이미지 + 진행 바 (/generating 과 동일, 이모지 없음) */}
-      <div className="container py-10 max-w-sm text-center" id="loading-view">
-        {/* 냥이 이미지 */}
-        <img src="/images/loading-cat.webp?v=3" alt="" className="w-full rounded-3xl mb-8" />
-
+      {/* 로딩: 진행 바 + 문구 (/generating 과 동일, 이모지 없음) */}
+      <div className="container py-16 max-w-sm text-center" id="loading-view">
         {/* 메인 메시지 */}
         <h1 className="text-lg font-bold text-ink leading-snug mb-6" id="loading-msg">
           행운의 냥이가 집중해서 분석 중...

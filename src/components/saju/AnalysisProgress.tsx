@@ -1,7 +1,7 @@
 "use client";
 
 // 결과 생성 진행 화면 — /generating 과 /resume 에서 공용
-// 냥이 이미지(loading-cat.webp) + 진행 바 (이모지 없음)
+// 진행 바 + 문구 (이모지 없음)
 export function AnalysisProgress({
   pct,
   seconds,
@@ -23,14 +23,7 @@ export function AnalysisProgress({
         #progress-fill { transition: width 1s linear; animation: barPulse 2s ease-in-out infinite; }
       `}</style>
 
-      <div className="container py-10 max-w-sm text-center">
-        {/* 냥이 이미지 */}
-        <img
-          src="/images/loading-cat.webp?v=3"
-          alt=""
-          className="w-full rounded-3xl mb-8"
-        />
-
+      <div className="container py-16 max-w-sm text-center">
         {/* 메인 메시지 */}
         <h1 className="text-lg font-bold text-ink leading-snug mb-6">
           {done
