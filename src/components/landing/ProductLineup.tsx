@@ -21,7 +21,7 @@ const landingDummyReviews = [
 function LandingReviews() {
   return (
     <div className="mt-10">
-      <h2 className="text-base font-semibold mb-4 text-ink">이용 후기</h2>
+      <h2 className="text-base font-semibold mb-4 text-ink">리뷰</h2>
       <ReviewList reviews={landingDummyReviews} title="" initialCount={5} />
     </div>
   );

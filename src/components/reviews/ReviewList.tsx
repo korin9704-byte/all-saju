@@ -5,7 +5,7 @@ import { formatDate } from "@/lib/utils";
 
 type Review = { id: string; rating: number; content: string; created_at: string };
 
-export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 }: { reviews: Review[]; title?: string; initialCount?: number }) {
+export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
   const PAGE_SIZE = 5;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
