@@ -309,7 +309,7 @@ export function FreeTroubleWizard({
                 <div className="flex gap-3">
                   {/* 결제하기 버튼 기준 가운데 정렬 — 이전 버튼 폭만큼 빈 칸 */}
                   <div className="w-24" />
-                  <p className="flex-1 mt-3 text-center text-sm text-[#C95FC0]" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95)" }}>불만족 시 100% 환불!</p>
+                  <p className="flex-1 mt-3 text-center text-sm text-[#4A3A72]" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95)" }}>불만족 시 100% 환불!</p>
                 </div>
               )}
             </>
