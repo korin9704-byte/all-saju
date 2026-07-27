@@ -158,14 +158,14 @@ export function DaewunResultBody({
   }
 
   return (
-    <div className="bg-canvas rounded-b-2xl overflow-hidden">
+    <div className="bg-[#F3EDFB] rounded-b-2xl overflow-hidden">
       {/* ── 미리보기 ── */}
       {parsed.preview.title && (
         <div className="border-b border-border">
           <button
             type="button"
             onClick={() => setOpenPreview(!openPreview)}
-            className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
+            className="w-full relative px-8 py-5 text-center hover:bg-[#E7DDF8] transition-colors"
           >
             <p className="text-sm font-semibold text-ink leading-snug">
               {parsed.preview.title}
@@ -181,7 +181,7 @@ export function DaewunResultBody({
             </svg>
           </button>
           {openPreview && parsed.preview.desc && (
-            <div className="px-5 pb-5 pt-1 bg-[#F8F4FD] border-t border-border">
+            <div className="px-5 pb-5 pt-1 bg-white border-t border-border">
               <p className="text-sm text-[#4A3A72] leading-[1.95]">{parsed.preview.desc}</p>
             </div>
           )}
@@ -201,7 +201,7 @@ export function DaewunResultBody({
                   <button
                     type="button"
                     onClick={() => setOpenIdx(isOpen ? null : i)}
-                    className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
+                    className="w-full relative px-8 py-5 text-center hover:bg-[#E7DDF8] transition-colors"
                   >
                     <p className="text-sm font-semibold text-ink">
                       {d.title}
@@ -255,7 +255,7 @@ export function DaewunResultBody({
                     <button
                       type="button"
                       onClick={startUnlock}
-                      className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
+                      className="w-full relative px-8 py-5 text-center hover:bg-[#E7DDF8] transition-colors"
                     >
                       <p className="text-sm font-semibold text-ink/40">{y.label}</p>
                       {y.preview && (
@@ -273,7 +273,7 @@ export function DaewunResultBody({
                   <button
                     type="button"
                     onClick={() => setOpenYearIdx(isOpen ? null : i)}
-                    className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
+                    className="w-full relative px-8 py-5 text-center hover:bg-[#E7DDF8] transition-colors"
                   >
                     <p className="text-sm font-semibold text-ink">{y.label}</p>
                     {y.preview && (
@@ -313,7 +313,7 @@ export function DaewunResultBody({
           <button
             type="button"
             onClick={startUnlock}
-            className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
+            className="w-full relative px-8 py-5 text-center hover:bg-[#E7DDF8] transition-colors"
           >
             <p className="text-sm font-semibold text-ink/40">시크릿 솔루션</p>
             {parsed.final.sub && (
@@ -333,7 +333,7 @@ export function DaewunResultBody({
           <button
             type="button"
             onClick={() => setOpenFinal(!openFinal)}
-            className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
+            className="w-full relative px-8 py-5 text-center hover:bg-[#E7DDF8] transition-colors"
           >
             <p className="text-sm font-semibold text-ink">
               시크릿 솔루션

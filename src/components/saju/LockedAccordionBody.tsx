@@ -81,7 +81,7 @@ export function LockedAccordionBody({
 
   return (
     <>
-    <div className="divide-y divide-border bg-canvas rounded-b-2xl overflow-hidden">
+    <div className="divide-y divide-border bg-[#F3EDFB] rounded-b-2xl overflow-hidden">
       {/* 헤더 */}
       <div className="px-5 py-4 text-center" style={{ background: "#4A3A72" }}>
         <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>
@@ -97,7 +97,7 @@ export function LockedAccordionBody({
               <button
                 type="button"
                 onClick={() => setOpenIdx(isOpen ? null : i)}
-                className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#F8F4FD] transition-colors"
+                className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#E7DDF8] transition-colors"
               >
                 <span className="flex-1 text-sm font-medium text-ink leading-relaxed">
                   {sec.title}
@@ -119,7 +119,7 @@ export function LockedAccordionBody({
                 </svg>
               </button>
               {isOpen && (
-                <div className="px-5 pb-6 pt-1 bg-[#F8F4FD] border-t border-border">
+                <div className="px-5 pb-6 pt-1 bg-white border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
                     <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">
                       {renderEmphasis(para.replace(/^[-•]\s?/, ""))}
@@ -139,7 +139,7 @@ export function LockedAccordionBody({
             <button
               type="button"
               onClick={startUnlock}
-              className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#F8F4FD] transition-colors"
+              className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#E7DDF8] transition-colors"
             >
               <span className="flex-1 text-sm font-medium text-ink/40 leading-relaxed">
                 {sec.title}
