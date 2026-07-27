@@ -8,7 +8,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { publicEnv } from "@/lib/env";
 
 export default function SignupPage() {
@@ -42,11 +41,7 @@ export default function SignupPage() {
 
   return (
     <div className="container py-16 max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle>회원가입</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <h1 className="text-xl font-bold text-ink mb-8">회원가입</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">이름</Label>
@@ -68,8 +63,6 @@ export default function SignupPage() {
               <Link href="/login" className="text-primary hover:underline">로그인</Link>
             </p>
           </form>
-        </CardContent>
-      </Card>
     </div>
   );
 }

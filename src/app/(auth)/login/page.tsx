@@ -8,7 +8,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
@@ -43,11 +42,7 @@ function LoginForm() {
 
   return (
     <div className="container py-16 max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle>로그인</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <h1 className="text-xl font-bold text-ink mb-8">로그인</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">이메일</Label>
@@ -65,8 +60,6 @@ function LoginForm() {
               <Link href="/reset" className="text-muted-foreground hover:text-foreground">비밀번호 재설정</Link>
             </div>
           </form>
-        </CardContent>
-      </Card>
     </div>
   );
 }
