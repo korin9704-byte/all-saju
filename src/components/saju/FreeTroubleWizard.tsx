@@ -91,15 +91,15 @@ export function FreeTroubleWizard({ productId, onBack }: { productId: string; on
     router.push("/generating");
   }
 
-  const numInputCls = "w-full bg-[#F3EDFB] border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] text-center placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors disabled:opacity-40";
-  const textInputCls = "w-full bg-[#F3EDFB] border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors";
+  const numInputCls = "w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] text-center placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors disabled:opacity-40";
+  const textInputCls = "w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors";
   const nextBtnCls = "flex-1 h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnStyle = { background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" };
   const prevBtnCls = "w-24 h-14 rounded-full bg-white border border-[#E7DDF8] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#F3EDFB]";
 
   const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
     <label key={key ?? label}
-      className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${selected ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-[#F3EDFB] border border-[#E7DDF8]"}`}>
+      className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${selected ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}>
       <input type="radio" checked={selected} onChange={onClick} className="w-4 h-4 accent-[#7761C8]" />
       <span className="text-sm text-[#4A3A72]">{label}</span>
     </label>
@@ -241,7 +241,7 @@ export function FreeTroubleWizard({ productId, onBack }: { productId: string; on
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
                   placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
-                  className="block w-full resize-none rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] px-5 py-4 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
+                  className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
               <div className="flex gap-3">
