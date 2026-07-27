@@ -14,7 +14,6 @@ export default function SignupPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -25,7 +24,6 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        data: { display_name: name },
         emailRedirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/callback`,
       },
     });
@@ -43,10 +41,6 @@ export default function SignupPage() {
     <div className="container py-16 max-w-md">
       <h1 className="text-xl font-bold text-ink mb-8">회원가입</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">이름</Label>
-              <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
             <div className="space-y-2">
               <Label htmlFor="email">이메일</Label>
               <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
