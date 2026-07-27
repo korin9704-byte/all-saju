@@ -181,7 +181,7 @@ export function DaewunResultBody({
             </svg>
           </button>
           {openPreview && parsed.preview.desc && (
-            <div className="px-5 pb-5 pt-1 bg-white border-t border-border">
+            <div className="px-5 pb-5 pt-1 bg-[#F8F4FD] border-t border-border">
               <p className="text-sm text-[#4A3A72] leading-[1.95]">{parsed.preview.desc}</p>
             </div>
           )}
@@ -225,7 +225,7 @@ export function DaewunResultBody({
 
                   {/* 펼친 상태 */}
                   {isOpen && (
-                    <div className="border-t border-border bg-white">
+                    <div className="border-t border-border bg-[#F8F4FD]">
                       <div className="px-5 py-5">
                         {d.content.split("\n\n").map((para, pi) => (
                           <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">
@@ -292,7 +292,7 @@ export function DaewunResultBody({
                     </svg>
                   </button>
                   {isOpen && y.content && (
-                    <div className="px-5 pb-5 pt-4 bg-white border-t border-border">
+                    <div className="px-5 pb-5 pt-4 bg-[#F8F4FD] border-t border-border">
                       {y.content.split("\n\n").map((para, pi) => (
                         <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-3 last:mb-0">
                           {para.replace(/^#+\s*/, "").replace(/^\[/, "").replace(/\]$/, "").replace(/^[-•]\s?/, "")}
@@ -356,7 +356,7 @@ export function DaewunResultBody({
 
           {/* 펼친 상태 */}
           {openFinal && (
-            <div className="border-t border-border bg-white">
+            <div className="border-t border-border bg-[#F8F4FD]">
               <div className="px-5 py-5">
                 {parsed.final.content.split("\n\n").map((para, pi) => (
                   <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">

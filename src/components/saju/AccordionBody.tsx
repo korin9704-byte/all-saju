@@ -95,7 +95,7 @@ export function AccordionBody({
 
               {/* 본문 */}
               {isOpen && (
-                <div className="px-5 pb-6 pt-1 bg-white border-t border-border">
+                <div className="px-5 pb-6 pt-1 bg-[#F8F4FD] border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
                     <p
                       key={pi}

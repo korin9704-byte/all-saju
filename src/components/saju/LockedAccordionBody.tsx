@@ -119,7 +119,7 @@ export function LockedAccordionBody({
                 </svg>
               </button>
               {isOpen && (
-                <div className="px-5 pb-6 pt-1 bg-white border-t border-border">
+                <div className="px-5 pb-6 pt-1 bg-[#F8F4FD] border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
                     <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">
                       {renderEmphasis(para.replace(/^[-•]\s?/, ""))}
