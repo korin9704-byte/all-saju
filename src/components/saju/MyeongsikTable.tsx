@@ -45,8 +45,8 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
 
         {/* 헤더 라벨 */}
         {pillars.map(({ label }) => (
-          <div key={label} className="py-3 text-center" style={{ background: "#8F7BD6" }}>
-            <span className="text-[11px] font-semibold tracking-widest text-white/60">{label}</span>
+          <div key={label} className="py-3 text-center" style={{ background: "#E7DDF8" }}>
+            <span className="text-[11px] font-semibold tracking-widest text-[#4A3A72]/60">{label}</span>
           </div>
         ))}
 

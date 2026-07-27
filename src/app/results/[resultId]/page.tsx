@@ -151,23 +151,23 @@ export default async function ResultPage({
 
     return (
       <div className="w-full py-12">
-        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
+        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
           <div className="px-6 pt-6 pb-5 text-center">
-            <h1 className="text-xl font-bold text-white tracking-tight">
+            <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
               {displayName} &lsquo;{miniConf.name} MINI&rsquo;
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
             {tags.map((tag) => (
               <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium"
-                style={{ background: "rgba(255,255,255,0.22)", color: "#fff" }}>
+                style={{ background: "rgba(74,58,114,0.10)", color: "#4A3A72" }}>
                 {tag}
               </span>
             ))}
           </div>
           {question && (
             <div className="px-5 pb-5 text-center">
-              <p className="text-xs text-white leading-relaxed">Q. {question}</p>
+              <p className="text-xs text-[#4A3A72] leading-relaxed">Q. {question}</p>
             </div>
           )}
         </header>
@@ -212,23 +212,23 @@ export default async function ResultPage({
 
     return (
       <div className="w-full py-12">
-        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
+        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
           <div className="px-6 pt-6 pb-5 text-center">
-            <h1 className="text-xl font-bold text-white tracking-tight">
+            <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
               {displayName} &lsquo;사주 풀이&rsquo;
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
             {tags.map((tag) => (
               <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium"
-                style={{ background: "rgba(255,255,255,0.22)", color: "#fff" }}>
+                style={{ background: "rgba(74,58,114,0.10)", color: "#4A3A72" }}>
                 {tag}
               </span>
             ))}
           </div>
           {todayQuestion && (
             <div className="px-5 pb-5 text-center">
-              <p className="text-xs text-white leading-relaxed">Q. {todayQuestion}</p>
+              <p className="text-xs text-[#4A3A72] leading-relaxed">Q. {todayQuestion}</p>
             </div>
           )}
         </header>
@@ -297,29 +297,29 @@ export default async function ResultPage({
     return (
       <div className="w-full py-12">
         <div className="rounded-2xl overflow-hidden">
-          <header className="mb-0" style={{ background: "#8F7BD6" }}>
+          <header className="mb-0" style={{ background: "#E7DDF8" }}>
             <div className="px-6 pt-6 pb-3 text-center">
               {periodLabel && (
                 <span className="inline-block mb-2 px-3 py-1 rounded-full text-xs font-semibold"
-                  style={{ background: "rgba(255,255,255,0.22)", color: "#fff" }}>
+                  style={{ background: "rgba(74,58,114,0.10)", color: "#4A3A72" }}>
                   {periodLabel}
                 </span>
               )}
-              <h1 className="text-xl font-bold text-white tracking-tight">
+              <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
                 {displayName} {isLocked ? "‘대운 풀이 MINI’" : "‘대운 풀이’"}
               </h1>
             </div>
             <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
               {tags.map((tag) => (
                 <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium"
-                  style={{ background: "rgba(255,255,255,0.22)", color: "#fff" }}>
+                  style={{ background: "rgba(74,58,114,0.10)", color: "#4A3A72" }}>
                   {tag}
                 </span>
               ))}
             </div>
             {questionText && (
               <div className="px-5 pb-5 text-center">
-                <p className="text-xs text-white leading-relaxed">
+                <p className="text-xs text-[#4A3A72] leading-relaxed">
                   Q. {questionText}
                 </p>
               </div>
@@ -333,8 +333,8 @@ export default async function ResultPage({
           />
 
           <article>
-            <div className="px-5 py-4 text-center" style={{ background: "#8F7BD6" }}>
-              <p className="text-sm font-semibold tracking-widest text-white">대운 풀이</p>
+            <div className="px-5 py-4 text-center" style={{ background: "#E7DDF8" }}>
+              <p className="text-sm font-semibold tracking-widest text-[#4A3A72]">대운 풀이</p>
               <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 내용이 펼쳐져요.</p>
             </div>
             <DaewunResultBody markdown={result.interpretation_md} lock={daewunLock} />
@@ -441,25 +441,25 @@ export default async function ResultPage({
     return (
       <div className="w-full">
         {/* ── 헤더: 제목 + 점수 (핑크→오렌지) ── */}
-        <div className="px-6 pt-10 pb-8 text-center rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
+        <div className="px-6 pt-10 pb-8 text-center rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
           {title && (
-            <h1 className="text-lg font-bold text-white leading-snug mb-6 whitespace-pre-wrap">
+            <h1 className="text-lg font-bold text-[#4A3A72] leading-snug mb-6 whitespace-pre-wrap">
               {title}
             </h1>
           )}
           {score !== null && (
-            <div className="text-[72px] font-extrabold text-white leading-none">
+            <div className="text-[72px] font-extrabold text-[#4A3A72] leading-none">
               {score}
             </div>
           )}
           {!title && !score && (
-            <h1 className="text-xl font-bold text-white">{displayA} &amp; {displayB}</h1>
+            <h1 className="text-xl font-bold text-[#4A3A72]">{displayA} &amp; {displayB}</h1>
           )}
         </div>
 
         {/* ── 관계 바 ── */}
         {(relationLabel || loveQuestion) && (
-          <div className="py-3 px-5 text-center bg-[#8F7BD6] text-white">
+          <div className="py-3 px-5 text-center bg-[#E7DDF8] text-[#4A3A72]">
             {relationLabel && (
               <p className="text-sm font-bold tracking-widest">{relationLabel}</p>
             )}
@@ -574,23 +574,23 @@ export default async function ResultPage({
 
   return (
     <div className="w-full py-12">
-      <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
+      <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
         <div className="px-6 pt-6 pb-5 text-center">
-          <h1 className="text-xl font-bold text-white tracking-tight">
+          <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
             {displayName} ‘{product?.name ?? "사주 풀이"}’
           </h1>
         </div>
         <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
           {tags.map((tag) => (
             <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium"
-              style={{ background: "rgba(255,255,255,0.22)", color: "#fff" }}>
+              style={{ background: "rgba(74,58,114,0.10)", color: "#4A3A72" }}>
               {tag}
             </span>
           ))}
         </div>
         {generalQuestion && (
           <div className="px-5 pb-5 text-center">
-            <p className="text-xs text-white leading-relaxed">
+            <p className="text-xs text-[#4A3A72] leading-relaxed">
               Q. {generalQuestion}
             </p>
           </div>

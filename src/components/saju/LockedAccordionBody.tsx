@@ -83,9 +83,9 @@ export function LockedAccordionBody({
     <>
     <div className="divide-y divide-border bg-[#F3EDFB] rounded-b-2xl overflow-hidden">
       {/* 헤더 */}
-      <div className="px-5 py-4 text-center" style={{ background: "#8F7BD6" }}>
-        <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>
-        <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 내용이 펼쳐져요.</p>
+      <div className="px-5 py-4 text-center" style={{ background: "#E7DDF8" }}>
+        <p className="text-sm font-semibold tracking-widest text-[#4A3A72]">{headerTitle}</p>
+        <p className="mt-1 text-xs text-[#4A3A72]/60">각 제목을 클릭하면 내용이 펼쳐져요.</p>
       </div>
 
       {/* 열람 가능 주제 */}

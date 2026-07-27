@@ -54,8 +54,8 @@ export function LoveSajuTable({ myeongsik }: { myeongsik: Myeongsik }) {
       {/* 헤더 */}
       <div className="grid grid-cols-4 divide-x divide-white/20">
         {pillars.map(({ label }) => (
-          <div key={label} className="text-center py-1.5 bg-[#8F7BD6]">
-            <span className="text-[9px] font-semibold text-white/50 tracking-widest">{label}</span>
+          <div key={label} className="text-center py-1.5 bg-[#E7DDF8]">
+            <span className="text-[9px] font-semibold text-[#4A3A72]/60 tracking-widest">{label}</span>
           </div>
         ))}
       </div>
