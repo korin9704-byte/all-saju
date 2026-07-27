@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
-import { KakaoLoginButton } from "@/components/auth/KakaoLoginButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,14 +48,6 @@ function LoginForm() {
           <CardTitle>로그인</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4 mb-6">
-            <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
-            <div className="flex items-center gap-3">
-              <div className="h-px flex-1 bg-border" />
-              <span className="text-xs text-muted-foreground">또는 이메일로</span>
-              <div className="h-px flex-1 bg-border" />
-            </div>
-          </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">이메일</Label>
