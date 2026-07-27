@@ -302,16 +302,15 @@ export function FreeTroubleWizard({
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
-                  {submitting ? "잠시만요..." : hasCredit ? "무료 이용권으로 결과보기" : "결제하기"}
+                  {submitting
+                    ? "잠시만요..."
+                    : hasCredit
+                      ? "무료 이용권으로 결과보기"
+                      : mode === "paid"
+                        ? "결제하기 · 불만족 시 100% 환불"
+                        : "결제하기"}
                 </button>
               </div>
-              {mode === "paid" && !hasCredit && (
-                <div className="flex gap-3">
-                  {/* 결제하기 버튼 기준 가운데 정렬 — 이전 버튼 폭만큼 빈 칸 */}
-                  <div className="w-24" />
-                  <p className="flex-1 mt-3 text-center text-sm text-[#4A3A72]" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95)" }}>불만족 시 100% 환불!</p>
-                </div>
-              )}
             </>
           )}
         </div>
