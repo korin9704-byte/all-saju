@@ -33,7 +33,7 @@ function parseSections(markdown: string): Section[] {
 export function AccordionBody({
   markdown,
   headerTitle = "사주 풀이",
-  headerColor = "#4A3A72",
+  headerColor = "#8F7BD6",
   showHeader = true,
   limit,
 }: {

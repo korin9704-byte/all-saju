@@ -151,7 +151,7 @@ export default async function ResultPage({
 
     return (
       <div className="w-full py-12">
-        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#4A3A72" }}>
+        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
               {displayName} &lsquo;{miniConf.name} MINI&rsquo;
@@ -212,7 +212,7 @@ export default async function ResultPage({
 
     return (
       <div className="w-full py-12">
-        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#4A3A72" }}>
+        <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
               {displayName} &lsquo;사주 풀이&rsquo;
@@ -297,7 +297,7 @@ export default async function ResultPage({
     return (
       <div className="w-full py-12">
         <div className="rounded-2xl overflow-hidden">
-          <header className="mb-0" style={{ background: "#4A3A72" }}>
+          <header className="mb-0" style={{ background: "#8F7BD6" }}>
             <div className="px-6 pt-6 pb-3 text-center">
               {periodLabel && (
                 <span className="inline-block mb-2 px-3 py-1 rounded-full text-xs font-semibold"
@@ -333,7 +333,7 @@ export default async function ResultPage({
           />
 
           <article>
-            <div className="px-5 py-4 text-center" style={{ background: "#4A3A72" }}>
+            <div className="px-5 py-4 text-center" style={{ background: "#8F7BD6" }}>
               <p className="text-sm font-semibold tracking-widest text-white">대운 풀이</p>
               <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 내용이 펼쳐져요.</p>
             </div>
@@ -441,7 +441,7 @@ export default async function ResultPage({
     return (
       <div className="w-full">
         {/* ── 헤더: 제목 + 점수 (핑크→오렌지) ── */}
-        <div className="px-6 pt-10 pb-8 text-center rounded-t-2xl overflow-hidden" style={{ background: "#4A3A72" }}>
+        <div className="px-6 pt-10 pb-8 text-center rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
           {title && (
             <h1 className="text-lg font-bold text-white leading-snug mb-6 whitespace-pre-wrap">
               {title}
@@ -459,7 +459,7 @@ export default async function ResultPage({
 
         {/* ── 관계 바 ── */}
         {(relationLabel || loveQuestion) && (
-          <div className="py-3 px-5 text-center bg-[#4A3A72] text-white">
+          <div className="py-3 px-5 text-center bg-[#8F7BD6] text-white">
             {relationLabel && (
               <p className="text-sm font-bold tracking-widest">{relationLabel}</p>
             )}
@@ -574,7 +574,7 @@ export default async function ResultPage({
 
   return (
     <div className="w-full py-12">
-      <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#4A3A72" }}>
+      <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#8F7BD6" }}>
         <div className="px-6 pt-6 pb-5 text-center">
           <h1 className="text-xl font-bold text-white tracking-tight">
             {displayName} ‘{product?.name ?? "사주 풀이"}’
