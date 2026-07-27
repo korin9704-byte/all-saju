@@ -84,7 +84,7 @@ export function HowItWorks() {
       <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-center mb-12">
         이용 안내
       </h2>
-      <ol className="grid gap-10 md:grid-cols-4">
+      <ol className="grid gap-8 grid-cols-1">
         {steps.map((s) => (
           <li key={s.n}>
             {/* 아이콘 — 배경 없음 */}

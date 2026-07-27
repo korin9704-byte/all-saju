@@ -103,7 +103,7 @@ export function ShareRewardCard({
   }
 
   return (
-    <section className="mt-8 space-y-3 px-4 sm:px-0">
+    <section className="mt-8 space-y-3 px-4">
       {isResultPage && (
         <button type="button" onClick={shareResult} className={SHARE_BUTTON_CLASS} style={RESULT_BUTTON_STYLE}>
           카카오톡으로 친구에게 &lsquo;내 결과지&rsquo; 공유하기

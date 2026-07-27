@@ -371,7 +371,7 @@ export function DaewunResultBody({
 
       {/* ── 언락 버튼 (MINI 잠금) ── */}
       {lock && (
-        <div className="mt-8 px-4 sm:px-0">
+        <div className="mt-8 px-4">
           <button
             type="button"
             onClick={startUnlock}
