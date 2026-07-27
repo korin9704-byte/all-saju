@@ -176,8 +176,8 @@ export function DaewunResultBody({
               className="absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200"
               style={{ transform: openPreview ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)" }}
             >
-              <circle cx="10" cy="10" r="9" fill={openPreview ? "#4A3A72" : "#F3EDFB"} />
-              <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={openPreview ? "#fff" : "#9C8FBF"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="10" cy="10" r="9" fill={openPreview ? "#8F7BD6" : "#ffffff"} />
+              <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={openPreview ? "#fff" : "#8F7BD6"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
           {openPreview && parsed.preview.desc && (
@@ -218,8 +218,8 @@ export function DaewunResultBody({
                       className="absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200"
                       style={{ transform: isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)" }}
                     >
-                      <circle cx="10" cy="10" r="9" fill={isOpen ? "#4A3A72" : "#F3EDFB"} />
-                      <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={isOpen ? "#fff" : "#9C8FBF"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="10" cy="10" r="9" fill={isOpen ? "#8F7BD6" : "#ffffff"} />
+                      <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={isOpen ? "#fff" : "#8F7BD6"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
 
@@ -287,8 +287,8 @@ export function DaewunResultBody({
                       className="absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200"
                       style={{ transform: isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)" }}
                     >
-                      <circle cx="10" cy="10" r="9" fill={isOpen ? "#4A3A72" : "#F3EDFB"} />
-                      <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={isOpen ? "#fff" : "#9C8FBF"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="10" cy="10" r="9" fill={isOpen ? "#8F7BD6" : "#ffffff"} />
+                      <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={isOpen ? "#fff" : "#8F7BD6"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
                   {isOpen && y.content && (
@@ -349,8 +349,8 @@ export function DaewunResultBody({
               className="absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200"
               style={{ transform: openFinal ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)" }}
             >
-              <circle cx="10" cy="10" r="9" fill={openFinal ? "#4A3A72" : "#F3EDFB"} />
-              <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={openFinal ? "#fff" : "#9C8FBF"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="10" cy="10" r="9" fill={openFinal ? "#8F7BD6" : "#ffffff"} />
+              <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke={openFinal ? "#fff" : "#8F7BD6"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 

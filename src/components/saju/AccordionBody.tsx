@@ -82,10 +82,10 @@ export function AccordionBody({
                   className="shrink-0 transition-transform duration-200"
                   style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                 >
-                  <circle cx="10" cy="10" r="9" fill={isOpen ? "#4A3A72" : "#F3EDFB"} />
+                  <circle cx="10" cy="10" r="9" fill={isOpen ? "#8F7BD6" : "#ffffff"} />
                   <path
                     d="M6.5 8.5 L10 12 L13.5 8.5"
-                    stroke={isOpen ? "#fff" : "#9C8FBF"}
+                    stroke={isOpen ? "#fff" : "#8F7BD6"}
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
