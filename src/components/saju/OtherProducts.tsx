@@ -43,7 +43,7 @@ export async function OtherProducts({ currentSlug }: { currentSlug?: string | nu
           <Link
             key={p.slug}
             href={`/products/${p.slug}`}
-            className="group block rounded-3xl border-2 border-hairline bg-canvas overflow-hidden transition-all shadow-sm hover:shadow-md hover:border-ink"
+            className="group block rounded-3xl border-2 border-hairline bg-[#F8F4FD] overflow-hidden transition-all shadow-sm hover:shadow-md hover:border-ink"
           >
             <div className="w-full" style={{ backgroundColor: "#F9F8F5", aspectRatio: "962/663" }}>
               {THUMB_SRC[p.slug] && (
