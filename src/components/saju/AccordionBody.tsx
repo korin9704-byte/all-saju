@@ -6,10 +6,9 @@ type Section = { title: string; content: string };
 
 /** **강조** 구간을 핑크 글자색으로 렌더링 (끝 문장부호까지 포함) */
 export function renderEmphasis(text: string): React.ReactNode[] {
-  return text.split(/\*\*(.+?)\*\*/g).flatMap((seg, i) => {
-    if (i % 2 === 0) return [seg];
-    return [<span key={i} style={{ color: "#C95FC0" }}>{seg}</span>];
-  });
+  return text.split(/\*\*(.+?)\*\*/g).map((seg, i) =>
+    i % 2 === 0 ? seg : <span key={i} style={{ color: "#C95FC0" }}>{seg}</span>
+  );
 }
 
 function parseSections(markdown: string): Section[] {
