@@ -64,7 +64,7 @@ export default async function FreeTroublePage() {
             {product.description && (
               <p className="mt-2 text-sm text-body">{product.description}</p>
             )}
-            <p className="mt-5 text-2xl font-mono font-medium text-ink">0원</p>
+            <p className="mt-5 text-2xl font-medium text-ink">0원</p>
           </div>
         </div>
 

@@ -64,7 +64,7 @@ export default async function MyOrdersPage() {
                     {productMap.get(o.product_id) ?? "-"}
                   </p>
                   <p className="text-xs text-body mt-1">
-                    {formatDate(o.created_at)} · <span className="font-mono">{formatKRW(o.amount)}</span>
+                    {formatDate(o.created_at)} · <span>{formatKRW(o.amount)}</span>
                   </p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">

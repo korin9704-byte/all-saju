@@ -53,7 +53,7 @@ export async function OtherProducts({ currentSlug }: { currentSlug?: string | nu
             <div className="p-5">
               <p className="text-base font-semibold text-ink">{p.name}</p>
               <p className="mt-1.5 text-sm text-body leading-relaxed line-clamp-2">{p.description}</p>
-              <p className="mt-4 text-lg font-mono font-medium text-ink">{formatKRW(p.price)}</p>
+              <p className="mt-4 text-lg font-medium text-ink">{formatKRW(p.price)}</p>
             </div>
           </Link>
         ))}

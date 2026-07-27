@@ -89,7 +89,7 @@ export default async function FreeMiniPage({ params }: { params: Promise<{ slug:
       <header className="mb-10 pb-10 border-b border-hairline">
         <h1 className="text-2xl font-bold text-ink">{name} MINI</h1>
         {tagline && <p className="mt-2 text-sm text-body">{tagline}</p>}
-        <p className="mt-5 text-2xl font-mono font-medium text-ink">0원</p>
+        <p className="mt-5 text-2xl font-medium text-ink">0원</p>
       </header>
 
       {/* 상품 소개 이미지 (원본 상품과 동일) */}

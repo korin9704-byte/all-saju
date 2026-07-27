@@ -122,7 +122,7 @@ export default async function ProductDetailPage({
               {product.description && (
                 <p className="mt-2 text-sm text-body">{product.description}</p>
               )}
-              <p className="mt-5 text-2xl font-mono font-medium text-ink">{formatKRW(product.price)}</p>
+              <p className="mt-5 text-2xl font-medium text-ink">{formatKRW(product.price)}</p>
             </div>
           </div>
 
@@ -170,7 +170,7 @@ export default async function ProductDetailPage({
         {product.description && (
           <p className="mt-2 text-sm text-body">{product.description}</p>
         )}
-        <p className="mt-5 text-2xl font-mono font-medium text-ink">{formatKRW(product.price)}</p>
+        <p className="mt-5 text-2xl font-medium text-ink">{formatKRW(product.price)}</p>
       </header>
 
       {/* 상품 소개 — today-fortune */}

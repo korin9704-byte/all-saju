@@ -216,7 +216,7 @@ export async function ProductLineup() {
               {p.description && (
                 <p className="mt-1 text-sm text-body leading-snug">{p.description}</p>
               )}
-              <p className="mt-4 text-lg font-mono font-medium text-ink">{formatKRW(p.price)}</p>
+              <p className="mt-4 text-lg font-medium text-ink">{formatKRW(p.price)}</p>
             </div>
           </Link>
         ))}
