@@ -52,7 +52,7 @@ export function LoveSajuTable({ myeongsik }: { myeongsik: Myeongsik }) {
   return (
     <div className="w-full">
       {/* 헤더 */}
-      <div className="grid grid-cols-4 divide-x divide-white/20">
+      <div className="grid grid-cols-4 divide-x divide-white/60">
         {pillars.map(({ label }) => (
           <div key={label} className="text-center py-1.5 bg-[#E7DDF8]">
             <span className="text-[9px] font-semibold text-[#4A3A72]/60 tracking-widest">{label}</span>
@@ -61,7 +61,7 @@ export function LoveSajuTable({ myeongsik }: { myeongsik: Myeongsik }) {
       </div>
 
       {/* 천간 */}
-      <div className="grid grid-cols-4 gap-px bg-white/10">
+      <div className="grid grid-cols-4 gap-px bg-white/60">
         {pillars.map(({ label, data }) =>
           data ? (
             <Cell key={`cg-${label}`} hanja={CG_HANJA[data.cheongan] ?? data.cheongan} hangul={data.cheongan} color={CG_COLOR[data.cheongan] ?? "#888"} />
@@ -72,7 +72,7 @@ export function LoveSajuTable({ myeongsik }: { myeongsik: Myeongsik }) {
       </div>
 
       {/* 지지 */}
-      <div className="grid grid-cols-4 gap-px bg-white/10">
+      <div className="grid grid-cols-4 gap-px bg-white/60">
         {pillars.map(({ label, data }) =>
           data ? (
             <Cell key={`jj-${label}`} hanja={JJ_HANJA[data.jiji] ?? data.jiji} hangul={data.jiji} color={JJ_COLOR[data.jiji] ?? "#888"} />
