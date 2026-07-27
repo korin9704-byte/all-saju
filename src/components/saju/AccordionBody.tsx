@@ -55,7 +55,7 @@ export function AccordionBody({
     <div className="divide-y divide-border bg-[#F3EDFB] rounded-b-2xl overflow-hidden">
       {/* 헤더 (선택) */}
       {showHeader && (
-        <div className="px-5 py-4 text-center border-b border-[#D8CCEE]" style={{ background: headerColor }}>
+        <div className="px-5 py-4 text-center" style={{ background: headerColor }}>
           <p className="text-sm font-semibold tracking-widest text-[#4A3A72]">{headerTitle}</p>
           <p className="mt-1 text-xs text-[#4A3A72]/60">각 제목을 클릭하면 내용이 펼쳐져요.</p>
         </div>
