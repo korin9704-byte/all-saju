@@ -41,7 +41,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
 
   return (
     <div className="overflow-hidden">
-      <div className="grid grid-cols-4 divide-x divide-white/10">
+      <div className="grid grid-cols-4 divide-x divide-white/60">
 
         {/* 헤더 라벨 */}
         {pillars.map(({ label }) => (
@@ -54,7 +54,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
         {pillars.map(({ label, data }) => {
           const bg = data ? (CG_BG[data.cheongan] ?? DEFAULT_BG) : DEFAULT_BG;
           return (
-            <div key={`gan-${label}`} className="py-5 text-center border-t border-white/10"
+            <div key={`gan-${label}`} className="py-5 text-center border-t border-white/60"
               style={{ background: bg }}>
               <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (CHEONGAN_HANJA[data.cheongan] ?? data.cheongan) : "—"}
@@ -72,7 +72,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
         {pillars.map(({ label, data }) => {
           const bg = data ? (JJ_BG[data.jiji] ?? DEFAULT_BG) : DEFAULT_BG;
           return (
-            <div key={`ji-${label}`} className="py-5 text-center border-t border-white/10"
+            <div key={`ji-${label}`} className="py-5 text-center border-t border-white/60"
               style={{ background: bg }}>
               <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (JIJI_HANJA[data.jiji] ?? data.jiji) : "—"}
