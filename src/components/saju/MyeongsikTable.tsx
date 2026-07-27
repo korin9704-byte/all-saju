@@ -30,6 +30,7 @@ const JJ_BG: Record<string, string> = {
 };
 
 const DEFAULT_BG = "#E5E7EB";
+const CELL_BG = "#F3EDFB"; // 오행색 대신 보라 톤으로 통일
 
 export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
   const pillars = [
@@ -53,7 +54,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
 
         {/* 천간 행 */}
         {pillars.map(({ label, data }) => {
-          const bg = data ? (CG_BG[data.cheongan] ?? DEFAULT_BG) : DEFAULT_BG;
+          const bg = CELL_BG;
           return (
             <div key={`gan-${label}`} className="py-5 text-center border-t border-[#D8CCEE]"
               style={{ background: bg }}>
@@ -71,7 +72,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
 
         {/* 지지 행 */}
         {pillars.map(({ label, data }) => {
-          const bg = data ? (JJ_BG[data.jiji] ?? DEFAULT_BG) : DEFAULT_BG;
+          const bg = CELL_BG;
           return (
             <div key={`ji-${label}`} className="py-5 text-center border-t border-[#D8CCEE]"
               style={{ background: bg }}>
