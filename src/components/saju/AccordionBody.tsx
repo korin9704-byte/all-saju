@@ -11,7 +11,7 @@ export function renderEmphasis(text: string): React.ReactNode[] {
     const m = seg.match(/^(.*?)([.,!?…~]+)$/);
     const body = m ? m[1] : seg;
     const punct = m ? m[2] : "";
-    return [<span key={i} style={{ color: "#672091" }}>{body}</span>, punct];
+    return [<span key={i} style={{ color: "#C95FC0" }}>{body}</span>, punct];
   });
 }
 
@@ -33,7 +33,7 @@ function parseSections(markdown: string): Section[] {
 export function AccordionBody({
   markdown,
   headerTitle = "사주 풀이",
-  headerColor = "#1a1a1a",
+  headerColor = "#4A3A72",
   showHeader = true,
   limit,
 }: {
@@ -71,7 +71,7 @@ export function AccordionBody({
               <button
                 type="button"
                 onClick={() => setOpenIdx(isOpen ? null : i)}
-                className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#fafafa] transition-colors"
+                className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#F8F4FD] transition-colors"
               >
                 <span className="flex-1 text-sm font-medium text-ink leading-relaxed">
                   {sec.title}
@@ -82,10 +82,10 @@ export function AccordionBody({
                   className="shrink-0 transition-transform duration-200"
                   style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                 >
-                  <circle cx="10" cy="10" r="9" fill={isOpen ? "#000" : "#f0f0f0"} />
+                  <circle cx="10" cy="10" r="9" fill={isOpen ? "#4A3A72" : "#F3EDFB"} />
                   <path
                     d="M6.5 8.5 L10 12 L13.5 8.5"
-                    stroke={isOpen ? "#fff" : "#999"}
+                    stroke={isOpen ? "#fff" : "#9C8FBF"}
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -95,11 +95,11 @@ export function AccordionBody({
 
               {/* 본문 */}
               {isOpen && (
-                <div className="px-5 pb-6 pt-1 bg-[#fafafa] border-t border-border">
+                <div className="px-5 pb-6 pt-1 bg-[#F8F4FD] border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
                     <p
                       key={pi}
-                      className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0"
+                      className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0"
                     >
                       {renderEmphasis(para.replace(/^[-•]\s?/, ""))}
                     </p>

@@ -100,7 +100,7 @@ function CelestialBg() {
 export function CTA() {
   return (
     <section className="container py-16">
-      <div className="relative overflow-hidden rounded-lg bg-[#111111] px-8 py-12 text-center text-canvas">
+      <div className="relative overflow-hidden rounded-lg bg-[#4A3A72] px-8 py-12 text-center text-canvas">
 
         {/* 천문도 배경 */}
         <CelestialBg />

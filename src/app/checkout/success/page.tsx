@@ -62,7 +62,7 @@ export default async function CheckoutSuccessPage({
             <div
               id="progress-fill"
               className="h-full rounded-full"
-              style={{ width: "2%", background: "linear-gradient(90deg, #f59e0b, #f43f5e)" }}
+              style={{ width: "2%", background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
             />
           </div>
           <span id="progress-pct" className="text-sm font-mono text-muted-foreground w-8 text-right">2%</span>

@@ -11,11 +11,11 @@ const buttonVariants = cva(
       variant: {
         default: "bg-ink text-white hover:bg-ink/80",
         outline:
-          "border border-ink bg-white text-ink hover:bg-[#f5f5f5]",
+          "border border-ink bg-white text-ink hover:bg-[#F3EDFB]",
         ghost: "text-ink hover:bg-surface-soft",
         destructive: "bg-destructive text-destructive-foreground hover:opacity-90",
         link: "text-ink underline-offset-4 hover:underline px-0 h-auto",
-        onDark: "bg-canvas text-ink hover:bg-[#f5f5f5]",
+        onDark: "bg-canvas text-ink hover:bg-[#F3EDFB]",
       },
       size: {
         default: "h-9 px-5",

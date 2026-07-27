@@ -9,7 +9,7 @@ type ReferralInfo = { code: string; canShare?: boolean; earned: number; availabl
 const SHARE_BUTTON_CLASS =
   "w-full h-14 rounded-full text-sm font-medium transition-opacity hover:opacity-90 inline-flex items-center justify-center gap-2";
 const SHARE_BUTTON_STYLE = { background: "#ffd520", color: "#191919" } as const;
-const RESULT_BUTTON_STYLE = { background: "#191919", color: "#ffffff" } as const;
+const RESULT_BUTTON_STYLE = { background: "#4A3A72", color: "#ffffff" } as const;
 
 /**
  * 결과 페이지용 공유 카드 — 상품별 MINI 선물 링크(/free/[slug]?ref=) + 결과지 공유.

@@ -17,11 +17,11 @@ export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 
       {title && <h2 className="text-sm font-semibold mb-4 text-ink">{title}</h2>}
       <ul className="space-y-3">
         {displayed.map((r) => (
-          <li key={r.id} className="bg-[#f5f5f5] rounded-2xl px-5 py-4">
+          <li key={r.id} className="bg-[#F3EDFB] border border-[#E7DDF8] rounded-2xl px-5 py-4">
             <div className="flex items-center justify-between mb-2">
               <span aria-label={`${r.rating}점`}>
-                <span className="text-[#f59e0b]">{"★".repeat(r.rating)}</span>
-                <span className="text-[#e0e0e0]">{"★".repeat(5 - r.rating)}</span>
+                <span className="text-[#EFBE68]">{"★".repeat(r.rating)}</span>
+                <span className="text-[#EFE7FA]">{"★".repeat(5 - r.rating)}</span>
               </span>
               <span className="text-xs text-mute font-mono">{formatDate(r.created_at)}</span>
             </div>
@@ -35,7 +35,7 @@ export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 
           <button
             type="button"
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#f5f5f5] text-sm text-body hover:bg-[#ebebeb] transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-sm text-body hover:bg-[#E7DDF8] transition-colors"
           >
             <span>더 보기 ({reviews.length - visibleCount}개 남음)</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -48,7 +48,7 @@ export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 
           <button
             type="button"
             onClick={() => setVisibleCount(INITIAL_COUNT)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#f5f5f5] text-sm text-body hover:bg-[#ebebeb] transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-sm text-body hover:bg-[#E7DDF8] transition-colors"
           >
             <span>접기</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

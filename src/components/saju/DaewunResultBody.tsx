@@ -165,7 +165,7 @@ export function DaewunResultBody({
           <button
             type="button"
             onClick={() => setOpenPreview(!openPreview)}
-            className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+            className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
           >
             <p className="text-sm font-semibold text-ink leading-snug">
               {parsed.preview.title}
@@ -181,8 +181,8 @@ export function DaewunResultBody({
             </svg>
           </button>
           {openPreview && parsed.preview.desc && (
-            <div className="px-5 pb-5 pt-1 bg-[#fafafa] border-t border-border">
-              <p className="text-sm text-[#3a3a3a] leading-[1.95]">{parsed.preview.desc}</p>
+            <div className="px-5 pb-5 pt-1 bg-[#F8F4FD] border-t border-border">
+              <p className="text-sm text-[#4A3A72] leading-[1.95]">{parsed.preview.desc}</p>
             </div>
           )}
         </div>
@@ -201,7 +201,7 @@ export function DaewunResultBody({
                   <button
                     type="button"
                     onClick={() => setOpenIdx(isOpen ? null : i)}
-                    className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+                    className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
                   >
                     <p className="text-sm font-semibold text-ink">
                       {d.title}
@@ -228,7 +228,7 @@ export function DaewunResultBody({
                     <div className="border-t border-border bg-white">
                       <div className="px-5 py-5">
                         {d.content.split("\n\n").map((para, pi) => (
-                          <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0">
+                          <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">
                             {para.replace(/^#+\s*/, "").replace(/^[-•]\s?/, "").replace(/\*\*/g, "")}
                           </p>
                         ))}
@@ -255,7 +255,7 @@ export function DaewunResultBody({
                     <button
                       type="button"
                       onClick={startUnlock}
-                      className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+                      className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
                     >
                       <p className="text-sm font-semibold text-ink/40">{y.label}</p>
                       {y.preview && (
@@ -273,7 +273,7 @@ export function DaewunResultBody({
                   <button
                     type="button"
                     onClick={() => setOpenYearIdx(isOpen ? null : i)}
-                    className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+                    className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
                   >
                     <p className="text-sm font-semibold text-ink">{y.label}</p>
                     {y.preview && (
@@ -294,7 +294,7 @@ export function DaewunResultBody({
                   {isOpen && y.content && (
                     <div className="px-5 pb-5 pt-4 bg-white border-t border-border">
                       {y.content.split("\n\n").map((para, pi) => (
-                        <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-3 last:mb-0">
+                        <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-3 last:mb-0">
                           {para.replace(/^#+\s*/, "").replace(/^\[/, "").replace(/\]$/, "").replace(/^[-•]\s?/, "")}
                         </p>
                       ))}
@@ -313,7 +313,7 @@ export function DaewunResultBody({
           <button
             type="button"
             onClick={startUnlock}
-            className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+            className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
           >
             <p className="text-sm font-semibold text-ink/40">시크릿 솔루션</p>
             {parsed.final.sub && (
@@ -333,7 +333,7 @@ export function DaewunResultBody({
           <button
             type="button"
             onClick={() => setOpenFinal(!openFinal)}
-            className="w-full relative px-8 py-5 text-center hover:bg-[#fafafa] transition-colors"
+            className="w-full relative px-8 py-5 text-center hover:bg-[#F8F4FD] transition-colors"
           >
             <p className="text-sm font-semibold text-ink">
               시크릿 솔루션
@@ -359,7 +359,7 @@ export function DaewunResultBody({
             <div className="border-t border-border bg-white">
               <div className="px-5 py-5">
                 {parsed.final.content.split("\n\n").map((para, pi) => (
-                  <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0">
+                  <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">
                     {para.replace(/^#+\s*/, "").replace(/^[-•]\s?/, "")}
                   </p>
                 ))}

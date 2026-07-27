@@ -60,7 +60,7 @@ export function ReviewForm({ orderId, productName }: Props) {
               aria-label={`${n}점`}
               className="text-2xl leading-none w-9 h-9 flex items-center justify-center"
             >
-              <span className={n <= rating ? "text-[#f59e0b]" : "text-hairline-strong"}>★</span>
+              <span className={n <= rating ? "text-[#EFBE68]" : "text-hairline-strong"}>★</span>
             </button>
           ))}
         </div>

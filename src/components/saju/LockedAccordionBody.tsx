@@ -83,7 +83,7 @@ export function LockedAccordionBody({
     <>
     <div className="divide-y divide-border">
       {/* 헤더 */}
-      <div className="px-5 py-4 text-center" style={{ background: "#1a1a1a" }}>
+      <div className="px-5 py-4 text-center" style={{ background: "#4A3A72" }}>
         <p className="text-sm font-semibold tracking-widest text-white">{headerTitle}</p>
         <p className="mt-1 text-xs text-white/50">각 제목을 클릭하면 내용이 펼쳐져요.</p>
       </div>
@@ -97,7 +97,7 @@ export function LockedAccordionBody({
               <button
                 type="button"
                 onClick={() => setOpenIdx(isOpen ? null : i)}
-                className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#fafafa] transition-colors"
+                className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#F8F4FD] transition-colors"
               >
                 <span className="flex-1 text-sm font-medium text-ink leading-relaxed">
                   {sec.title}
@@ -108,10 +108,10 @@ export function LockedAccordionBody({
                   className="shrink-0 transition-transform duration-200"
                   style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
                 >
-                  <circle cx="10" cy="10" r="9" fill={isOpen ? "#000" : "#f0f0f0"} />
+                  <circle cx="10" cy="10" r="9" fill={isOpen ? "#4A3A72" : "#F3EDFB"} />
                   <path
                     d="M6.5 8.5 L10 12 L13.5 8.5"
-                    stroke={isOpen ? "#fff" : "#999"}
+                    stroke={isOpen ? "#fff" : "#9C8FBF"}
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -119,9 +119,9 @@ export function LockedAccordionBody({
                 </svg>
               </button>
               {isOpen && (
-                <div className="px-5 pb-6 pt-1 bg-[#fafafa] border-t border-border">
+                <div className="px-5 pb-6 pt-1 bg-[#F8F4FD] border-t border-border">
                   {sec.content.split("\n\n").map((para, pi) => (
-                    <p key={pi} className="text-sm text-[#3a3a3a] leading-[1.95] mb-4 last:mb-0">
+                    <p key={pi} className="text-sm text-[#4A3A72] leading-[1.95] mb-4 last:mb-0">
                       {renderEmphasis(para.replace(/^[-•]\s?/, ""))}
                     </p>
                   ))}
@@ -139,7 +139,7 @@ export function LockedAccordionBody({
             <button
               type="button"
               onClick={startUnlock}
-              className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#fafafa] transition-colors"
+              className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-[#F8F4FD] transition-colors"
             >
               <span className="flex-1 text-sm font-medium text-ink/40 leading-relaxed">
                 {sec.title}

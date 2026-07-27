@@ -83,7 +83,7 @@ function ChipBtn({
     <label
       className={`inline-flex items-center px-5 py-2.5 rounded-full border-2 text-sm cursor-pointer whitespace-nowrap transition-colors ${
         selected
-          ? "bg-[#000000] border-[#000000] text-white"
+          ? "bg-[#4A3A72] border-[#4A3A72] text-white"
           : "bg-transparent border-[#e5e5e5] text-black hover:border-black"
       }`}
     >
@@ -671,8 +671,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                     onClick={() => { setRelationship2(opt); setRelationship2Custom(""); }}
                     className="h-11 rounded-xl text-sm font-medium transition-colors"
                     style={relationship2 === opt
-                      ? { backgroundColor: "#000000", color: "#ffffff" }
-                      : { backgroundColor: "#f5f5f5", color: "#000000" }}
+                      ? { backgroundColor: "#4A3A72", color: "#ffffff" }
+                      : { backgroundColor: "#f5f5f5", color: "#4A3A72" }}
                   >
                     {opt}
                   </button>
@@ -685,8 +685,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
               onClick={() => setRelationship2("직접 입력")}
               className="w-full h-11 rounded-xl text-sm font-medium transition-colors"
               style={relationship2 === "직접 입력"
-                ? { backgroundColor: "#000000", color: "#ffffff" }
-                : { backgroundColor: "#f5f5f5", color: "#000000" }}
+                ? { backgroundColor: "#4A3A72", color: "#ffffff" }
+                : { backgroundColor: "#f5f5f5", color: "#4A3A72" }}
             >
               직접 입력
             </button>
@@ -777,7 +777,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                   key={startAge}
                   onClick={() => setDaewunStartAge(startAge)}
                   className="w-full flex items-center gap-4 px-4 py-3.5 border-b border-hairline last:border-b-0 text-left transition-all hover:bg-[#f5f5f5]"
-                  style={daewunStartAge === startAge ? { backgroundColor: "#000000" } : undefined}
+                  style={daewunStartAge === startAge ? { backgroundColor: "#4A3A72" } : undefined}
                 >
                   <div
                     className="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center text-white/90 text-sm font-bold"
@@ -788,7 +788,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                   <div className="flex-1 min-w-0">
                     <p
                       className="text-base font-bold"
-                      style={{ color: daewunStartAge === startAge ? "#ffffff" : "#000000" }}
+                      style={{ color: daewunStartAge === startAge ? "#ffffff" : "#4A3A72" }}
                     >
                       {startAge}세 ~ {endAge}세
                     </p>
@@ -805,8 +805,8 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
                     <span
                       className="text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap"
                       style={daewunStartAge === startAge
-                        ? { backgroundColor: "#ffffff", color: "#000000" }
-                        : { backgroundColor: "#000000", color: "#ffffff" }}
+                        ? { backgroundColor: "#ffffff", color: "#4A3A72" }
+                        : { backgroundColor: "#4A3A72", color: "#ffffff" }}
                     >현재</span>
                   )}
                 </button>

@@ -37,7 +37,7 @@ export function AnalysisProgress({
             <div
               id="progress-fill"
               className="h-full rounded-full"
-              style={{ width: `${pct.toFixed(0)}%`, background: "linear-gradient(90deg, #f59e0b, #f43f5e)" }}
+              style={{ width: `${pct.toFixed(0)}%`, background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
             />
           </div>
           <span className="text-sm font-mono text-muted-foreground w-8 text-right">{pct.toFixed(0)}%</span>

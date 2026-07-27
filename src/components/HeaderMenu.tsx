@@ -59,7 +59,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               <form action="/api/auth/signout" method="post">
                 <button
                   type="submit"
-                  className="block w-full px-5 py-3 text-left text-sm font-medium text-ink hover:bg-[#f5f5f5]"
+                  className="block w-full px-5 py-3 text-left text-sm font-medium text-ink hover:bg-[#F3EDFB]"
                 >
                   로그아웃
                 </button>
@@ -79,7 +79,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="block px-5 py-3 text-sm font-medium text-ink hover:bg-[#f5f5f5]">
+    <Link href={href} className="block px-5 py-3 text-sm font-medium text-ink hover:bg-[#F3EDFB]">
       {children}
     </Link>
   );
