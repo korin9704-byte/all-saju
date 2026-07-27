@@ -51,7 +51,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
       </button>
 
       {open && (
-        <nav className="absolute right-0 top-12 z-50 w-44 rounded-2xl border border-hairline bg-canvas py-2 shadow-lg">
+        <nav className="absolute right-0 top-12 z-50 w-44 rounded-2xl border border-hairline bg-[#F8F4FD] py-2 shadow-lg">
           <MenuLink href="/products">상품</MenuLink>
           {isLoggedIn ? (
             <>
