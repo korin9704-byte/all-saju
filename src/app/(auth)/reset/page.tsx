@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ResetPage() {
   const [email, setEmail] = useState("");
@@ -32,7 +32,6 @@ export default function ResetPage() {
       <Card>
         <CardHeader>
           <CardTitle>비밀번호 재설정</CardTitle>
-          <CardDescription>이메일로 재설정 링크를 보내 드립니다.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
