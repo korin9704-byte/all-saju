@@ -150,7 +150,7 @@ export default async function ResultPage({
     ].filter(Boolean) as string[];
 
     return (
-      <div className="max-w-2xl mx-auto py-12">
+      <div className="w-full py-12">
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
@@ -211,7 +211,7 @@ export default async function ResultPage({
     ].filter(Boolean) as string[];
 
     return (
-      <div className="max-w-2xl mx-auto py-12">
+      <div className="w-full py-12">
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-white tracking-tight">
@@ -295,7 +295,7 @@ export default async function ResultPage({
     }
 
     return (
-      <div className="max-w-2xl mx-auto py-12">
+      <div className="w-full py-12">
         <div className="rounded-2xl overflow-hidden">
           <header className="mb-0" style={{ background: "#000000" }}>
             <div className="px-6 pt-6 pb-3 text-center">
@@ -439,7 +439,7 @@ export default async function ResultPage({
     const { score, title, bodyMd } = parseLoveResult(result.interpretation_md);
 
     return (
-      <div className="max-w-2xl mx-auto">
+      <div className="w-full">
         {/* ── 헤더: 제목 + 점수 (핑크→오렌지) ── */}
         <div className="px-6 pt-10 pb-8 text-center rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
           {title && (
@@ -573,7 +573,7 @@ export default async function ResultPage({
   ].filter(Boolean) as string[];
 
   return (
-    <div className="max-w-2xl mx-auto py-12">
+    <div className="w-full py-12">
       <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#000000" }}>
         <div className="px-6 pt-6 pb-5 text-center">
           <h1 className="text-xl font-bold text-white tracking-tight">

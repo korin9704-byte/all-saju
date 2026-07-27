@@ -31,12 +31,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
       </head>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className="bg-[#F8F4FD]">
         <MetaPixel pixelId="2209519539888659" />
         <KakaoScript />
-        <SiteHeader isLoggedIn={isLoggedIn} />
-        <main className="min-h-[calc(100vh-7rem)]">{children}</main>
-        <SiteFooter />
+        {/* 앱형 셸 — 모바일 폭(448px) 칼럼을 가운데 고정, 바깥은 파스텔 배경 */}
+        <div className="mx-auto w-full max-w-md min-h-screen bg-canvas flex flex-col shadow-[0_0_32px_rgba(143,123,214,0.12)]">
+          <SiteHeader isLoggedIn={isLoggedIn} />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </div>
         <Toaster position="top-center" />
       </body>
     </html>

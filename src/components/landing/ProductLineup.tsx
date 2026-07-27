@@ -199,7 +199,7 @@ export async function ProductLineup() {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 grid-cols-1">
         {products.map((p) => (
           <Link
             key={p.slug}
