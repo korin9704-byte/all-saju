@@ -48,32 +48,14 @@ export default async function CheckoutSuccessPage({
       `}</style>
 
       <PurchasePixel amount={Number(amount)} />
-      <div className="container py-16 max-w-sm text-center" id="loading-view">
-
-        {/* 메인 메시지 */}
-        <h1 className="text-lg font-bold text-ink leading-snug mb-6" id="loading-msg">
-          행운의 냥이가 집중해서 분석 중...🐾
-        </h1>
-
-        {/* 프로그레스 바 */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="text-2xl">🐱</div>
-          <div className="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
-            <div
-              id="progress-fill"
-              className="h-full rounded-full"
-              style={{ width: "2%", background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
-            />
-          </div>
-          <span id="progress-pct" className="text-sm font-mono text-muted-foreground w-8 text-right">2%</span>
-        </div>
-
-        {/* 남은 시간 */}
-        <p className="text-sm text-muted-foreground mb-2">
-          예상 남은 시간: 약 <span id="countdown">90</span>초
-        </p>
-        <p className="text-xs text-muted-foreground">잠시만 기다려 주세요...</p>
-      </div>
+      {/* 로딩: loading.webp 전체 화면만 표시 (/generating 과 동일) */}
+      <div
+        id="loading-view"
+        style={{
+          minHeight: "88vh",
+          background: "url('/images/loading.webp') center top / cover no-repeat",
+        }}
+      />
 
       {/* 에러 UI */}
       <div id="error-view" className="container py-16 max-w-md text-center" style={{ display: "none" }}>
