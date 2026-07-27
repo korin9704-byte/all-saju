@@ -305,6 +305,9 @@ export function FreeTroubleWizard({
                   {submitting ? "잠시만요..." : hasCredit ? "무료 이용권으로 결과보기" : "결제하기"}
                 </button>
               </div>
+              {mode === "paid" && !hasCredit && (
+                <p className="mt-3 text-center text-sm text-[#4A3A72]" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95)" }}>불만족 시 100% 환불!</p>
+              )}
             </>
           )}
         </div>
