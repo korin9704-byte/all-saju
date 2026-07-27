@@ -2,7 +2,7 @@
 
 // 무료 고민 사주 전용 단계형 입력 위저드 (/free-trouble-mx7q92)
 // 디자인: 사이트 공통 입력폼 스타일 (흰 배경 + #f5f5f5 라운드 입력칸)
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -44,6 +44,20 @@ export function FreeTroubleWizard({
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // 무료 이용권 (리퍼럴 보상) — 보유 시 결제 대신 자동 사용 (유료 모드 전용)
+  const [credit, setCredit] = useState<{ available: number } | null>(null);
+  const hasCredit = mode === "paid" && (credit?.available ?? 0) > 0;
+
+  useEffect(() => {
+    if (mode !== "paid") return;
+    fetch("/api/referral/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (json?.code) setCredit(json);
+      })
+      .catch(() => { /* 이용권 조회 실패는 무시 */ });
+  }, [mode]);
 
   // 입력 완료 시 자동 포커스 이동
   const monthRef = useRef<HTMLInputElement>(null);
@@ -93,6 +107,16 @@ export function FreeTroubleWizard({
       concerns: [concern.trim()],
       guestEmail: email.trim(),
     };
+
+    // 유료 + 무료 이용권 보유: 결제 대신 이용권으로 즉시 결과 생성
+    if (mode === "paid" && hasCredit) {
+      try {
+        sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "redeem", payload }));
+      } catch { /* ignore */ }
+      setSubmitting(true);
+      router.push("/generating");
+      return;
+    }
 
     // 유료: 주문 생성 → 결제 페이지
     if (mode === "paid") {
@@ -278,7 +302,7 @@ export function FreeTroubleWizard({
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
-                  {submitting ? "잠시만요..." : "결제하기"}
+                  {submitting ? "잠시만요..." : hasCredit ? "무료 이용권으로 결과보기" : "결제하기"}
                 </button>
               </div>
             </>
