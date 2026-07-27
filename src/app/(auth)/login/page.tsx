@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   return (
@@ -44,13 +43,10 @@ function LoginForm() {
     <div className="container py-16 max-w-md">
       <h1 className="text-xl font-bold text-ink mb-8">로그인</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">이메일</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">비밀번호</Label>
-              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+            {/* 이메일·비밀번호 한 줄 배치 */}
+            <div className="grid grid-cols-2 gap-3">
+              <Input id="email" type="email" placeholder="이메일" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input id="password" type="password" placeholder="비밀번호" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <Button type="submit" disabled={loading} className="w-full h-14 rounded-full" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
               {loading ? "로그인 중..." : "로그인"}
