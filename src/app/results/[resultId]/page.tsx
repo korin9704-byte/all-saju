@@ -333,7 +333,7 @@ export default async function ResultPage({
           />
 
           <article>
-            <div className="px-5 py-4 text-center" style={{ background: "#E7DDF8" }}>
+            <div className="px-5 py-4 text-center border-b border-[#D8CCEE]" style={{ background: "#E7DDF8" }}>
               <p className="text-sm font-semibold tracking-widest text-[#4A3A72]">대운 풀이</p>
               <p className="text-xs mt-1" style={{ color: "#888" }}>각 제목을 클릭하면 내용이 펼쳐져요.</p>
             </div>
