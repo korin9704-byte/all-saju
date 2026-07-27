@@ -43,9 +43,9 @@ export default async function FreeTroublePage() {
         .ft-theme span[style*="rgb(103, 32, 145)"], .ft-theme span[style*="#672091"] { color: #C95FC0 !important; }
         .ft-theme .text-\\[\\#f59e0b\\] { color: #EFBE68; }
         .ft-theme .text-\\[\\#e0e0e0\\] { color: #EFE7FA; }
-        .ft-theme li[class*="f5f5f5"] { background: #FDF6E9; border: 1px solid #F3E3C3; }
-        .ft-theme button[class*="f5f5f5"] { background: #FDF6E9; border: 1px solid #F3E3C3; }
-        .ft-theme button[class*="f5f5f5"]:hover { background: #F8ECD3; }
+        .ft-theme li[class*="f5f5f5"] { background: #F3EDFB; border: 1px solid #E7DDF8; }
+        .ft-theme button[class*="f5f5f5"] { background: #F3EDFB; border: 1px solid #E7DDF8; }
+        .ft-theme button[class*="f5f5f5"]:hover { background: #E7DDF8; }
       `}</style>
       <div className="w-full max-w-lg">
         {/* 상단 일러스트 — 위저드와 동일 비율(88vh) + 하단에 제목 오버레이 */}
