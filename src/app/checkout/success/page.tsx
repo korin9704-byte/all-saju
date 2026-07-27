@@ -48,14 +48,34 @@ export default async function CheckoutSuccessPage({
       `}</style>
 
       <PurchasePixel amount={Number(amount)} />
-      {/* 로딩: loading.webp 전체 화면만 표시 (/generating 과 동일) */}
-      <div
-        id="loading-view"
-        style={{
-          minHeight: "88vh",
-          background: "url('/images/loading.webp?v=2') center top / cover no-repeat",
-        }}
-      />
+      {/* 로딩: 냥이 이미지 + 진행 바 (/generating 과 동일, 이모지 없음) */}
+      <div className="container py-10 max-w-sm text-center" id="loading-view">
+        {/* 냥이 이미지 */}
+        <img src="/images/loading-cat.webp?v=3" alt="" className="w-full rounded-3xl mb-8" />
+
+        {/* 메인 메시지 */}
+        <h1 className="text-lg font-bold text-ink leading-snug mb-6" id="loading-msg">
+          행운의 냥이가 집중해서 분석 중...
+        </h1>
+
+        {/* 프로그레스 바 */}
+        <div className="flex items-center gap-3 mb-3">
+          <div className="flex-1 h-3 bg-white/80 rounded-full overflow-hidden">
+            <div
+              id="progress-fill"
+              className="h-full rounded-full"
+              style={{ width: "2%", background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
+            />
+          </div>
+          <span id="progress-pct" className="text-sm font-mono text-[#7A6B9E] w-8 text-right">2%</span>
+        </div>
+
+        {/* 남은 시간 */}
+        <p className="text-sm text-[#7A6B9E] mb-2">
+          예상 남은 시간: 약 <span id="countdown">90</span>초
+        </p>
+        <p className="text-xs text-[#9C8FBF]">잠시만 기다려 주세요...</p>
+      </div>
 
       {/* 에러 UI */}
       <div id="error-view" className="container py-16 max-w-md text-center" style={{ display: "none" }}>
@@ -124,7 +144,7 @@ export default async function CheckoutSuccessPage({
       if (fill) fill.style.width = '100%';
       if (pctEl) pctEl.textContent = '100%';
       if (countdownEl) countdownEl.textContent = '0';
-      if (msg) msg.innerHTML = '분석 완료! 결과 페이지로 이동할게요...🐾';
+      if (msg) msg.innerHTML = '분석 완료! 결과 페이지로 이동할게요...';
       setTimeout(function() {
         window.location.href = '/results/' + res.data.resultId;
       }, 600);
