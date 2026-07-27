@@ -40,7 +40,7 @@ export function AnalysisProgress({
               style={{ width: `${pct.toFixed(0)}%`, background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
             />
           </div>
-          <span className="text-sm font-mono text-[#7A6B9E] w-8 text-right">{pct.toFixed(0)}%</span>
+          <span className="text-sm text-[#7A6B9E] w-8 text-right">{pct.toFixed(0)}%</span>
         </div>
 
         {/* 남은 시간 */}

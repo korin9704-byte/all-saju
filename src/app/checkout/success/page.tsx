@@ -64,7 +64,7 @@ export default async function CheckoutSuccessPage({
               style={{ width: "2%", background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
             />
           </div>
-          <span id="progress-pct" className="text-sm font-mono text-[#7A6B9E] w-8 text-right">2%</span>
+          <span id="progress-pct" className="text-sm text-[#7A6B9E] w-8 text-right">2%</span>
         </div>
 
         {/* 남은 시간 */}
