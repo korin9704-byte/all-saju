@@ -120,7 +120,7 @@ export default async function ProductDetailPage({
             <div className="mt-auto pb-2">
               <h1 className="text-2xl font-bold text-ink" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>{product.name}</h1>
               {product.description && (
-                <p className="mt-2 text-sm text-body">{product.description}</p>
+                <p className="mt-2 text-sm text-body whitespace-pre-line">{product.description}</p>
               )}
               <p className="mt-5 text-2xl font-medium text-ink">{formatKRW(product.price)}</p>
             </div>
