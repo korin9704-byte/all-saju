@@ -53,7 +53,7 @@ export default async function CheckoutSuccessPage({
         id="loading-view"
         style={{
           minHeight: "88vh",
-          background: "url('/images/loading.webp') center top / cover no-repeat",
+          background: "url('/images/loading.webp?v=2') center top / cover no-repeat",
         }}
       />
 
