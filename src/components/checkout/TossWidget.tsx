@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { loadWidgets } from "@/lib/toss/client";
 import { publicEnv } from "@/lib/env";
 
@@ -63,9 +62,15 @@ export function TossWidget({ orderId, amount, customerKey, productName, customer
     <div className="space-y-4">
       <div id="payment-methods" ref={paymentMethodsRef} />
       <div id="agreement" ref={agreementRef} />
-      <Button onClick={handlePay} disabled={!ready || paying} size="lg" className="w-full">
+      <button
+        type="button"
+        onClick={handlePay}
+        disabled={!ready || paying}
+        className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
+        style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
+      >
         {paying ? "결제 진행 중..." : "결제하기"}
-      </Button>
+      </button>
     </div>
   );
 }
