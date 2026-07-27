@@ -1,68 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { toast } from "sonner";
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { publicEnv } from "@/lib/env";
+// 카카오 온리 회원가입 (이메일 가입 UI 제거 — 로그인과 동일 정책)
+import { KakaoLoginButton } from "@/components/auth/KakaoLoginButton";
 
 export default function SignupPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { display_name: name },
-        emailRedirectTo: `${publicEnv.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-      },
-    });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    toast.success("가입 완료! 마이페이지로 이동합니다.");
-    router.push("/mypage");
-    router.refresh();
-  }
-
   return (
     <div className="container py-16 max-w-md">
-      <h1 className="text-xl font-bold text-ink mb-8">회원가입</h1>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">이름</Label>
-              <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">이메일</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">비밀번호 (8자 이상)</Label>
-              <Input id="password" type="password" minLength={8} required value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <Button type="submit" disabled={loading} className="w-full" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
-              {loading ? "가입 중..." : "가입하기"}
-            </Button>
-            <p className="text-sm text-center">
-              이미 계정이 있으신가요?{" "}
-              <Link href="/login" className="text-primary hover:underline">로그인</Link>
-            </p>
-          </form>
+      <KakaoLoginButton label="카카오 1초 회원가입" />
+      <p className="mt-4 text-xs text-center text-muted-foreground">
+        가입 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
+        <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다.
+      </p>
     </div>
   );
 }
