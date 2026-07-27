@@ -73,7 +73,7 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
         {pillars.map(({ label, data }) => {
           const bg = data ? (JJ_BG[data.jiji] ?? DEFAULT_BG) : DEFAULT_BG;
           return (
-            <div key={`ji-${label}`} className="py-5 text-center border-t border-white/60"
+            <div key={`ji-${label}`} className="py-5 text-center border-t border-b border-white/60"
               style={{ background: bg }}>
               <span className="text-4xl font-bold text-[#3D3A34] leading-none">
                 {data ? (JIJI_HANJA[data.jiji] ?? data.jiji) : "—"}
