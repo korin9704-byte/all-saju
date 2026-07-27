@@ -41,7 +41,8 @@ export function MyeongsikTable({ myeongsik }: { myeongsik: Myeongsik }) {
 
   return (
     <div className="overflow-hidden">
-      <div className="grid grid-cols-4 divide-x divide-white/60">
+      {/* divide-x는 첫 자식 외 모든 칸에 왼쪽 선을 그림 — 각 행의 첫 칸(4n+1)은 선 제거 */}
+      <div className="grid grid-cols-4 divide-x divide-white/60 [&>*:nth-child(4n+1)]:!border-l-0">
 
         {/* 헤더 라벨 */}
         {pillars.map(({ label }) => (
