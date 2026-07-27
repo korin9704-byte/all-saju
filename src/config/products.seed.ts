@@ -81,7 +81,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "trouble-saju",
     name: "고민 사주",
-    description: "오늘 해결해 드릴게요.",
+    description: "오늘 해결해 드릴게요. 불만족 시 100% 환불!",
     price: 24900,
     display_order: 90,
     is_active: true,
