@@ -66,7 +66,7 @@ function LoginForm() {
               <Label htmlFor="password">비밀번호</Label>
               <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading} className="w-full" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
               {loading ? "로그인 중..." : "로그인"}
             </Button>
             <div className="flex justify-between text-sm">

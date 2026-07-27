@@ -69,7 +69,7 @@ export default function SignupPage() {
               <Label htmlFor="password">비밀번호 (8자 이상)</Label>
               <Input id="password" type="password" minLength={8} required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading} className="w-full" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
               {loading ? "가입 중..." : "가입하기"}
             </Button>
             <p className="text-sm text-center">

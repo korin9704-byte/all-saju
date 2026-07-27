@@ -39,7 +39,7 @@ export default function ResetPage() {
               <Label htmlFor="email">이메일</Label>
               <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading} className="w-full" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
               {loading ? "발송 중..." : "재설정 링크 받기"}
             </Button>
           </form>
