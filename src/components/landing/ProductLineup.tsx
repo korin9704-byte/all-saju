@@ -189,7 +189,7 @@ export async function ProductLineup() {
   }
 
   return (
-    <section id="products" className="container py-16">
+    <section id="products" className="container pt-4 pb-16">
       {/* 배너 이미지 */}
       <div className="mb-10">
         <img
