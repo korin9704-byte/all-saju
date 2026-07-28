@@ -41,7 +41,8 @@ export function AccordionBody({
 }) {
   const allSections = parseSections(markdown);
   const sections = limit ? allSections.slice(0, limit) : allSections;
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  // 첫 진입 시 첫 번째 주제는 펼쳐진 상태로 시작
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   if (allSections.length === 0) {
     return <p className="text-sm text-muted-foreground">{markdown}</p>;

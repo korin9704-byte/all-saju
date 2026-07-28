@@ -41,7 +41,8 @@ export function LockedAccordionBody({
   headerTitle?: string;
 }) {
   const router = useRouter();
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  // 첫 진입 시 첫 번째 주제는 펼쳐진 상태로 시작
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
   const [unlocking, setUnlocking] = useState(false);
 
   const allSections = parseSections(markdown);
