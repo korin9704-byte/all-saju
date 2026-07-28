@@ -107,7 +107,7 @@ export function AskAnotherConcern({
         className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90"
         style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
       >
-        다른 고민 물어보기
+        또 다른 고민 물어보기
       </button>
     </section>
   );
