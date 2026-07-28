@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
   return (
@@ -42,22 +41,21 @@ function LoginForm() {
 
   return (
     <div className="container py-16 max-w-md">
-      <h1 className="text-xl font-bold text-ink mb-8">로그인</h1>
+      <h1 className="text-xl font-bold text-ink mb-4">로그인</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">이메일</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <div>
+              <Input id="email" type="email" required placeholder="이메일을 입력해 주세요." value={email} onChange={(e) => setEmail(e.target.value)} className="h-14 rounded-full px-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">비밀번호</Label>
-              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+            <div>
+              <Input id="password" type="password" required placeholder="비밀번호를 입력해 주세요." value={password} onChange={(e) => setPassword(e.target.value)} className="h-14 rounded-full px-6" />
             </div>
             <Button type="submit" disabled={loading} className="w-full h-14 rounded-full" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
               {loading ? "로그인 중..." : "로그인"}
             </Button>
-            <div className="flex justify-between text-sm">
-              <Link href="/signup" className="text-muted-foreground hover:text-foreground">회원가입</Link>
-              <Link href="/reset" className="text-muted-foreground hover:text-foreground">비밀번호 재설정</Link>
+            <div className="flex justify-center gap-2 text-sm text-muted-foreground">
+              <Link href="/signup" className="hover:text-foreground">회원가입</Link>
+              <span>·</span>
+              <Link href="/reset" className="hover:text-foreground">비밀번호 재설정</Link>
             </div>
           </form>
     </div>
