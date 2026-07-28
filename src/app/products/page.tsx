@@ -4,7 +4,7 @@ import { formatKRW } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/env";
 import { productsSeed } from "@/config/products.seed";
 
-export const metadata = { title: "사주" };
+export const metadata = { title: "상품" };
 
 /* ── 썸네일 SVG ── */
 const VW = 240, VH = 168;
@@ -128,7 +128,7 @@ export default async function ProductsPage() {
     <div className="container py-12">
       <header className="mb-10">
         <p className="text-xs font-mono text-mute mb-2">PRODUCTS</p>
-        <h1 className="text-3xl font-semibold tracking-tight">사주</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">상품</h1>
         <p className="mt-2 text-sm text-body">냥이가 답을 찾아 드릴게요.</p>
       </header>
 
