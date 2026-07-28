@@ -53,7 +53,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
       {open && (
         <nav className="absolute right-0 top-12 z-50 w-44 rounded-2xl border border-hairline bg-[#F8F4FD] py-2 shadow-lg">
-          <MenuLink href="/products">사주</MenuLink>
+          <MenuLink href="/products">상품</MenuLink>
           {isLoggedIn ? (
             <>
               <MenuLink href="/mypage">마이페이지</MenuLink>
