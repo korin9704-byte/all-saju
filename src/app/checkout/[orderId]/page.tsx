@@ -2,7 +2,6 @@ import { notFound, redirect } from "next/navigation";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { TossWidget } from "@/components/checkout/TossWidget";
 import { CheckoutPixel } from "@/components/checkout/CheckoutPixel";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatKRW } from "@/lib/utils";
 
 export const metadata = { title: "결제" };
@@ -58,23 +57,17 @@ export default async function CheckoutPage({
   return (
     <div className="container py-12 max-w-2xl">
       <CheckoutPixel amount={order.amount} />
-      <Card>
-        <CardHeader>
-          <CardTitle>결제</CardTitle>
-          <CardDescription>
-            {product?.name ?? "사주 상품"} · <span className="font-semibold text-foreground">{formatKRW(order.amount)}</span>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <TossWidget
-            orderId={order.order_id}
-            amount={order.amount}
-            customerKey={customerKey}
-            productName={product?.name ?? "사주 상품"}
-            customerEmail={email}
-          />
-        </CardContent>
-      </Card>
+      <h1 className="text-xl font-bold text-ink">결제</h1>
+      <p className="mt-2 mb-8 text-sm text-body">
+        {product?.name ?? "사주 상품"} · <span className="font-semibold text-foreground">{formatKRW(order.amount)}</span>
+      </p>
+      <TossWidget
+        orderId={order.order_id}
+        amount={order.amount}
+        customerKey={customerKey}
+        productName={product?.name ?? "사주 상품"}
+        customerEmail={email}
+      />
     </div>
   );
 }
