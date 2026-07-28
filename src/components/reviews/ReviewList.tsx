@@ -21,7 +21,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
             <div className="flex items-center justify-between mb-2">
               <span aria-label={`${r.rating}점`}>
                 <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
-                <span className="text-[#EFE7FA]">{"★".repeat(5 - r.rating)}</span>
+                <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
               </span>
               <span className="text-xs text-mute font-mono">{formatDate(r.created_at)}</span>
             </div>
