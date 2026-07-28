@@ -47,7 +47,6 @@ export function AnalysisProgress({
         <p className="text-sm text-[#7A6B9E] mb-2">
           예상 남은 시간: 약 <span>{seconds}</span>초
         </p>
-        <p className="text-xs text-[#9C8FBF]">잠시만 기다려 주세요...</p>
       </div>
     </>
   );
