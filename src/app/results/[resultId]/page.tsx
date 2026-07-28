@@ -7,6 +7,7 @@ import { LockedAccordionBody } from "@/components/saju/LockedAccordionBody";
 import { DaewunResultBody } from "@/components/saju/DaewunResultBody";
 import { DaewunManseryeokToggle } from "@/components/saju/DaewunManseryeokToggle";
 import { LoveSajuTable } from "@/components/saju/LoveSajuTable";
+import { AskAnotherConcern, type AskSaju } from "@/components/saju/AskAnotherConcern";
 import { computeMyeongsik } from "@/lib/saju/manseryeok";
 import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInfo } from "@/lib/saju/saju-api";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
@@ -89,6 +90,27 @@ export default async function ResultPage({
 
   const myeongsik     = result.myeongsik as unknown as Myeongsik;
 
+  // "다른 고민 물어보기" — 이 결과지의 사주 정보를 재사용해 고민만 새로 입력받아 결제
+  const askSaju: AskSaju | null = sajuInput ? {
+    name: sajuInput.name ?? null,
+    birthDate: sajuInput.birth_date as string,
+    birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
+    timeUnknown: !!sajuInput.time_unknown,
+    calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+    gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
+  } : null;
+
+  const { data: troubleProduct } = await service
+    .from("products")
+    .select("id")
+    .eq("slug", "trouble-saju")
+    .eq("is_active", true)
+    .maybeSingle();
+
+  const askSection = troubleProduct && askSaju ? (
+    <AskAnotherConcern productId={troubleProduct.id} saju={askSaju} guestEmail={order?.guest_email} />
+  ) : null;
+
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
   const rawSlug        = product?.slug ?? "";
   const isMini         = rawSlug.endsWith("-mini");
@@ -161,6 +183,8 @@ export default async function ResultPage({
 
 
 
+        {askSection}
+
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
         </footer>
@@ -215,6 +239,8 @@ export default async function ResultPage({
 
 
 
+
+        {askSection}
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
@@ -314,6 +340,8 @@ export default async function ResultPage({
 
 
 
+
+        {askSection}
 
         <footer className="mt-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
@@ -520,6 +548,8 @@ export default async function ResultPage({
 
 
 
+        {askSection}
+
         <footer className="mt-10 pb-10 text-center">
           <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
         </footer>
@@ -576,6 +606,8 @@ export default async function ResultPage({
 
 
 
+
+      {askSection}
 
       <footer className="mt-10 text-center">
         <p className="text-xs text-muted-foreground">냥점 · 본 결과는 참고용이며 전문 상담을 대체하지 않습니다.</p>
