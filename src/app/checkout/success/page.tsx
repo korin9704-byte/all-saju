@@ -48,29 +48,43 @@ export default async function CheckoutSuccessPage({
       `}</style>
 
       <PurchasePixel amount={Number(amount)} />
-      {/* 로딩: 진행 바 + 문구 (/generating 과 동일, 이모지 없음) */}
-      <div className="container py-16 max-w-sm text-center" id="loading-view">
-        {/* 메인 메시지 */}
-        <h1 className="text-lg font-bold text-ink leading-snug mb-6" id="loading-msg">
-          행운의 냥이가 집중해서 분석 중...
-        </h1>
+      {/* 로딩: loading-bg.webp 전체 배경 + 상단 페이드 위에 문구·진행 바 (/generating 과 동일) */}
+      <div
+        id="loading-view"
+        className="flex flex-col"
+        style={{
+          minHeight: "88vh",
+          background:
+            "linear-gradient(rgba(248,244,253,0.97) 0%, rgba(248,244,253,0.85) 14%, rgba(248,244,253,0) 34%), url('/images/loading-bg.webp') center bottom / cover no-repeat",
+        }}
+      >
+        <div className="w-full max-w-sm mx-auto px-6 pt-10 text-center">
+          {/* 메인 메시지 */}
+          <h1
+            className="text-lg font-bold text-[#4A3A72] leading-snug mb-6"
+            id="loading-msg"
+            style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}
+          >
+            행운의 냥이가 집중해서 분석 중...
+          </h1>
 
-        {/* 프로그레스 바 */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="flex-1 h-3 bg-white/80 rounded-full overflow-hidden">
-            <div
-              id="progress-fill"
-              className="h-full rounded-full"
-              style={{ width: "2%", background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
-            />
+          {/* 프로그레스 바 */}
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex-1 h-3 bg-white/80 rounded-full overflow-hidden">
+              <div
+                id="progress-fill"
+                className="h-full rounded-full"
+                style={{ width: "2%", background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
+              />
+            </div>
+            <span id="progress-pct" className="text-sm text-[#7A6B9E] w-8 text-right">2%</span>
           </div>
-          <span id="progress-pct" className="text-sm text-[#7A6B9E] w-8 text-right">2%</span>
-        </div>
 
-        {/* 남은 시간 */}
-        <p className="text-sm text-[#7A6B9E] mb-2">
-          예상 남은 시간: 약 <span id="countdown">90</span>초
-        </p>
+          {/* 남은 시간 */}
+          <p className="text-sm text-[#7A6B9E]" style={{ textShadow: "0 0 10px rgba(255,255,255,0.9)" }}>
+            예상 남은 시간: 약 <span id="countdown">90</span>초
+          </p>
+        </div>
       </div>
 
       {/* 에러 UI */}
