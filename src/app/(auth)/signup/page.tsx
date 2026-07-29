@@ -5,12 +5,10 @@ import { KakaoLoginButton } from "@/components/auth/KakaoLoginButton";
 
 export default function SignupPage() {
   return (
-    <div className="container py-16 max-w-md">
+    <div className="container pt-6 pb-16 max-w-md">
+      {/* 회원가입 일러스트 */}
+      <img src="/images/register.webp" alt="" className="w-full rounded-2xl mb-4" />
       <KakaoLoginButton label="카카오 1초 회원가입" />
-      <p className="mt-4 text-xs text-center text-muted-foreground">
-        가입 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
-        <a href="/legal/privacy" className="underline" target="_blank">개인정보처리방침</a>에 동의하게 됩니다.
-      </p>
     </div>
   );
 }
