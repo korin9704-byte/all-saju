@@ -19,6 +19,8 @@ function LoginForm() {
 
   return (
     <div className="container py-16 max-w-md">
+      {/* 로그인 일러스트 */}
+      <img src="/images/login.webp" alt="" className="w-full rounded-2xl mb-8" />
       <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
       <p className="mt-4 text-xs text-center text-muted-foreground">
         로그인 시 <a href="/legal/terms" className="underline" target="_blank">이용약관</a>과{" "}
