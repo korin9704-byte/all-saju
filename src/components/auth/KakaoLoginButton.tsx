@@ -38,7 +38,7 @@ export function KakaoLoginButton({ next = "/mypage", label = "카카오 1초 로
       type="button"
       onClick={handleClick}
       disabled={loading}
-      className={cn(buttonVariants(), "w-full hover:opacity-90")}
+      className={cn(buttonVariants(), "w-full h-14 rounded-full text-sm font-medium hover:opacity-90")}
       style={{ background: "#ffd520", color: "#191919" }}
     >
       {loading ? "카카오로 이동 중..." : label}
