@@ -100,7 +100,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "followup-question",
     name: "고민 사주",
     description: "결과지를 보고 또 다른 고민을 물어보세요.",
-    price: 2900,
+    price: 2450,
     display_order: 998,
     is_active: true,
   },

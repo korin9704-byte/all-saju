@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { formatKRW } from "@/lib/utils";
 
 const MAX_CONCERN = 200;
 
@@ -19,10 +20,13 @@ export type AskSaju = {
 
 export function AskAnotherConcern({
   productId,
+  price,
   saju,
   guestEmail,
 }: {
   productId: string;
+  /** 할인 적용가 (followup-question 상품 가격) */
+  price: number;
   saju: AskSaju;
   guestEmail?: string | null;
 }) {
@@ -89,7 +93,7 @@ export function AskAnotherConcern({
                 <button type="button" onClick={submit} disabled={submitting}
                   className="flex-1 h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
                   style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
-                  {submitting ? "잠시만요..." : "결제하기 · 불만족 시 100% 환불"}
+                  {submitting ? "잠시만요..." : `${formatKRW(price)} 결제하기 (50% 할인)`}
                 </button>
               </div>
             </div>
@@ -107,7 +111,7 @@ export function AskAnotherConcern({
         className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90"
         style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
       >
-        또 다른 고민 물어보기
+        또 다른 고민 물어보기 · 50% 할인
       </button>
     </section>
   );

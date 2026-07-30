@@ -100,15 +100,16 @@ export default async function ResultPage({
     gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
   } : null;
 
-  const { data: troubleProduct } = await service
+  // 50% 할인가 상품(followup-question)으로 결제
+  const { data: followupProduct } = await service
     .from("products")
-    .select("id")
-    .eq("slug", "trouble-saju")
+    .select("id, price")
+    .eq("slug", "followup-question")
     .eq("is_active", true)
     .maybeSingle();
 
-  const askSection = troubleProduct && askSaju ? (
-    <AskAnotherConcern productId={troubleProduct.id} saju={askSaju} guestEmail={order?.guest_email} />
+  const askSection = followupProduct && askSaju ? (
+    <AskAnotherConcern productId={followupProduct.id} price={followupProduct.price} saju={askSaju} guestEmail={order?.guest_email} />
   ) : null;
 
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
