@@ -38,7 +38,7 @@ export default async function MyReviewsPage() {
       </header>
 
       {!reviews || reviews.length === 0 ? (
-        <div className="text-center py-20 text-sm text-body">작성한 후기가 없습니다.</div>
+        <div className="text-center py-20 text-sm text-body">작성한 리뷰가 없습니다.</div>
       ) : (
         <ul className="divide-y divide-hairline border-y border-hairline">
           {reviews.map((r) => (
