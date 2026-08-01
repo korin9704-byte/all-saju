@@ -93,9 +93,15 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                     </form>
                   </>
                 ) : (
-                  <>
-                    <MenuLink href="/login">로그인/회원가입</MenuLink>
-                  </>
+                  <div className="px-4 py-2">
+                    <Link
+                      href="/login"
+                      className="flex h-12 w-full items-center justify-center rounded text-sm font-bold transition-opacity hover:opacity-90"
+                      style={{ background: "#ffd520", color: "#191919" }}
+                    >
+                      카카오 1초 로그인/회원가입
+                    </Link>
+                  </div>
                 )}
               </nav>
             </aside>
