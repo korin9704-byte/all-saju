@@ -18,9 +18,7 @@ function LoginForm() {
   const redirectTo = search.get("redirect") ?? "/mypage";
 
   return (
-    <div className="container pt-6 pb-16 max-w-md">
-      {/* 로그인 일러스트 */}
-      <img src="/images/login.webp" alt="" className="w-full rounded-2xl mb-4" />
+    <div className="container py-16 max-w-md">
       <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인/회원가입" />
     </div>
   );
