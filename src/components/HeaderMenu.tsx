@@ -99,7 +99,7 @@ function MenuLink({ href, children }: { href: string; children: React.ReactNode 
   return (
     <Link href={href} className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
       {/* 화살표 기호 — 메뉴 항목 앞에 표시 */}
-      <span className="shrink-0 text-[#8F7BD6]">▸</span>
+      <span className="shrink-0 text-[#C95FC0]">▸</span>
       {children}
     </Link>
   );
