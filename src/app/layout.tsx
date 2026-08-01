@@ -52,7 +52,8 @@ function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
     <header className="border-b border-hairline bg-[#F8F4FD]">
       <div className="container flex h-14 items-center justify-between">
-        <Link href="/" className="font-bold text-[22px] text-ink tracking-[0.08em]">
+        {/* 주아체 글리프가 라인 박스에서 위로 치우쳐 보여 2px 내려 시각적으로 아이콘과 맞춤 */}
+        <Link href="/" className="font-bold text-[22px] text-ink tracking-[0.08em] relative top-[2px]">
           냥점
         </Link>
         <HeaderMenu isLoggedIn={isLoggedIn} />
