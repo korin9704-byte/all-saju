@@ -34,7 +34,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         onClick={() => setOpen((v) => !v)}
         className="flex h-10 w-10 items-center justify-center -mr-2"
       >
-        {/* 두 줄 햄버거 — 위 줄 길고 아래 줄 짧은 스타일 */}
+        {/* 세 줄 햄버거 — 위 두 줄은 길고 마지막 줄은 짧은 스타일 */}
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           {open ? (
             <>
@@ -43,8 +43,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             </>
           ) : (
             <>
-              <line x1="4" y1="10" x2="22" y2="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              <line x1="4" y1="17" x2="14" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="4" y1="7" x2="22" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="4" y1="13" x2="22" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="4" y1="19" x2="14" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </>
           )}
         </svg>
