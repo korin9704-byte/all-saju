@@ -21,7 +21,7 @@ function LoginForm() {
     <div className="container pt-6 pb-16 max-w-md">
       {/* 로그인 일러스트 */}
       <img src="/images/login.webp" alt="" className="w-full rounded-2xl mb-4" />
-      <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
+      <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인/회원가입" />
     </div>
   );
 }
