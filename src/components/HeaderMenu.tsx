@@ -95,9 +95,23 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   );
 }
 
+/** 냥이 발자국 아이콘 — 메뉴 항목 앞에 표시 */
+function PawIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="#8F7BD6" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+      <ellipse cx="12" cy="16.5" rx="5" ry="4" />
+      <circle cx="5" cy="11" r="2.2" />
+      <circle cx="9.5" cy="7.5" r="2.4" />
+      <circle cx="14.5" cy="7.5" r="2.4" />
+      <circle cx="19" cy="11" r="2.2" />
+    </svg>
+  );
+}
+
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="block px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+    <Link href={href} className="flex items-center gap-3 px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+      <PawIcon />
       {children}
     </Link>
   );
