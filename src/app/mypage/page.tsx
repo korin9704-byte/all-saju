@@ -41,20 +41,22 @@ export default async function MyPage() {
         <p className="text-sm text-body mt-3">{profile?.email ?? user.email}</p>
       </header>
 
-      <ul className="divide-y divide-hairline border-y border-hairline">
+      <ul>
         <li>
           <Link
             href="/mypage/orders"
-            className="flex items-center justify-between py-4 text-[15px] font-medium text-ink hover:text-body"
+            className="flex items-center gap-1.5 py-4 text-[15px] font-medium text-ink hover:text-body"
           >
+            <span className="shrink-0 text-[#C95FC0]">▸</span>
             <span>결제 내역 / 결과지</span>
           </Link>
         </li>
         <li>
           <Link
             href="/mypage/reviews"
-            className="flex items-center justify-between py-4 text-[15px] font-medium text-ink hover:text-body"
+            className="flex items-center gap-1.5 py-4 text-[15px] font-medium text-ink hover:text-body"
           >
+            <span className="shrink-0 text-[#C95FC0]">▸</span>
             <span>내 리뷰</span>
           </Link>
         </li>
@@ -62,8 +64,9 @@ export default async function MyPage() {
           <form action="/api/auth/signout" method="post">
             <button
               type="submit"
-              className="w-full flex items-center justify-between py-4 text-[15px] font-medium text-body hover:text-ink"
+              className="w-full flex items-center gap-1.5 py-4 text-[15px] font-medium text-body hover:text-ink"
             >
+              <span className="shrink-0 text-[#C95FC0]">▸</span>
               <span>로그아웃</span>
             </button>
           </form>
