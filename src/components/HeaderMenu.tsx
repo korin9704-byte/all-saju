@@ -45,7 +45,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             <>
               <line x1="4" y1="7" x2="22" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               <line x1="4" y1="13" x2="22" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              <line x1="4" y1="19" x2="14" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <line x1="12" y1="19" x2="22" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </>
           )}
         </svg>
