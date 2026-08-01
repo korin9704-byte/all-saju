@@ -4,7 +4,7 @@ import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { formatKRW, formatDate } from "@/lib/utils";
 
-export const metadata = { title: "결제 내역" };
+export const metadata = { title: "결제 내역 / 결과지" };
 
 const STATUS_LABEL: Record<string, string> = {
   paid: "결제완료",
@@ -44,7 +44,7 @@ export default async function MyOrdersPage() {
   return (
     <div className="container py-12 max-w-3xl">
       <header className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">결제 내역</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">결제 내역 / 결과지</h1>
       </header>
 
       {!orders || orders.length === 0 ? (
@@ -76,7 +76,7 @@ export default async function MyOrdersPage() {
                   </Badge>
                   {resultId && (
                     <Link href={`/results/${resultId}`} className="text-sm font-medium underline underline-offset-4 text-ink">
-                      결과 보기
+                      결과지 보기
                     </Link>
                   )}
                   {canReview && (
@@ -84,7 +84,7 @@ export default async function MyOrdersPage() {
                       href={`/mypage/orders/${o.id}/review`}
                       className="text-sm font-medium underline underline-offset-4 text-ink"
                     >
-                      후기 쓰기
+                      리뷰 쓰기
                     </Link>
                   )}
                 </div>
