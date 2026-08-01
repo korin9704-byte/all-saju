@@ -84,15 +84,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   /* 로그아웃은 마이페이지 안에서 제공 — 사이드바에는 미노출 */
                   <MenuLink href="/mypage">마이페이지</MenuLink>
                 ) : (
-                  <div className="px-4 py-2 text-center">
-                    <Link
-                      href="/login"
-                      className="inline-flex h-11 items-center rounded px-4 text-sm font-bold transition-opacity hover:opacity-90"
-                      style={{ background: "#ffd520", color: "#191919" }}
-                    >
-                      카카오 1초 로그인/회원가입
-                    </Link>
-                  </div>
+                  <MenuLink href="/login">카카오 1초 로그인/회원가입</MenuLink>
                 )}
               </nav>
             </aside>
