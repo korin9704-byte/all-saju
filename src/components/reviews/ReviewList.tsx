@@ -23,7 +23,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
                 <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
                 <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
               </span>
-              <span className="text-xs text-mute font-mono">{formatDate(r.created_at)}</span>
+              <span className="text-xs text-mute">{formatDate(r.created_at)}</span>
             </div>
             <p className="text-sm text-charcoal leading-relaxed">{r.content}</p>
           </li>

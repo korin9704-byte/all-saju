@@ -49,7 +49,7 @@ export default async function MyReviewsPage() {
                 <Stars value={r.rating} />
               </div>
               <p className="mt-2 text-sm text-charcoal leading-relaxed">{r.content}</p>
-              <p className="mt-2 text-xs text-mute font-mono">{formatDate(r.created_at)}</p>
+              <p className="mt-2 text-xs text-mute">{formatDate(r.created_at)}</p>
             </li>
           ))}
         </ul>
