@@ -81,17 +81,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               <nav className="flex flex-col divide-y divide-[#F3EDFB]">
                 {/* 상품이 고민 사주 하나뿐이라 상품 메뉴는 숨김 */}
                 {isLoggedIn ? (
-                  <>
-                    <MenuLink href="/mypage">마이페이지</MenuLink>
-                    <form action="/api/auth/signout" method="post">
-                      <button
-                        type="submit"
-                        className="block w-full px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
-                      >
-                        로그아웃
-                      </button>
-                    </form>
-                  </>
+                  /* 로그아웃은 마이페이지 안에서 제공 — 사이드바에는 미노출 */
+                  <MenuLink href="/mypage">마이페이지</MenuLink>
                 ) : (
                   <div className="px-4 py-2 text-center">
                     <Link
