@@ -52,36 +52,47 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
       </button>
 
       {open && (
-        <nav className="absolute right-0 top-12 z-50 w-44 rounded-2xl border border-hairline bg-[#F8F4FD] py-2 shadow-lg">
-          {/* 상품이 고민 사주 하나뿐이라 상품 메뉴는 숨김 */}
-          {isLoggedIn ? (
-            <>
-              <MenuLink href="/mypage">마이페이지</MenuLink>
-              <form action="/api/auth/signout" method="post">
-                <button
-                  type="submit"
-                  className="block w-full px-5 py-3 text-left text-sm font-medium text-ink hover:bg-[#F3EDFB]"
-                >
-                  로그아웃
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <MenuLink href="/login">로그인</MenuLink>
-              <MenuLink href="/signup">회원가입</MenuLink>
-            </>
-          )}
-        </nav>
+        <>
+          <style>{`
+            @keyframes menuDrop {
+              from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+              to   { opacity: 1; transform: translateY(0) scale(1); }
+            }
+          `}</style>
+          <nav
+            className="absolute right-0 top-12 z-50 w-48 rounded-2xl bg-white border border-[#E7DDF8] py-2 overflow-hidden divide-y divide-[#F3EDFB]"
+            style={{ boxShadow: "0 12px 32px rgba(143,123,214,0.28)", animation: "menuDrop 0.18s ease-out" }}
+          >
+            {/* 상품이 고민 사주 하나뿐이라 상품 메뉴는 숨김 */}
+            {isLoggedIn ? (
+              <>
+                <MenuLink href="/mypage" icon="👤">마이페이지</MenuLink>
+                <form action="/api/auth/signout" method="post">
+                  <button
+                    type="submit"
+                    className="flex w-full items-center gap-3 px-5 py-3.5 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
+                  >
+                    <span className="text-base">🚪</span> 로그아웃
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <MenuLink href="/login" icon="🔑">로그인</MenuLink>
+                <MenuLink href="/signup" icon="✨">회원가입</MenuLink>
+              </>
+            )}
+          </nav>
+        </>
       )}
     </div>
   );
 }
 
-function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
+function MenuLink({ href, icon, children }: { href: string; icon: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="block px-5 py-3 text-sm font-medium text-ink hover:bg-[#F3EDFB]">
-      {children}
+    <Link href={href} className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+      <span className="text-base">{icon}</span> {children}
     </Link>
   );
 }
