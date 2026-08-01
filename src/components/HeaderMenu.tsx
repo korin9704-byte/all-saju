@@ -59,7 +59,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             />
             {/* 드로어 */}
             <aside
-              className="absolute right-0 top-0 h-full w-64 bg-white flex flex-col"
+              className="absolute right-0 top-0 h-full w-64 bg-[#F8F4FD] flex flex-col"
               style={{ animation: "drawerIn 0.22s ease-out", boxShadow: "-8px 0 32px rgba(74,58,114,0.18)" }}
             >
               {/* 상단 — 닫기 버튼 */}
