@@ -19,7 +19,8 @@ export default async function MyPage() {
     <div className="container py-12 max-w-2xl">
       <header className="mb-10">
         {/* 프로필 아바타 — 파스텔 원 + 손그림 고양이 + 반짝이 */}
-        <svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="프로필 냥이">
+        {/* SVG 내부 여백(원 왼쪽 가장자리 x=10) 때문에 -10px 당겨 이메일 텍스트와 왼쪽 라인 맞춤 */}
+        <svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="프로필 냥이" style={{ marginLeft: -10 }}>
           <circle cx="44" cy="44" r="34" fill="#F6DDF0" />
           {/* 귀 */}
           <path d="M28 34 L23 16 L38 26 Z" fill="#fff" stroke="#221F1F" strokeWidth="4" strokeLinejoin="round" />
