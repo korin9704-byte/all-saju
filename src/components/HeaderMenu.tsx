@@ -93,7 +93,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                     </form>
                   </>
                 ) : (
-                  <div className="px-4 py-2">
+                  <div className="px-4 py-2 text-center">
                     <Link
                       href="/login"
                       className="inline-flex h-11 items-center rounded px-4 text-sm font-bold transition-opacity hover:opacity-90"
