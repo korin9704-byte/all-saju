@@ -18,7 +18,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
     <Link
       href="/login"
-      className="rounded px-4 py-2.5 text-[13px] font-bold transition-opacity hover:opacity-90"
+      className="inline-flex h-[33px] items-center rounded px-0 text-[12px] font-bold transition-opacity hover:opacity-90"
       style={{ background: "#ffd520", color: "#191919" }}
     >
       카카오 1초 로그인/회원가입
