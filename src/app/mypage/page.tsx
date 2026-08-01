@@ -31,7 +31,6 @@ export default async function MyPage() {
             className="flex items-center justify-between py-4 text-[15px] font-medium text-ink hover:text-body"
           >
             <span>결제 내역 / 결과지</span>
-            <span className="text-mute">→</span>
           </Link>
         </li>
         <li>
@@ -40,7 +39,6 @@ export default async function MyPage() {
             className="flex items-center justify-between py-4 text-[15px] font-medium text-ink hover:text-body"
           >
             <span>내 리뷰</span>
-            <span className="text-mute">→</span>
           </Link>
         </li>
         <li>
