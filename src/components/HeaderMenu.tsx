@@ -50,12 +50,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         onClick={() => setOpen((v) => !v)}
         className="flex h-10 w-10 items-center justify-center -mr-2 text-[#C95FC0]"
       >
-        {/* 세 줄 햄버거 — 같은 길이 3줄 */}
-        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="4" y1="7" x2="22" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <line x1="4" y1="13" x2="22" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <line x1="4" y1="19" x2="22" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        {/* 냥이 발바닥 아이콘 */}
+        <img src="/images/paw.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
       </button>
 
       {open && (
