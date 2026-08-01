@@ -66,20 +66,20 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             {/* 상품이 고민 사주 하나뿐이라 상품 메뉴는 숨김 */}
             {isLoggedIn ? (
               <>
-                <MenuLink href="/mypage" icon="👤">마이페이지</MenuLink>
+                <MenuLink href="/mypage">마이페이지</MenuLink>
                 <form action="/api/auth/signout" method="post">
                   <button
                     type="submit"
-                    className="flex w-full items-center gap-3 px-5 py-3.5 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
+                    className="block w-full px-5 py-3.5 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
                   >
-                    <span className="text-base">🚪</span> 로그아웃
+                    로그아웃
                   </button>
                 </form>
               </>
             ) : (
               <>
-                <MenuLink href="/login" icon="🔑">로그인</MenuLink>
-                <MenuLink href="/signup" icon="✨">회원가입</MenuLink>
+                <MenuLink href="/login">로그인</MenuLink>
+                <MenuLink href="/signup">회원가입</MenuLink>
               </>
             )}
           </nav>
@@ -89,10 +89,10 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   );
 }
 
-function MenuLink({ href, icon, children }: { href: string; icon: string; children: React.ReactNode }) {
+function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
-      <span className="text-base">{icon}</span> {children}
+    <Link href={href} className="block px-5 py-3.5 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+      {children}
     </Link>
   );
 }
