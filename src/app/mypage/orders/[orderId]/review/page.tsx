@@ -65,7 +65,7 @@ export default async function WriteReviewPage({
           </CardHeader>
           <CardContent>
             <Link href="/mypage/reviews" className="text-sm font-medium underline">
-              내 후기 보러 가기 →
+              내 리뷰 보러 가기 →
             </Link>
           </CardContent>
         </Card>

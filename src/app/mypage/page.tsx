@@ -15,17 +15,9 @@ export default async function MyPage() {
     .eq("id", user.id)
     .maybeSingle();
 
-  // 사용 가능한 무료 이용권 (리퍼럴 적립분 중 미사용)
-  const { count: availableCredits } = await supabase
-    .from("referral_rewards")
-    .select("id", { count: "exact", head: true })
-    .eq("referrer_id", user.id)
-    .is("used_at", null);
-
   return (
     <div className="container py-12 max-w-2xl">
       <header className="mb-10">
-        <p className="text-xs font-mono text-mute mb-2">ACCOUNT</p>
         <h1 className="text-2xl font-semibold tracking-tight">
           {profile?.display_name ?? "🐱"}
         </h1>
@@ -47,15 +39,9 @@ export default async function MyPage() {
             href="/mypage/reviews"
             className="flex items-center justify-between py-4 text-[15px] font-medium text-ink hover:text-body"
           >
-            <span>내 후기</span>
+            <span>내 리뷰</span>
             <span className="text-mute">→</span>
           </Link>
-        </li>
-        <li>
-          <div className="flex items-center justify-between py-4 text-[15px] font-medium text-ink">
-            <span>무료 이용권</span>
-            <span>{availableCredits ?? 0}개</span>
-          </div>
         </li>
         <li>
           <form action="/api/auth/signout" method="post">
