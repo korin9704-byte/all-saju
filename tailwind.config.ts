@@ -54,10 +54,17 @@ const config: Config = {
         hairline: "#E7DDF8",
         "hairline-strong": "#D8CCEE",
       },
+      // 각진 스타일 — 모든 라운드를 4px로 통일
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 4px)",
-        sm: "calc(var(--radius) - 6px)",
+        none: "0",
+        sm: "4px",
+        DEFAULT: "4px",
+        md: "4px",
+        lg: "4px",
+        xl: "4px",
+        "2xl": "4px",
+        "3xl": "4px",
+        full: "4px",
       },
       fontFamily: {
         sans: [
