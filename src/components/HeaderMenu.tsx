@@ -74,7 +74,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               </div>
 
               {/* 메뉴 항목 */}
-              <nav className="flex flex-col divide-y divide-[#F3EDFB]">
+              <nav className="flex flex-col">
                 {/* 상품이 고민 사주 하나뿐이라 상품 메뉴는 숨김 */}
                 {isLoggedIn ? (
                   <>
