@@ -19,7 +19,7 @@ function LoginForm() {
 
   return (
     <div className="container py-16 max-w-md">
-      <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인/회원가입" />
+      <KakaoLoginButton next={redirectTo} label="카카오 1초 로그인" />
     </div>
   );
 }
