@@ -107,7 +107,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                       type="button"
                       onClick={startKakao}
                       disabled={authLoading}
-                      className="flex h-14 w-full items-center justify-center rounded text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
+                      className="inline-flex h-11 items-center rounded px-5 text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
                       style={{ background: "#FAE100", color: "#191919" }}
                     >
                       {authLoading ? "카카오로 이동 중..." : "카카오 1초 로그인/회원가입"}
