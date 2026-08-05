@@ -193,7 +193,7 @@ export async function ProductLineup() {
       {/* 배너 이미지 */}
       <div className="mb-10">
         <img
-          src="/images/hero-banner.webp"
+          src="/images/hero-banner.webp?v=2"
           alt="3,900원 낭점에 오신 걸 환영합니다"
           className="w-full h-auto rounded-2xl"
         />
