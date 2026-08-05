@@ -51,7 +51,7 @@ export default async function ReviewsPage() {
         <span className="text-[#C95FC0]">★</span>
         <span className="font-semibold text-ink">{avgRating.toFixed(1)}</span>
         <span>·</span>
-        <span>리뷰 {displayReviews.length.toLocaleString()}개</span>
+        <span>{displayReviews.length.toLocaleString()}개</span>
       </p>
       <ReviewList reviews={displayReviews} title="" initialCount={10} />
     </div>
