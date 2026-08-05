@@ -48,7 +48,7 @@ export default async function MyPage() {
             className="flex items-center gap-1.5 py-4 text-[15px] font-medium text-ink hover:text-body"
           >
             <span className="shrink-0 text-[#C95FC0]">▸</span>
-            <span>결제 내역 / 결과지</span>
+            <span>결제 내역 · 결과지</span>
           </Link>
         </li>
         <li>
