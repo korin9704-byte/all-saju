@@ -3,32 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { toast } from "sonner";
-import { createClient } from "@/lib/supabase/client";
 
 /** 헤더 우측 햄버거 메뉴 — 클릭 시 오른쪽 사이드 드로어 노출 */
 export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [open, setOpen] = useState(false);
-  const [authLoading, setAuthLoading] = useState(false);
   const pathname = usePathname();
-
-  // 로그인 페이지를 거치지 않고 바로 카카오 인증으로 이동
-  async function startKakao() {
-    if (authLoading) return;
-    setAuthLoading(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "kakao",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(pathname || "/")}`,
-        scopes: "account_email profile_nickname",
-      },
-    });
-    if (error) {
-      setAuthLoading(false);
-      toast.error("카카오 로그인을 시작할 수 없어요. 잠시 후 다시 시도해 주세요.");
-    }
-  }
 
   // 페이지 이동 시 메뉴 닫기
   useEffect(() => {
@@ -101,15 +80,10 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   /* 로그아웃은 마이페이지 안에서 제공 — 사이드바에는 미노출 */
                   <MenuLink href="/mypage">마이페이지</MenuLink>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={startKakao}
-                    disabled={authLoading}
-                    className="flex w-full items-center gap-1.5 px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB] disabled:opacity-50"
-                  >
-                    <span className="shrink-0 text-[#C95FC0]">▸</span>
-                    {authLoading ? "카카오로 이동 중..." : "카카오 1초 로그인/회원가입"}
-                  </button>
+                  <>
+                    <MenuLink href="/login">로그인</MenuLink>
+                    <MenuLink href="/signup">회원가입</MenuLink>
+                  </>
                 )}
               </nav>
             </aside>
