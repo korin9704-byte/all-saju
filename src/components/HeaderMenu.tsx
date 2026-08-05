@@ -101,7 +101,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   /* 로그아웃은 마이페이지 안에서 제공 — 사이드바에는 미노출 */
                   <MenuLink href="/mypage">마이페이지</MenuLink>
                 ) : (
-                  <div className="px-4 py-2">
+                  <div className="px-4 py-2 text-center">
                     {/* 카카오 채널 추가 버튼 스타일 — 노란 알약형 */}
                     <button
                       type="button"
