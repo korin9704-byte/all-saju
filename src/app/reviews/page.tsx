@@ -40,10 +40,19 @@ export default async function ReviewsPage() {
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
 
   const displayReviews = reviews && reviews.length > 0 ? reviews : dummyReviews;
+  const avgRating =
+    displayReviews.reduce((sum, r) => sum + r.rating, 0) / displayReviews.length;
 
   return (
     <div className="container py-12 max-w-2xl">
-      <h1 className="text-2xl font-semibold tracking-tight mb-8">리뷰</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">리뷰</h1>
+      {/* 별점 평균 · 리뷰 개수 */}
+      <p className="mt-2 mb-8 flex items-center gap-1.5 text-sm text-body">
+        <span className="text-[#C95FC0]">★</span>
+        <span className="font-semibold text-ink">{avgRating.toFixed(1)}</span>
+        <span>·</span>
+        <span>리뷰 {displayReviews.length.toLocaleString()}개</span>
+      </p>
       <ReviewList reviews={displayReviews} title="" initialCount={10} />
     </div>
   );
