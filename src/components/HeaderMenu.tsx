@@ -70,7 +70,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
               {/* 메뉴 항목 */}
               <nav className="flex flex-col">
-                {/* 상품이 고민 사주 하나뿐이라 상품 메뉴는 숨김 */}
+                <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
                 {isLoggedIn ? (
                   <>
                     <MenuLink href="/mypage">마이페이지</MenuLink>
