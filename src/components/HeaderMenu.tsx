@@ -101,18 +101,15 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   /* 로그아웃은 마이페이지 안에서 제공 — 사이드바에는 미노출 */
                   <MenuLink href="/mypage">마이페이지</MenuLink>
                 ) : (
-                  <div className="px-4 py-2 text-center">
-                    {/* 카카오 채널 추가 버튼 스타일 — 노란 알약형 */}
-                    <button
-                      type="button"
-                      onClick={startKakao}
-                      disabled={authLoading}
-                      className="inline-flex h-9 items-center rounded px-3 text-[12px] font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
-                      style={{ background: "#FAE100", color: "#191919" }}
-                    >
-                      {authLoading ? "카카오로 이동 중..." : "카카오 1초 로그인/회원가입"}
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={startKakao}
+                    disabled={authLoading}
+                    className="flex w-full items-center gap-1.5 px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB] disabled:opacity-50"
+                  >
+                    <span className="shrink-0 text-[#C95FC0]">▸</span>
+                    {authLoading ? "카카오로 이동 중..." : "카카오 1초 로그인/회원가입"}
+                  </button>
                 )}
               </nav>
             </aside>
