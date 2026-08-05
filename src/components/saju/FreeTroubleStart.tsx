@@ -19,7 +19,7 @@ export function FreeTroubleStart({ productId, mode = "free" }: { productId: stri
     <button
       type="button"
       onClick={() => setStarted(true)}
-      className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90"
+      className="w-full h-14 rounded-full text-white text-sm font-medium tracking-[0.05em] transition-opacity hover:opacity-90"
       style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
     >
       시작하기
