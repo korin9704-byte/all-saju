@@ -195,7 +195,7 @@ export async function ProductLineup() {
         <img
           src="/images/hero-banner.webp?v=2"
           alt="3,900원 낭점에 오신 걸 환영합니다"
-          className="w-full h-auto rounded-2xl"
+          className="w-full h-auto rounded-2xl border-2 border-hairline"
         />
       </div>
 
