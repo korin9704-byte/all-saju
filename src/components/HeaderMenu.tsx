@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/** 헤더 우측 햄버거 메뉴 — 클릭 시 오른쪽 사이드 드로어 노출 */
+/** 헤더 우측 메뉴 — 발바닥 아이콘 클릭 시 화면 아래에서 바텀 시트 노출 */
 export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -14,7 +14,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
     setOpen(false);
   }, [pathname]);
 
-  // 드로어 열림 동안 배경 스크롤 잠금
+  // 시트 열림 동안 배경 스크롤 잠금
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -27,7 +27,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         aria-label="메뉴"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex h-10 w-10 items-center justify-center -mr-2 text-[#C95FC0]"
+        className="flex h-10 w-10 items-center justify-center -mr-2"
       >
         {/* 냥이 발바닥 아이콘 */}
         <img src="/images/paw.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
@@ -36,9 +36,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
       {open && (
         <div className="fixed inset-0 z-50">
           <style>{`
-            @keyframes drawerIn {
-              from { transform: translateX(100%); }
-              to   { transform: translateX(0); }
+            @keyframes sheetUp {
+              from { transform: translateY(100%); }
+              to   { transform: translateY(0); }
             }
             @keyframes backdropIn {
               from { opacity: 0; }
@@ -53,25 +53,20 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               style={{ animation: "backdropIn 0.2s ease-out" }}
               onClick={() => setOpen(false)}
             />
-            {/* 드로어 */}
-            <aside
-              className="absolute right-0 top-0 h-full w-64 bg-[#F8F4FD] flex flex-col"
-              style={{ animation: "drawerIn 0.22s ease-out", boxShadow: "-8px 0 32px rgba(74,58,114,0.18)" }}
+            {/* 바텀 시트 */}
+            <div
+              className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] pb-8"
+              style={{ animation: "sheetUp 0.25s ease-out", boxShadow: "0 -8px 32px rgba(74,58,114,0.18)" }}
             >
-              {/* 상단 — 닫기 버튼 */}
-              <div className="flex h-14 items-center justify-end px-4">
-                <button
-                  type="button"
-                  aria-label="메뉴 닫기"
-                  onClick={() => setOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center text-ink"
-                >
-                  <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="6" y1="6" x2="20" y2="20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    <line x1="20" y1="6" x2="6" y2="20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
+              {/* 핸들 바 */}
+              <button
+                type="button"
+                aria-label="메뉴 닫기"
+                onClick={() => setOpen(false)}
+                className="flex w-full justify-center pt-3 pb-2"
+              >
+                <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
+              </button>
 
               {/* 메뉴 항목 */}
               <nav className="flex flex-col">
@@ -96,7 +91,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   </>
                 )}
               </nav>
-            </aside>
+            </div>
           </div>
         </div>
       )}
