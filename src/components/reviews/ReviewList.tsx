@@ -14,7 +14,22 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
 
   return (
     <section className="mb-10 pt-2">
-      {title && <h2 className="text-sm font-semibold mb-4 text-ink">{title}</h2>}
+      {title && (
+        <div className="mb-4 flex items-center gap-2.5">
+          <h2 className="text-sm font-semibold text-ink">{title}</h2>
+          {/* 별점 평균 · 리뷰 개수 */}
+          {reviews.length > 0 && (
+            <span className="flex items-center gap-1.5 text-sm text-body">
+              <span className="text-[#C95FC0]">★</span>
+              <span className="font-semibold text-ink">
+                {(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}
+              </span>
+              <span>·</span>
+              <span>{reviews.length.toLocaleString()}개</span>
+            </span>
+          )}
+        </div>
+      )}
       <ul className="space-y-3">
         {displayed.map((r) => (
           <li key={r.id} className="bg-[#F3EDFB] border border-[#E7DDF8] rounded-2xl px-5 py-4">
