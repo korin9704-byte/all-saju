@@ -93,7 +93,7 @@ export default async function ProductDetailPage({
         today-fortune은 고민 입력 단계 없이 진행 ── */
   const wizardHeroes: Record<string, string> = {
     "trouble-saju": "/images/trouble.webp",
-    "today-fortune": "/images/today-fortune.png",
+    "today-fortune": "/images/today.webp",
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
