@@ -338,7 +338,7 @@ export function FreeTroubleWizard({
                       <span className="text-sm font-medium text-[#4A3A72]">고민 사주</span>
                       <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
                     </div>
-                    <p className="mt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이</p>
+                    <p className="mt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이.</p>
                   </button>
                   <button
                     type="button"
@@ -351,12 +351,12 @@ export function FreeTroubleWizard({
                         <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>추천</span>
                       </span>
                       <span className="text-right">
+                        <span className="block text-xs text-[#C95FC0]">5,000원 할인</span>
                         <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
                         <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에</p>
-                    <p className="mt-1 text-xs text-[#C95FC0]">정통 사주 5,000원 할인</p>
+                    <p className="mt-1 text-xs text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에.</p>
                   </button>
                 </div>
               )}
