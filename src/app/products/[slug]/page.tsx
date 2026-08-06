@@ -89,8 +89,14 @@ export default async function ProductDetailPage({
 
   const displayReviews = (reviews && reviews.length > 0) ? reviews : dummyReviews;
 
-  /* ── trouble-saju: 무료 고민 사주와 동일한 디자인 (히어로 + 설명 + 리뷰 + 시작하기 위저드) ── */
-  if (product.slug === "trouble-saju") {
+  /* ── 위저드형 상품: 무료 고민 사주와 동일한 디자인 (히어로 + 설명 + 리뷰 + 시작하기 위저드)
+        today-fortune은 고민 입력 단계 없이 진행 ── */
+  const wizardHeroes: Record<string, string> = {
+    "trouble-saju": "/images/trouble.webp",
+    "today-fortune": "/images/today-fortune.png",
+  };
+  const wizardHero = wizardHeroes[product.slug];
+  if (wizardHero) {
     return (
       <div className="min-h-screen flex justify-center ft-theme" style={{ backgroundColor: "#F8F4FD" }}>
         <style>{`
@@ -112,7 +118,7 @@ export default async function ProductDetailPage({
             style={{
               minHeight: "88vh",
               backgroundImage:
-                "linear-gradient(rgba(248,244,253,0) 55%, rgba(248,244,253,0.78) 76%, rgba(248,244,253,0.97) 90%), url('/images/trouble.webp')",
+                `linear-gradient(rgba(248,244,253,0) 55%, rgba(248,244,253,0.78) 76%, rgba(248,244,253,0.97) 90%), url('${wizardHero}')`,
               backgroundSize: "cover",
               backgroundPosition: "center top",
             }}
@@ -132,9 +138,9 @@ export default async function ProductDetailPage({
 
           <div className="px-4 pb-14">
             {/* 상품 설명 */}
-            {productDescriptions["trouble-saju"] && (
+            {productDescriptions[product.slug] && (
               <div className="mt-8 space-y-3 text-base text-ink leading-relaxed">
-                {productDescriptions["trouble-saju"].map((para, i) => (
+                {productDescriptions[product.slug].map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
               </div>
@@ -145,9 +151,9 @@ export default async function ProductDetailPage({
               <ReviewList reviews={displayReviews} />
             </div>
 
-            {/* 시작하기 → 단계형 위저드 (결제) */}
+            {/* 시작하기 → 단계형 위저드 (결제) — 고민 사주만 고민 입력 단계 포함 */}
             <section className="mt-8">
-              <FreeTroubleStart productId={product.id} mode="paid" />
+              <FreeTroubleStart productId={product.id} mode="paid" askConcern={product.slug === "trouble-saju"} />
             </section>
           </div>
         </div>

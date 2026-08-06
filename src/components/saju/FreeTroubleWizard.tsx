@@ -21,15 +21,20 @@ export function FreeTroubleWizard({
   productId,
   onBack,
   mode = "free",
+  askConcern = true,
 }: {
   productId: string;
   onBack?: () => void;
   /** free: 무료 생성(/generating), paid: 주문 생성 후 결제 페이지로 이동 */
   mode?: "free" | "paid";
+  /** false면 고민 입력 단계 없이 이메일 단계에서 바로 결제 (사주 풀이 등 일반 풀이 상품용) */
+  askConcern?: boolean;
 }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
-  const step: Step = STEPS[stepIdx];
+  const steps: readonly Step[] = askConcern ? STEPS : STEPS.filter((s) => s !== "concern");
+  const step: Step = steps[stepIdx];
+  const isLastStep = stepIdx === steps.length - 1;
 
   const [calendar, setCalendar] = useState<"solar" | "lunar">("solar");
   const [year, setYear] = useState("");
@@ -86,8 +91,9 @@ export function FreeTroubleWizard({
     if (step === "email") {
       if (!email.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요."); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
+      if (isLastStep) { submit(); return; }
     }
-    setStepIdx((i) => Math.min(i + 1, STEPS.length - 1));
+    setStepIdx((i) => Math.min(i + 1, steps.length - 1));
   }
 
   function prev() {
@@ -95,7 +101,7 @@ export function FreeTroubleWizard({
   }
 
   async function submit() {
-    if (!concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
+    if (askConcern && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     const payload = {
       productId,
       name: name.trim(),
@@ -104,7 +110,7 @@ export function FreeTroubleWizard({
       timeUnknown,
       gender,
       calendar,
-      concerns: [concern.trim()],
+      concerns: concern.trim() ? [concern.trim()] : [],
       guestEmail: email.trim(),
     };
 
@@ -173,7 +179,7 @@ export function FreeTroubleWizard({
       >
         {/* 진행 표시 */}
         <div className="flex justify-center gap-2 pt-2">
-          {STEPS.map((s, i) => (
+          {steps.map((s, i) => (
             <div
               key={s}
               className="h-1.5 rounded-full transition-all duration-300"
@@ -284,7 +290,17 @@ export function FreeTroubleWizard({
                 className={`${textInputCls} mb-8`} />
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
+                  {!isLastStep
+                    ? "다음"
+                    : submitting
+                      ? "잠시만요..."
+                      : hasCredit
+                        ? "무료 이용권으로 결과보기"
+                        : mode === "paid"
+                          ? "결제하기 · 불만족 시 100% 환불"
+                          : "결제하기"}
+                </button>
               </div>
             </>
           )}

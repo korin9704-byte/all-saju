@@ -4,13 +4,13 @@
 import { useState } from "react";
 import { FreeTroubleWizard } from "@/components/saju/FreeTroubleWizard";
 
-export function FreeTroubleStart({ productId, mode = "free" }: { productId: string; mode?: "free" | "paid" }) {
+export function FreeTroubleStart({ productId, mode = "free", askConcern = true }: { productId: string; mode?: "free" | "paid"; askConcern?: boolean }) {
   const [started, setStarted] = useState(false);
 
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} mode={mode} onBack={() => setStarted(false)} />
+        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} onBack={() => setStarted(false)} />
       </div>
     );
   }
