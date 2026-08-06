@@ -87,7 +87,11 @@ function toComputeInput(input: SajuInputRow) {
  * 주문(uuid pk)의 saju_inputs 로 만세력·LLM 해석을 생성해 saju_results 에 저장하고,
  * guest_email 이 있으면 결과지 메일까지 발송한다. 실패 시 throw.
  */
-export async function generateAndStoreResult(service: Service, orderRowId: string): Promise<{ resultId: string }> {
+export async function generateAndStoreResult(
+  service: Service,
+  orderRowId: string,
+  opts?: { skipEmail?: boolean },
+): Promise<{ resultId: string }> {
   const { data: order } = await service
     .from("orders")
     .select("id, product_id, guest_email")
@@ -290,7 +294,7 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
   }
 
   // 결과지 이메일 발송 (실패해도 결과는 반환)
-  if (order.guest_email) {
+  if (order.guest_email && !opts?.skipEmail) {
     try {
       await sendResultEmail({
         to: order.guest_email,
@@ -378,9 +382,10 @@ export async function generateBundleResults(
     if (inputErr) throw new Error(`번들 자식 사주 입력 저장 실패: ${inputErr.message}`);
   }
 
+  // 이메일은 부모(고민 사주 + 정통 사주) 결과지 1통만 발송 — 정통 사주는 결과지 탭으로 이동
   const [parentRes, childRes] = await Promise.all([
     generateAndStoreResult(service, parent.id),
-    generateAndStoreResult(service, childRowId),
+    generateAndStoreResult(service, childRowId, { skipEmail: true }),
   ]);
 
   return { resultId: parentRes.resultId, jeongtongResultId: childRes.resultId };
