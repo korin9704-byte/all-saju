@@ -211,7 +211,7 @@ export default async function ResultPage({
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
-              {displayName} &lsquo;사주 풀이&rsquo;
+              {displayName} &lsquo;정통 사주&rsquo;
             </h1>
           </div>
           <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -234,7 +234,7 @@ export default async function ResultPage({
         </section>
 
         <article className="rounded-b-2xl overflow-hidden">
-          <AccordionBody markdown={result.interpretation_md} headerTitle="사주 풀이" limit={13} />
+          <AccordionBody markdown={result.interpretation_md} headerTitle="정통 사주" limit={13} />
         </article>
 
 
