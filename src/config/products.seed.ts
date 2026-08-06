@@ -20,7 +20,7 @@ export const productsSeed: ProductSeed[] = [
     description: "용하다고 소문났어요.",
     price: 990,
     display_order: 10,
-    is_active: false,
+    is_active: true,
   },
   {
     slug: "premium-saju",
