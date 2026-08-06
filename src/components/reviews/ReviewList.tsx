@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDate } from "@/lib/utils";
 
-type Review = { id: string; rating: number; content: string; created_at: string };
+type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
 export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
@@ -19,9 +19,15 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
         {displayed.map((r) => (
           <li key={r.id} className="bg-[#F3EDFB] border border-[#E7DDF8] rounded-2xl px-5 py-4">
             <div className="flex items-center justify-between mb-2">
-              <span aria-label={`${r.rating}점`}>
-                <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
-                <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
+              <span className="flex items-center gap-2">
+                <span aria-label={`${r.rating}점`}>
+                  <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
+                  <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
+                </span>
+                {/* 상품명 칩 — 전체 리뷰 페이지처럼 여러 상품이 섞일 때 구분용 */}
+                {r.product_name && (
+                  <span className="rounded-full bg-[#E7DDF8] px-2.5 py-0.5 text-xs text-[#4A3A72]">{r.product_name}</span>
+                )}
               </span>
               <span className="text-xs text-mute">{formatDate(r.created_at)}</span>
             </div>

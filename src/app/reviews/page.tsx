@@ -5,7 +5,7 @@ import { troubleSajuReviews, todayFortuneReviews } from "@/config/dummy-reviews"
 
 export const metadata = { title: "리뷰" };
 
-type Review = { id: string; rating: number; content: string; created_at: string };
+type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
 /** 전 상품 리뷰 모음 — 판매 중인 상품(고민 사주 · 정통 사주)의 리뷰를 합쳐서 표시 */
 export default async function ReviewsPage() {
@@ -15,17 +15,24 @@ export default async function ReviewsPage() {
     const supabase = await createClient();
     const { data } = await supabase
       .from("reviews")
-      .select("id, rating, content, created_at")
+      .select("id, rating, content, created_at, products(name)")
       .eq("is_public", true)
       .order("created_at", { ascending: false });
-    reviews = data;
+    reviews = data?.map(({ products, ...r }) => ({
+      ...r,
+      product_name: (products as unknown as { name: string } | null)?.name,
+    })) ?? null;
   }
 
-  const dummyReviews: Review[] = [...troubleSajuReviews, ...todayFortuneReviews]
+  const dummyReviews: Review[] = [
+    ...troubleSajuReviews.map((r) => ({ ...r, product_name: "고민 사주" })),
+    ...todayFortuneReviews.map((r) => ({ ...r, product_name: "정통 사주" })),
+  ]
     .map((r, i) => ({
       id: `d${i}`,
       rating: r.rating,
       content: r.content,
+      product_name: r.product_name,
       created_at: new Date(`${r.date}T00:00:00+09:00`).toISOString(),
     }))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
