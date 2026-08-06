@@ -346,7 +346,10 @@ export function FreeTroubleWizard({
                     className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium text-[#4A3A72]">고민 사주 + 정통 사주</span>
+                      <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
+                        고민 사주 + 정통 사주
+                        <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>추천</span>
+                      </span>
                       <span className="text-right">
                         <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
                         <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
