@@ -16,9 +16,9 @@ export type ProductSeed = {
 export const productsSeed: ProductSeed[] = [
   {
     slug: "today-fortune",
-    name: "사주 풀이",
-    description: "용하다고 소문났어요.",
-    price: 990,
+    name: "정통 사주",
+    description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
+    price: 9900,
     display_order: 10,
     is_active: true,
   },
