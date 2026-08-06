@@ -429,7 +429,7 @@ export function FreeTroubleWizard({
                   ? "잠시만요..."
                   : hasCredit && !withAddon
                     ? "무료 이용권으로 결과보기"
-                    : `구매하기 · ${(withAddon ? bundle.price : basePrice ?? 3900).toLocaleString()}원`}
+                    : "결제하기 · 불만족 시 100% 환불"}
               </button>
             </div>
           </div>
