@@ -385,24 +385,25 @@ export function FreeTroubleWizard({
                 <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
               </button>
 
-              <div className="space-y-3">
+              {/* auto-rows-fr — 두 카드 높이 동일 */}
+              <div className="grid auto-rows-fr gap-3">
                 <button
                   type="button"
                   onClick={() => setWithAddon(false)}
-                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${!withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors flex flex-col ${!withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-start justify-between">
                     <span className="text-sm font-medium text-[#4A3A72]">고민 사주</span>
                     <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
                   </div>
-                  <p className="mt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이.</p>
+                  <p className="mt-auto pt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이.</p>
                 </button>
                 <button
                   type="button"
                   onClick={() => setWithAddon(true)}
-                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors flex flex-col ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
                 >
-                  <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-start justify-between gap-2 w-full">
                     <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
                       고민 사주 + 정통 사주
                       <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>추천</span>
@@ -413,7 +414,7 @@ export function FreeTroubleWizard({
                       <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에.</p>
+                  <p className="mt-auto pt-1 text-xs text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에.</p>
                 </button>
               </div>
 
