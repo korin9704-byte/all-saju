@@ -1,36 +1,27 @@
 import { createClient } from "@/lib/supabase/server";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { isSupabaseConfigured } from "@/lib/env";
-import { troubleSajuReviews } from "@/config/dummy-reviews";
+import { troubleSajuReviews, todayFortuneReviews } from "@/config/dummy-reviews";
 
 export const metadata = { title: "리뷰" };
 
 type Review = { id: string; rating: number; content: string; created_at: string };
 
-/** 전 상품 리뷰 모음 — 현재 판매 상품이 고민 사주 하나라 고민 사주 리뷰만 표시 */
+/** 전 상품 리뷰 모음 — 판매 중인 상품(고민 사주 · 정통 사주)의 리뷰를 합쳐서 표시 */
 export default async function ReviewsPage() {
   let reviews: Review[] | null = null;
 
   if (isSupabaseConfigured()) {
     const supabase = await createClient();
-    const { data: product } = await supabase
-      .from("products")
-      .select("id")
-      .eq("slug", "trouble-saju")
-      .maybeSingle();
-
-    if (product) {
-      const { data } = await supabase
-        .from("reviews")
-        .select("id, rating, content, created_at")
-        .eq("product_id", product.id)
-        .eq("is_public", true)
-        .order("created_at", { ascending: false });
-      reviews = data;
-    }
+    const { data } = await supabase
+      .from("reviews")
+      .select("id, rating, content, created_at")
+      .eq("is_public", true)
+      .order("created_at", { ascending: false });
+    reviews = data;
   }
 
-  const dummyReviews: Review[] = troubleSajuReviews
+  const dummyReviews: Review[] = [...troubleSajuReviews, ...todayFortuneReviews]
     .map((r, i) => ({
       id: `d${i}`,
       rating: r.rating,
