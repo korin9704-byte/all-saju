@@ -71,6 +71,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               {/* 메뉴 항목 */}
               <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
+                <MenuLink href="/products/today-fortune">정통 사주</MenuLink>
                 <MenuLink href="/reviews">리뷰</MenuLink>
                 {isLoggedIn ? (
                   <>
