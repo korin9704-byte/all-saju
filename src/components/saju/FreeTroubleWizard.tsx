@@ -57,6 +57,8 @@ export function FreeTroubleWizard({
   const [submitting, setSubmitting] = useState(false);
   // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
   const [withAddon, setWithAddon] = useState(false);
+  // 결제하기 클릭 시 상품 선택 바텀 시트 노출
+  const [sheetOpen, setSheetOpen] = useState(false);
   const showAddon = mode === "paid" && !!bundle;
 
   // 무료 이용권 (리퍼럴 보상) — 보유 시 결제 대신 자동 사용 (유료 모드 전용)
@@ -326,44 +328,22 @@ export function FreeTroubleWizard({
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
 
-              {/* 추가 상품(정통 사주) 패키지 선택 */}
-              {showAddon && bundle && (
-                <div className="mb-8 space-y-3">
-                  <button
-                    type="button"
-                    onClick={() => setWithAddon(false)}
-                    className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${!withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-[#4A3A72]">고민 사주</span>
-                      <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
-                    </div>
-                    <p className="mt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이.</p>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setWithAddon(true)}
-                    className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
-                        고민 사주 + 정통 사주
-                        <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>추천</span>
-                      </span>
-                      <span className="text-right">
-                        <span className="block text-xs text-[#C95FC0]">5,000원 할인</span>
-                        <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
-                        <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에.</p>
-                  </button>
-                </div>
-              )}
-
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
-                <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (showAddon) {
+                      if (!concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
+                      setSheetOpen(true);
+                      return;
+                    }
+                    submit();
+                  }}
+                  disabled={submitting}
+                  className={nextBtnCls}
+                  style={nextBtnStyle}
+                >
                   {submitting
                     ? "잠시만요..."
                     : hasCredit && !withAddon
@@ -377,6 +357,83 @@ export function FreeTroubleWizard({
           )}
         </div>
       </div>
+
+      {/* 상품 선택 바텀 시트 — 결제하기 클릭 시 노출 */}
+      {sheetOpen && bundle && (
+        <div className="fixed inset-0 z-[60]">
+          <style>{`
+            @keyframes paySheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+            @keyframes payBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+          `}</style>
+          <div className="mx-auto w-full max-w-lg h-full relative overflow-hidden">
+            <div
+              className="absolute inset-0 bg-black/40"
+              style={{ animation: "payBackdropIn 0.2s ease-out" }}
+              onClick={() => setSheetOpen(false)}
+            />
+            <div
+              className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] px-4 pb-6"
+              style={{ animation: "paySheetUp 0.25s ease-out", boxShadow: "0 -8px 32px rgba(74,58,114,0.18)" }}
+            >
+              {/* 핸들 바 */}
+              <button
+                type="button"
+                aria-label="닫기"
+                onClick={() => setSheetOpen(false)}
+                className="flex w-full justify-center pt-3 pb-3"
+              >
+                <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
+              </button>
+
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => setWithAddon(false)}
+                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${!withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-[#4A3A72]">고민 사주</span>
+                    <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
+                  </div>
+                  <p className="mt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이.</p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWithAddon(true)}
+                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
+                      고민 사주 + 정통 사주
+                      <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>추천</span>
+                    </span>
+                    <span className="text-right">
+                      <span className="block text-xs text-[#C95FC0]">5,000원 할인</span>
+                      <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
+                      <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에.</p>
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={submit}
+                disabled={submitting}
+                className={`w-full mt-5 ${nextBtnCls}`}
+                style={nextBtnStyle}
+              >
+                {submitting
+                  ? "잠시만요..."
+                  : hasCredit && !withAddon
+                    ? "무료 이용권으로 결과보기"
+                    : `구매하기 · ${(withAddon ? bundle.price : basePrice ?? 3900).toLocaleString()}원`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
