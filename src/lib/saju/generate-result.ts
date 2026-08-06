@@ -30,6 +30,11 @@ import {
 
 type Service = ReturnType<typeof createServiceClient>;
 
+/** 고민 사주 + 정통 사주 번들 상품 slug */
+export const BUNDLE_SLUG = "trouble-saju-bundle";
+/** 번들 자식 주문(정통 사주) order_id 접미사 */
+export const BUNDLE_CHILD_SUFFIX = "-jt";
+
 // saju_inputs row → BirthInfo (luckyloveme 입력 형식)
 type SajuInputRow = {
   name: string | null;
@@ -105,8 +110,10 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
 
   // MINI 상품(slug 접미사 -mini)은 원본 상품과 동일한 결과지를 생성하고 잠금 상태로 저장한다
   const isMini = product.slug.endsWith("-mini");
-  const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : product.slug;
-  const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : product.name;
+  // 번들(고민+정통) 주문의 본 결과지는 고민 사주 풀이 — 정통 사주는 자식 주문에서 별도 생성
+  const isBundle = product.slug === BUNDLE_SLUG;
+  const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : isBundle ? "trouble-saju" : product.slug;
+  const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : isBundle ? "고민 사주" : product.name;
 
   // 만세력/풀 분석: luckyloveme 키가 있으면 실제 API, 없거나 실패하면 mock 으로 fallback
   let myeongsik: Myeongsik;
@@ -297,4 +304,84 @@ export async function generateAndStoreResult(service: Service, orderRowId: strin
   }
 
   return { resultId: result.id };
+}
+
+/**
+ * 번들(고민 사주 + 정통 사주) 주문 처리:
+ * 부모 주문으로 고민 사주 결과지를, 0원 자식 주문(order_id 접미사 -jt)으로
+ * 정통 사주 결과지를 병렬 생성한다. 반환값은 부모(고민 사주) resultId.
+ */
+export async function generateBundleResults(
+  service: Service,
+  parentRowId: string,
+): Promise<{ resultId: string; jeongtongResultId: string }> {
+  const { data: parent } = await service
+    .from("orders")
+    .select("id, order_id, user_id, guest_email")
+    .eq("id", parentRowId)
+    .single();
+  if (!parent) throw new Error("번들 부모 주문 조회 실패");
+
+  const { data: input } = await service
+    .from("saju_inputs")
+    .select("*")
+    .eq("order_id", parent.id)
+    .single();
+  if (!input) throw new Error("번들 사주 입력 조회 실패");
+
+  const { data: todayProduct } = await service
+    .from("products")
+    .select("id")
+    .eq("slug", "today-fortune")
+    .single();
+  if (!todayProduct) throw new Error("정통 사주 상품 조회 실패");
+
+  // 자식 주문 — 재시도 대비 idempotent (이미 있으면 재사용)
+  const childOrderId = `${parent.order_id}${BUNDLE_CHILD_SUFFIX}`;
+  let childRowId: string;
+  const { data: existingChild } = await service
+    .from("orders")
+    .select("id")
+    .eq("order_id", childOrderId)
+    .maybeSingle();
+
+  if (existingChild) {
+    childRowId = existingChild.id;
+  } else {
+    const { data: child, error: childErr } = await service
+      .from("orders")
+      .insert({
+        order_id: childOrderId,
+        user_id: parent.user_id,
+        guest_email: parent.guest_email,
+        product_id: todayProduct.id,
+        amount: 0,
+        status: "paid",
+        paid_at: new Date().toISOString(),
+      })
+      .select("id")
+      .single();
+    if (childErr || !child) throw new Error(`번들 자식 주문 생성 실패: ${childErr?.message ?? "unknown"}`);
+    childRowId = child.id;
+
+    // 정통 사주는 고민 텍스트 없이 사주 정보만 사용
+    const { error: inputErr } = await service.from("saju_inputs").insert({
+      order_id: childRowId,
+      name: input.name,
+      birth_date: input.birth_date,
+      birth_time: input.birth_time,
+      time_unknown: input.time_unknown,
+      gender: input.gender,
+      calendar: input.calendar,
+      concerns: [],
+    });
+    if (inputErr) throw new Error(`번들 자식 사주 입력 저장 실패: ${inputErr.message}`);
+  }
+
+  const [parentRes, childRes] = await Promise.all([
+    generateAndStoreResult(service, parent.id),
+    generateAndStoreResult(service, childRowId),
+  ]);
+
+  return { resultId: parentRes.resultId, jeongtongResultId: childRes.resultId };
 }

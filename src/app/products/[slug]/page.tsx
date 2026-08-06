@@ -97,6 +97,18 @@ export default async function ProductDetailPage({
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
+    // 고민 사주 결제 단계 추가 상품(정통 사주 번들) 조회
+    let bundle: { productId: string; price: number } | null = null;
+    if (product.slug === "trouble-saju" && isSupabaseConfigured()) {
+      const supabase = await createClient();
+      const { data: bundleProduct } = await supabase
+        .from("products")
+        .select("id, price")
+        .eq("slug", "trouble-saju-bundle")
+        .eq("is_active", true)
+        .maybeSingle();
+      if (bundleProduct) bundle = { productId: bundleProduct.id, price: bundleProduct.price };
+    }
     return (
       <div className="min-h-screen flex justify-center ft-theme" style={{ backgroundColor: "#F8F4FD" }}>
         <style>{`
@@ -153,7 +165,7 @@ export default async function ProductDetailPage({
 
             {/* 시작하기 → 단계형 위저드 (결제) — 고민 사주만 고민 입력 단계 포함 */}
             <section className="mt-8">
-              <FreeTroubleStart productId={product.id} mode="paid" askConcern={product.slug === "trouble-saju"} />
+              <FreeTroubleStart productId={product.id} mode="paid" askConcern={product.slug === "trouble-saju"} basePrice={product.price} bundle={bundle} />
             </section>
           </div>
         </div>

@@ -96,6 +96,16 @@ export const productsSeed: ProductSeed[] = [
     is_active: false,
   },
   {
+    // 고민 사주 결제 단계 추가 상품 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
+    // 고민 사주 3,900 + 정통 사주 4,900(5,000원 할인) = 8,800원
+    slug: "trouble-saju-bundle",
+    name: "고민 사주 + 정통 사주",
+    description: "고민 사주와 정통 사주를 한 번에",
+    price: 8800,
+    display_order: 996,
+    is_active: true,
+  },
+  {
     // 결과지 하단 추가 고민 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
     slug: "followup-question",
     name: "고민 사주",

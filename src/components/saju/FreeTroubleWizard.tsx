@@ -22,6 +22,8 @@ export function FreeTroubleWizard({
   onBack,
   mode = "free",
   askConcern = true,
+  basePrice,
+  bundle,
 }: {
   productId: string;
   onBack?: () => void;
@@ -29,6 +31,10 @@ export function FreeTroubleWizard({
   mode?: "free" | "paid";
   /** false면 고민 입력 단계 없이 이메일 단계에서 바로 결제 (사주 풀이 등 일반 풀이 상품용) */
   askConcern?: boolean;
+  /** 단품 가격 (추가 상품 선택 UI 표시용) */
+  basePrice?: number;
+  /** 추가 상품(정통 사주) 번들 — 있으면 마지막 단계에 패키지 선택 노출 */
+  bundle?: { productId: string; price: number } | null;
 }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
@@ -49,6 +55,9 @@ export function FreeTroubleWizard({
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
+  const [withAddon, setWithAddon] = useState(false);
+  const showAddon = mode === "paid" && !!bundle;
 
   // 무료 이용권 (리퍼럴 보상) — 보유 시 결제 대신 자동 사용 (유료 모드 전용)
   const [credit, setCredit] = useState<{ available: number } | null>(null);
@@ -103,7 +112,8 @@ export function FreeTroubleWizard({
   async function submit() {
     if (askConcern && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     const payload = {
-      productId,
+      // 추가 상품(정통 사주) 선택 시 번들 상품으로 주문
+      productId: withAddon && bundle ? bundle.productId : productId,
       name: name.trim(),
       birthDate,
       birthTime: timeUnknown ? null : `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`,
@@ -114,8 +124,8 @@ export function FreeTroubleWizard({
       guestEmail: email.trim(),
     };
 
-    // 유료 + 무료 이용권 보유: 결제 대신 이용권으로 즉시 결과 생성
-    if (mode === "paid" && hasCredit) {
+    // 유료 + 무료 이용권 보유: 결제 대신 이용권으로 즉시 결과 생성 (번들 선택 시엔 일반 결제)
+    if (mode === "paid" && hasCredit && !withAddon) {
       try {
         sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "redeem", payload }));
       } catch { /* ignore */ }
@@ -315,12 +325,43 @@ export function FreeTroubleWizard({
                   className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
+
+              {/* 추가 상품(정통 사주) 패키지 선택 */}
+              {showAddon && bundle && (
+                <div className="mb-8 space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => setWithAddon(false)}
+                    className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${!withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-[#4A3A72]">고민 사주</span>
+                      <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWithAddon(true)}
+                    className={`w-full rounded-2xl px-5 py-4 text-left transition-colors ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-medium text-[#4A3A72]">고민 사주 + 정통 사주</span>
+                      <span className="text-right">
+                        <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
+                        <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs text-[#C95FC0]">정통 사주 5,000원 할인</p>
+                  </button>
+                </div>
+              )}
+
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
                   {submitting
                     ? "잠시만요..."
-                    : hasCredit
+                    : hasCredit && !withAddon
                       ? "무료 이용권으로 결과보기"
                       : mode === "paid"
                         ? "결제하기 · 불만족 시 100% 환불"

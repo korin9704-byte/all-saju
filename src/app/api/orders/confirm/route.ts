@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
-import { generateAndStoreResult } from "@/lib/saju/generate-result";
+import { generateAndStoreResult, generateBundleResults, BUNDLE_SLUG } from "@/lib/saju/generate-result";
 
 const bodySchema = z.object({
   paymentKey: z.string().min(1),
@@ -81,9 +81,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ resultId: order.unlock_result_id });
   }
 
-  // 3-b. 사주 생성
+  // 3-b. 사주 생성 (번들이면 고민 사주 + 정통 사주 결과지를 병렬 생성)
   try {
-    const { resultId } = await generateAndStoreResult(service, order.id);
+    const { data: paidProduct } = await service
+      .from("products")
+      .select("slug")
+      .eq("id", order.product_id)
+      .single();
+    const { resultId } =
+      paidProduct?.slug === BUNDLE_SLUG
+        ? await generateBundleResults(service, order.id)
+        : await generateAndStoreResult(service, order.id);
     return NextResponse.json({ resultId });
   } catch (err) {
     return NextResponse.json(

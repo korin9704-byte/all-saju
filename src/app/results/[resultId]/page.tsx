@@ -71,7 +71,7 @@ export default async function ResultPage({
 
   const { data: order } = await service
     .from("orders")
-    .select("product_id, paid_at, user_id, guest_email")
+    .select("order_id, product_id, paid_at, user_id, guest_email")
     .eq("id", result.order_id)
     .single();
 
@@ -110,6 +110,69 @@ export default async function ResultPage({
 
   const askSection = followupProduct && askSaju ? (
     <AskAnotherConcern productId={followupProduct.id} price={followupProduct.price} saju={askSaju} guestEmail={order?.guest_email} />
+  ) : null;
+
+  // ── 번들(고민 사주 + 정통 사주) — 형제 결과지 탭 ──
+  // 부모 주문(번들 상품) 결과지 = 고민 사주, 자식 주문(order_id 접미사 -jt) = 정통 사주
+  const BUNDLE_SLUG = "trouble-saju-bundle";
+  const BUNDLE_CHILD_SUFFIX = "-jt";
+  let bundleTabs: { label: string; resultId: string | null }[] | null = null;
+  if (order?.order_id) {
+    if (product?.slug === BUNDLE_SLUG) {
+      const { data: childOrder } = await service
+        .from("orders")
+        .select("id")
+        .eq("order_id", `${order.order_id}${BUNDLE_CHILD_SUFFIX}`)
+        .maybeSingle();
+      const { data: childResult } = childOrder
+        ? await service.from("saju_results").select("id").eq("order_id", childOrder.id).maybeSingle()
+        : { data: null };
+      if (childResult) {
+        bundleTabs = [
+          { label: "고민 사주", resultId: null },
+          { label: "정통 사주", resultId: childResult.id },
+        ];
+      }
+    } else if (order.order_id.endsWith(BUNDLE_CHILD_SUFFIX)) {
+      const parentOrderId = order.order_id.slice(0, -BUNDLE_CHILD_SUFFIX.length);
+      const { data: parentOrder } = await service
+        .from("orders")
+        .select("id")
+        .eq("order_id", parentOrderId)
+        .maybeSingle();
+      const { data: parentResult } = parentOrder
+        ? await service.from("saju_results").select("id").eq("order_id", parentOrder.id).maybeSingle()
+        : { data: null };
+      if (parentResult) {
+        bundleTabs = [
+          { label: "고민 사주", resultId: parentResult.id },
+          { label: "정통 사주", resultId: null },
+        ];
+      }
+    }
+  }
+  const bundleTabsSection = bundleTabs ? (
+    <div className="mb-4 flex justify-center gap-2">
+      {bundleTabs.map((t) =>
+        t.resultId ? (
+          <a
+            key={t.label}
+            href={`/results/${t.resultId}`}
+            className="px-5 py-2 rounded-full text-sm bg-white border border-[#E7DDF8] text-[#4A3A72] transition-colors hover:bg-[#F3EDFB]"
+          >
+            {t.label}
+          </a>
+        ) : (
+          <span
+            key={t.label}
+            className="px-5 py-2 rounded-full text-sm text-white"
+            style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
+          >
+            {t.label}
+          </span>
+        ),
+      )}
+    </div>
   ) : null;
 
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
@@ -208,6 +271,7 @@ export default async function ResultPage({
 
     return (
       <div className="w-full py-12">
+        {bundleTabsSection}
         <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
           <div className="px-6 pt-6 pb-5 text-center">
             <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
@@ -567,10 +631,11 @@ export default async function ResultPage({
 
   return (
     <div className="w-full py-12">
+      {bundleTabsSection}
       <header className="mb-0 rounded-t-2xl overflow-hidden" style={{ background: "#E7DDF8" }}>
         <div className="px-6 pt-6 pb-5 text-center">
           <h1 className="text-xl font-bold text-[#4A3A72] tracking-tight">
-            {displayName} ‘{product?.name ?? "사주 풀이"}’
+            {displayName} ‘{product?.slug === BUNDLE_SLUG ? "고민 사주" : product?.name ?? "사주 풀이"}’
           </h1>
         </div>
         <div className="px-5 pb-5 flex flex-wrap justify-center gap-2">
@@ -595,7 +660,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden">
-        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question") ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question" || product?.slug === BUNDLE_SLUG) ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
 
