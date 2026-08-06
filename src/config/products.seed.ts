@@ -19,7 +19,7 @@ export const productsSeed: ProductSeed[] = [
     name: "정통 사주",
     description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
     price: 9900,
-    display_order: 10,
+    display_order: 90,
     is_active: true,
   },
   {
@@ -83,7 +83,7 @@ export const productsSeed: ProductSeed[] = [
     name: "고민 사주",
     description: "오늘 해결해 드릴게요.\n불만족 시 100% 환불!",
     price: 3900,
-    display_order: 90,
+    display_order: 10,
     is_active: true,
   },
   {
