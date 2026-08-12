@@ -66,30 +66,38 @@ const DST_PERIODS: [string, string][] = [
   ["1988-05-08", "1988-10-09"],
 ];
 
-function correctionMinutes(dateStr: string): number {
-  let min = -30;
-  if (DST_PERIODS.some(([s, e]) => dateStr >= s && dateStr < e)) min -= 60;
-  return min;
+/** 해당 날짜가 서머타임 시행기면 60, 아니면 0 */
+export function dstMinutes(dateStr: string): number {
+  return DST_PERIODS.some(([s, e]) => dateStr >= s && dateStr < e) ? 60 : 0;
 }
 
-export function computeLocalGanji(input: LocalGanjiInput): LocalGanji {
+function correctionMinutes(dateStr: string): number {
+  return -30 - dstMinutes(dateStr);
+}
+
+/** 음력→양력 변환 + 시각 보정을 거친 확정 시각 (파생 계산 공용) */
+export type ResolvedBirth = {
+  /** 양력 원본 (보정 전) */
+  raw: { y: number; mo: number; d: number; h: number; mi: number };
+  /** 진태양시·서머타임 보정 후 */
+  corrected: { y: number; mo: number; d: number; h: number; mi: number };
+  hasTime: boolean;
+};
+
+export function resolveBirth(input: LocalGanjiInput): ResolvedBirth {
   const y = parseInt(input.birthYear, 10);
   const mo = parseInt(input.birthMonth, 10);
   const d = parseInt(input.birthDay, 10);
   const hasTime = input.birthHour != null && input.birthHour !== "";
-  // 시간 미상: 시주 경계(23시)와 무관한 정오로 계산해 일주만 확정
   const h = hasTime ? parseInt(input.birthHour!, 10) : 12;
   const mi = hasTime ? parseInt(input.birthMinute ?? "0", 10) : 0;
 
-  // 음력 입력은 먼저 양력 날짜로 변환
   let sy = y, smo = mo, sd = d;
   if (input.calendarType === "음력") {
-    // lunar-typescript: 윤달은 음수 월로 표현
     const solar = Lunar.fromYmd(y, input.isLeapMonth ? -mo : mo, d).getSolar();
     sy = solar.getYear(); smo = solar.getMonth(); sd = solar.getDay();
   }
 
-  // 서머타임·진태양시 보정 (시간 미상이면 원본 정오 그대로)
   let cy = sy, cmo = smo, cd = sd, ch = h, cmi = mi;
   if (hasTime) {
     const dateStr = `${String(sy).padStart(4, "0")}-${String(smo).padStart(2, "0")}-${String(sd).padStart(2, "0")}`;
@@ -97,6 +105,14 @@ export function computeLocalGanji(input: LocalGanjiInput): LocalGanji {
     cy = corrected.getUTCFullYear(); cmo = corrected.getUTCMonth() + 1; cd = corrected.getUTCDate();
     ch = corrected.getUTCHours(); cmi = corrected.getUTCMinutes();
   }
+
+  return { raw: { y: sy, mo: smo, d: sd, h, mi }, corrected: { y: cy, mo: cmo, d: cd, h: ch, mi: cmi }, hasTime };
+}
+
+export function computeLocalGanji(input: LocalGanjiInput): LocalGanji {
+  // 시간 미상: 시주 경계(23시)와 무관한 정오로 계산해 일주만 확정
+  const { corrected, hasTime } = resolveBirth(input);
+  const { y: cy, mo: cmo, d: cd, h: ch, mi: cmi } = corrected;
 
   const ec = Solar.fromYmdHms(cy, cmo, cd, ch, cmi, 0).getLunar().getEightChar();
   // sect 1: 밤 23시 이후 일주를 다음 날로 (기본) / sect 2: 야자시 — 당일 유지
