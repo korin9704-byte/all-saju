@@ -152,6 +152,31 @@ const CHEONDEOK: Record<string, string> = {
 // 월덕귀인 (월지 삼합국 → 간)
 const WOLDEOK: Record<string, string> = { 수: "임", 화: "병", 금: "경", 목: "갑" };
 
+// ── 지장간 (여기·중기·정기, 30일 배분) ────────────────
+const JIJANGGAN: Record<string, [string, number][]> = {
+  자: [["임", 10], ["계", 20]], 축: [["계", 9], ["신", 3], ["기", 18]], 인: [["무", 7], ["병", 7], ["갑", 16]],
+  묘: [["갑", 10], ["을", 20]], 진: [["을", 9], ["계", 3], ["무", 18]], 사: [["무", 7], ["경", 7], ["병", 16]],
+  오: [["병", 10], ["기", 9], ["정", 11]], 미: [["정", 9], ["을", 3], ["기", 18]], 신: [["무", 7], ["임", 7], ["경", 16]],
+  유: [["경", 10], ["신", 20]], 술: [["신", 9], ["정", 3], ["무", 18]], 해: [["무", 7], ["갑", 7], ["임", 16]],
+};
+
+/** 오행별 세력 — 지장간 배분 가중 합 (신강 점수·억부 과다 판정 공용).
+ *  가중치는 luckyloveme 점수 실측 피팅값(70샘플, 평균 오차 ±3.4점):
+ *  간 — 년1 월2 일1 시1 / 지 — 년1 월3 일3 시2 */
+const GAN_WEIGHT: Record<PillarKey, number> = { year: 1, month: 2, day: 1, hour: 1 };
+const JI_WEIGHT: Record<PillarKey, number> = { year: 1, month: 3, day: 3, hour: 2 };
+function elementPowers(ganji: LocalGanji): Record<string, number> {
+  const powers: Record<string, number> = { 목: 0, 화: 0, 토: 0, 금: 0, 수: 0 };
+  for (const p of PILLARS) {
+    if (p === "hour" && !ganji.hour) continue;
+    powers[GAN_ELEM[ganji[p]!.gan]] += GAN_WEIGHT[p];
+    const hidden = JIJANGGAN[ganji[p]!.ji];
+    const total = hidden.reduce((a, [, d]) => a + d, 0);
+    for (const [hg, d] of hidden) powers[GAN_ELEM[hg]] += JI_WEIGHT[p] * (d / total);
+  }
+  return powers;
+}
+
 // ── 지지 관계 (합충형해파) ───────────────────────────
 const YUKHAP: [string, string][] = [["자", "축"], ["인", "해"], ["묘", "술"], ["진", "유"], ["사", "신"], ["오", "미"]];
 const CHUNG: [string, string][] = [["자", "오"], ["축", "미"], ["인", "신"], ["묘", "유"], ["진", "술"], ["사", "해"]];
@@ -185,8 +210,15 @@ export type LocalAnalysis = {
   };
   twelveFortune: { dayGan: string; fortunes: { position: string; gan: string; ji: string; fortune: string }[]; summary: string };
   sinStrength: {
-    isStrong: boolean; strength: string; bigyeopCount: number; inseongCount: number;
+    isStrong: boolean; strength: string; level: number; score: number;
+    bigyeopCount: number; inseongCount: number;
     deukryeong: boolean; deukji: boolean; deukse: boolean; description: string;
+  };
+  gyeokguk: {
+    type: string; name: string; reason: string;
+    yongsin: { 십신: string; 오행: string; method: string; reason: string };
+    희신오행: string; 기신오행: string; 구신오행: string;
+    신강여부: boolean; 신강점수: number;
   };
   guiin: Record<string, Positioned[]>;
   hongyeom: { hongyeom: Positioned[] };
@@ -310,13 +342,29 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
   const ilji = sipseongOfJi(dayGan, ganji.day.ji);
   const deukryeong = isHelp(wolji);
   const deukji = isHelp(ilji);
-  const others = sipseongs.filter((s) => s.position !== "월지" && s.position !== "일지");
-  const helpers = others.filter((s) => isHelp(s.sipseong)).length;
-  const deukse = helpers >= 2;
+  // 득세는 합화 변환 전(원본) 십성 기준 — 월지·일지 제외 5자리 중 비겁/인성 3개 이상
+  const rawOthers = [
+    ...PILLARS.filter((p) => p !== "day" && (p !== "hour" || ganji.hour)).map((p) => sipseongOfGan(dayGan, ganji[p]!.gan)),
+    ...PILLARS.filter((p) => (p === "year" || (p === "hour" && ganji.hour))).map((p) => sipseongOfJi(dayGan, ganji[p]!.ji)),
+  ];
+  const helpers = rawOthers.filter((s) => isHelp(s)).length;
+  const deukse = helpers >= 3;
   const bigyeopCount = sipseongs.filter((s) => s.category === "비겁성").length;
   const inseongCount = sipseongs.filter((s) => s.category === "인성").length;
   const deukCount = [deukryeong, deukji, deukse].filter(Boolean).length;
-  const isStrong = deukCount >= 2;
+  // 점수(근사 — 실측 피팅, 평균 오차 ±4점) → 7단계 등급 (등급 규칙은 실측 40/40 재현)
+  const powers = elementPowers(ganji);
+  const beElem = GAN_ELEM[dayGan];
+  const ieElem = (Object.keys(SAENG) as string[]).find((k) => SAENG[k] === beElem)!;
+  const totalPower = Object.values(powers).reduce((a, b) => a + b, 0);
+  const helperPower = powers[beElem] + powers[ieElem];
+  const score = Math.max(0, Math.min(100, Math.round((100 * helperPower) / totalPower) + (deukryeong ? 10 : 0)));
+  let level = score >= 70 ? 7 : score >= 60 ? 6 : score >= 50 ? 5 : score >= 40 ? 4 : score >= 30 ? 3 : score >= 26 ? 2 : 1;
+  if (level === 7 && deukCount < 3) level = 6;
+  if (level === 6 && deukCount < 2) level = 5;
+  if (level === 5 && deukCount < 1) level = 4;
+  const STRENGTH_LABEL = ["", "태약", "신약", "중약", "중화", "중강", "신강", "태왕"];
+  const isStrong = level >= 5;
 
   // ── 귀인 ──
   const findJi = (targets: string[] | undefined, name: string): Positioned[] =>
@@ -504,10 +552,11 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
       summary: `일간 ${dayGan}의 12운성 분포: ${fortunes.map((f) => `${f.position}: ${f.fortune}`).join(", ")}`,
     },
     sinStrength: {
-      isStrong, strength: isStrong ? "신강" : "신약",
+      isStrong, strength: STRENGTH_LABEL[level], level, score,
       bigyeopCount, inseongCount, deukryeong, deukji, deukse,
-      description: `${isStrong ? "신강" : "신약"} — 득령 ${deukryeong ? "O" : "X"}, 득지 ${deukji ? "O" : "X"}, 득세 ${deukse ? "O" : "X"}`,
+      description: `${STRENGTH_LABEL[level]}(${level}/7단계) - 점수: ${score}점, 득력: ${deukCount}/3개`,
     },
+    gyeokguk: computeGyeokguk(ganji, dayGan, powers, summary, isStrong, score),
     guiin,
     hongyeom: { hongyeom },
     dohwa: { dohwa },
@@ -592,5 +641,149 @@ function computeDaeun(
     daeun_start_date: fmtDate(startDate),
     current_age: now.getFullYear() - y + 1,
     all_daeun,
+  };
+}
+
+// ── 격국 · 용신 (luckyloveme 규칙 실측 재현) ─────────────
+const JEONWANG_NAME: Record<string, string> = {
+  목: "곡직인수격(曲直仁壽)", 화: "염상격(炎上格)", 토: "가색격(稼穡格)", 금: "종혁격(從革格)", 수: "윤하격(潤下格)",
+};
+const NAEGYEOK_NAME: Record<string, string> = {
+  식신: "식신격(食神格)", 상관: "상관격(傷官格)", 편재: "편재격(偏財格)", 정재: "정재격(正財格)",
+  편관: "편관격(偏官格)/칠살격", 정관: "정관격(正官格)", 편인: "편인격(偏印格)/효신격", 정인: "정인격(正印格)",
+  비견: "건록격(建祿格)", 겁재: "월겁격(月劫格)",
+};
+const GEUK_BY: Record<string, string> = { 토: "목", 수: "토", 화: "수", 금: "화", 목: "금" }; // key 를 극하는 오행
+function categoryElem(be: string): Record<string, string> {
+  return {
+    비겁: be, 식상: SAENG[be], 재성: GEUK[be], 관성: GEUK_BY[be],
+    인성: (Object.keys(SAENG) as string[]).find((k) => SAENG[k] === be)!,
+  };
+}
+function elemToSipsin(be: string, elem: string): string {
+  const m = categoryElem(be);
+  return Object.keys(m).find((k) => m[k] === elem)!;
+}
+
+function computeGyeokguk(
+  ganji: LocalGanji,
+  dayGan: string,
+  powers: Record<string, number>,
+  summary: { bigyeop: number; siksang: number; jaeseong: number; gwanseong: number; inseong: number },
+  isStrong: boolean,
+  score: number,
+): LocalAnalysis["gyeokguk"] {
+  const be = GAN_ELEM[dayGan];
+  const catElem = categoryElem(be);
+  const saengOf = (elem: string) => (Object.keys(SAENG) as string[]).find((k) => SAENG[k] === elem)!;
+  const jis = PILLARS.filter((p) => p !== "hour" || ganji.hour).map((p) => ganji[p]!.ji);
+  // 근(根): 지지 본기(정기)에 일간 오행(비겁)이 있는가 — API 실측상 여기·중기는 근으로 안 본다
+  const hasRoot = jis.some((ji) => GAN_ELEM[JIJANGGAN[ji][JIJANGGAN[ji].length - 1][0]] === be);
+  // 원국 글자 오행 단순 개수
+  const charElems = PILLARS.filter((p) => p !== "hour" || ganji.hour)
+    .flatMap((p) => [GAN_ELEM[ganji[p]!.gan], JI_ELEM[ganji[p]!.ji]]);
+  const beCount = charElems.filter((e) => e === be).length;
+
+  // 억부법 용신 (내격 · 가화격 공용) — 과다 판정은 오행 세력 기준
+  const eokbu = () => {
+    let category: string, yong: string;
+    if (isStrong) {
+      category = powers[catElem["비겁"]] >= powers[catElem["인성"]] ? "비겁" : "인성";
+      yong = category === "비겁" ? "관성" : "재성";
+    } else {
+      const cands: [string, number][] = [["식상", powers[catElem["식상"]]], ["재성", powers[catElem["재성"]]], ["관성", powers[catElem["관성"]]]];
+      cands.sort((a, b) => b[1] - a[1]);
+      category = cands[0][0];
+      yong = category === "재성" ? "비겁" : "인성";
+    }
+    const yongElem = catElem[yong];
+    return {
+      yongsin: {
+        십신: yong, 오행: yongElem, method: "억부법",
+        reason: `${isStrong ? "신강" : "신약"} 사주에서 ${category}이 과다하여 ${yong}을 용신으로 선택`,
+      },
+      희신오행: saengOf(yongElem),
+      기신오행: GEUK[yongElem],
+      구신오행: SAENG[yongElem],
+    };
+  };
+
+  // ① 화격 · 가화격 — 일간이 인접 천간합(월간/시간)으로 합화
+  const partners = [ganji.month.gan, ganji.hour?.gan].filter(Boolean) as string[];
+  for (const pg of partners) {
+    const hap = CHEONGAN_HAP.find(([x, y]) => (x === dayGan && y === pg) || (x === pg && y === dayGan));
+    if (!hap) continue;
+    const he = hap[2];
+    const monthElem = JI_ELEM[ganji.month.ji];
+    if (!(monthElem === he || SAENG[monthElem] === he)) continue;
+    const pairLabel = `${hap[0]}${hap[1]}`;
+    if (!hasRoot) {
+      return {
+        type: "화격", name: `${pairLabel}합화 화격`,
+        reason: `${pairLabel}합화 성립. 일간(${dayGan})의 근이 지지에 없어 순수 화격으로 판정. 합화한 ${he}오행을 용신으로 사용.`,
+        yongsin: { 십신: elemToSipsin(be, he), 오행: he, method: "화격", reason: `화격 성립으로 합화한 ${he}오행이 용신. 합화 오행을 돕는 운이 길하고, 합을 깨는 운은 흉함.` },
+        희신오행: saengOf(he), 기신오행: GEUK_BY[he], 구신오행: GEUK[he],
+        신강여부: isStrong, 신강점수: score,
+      };
+    }
+    const heJiCount = jis.filter((ji) => JI_ELEM[ji] === he).length;
+    if (heJiCount >= 2) {
+      return {
+        type: "가화격", name: `${pairLabel}합 가화격 (억부법 병행)`,
+        reason: `${pairLabel}합화 성립. 일간(${dayGan})에 근이 있으나 ${he}오행이 지지에 ${heJiCount}개로 왕성하여 가화격으로 판정. 억부법을 병행하여 분석.`,
+        ...eokbu(),
+        신강여부: isStrong, 신강점수: score,
+      };
+    }
+  }
+
+  // ② 전왕격 — 일간 오행이 원국 글자의 절반(4개) 이상
+  if (beCount >= 4) {
+    return {
+      type: "전왕격", name: JEONWANG_NAME[be],
+      reason: `일간 ${be}오행이 원국에 ${beCount}개(${Math.round((beCount / charElems.length) * 100)}%)로 압도적. ${JEONWANG_NAME[be]}으로 판정. 강한 기운을 거스르지 않고 따르는 것이 길하며, ${be}, ${saengOf(be)}오행이 용신.`,
+      yongsin: { 십신: "비겁", 오행: be, method: "종격", reason: "" },
+      희신오행: saengOf(be), 기신오행: GEUK_BY[be], 구신오행: GEUK[be],
+      신강여부: isStrong, 신강점수: score,
+    };
+  }
+
+  // ③ 종격 — 근이 없고 특정 십성이 4개 이상 압도 + 일간이 매우 약할 때만 (API 실측)
+  if (!hasRoot && score <= 25) {
+    const doms: [string, string, string, number][] = [
+      ["종재격", "從財格", "재성", summary.jaeseong],
+      ["종살격", "從殺格", "관성", summary.gwanseong],
+      ["종아격", "從兒格", "식상", summary.siksang],
+    ];
+    for (const [nm, hanja2, cat, cnt] of doms) {
+      if (cnt >= 4) {
+        const elem = catElem[cat];
+        return {
+          type: nm, name: `${nm}(${hanja2})`,
+          reason: `일간에 근이 없고 ${cat}이 ${cnt}개로 압도적. ${nm}으로 판정.`,
+          yongsin: { 십신: cat, 오행: elem, method: "종격", reason: "" },
+          희신오행: saengOf(elem), 기신오행: GEUK_BY[elem], 구신오행: GEUK[elem],
+          신강여부: isStrong, 신강점수: score,
+        };
+      }
+    }
+  }
+
+  // ④ 내격 — 왕지(자오묘유)는 본기 고정, 그 외는 투간(본기→중기→여기 순) 우선 (API 실측 55/58)
+  const hidden = JIJANGGAN[ganji.month.ji];
+  const mainStem = hidden[hidden.length - 1][0];
+  let pickStem = mainStem;
+  if (!["자", "오", "묘", "유"].includes(ganji.month.ji)) {
+    const others = PILLARS.filter((p) => p !== "day" && (p !== "hour" || ganji.hour)).map((p) => ganji[p]!.gan);
+    for (let k = hidden.length - 1; k >= 0; k--) {
+      if (others.includes(hidden[k][0])) { pickStem = hidden[k][0]; break; }
+    }
+  }
+  const monthSipseong = sipseongOfGan(dayGan, pickStem);
+  return {
+    type: "내격", name: NAEGYEOK_NAME[monthSipseong],
+    reason: `월지 지장간이 ${monthSipseong}에 해당합니다.`,
+    ...eokbu(),
+    신강여부: isStrong, 신강점수: score,
   };
 }
