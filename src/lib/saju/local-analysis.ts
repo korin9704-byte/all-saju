@@ -144,10 +144,12 @@ const ROK: Record<string, string> = { 갑: "인", 을: "묘", 병: "사", 정: "
 const CHEONGAN_HAP: [string, string, string][] = [
   ["갑", "기", "토"], ["을", "경", "금"], ["병", "신", "수"], ["정", "임", "목"], ["무", "계", "화"],
 ];
-// 천덕귀인 (월지 → 간 또는 지)
-const CHEONDEOK: Record<string, string> = {
-  인: "정", 묘: "신", 진: "임", 사: "신", 오: "해", 미: "갑",
-  신: "계", 유: "인", 술: "병", 해: "을", 자: "사", 축: "경",
+// 천덕귀인 (월지 → 대상 글자 + 간/지 구분 — 묘·오·유·자월은 지지가 대상)
+const CHEONDEOK: Record<string, { char: string; kind: "gan" | "ji" }> = {
+  인: { char: "정", kind: "gan" }, 묘: { char: "신", kind: "ji" }, 진: { char: "임", kind: "gan" },
+  사: { char: "신", kind: "gan" }, 오: { char: "해", kind: "ji" }, 미: { char: "갑", kind: "gan" },
+  신: { char: "계", kind: "gan" }, 유: { char: "인", kind: "ji" }, 술: { char: "병", kind: "gan" },
+  해: { char: "을", kind: "gan" }, 자: { char: "사", kind: "ji" }, 축: { char: "경", kind: "gan" },
 };
 // 월덕귀인 (월지 삼합국 → 간)
 const WOLDEOK: Record<string, string> = { 수: "임", 화: "병", 금: "경", 목: "갑" };
@@ -390,7 +392,11 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
     cheonbok: findJi([CHEONBOK[dayGan]], "천복귀인"),
     hakdang: findJi([JANGSAENG_JI[dayGan]], "학당귀인"),
     jaego: findJi(JAEGO[dayGan], "재고귀인"),
-    cheondeok: findGanOrJi(CHEONDEOK[ganji.month.ji], "천덕귀인"),
+    cheondeok: (() => {
+      const t = CHEONDEOK[ganji.month.ji];
+      const pool = t.kind === "gan" ? [...ganEntries, { position: "일간", char: dayGan, kind: "gan" as const }] : jiEntries;
+      return pool.filter((e) => e.char === t.char).map((e) => ({ position: e.position, ji: e.char, name: "천덕귀인" }));
+    })(),
     woldeok: findGanOrJi(WOLDEOK[SAMHAP_GROUP[ganji.month.ji]], "월덕귀인"),
     amrok: findJi([YUKHAP.find((p) => p.includes(ROK[dayGan]))!.find((j) => j !== ROK[dayGan])!], "암록"),
     geumyeo: findJi([GEUMYEO[dayGan]], "금여"),
