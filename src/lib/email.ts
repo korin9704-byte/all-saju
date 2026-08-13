@@ -2,7 +2,10 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM ?? "냥점 <no-reply@nyangjeom.com>";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nyangjeom.com";
+// 이메일 링크는 고객에게 나가므로 localhost 가 섞이지 않게 방어한다
+// (로컬에서 장애 복구 재생성을 돌려도 링크는 항상 프로덕션 주소)
+const envSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const SITE_URL = envSiteUrl && !envSiteUrl.includes("localhost") ? envSiteUrl : "https://nyangjeom.com";
 
 export async function sendResultEmail({
   to,
