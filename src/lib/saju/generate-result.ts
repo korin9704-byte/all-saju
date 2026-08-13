@@ -20,7 +20,6 @@ import {
   buildTroubleSajuPrompt,
 } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
-import { recordShadowDiff } from "@/lib/saju/shadow-compare";
 import {
   isSajuApiConfigured,
   fetchSajuAnalysis,
@@ -132,14 +131,6 @@ export async function generateAndStoreResult(
       if (converted) {
         myeongsik = converted;
         manseryeokText = formatSajuToManseryeok(analysis, birthInfo);
-        // 섀도 대조 — 로컬 만세력과의 차이를 기록 (실패해도 판매 흐름에 영향 없음)
-        await recordShadowDiff(service, order.id, {
-          birth_date: input.birth_date,
-          birth_time: input.birth_time,
-          time_unknown: input.time_unknown,
-          calendar: input.calendar,
-          gender: input.gender,
-        }, analysis);
       } else {
         // ganji 필드 누락 — mock 으로 폴백
         myeongsik = await computeMyeongsik(toComputeInput(input));
