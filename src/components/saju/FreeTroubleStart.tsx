@@ -35,7 +35,7 @@ export function FreeTroubleStart({
       style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
     >
       {/* 시–작 사이만 살짝 벌림 */}
-      <span className="mr-[0.08em]">시</span>작하기
+      <span className="mr-[0.14em]">시</span>작하기
     </button>
   );
 }
