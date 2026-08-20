@@ -33,7 +33,7 @@ const daeunCtx = data.daeun.all_daeun.map((x: Api) =>
 ).join("\n");
 
 const mkBrief = (list: Api[], note: string) => `시기별 대운 풀이 — ${PERSON.name}님의 대운을 10년 단위로 하나씩 깊게 풀이. 반드시 아래 소제목을 이 순서로, 뒤에 다른 문구를 덧붙이지 말고 그대로 사용:
-${list.map((x: Api) => `### ${x.age_start}세 ${x.ganji}(${x.ganji_hanja}) 대운`).join("\n")}
+${list.map((x: Api) => `### ${x.age_start}세~${x.age_start + 9}세 ${x.ganji}(${x.ganji_hanja}) 대운`).join("\n")}
 각 대운마다: 그 시기의 전체 분위기(그 대운의 십성·12운성 근거를 쉬운 말로), 일·돈·관계·마음의 구체적 장면, 조심할 것과 살릴 것. 각 소제목 아래 600~750자.${note}`;
 
 const past = data.daeun.all_daeun.slice(0, 5);
