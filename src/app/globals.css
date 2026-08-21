@@ -45,6 +45,8 @@
     @apply bg-background text-foreground;
     font-family:
       "Gowun Dodum", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    /* Gowun Dodum은 400 단일 굵기 폰트 — 브라우저 가짜 볼드(faux bold) 합성 방지 */
+    font-synthesis: none;
   }
   input, textarea, select, button {
     font-family: inherit;

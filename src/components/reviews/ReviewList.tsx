@@ -16,10 +16,10 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
     <section className="mb-10 pt-2">
       {title && (
         <div className="mb-4 flex items-center gap-2.5">
-          <h2 className="text-sm font-semibold text-ink">{title}</h2>
+          <h2 className="text-[14.5px] font-semibold text-ink">{title}</h2>
           {/* 별점 평균 · 리뷰 개수 */}
           {reviews.length > 0 && (
-            <span className="flex items-center gap-1.5 text-sm text-body">
+            <span className="flex items-center gap-1.5 text-[14.5px] text-body">
               <span className="text-[#C95FC0]">★</span>
               <span className="font-semibold text-ink">
                 {(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}
@@ -44,7 +44,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
                 {formatDate(r.created_at)}
               </span>
             </div>
-            <p className="text-sm text-charcoal leading-relaxed">{r.content}</p>
+            <p className="text-[14.5px] text-charcoal leading-relaxed">{r.content}</p>
           </li>
         ))}
       </ul>
@@ -54,7 +54,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           <button
             type="button"
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-sm text-body hover:bg-[#E7DDF8] transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
           >
             <span>더 보기 ({reviews.length - visibleCount}개 남음)</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +67,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           <button
             type="button"
             onClick={() => setVisibleCount(INITIAL_COUNT)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-sm text-body hover:bg-[#E7DDF8] transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
           >
             <span>접기</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

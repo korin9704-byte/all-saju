@@ -154,7 +154,7 @@ export default async function ProductDetailPage({
           <div className="px-4 pb-14">
             {/* 상품 설명 */}
             {productDescriptions[product.slug] && (
-              <div className="mt-8 space-y-3 text-base text-ink leading-relaxed">
+              <div className="mt-8 space-y-3 text-[15px] text-ink leading-relaxed">
                 {productDescriptions[product.slug].map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
