@@ -14,9 +14,12 @@ import { LIFEBOOK_CSS } from "./lifebook-css";
 export default function LifeBookViewer({
   payload,
   storageKey,
+  siblingTab,
 }: {
   payload: LifeReportPayload;
   storageKey: string;
+  /** 번들 형제 결과지(고민 사주)로 이동하는 탭 */
+  siblingTab?: { label: string; href: string };
 }) {
   // 과거 생성분에 표지 뷰(label === "")가 있으면 제외하고 1장부터 시작
   const views = payload.views.filter((v) => v.label !== "");
@@ -78,6 +81,29 @@ export default function LifeBookViewer({
             &#9776;
           </button>
         </header>
+
+        {/* 번들 형제 결과지 탭 — 결과지 페이지의 알약 탭과 동일한 문법 */}
+        {siblingTab && (
+          <div style={{ display: "flex", justifyContent: "center", gap: 8, padding: "12px 16px 0" }}>
+            <a
+              href={siblingTab.href}
+              style={{
+                padding: "8px 20px", borderRadius: 999, fontSize: 14, textDecoration: "none",
+                background: "#fff", border: "1px solid #E7DDF8", color: "#4A3A72",
+              }}
+            >
+              {siblingTab.label}
+            </a>
+            <span
+              style={{
+                padding: "8px 20px", borderRadius: 999, fontSize: 14, color: "#fff",
+                background: "linear-gradient(90deg, #8F7BD6, #C95FC0)",
+              }}
+            >
+              인생 사주
+            </span>
+          </div>
+        )}
 
         <main>
           <article className="view on">

@@ -125,6 +125,8 @@ export function FreeTroubleWizard({
 
   async function submit() {
     if (askConcern && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
+    // 번들 선택 시 직업·연애 상태 필수
+    if (showAddon && withAddon && (!job || !love)) { toast.error("직업·연애 상태를 선택해 주세요."); return; }
     const payload = {
       // 추가 상품(정통 사주) 선택 시 번들 상품으로 주문
       productId: withAddon && bundle ? bundle.productId : productId,
@@ -135,8 +137,8 @@ export function FreeTroubleWizard({
       gender,
       calendar,
       concerns: [
-        ...(askJob && job ? [`[직업] ${job}`] : []),
-        ...(askJob && love ? [`[연애] ${love}`] : []),
+        ...((askJob || withAddon) && job ? [`[직업] ${job}`] : []),
+        ...((askJob || withAddon) && love ? [`[연애] ${love}`] : []),
         ...(concern.trim() ? [concern.trim()] : []),
       ],
       guestEmail: email.trim(),
@@ -456,19 +458,43 @@ export function FreeTroubleWizard({
                   <div className="flex items-start justify-between gap-2 w-full">
                     <span className="flex flex-col">
                       <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
-                        고민 사주 + 정통 사주
-                        <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white" style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>추천</span>
+                        고민 사주 + 인생 사주
+                        <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium bg-[#F5D98B] text-[#6B5320]">9할이 선택</span>
                       </span>
-                      <span className="mt-1 text-xs font-normal text-body">내 고민 풀이 + 타고난 사주 전체 풀이 한 번에.</span>
+                      <span className="mt-1 text-xs font-normal text-body">고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트.</span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="block text-xs text-[#C95FC0]">5,000원 할인</span>
-                      <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
+                      <span className="block text-xs text-[#C95FC0]">50% 할인</span>
+                      <span className="block text-xs text-mute line-through">{(bundle.price * 2).toLocaleString()}원</span>
                       <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
                     </span>
                   </div>
                 </button>
               </div>
+
+              {/* 번들 선택 시 — 직업·연애 상태 질문 */}
+              {withAddon && (
+                <div className="mt-3 rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4">
+                  <p className="text-xs text-body mb-2 pl-1">어떤 일을 하고 있나요?</p>
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    {JOB_OPTIONS.map((opt) => (
+                      <button key={opt} type="button" onClick={() => setJob(opt)}
+                        className={`rounded-full px-2 py-2.5 text-[13px] whitespace-nowrap transition-colors ${job === opt ? "bg-[#E7DDF8] border border-[#8F7BD6] text-[#4A3A72]" : "bg-[#FBF9FE] border border-[#E7DDF8] text-body"}`}>
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-body mb-2 pl-1">지금 연애하고 있나요?</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {LOVE_OPTIONS.map((opt) => (
+                      <button key={opt} type="button" onClick={() => setLove(opt)}
+                        className={`rounded-full px-2 py-2.5 text-[13px] whitespace-nowrap transition-colors ${love === opt ? "bg-[#E7DDF8] border border-[#8F7BD6] text-[#4A3A72]" : "bg-[#FBF9FE] border border-[#E7DDF8] text-body"}`}>
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <button
                 type="button"

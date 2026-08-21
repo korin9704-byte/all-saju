@@ -357,14 +357,14 @@ export async function generateAndStoreResult(
 }
 
 /**
- * 번들(고민 사주 + 정통 사주) 주문 처리:
+ * 번들(고민 사주 + 인생 사주) 주문 처리:
  * 부모 주문으로 고민 사주 결과지를, 0원 자식 주문(order_id 접미사 -jt)으로
- * 정통 사주 결과지를 병렬 생성한다. 반환값은 부모(고민 사주) resultId.
+ * 인생 사주 결과지를 병렬 생성한다. 반환값은 부모(고민 사주) resultId.
  */
 export async function generateBundleResults(
   service: Service,
   parentRowId: string,
-): Promise<{ resultId: string; jeongtongResultId: string }> {
+): Promise<{ resultId: string; lifeResultId: string }> {
   const { data: parent } = await service
     .from("orders")
     .select("id, order_id, user_id, guest_email")
@@ -379,12 +379,12 @@ export async function generateBundleResults(
     .single();
   if (!input) throw new Error("번들 사주 입력 조회 실패");
 
-  const { data: todayProduct } = await service
+  const { data: lifeProduct } = await service
     .from("products")
     .select("id")
-    .eq("slug", "today-fortune")
+    .eq("slug", "life-saju")
     .single();
-  if (!todayProduct) throw new Error("정통 사주 상품 조회 실패");
+  if (!lifeProduct) throw new Error("인생 사주 상품 조회 실패");
 
   // 자식 주문 — 재시도 대비 idempotent (이미 있으면 재사용)
   const childOrderId = `${parent.order_id}${BUNDLE_CHILD_SUFFIX}`;
@@ -404,7 +404,7 @@ export async function generateBundleResults(
         order_id: childOrderId,
         user_id: parent.user_id,
         guest_email: parent.guest_email,
-        product_id: todayProduct.id,
+        product_id: lifeProduct.id,
         amount: 0,
         status: "paid",
         paid_at: new Date().toISOString(),
@@ -414,7 +414,8 @@ export async function generateBundleResults(
     if (childErr || !child) throw new Error(`번들 자식 주문 생성 실패: ${childErr?.message ?? "unknown"}`);
     childRowId = child.id;
 
-    // 정통 사주는 고민 텍스트 없이 사주 정보만 사용
+    // 인생 사주는 [직업]/[연애] 태그만 사용 (자유 고민 텍스트 제외)
+    const parentConcerns: string[] = Array.isArray(input.concerns) ? input.concerns : [];
     const { error: inputErr } = await service.from("saju_inputs").insert({
       order_id: childRowId,
       name: input.name,
@@ -423,16 +424,16 @@ export async function generateBundleResults(
       time_unknown: input.time_unknown,
       gender: input.gender,
       calendar: input.calendar,
-      concerns: [],
+      concerns: parentConcerns.filter((c) => typeof c === "string" && c.startsWith("[")),
     });
     if (inputErr) throw new Error(`번들 자식 사주 입력 저장 실패: ${inputErr.message}`);
   }
 
-  // 이메일은 부모(고민 사주 + 정통 사주) 결과지 1통만 발송 — 정통 사주는 결과지 탭으로 이동
+  // 이메일은 부모(고민 사주 + 인생 사주) 결과지 1통만 발송 — 인생 사주는 결과지 탭으로 이동
   const [parentRes, childRes] = await Promise.all([
     generateAndStoreResult(service, parent.id),
     generateAndStoreResult(service, childRowId, { skipEmail: true }),
   ]);
 
-  return { resultId: parentRes.resultId, jeongtongResultId: childRes.resultId };
+  return { resultId: parentRes.resultId, lifeResultId: childRes.resultId };
 }

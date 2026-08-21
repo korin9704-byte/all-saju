@@ -94,7 +94,21 @@ export default async function ResultPage({
   if (product?.slug === LIFE_SLUG) {
     const lifePayload = parseLifePayload(result.interpretation_md);
     if (lifePayload) {
-      return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} />;
+      // 번들 자식 주문(-jt)이면 부모(고민 사주) 결과지로 가는 탭 제공
+      let siblingTab: { label: string; href: string } | undefined;
+      if (order?.order_id?.endsWith("-jt")) {
+        const parentOrderId = order.order_id.slice(0, -"-jt".length);
+        const { data: parentOrder } = await service
+          .from("orders")
+          .select("id")
+          .eq("order_id", parentOrderId)
+          .maybeSingle();
+        const { data: parentResult } = parentOrder
+          ? await service.from("saju_results").select("id").eq("order_id", parentOrder.id).maybeSingle()
+          : { data: null };
+        if (parentResult) siblingTab = { label: "고민 사주", href: `/results/${parentResult.id}` };
+      }
+      return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} siblingTab={siblingTab} />;
     }
   }
 
@@ -122,8 +136,8 @@ export default async function ResultPage({
     <AskAnotherConcern productId={followupProduct.id} price={followupProduct.price} saju={askSaju} guestEmail={order?.guest_email} />
   ) : null;
 
-  // ── 번들(고민 사주 + 정통 사주) — 형제 결과지 탭 ──
-  // 부모 주문(번들 상품) 결과지 = 고민 사주, 자식 주문(order_id 접미사 -jt) = 정통 사주
+  // ── 번들(고민 사주 + 인생 사주) — 형제 결과지 탭 ──
+  // 부모 주문(번들 상품) 결과지 = 고민 사주, 자식 주문(order_id 접미사 -jt) = 인생 사주
   const BUNDLE_SLUG = "trouble-saju-bundle";
   const BUNDLE_CHILD_SUFFIX = "-jt";
   let bundleTabs: { label: string; resultId: string | null }[] | null = null;
@@ -140,7 +154,7 @@ export default async function ResultPage({
       if (childResult) {
         bundleTabs = [
           { label: "고민 사주", resultId: null },
-          { label: "정통 사주", resultId: childResult.id },
+          { label: "인생 사주", resultId: childResult.id },
         ];
       }
     } else if (order.order_id.endsWith(BUNDLE_CHILD_SUFFIX)) {
@@ -156,7 +170,7 @@ export default async function ResultPage({
       if (parentResult) {
         bundleTabs = [
           { label: "고민 사주", resultId: parentResult.id },
-          { label: "정통 사주", resultId: null },
+          { label: "인생 사주", resultId: null },
         ];
       }
     }
