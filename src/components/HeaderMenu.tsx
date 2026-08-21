@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -33,8 +34,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         <img src="/images/paw.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-50">
+      {/* 시트는 body 포털로 — sticky/transform 조상 안에서도 화면 전체 기준으로 뜨게 */}
+      {open && createPortal(
+        <div className="fixed inset-0 z-[70]">
           <style>{`
             @keyframes sheetUp {
               from { transform: translateY(100%); }
@@ -71,7 +73,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               {/* 메뉴 항목 */}
               <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
-                <MenuLink href="/products/today-fortune">정통 사주</MenuLink>
+                <MenuLink href="/products/life-saju">인생 사주</MenuLink>
                 <MenuLink href="/reviews">리뷰</MenuLink>
                 {isLoggedIn ? (
                   <>
@@ -95,7 +97,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               </nav>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

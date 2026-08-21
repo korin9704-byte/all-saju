@@ -108,7 +108,7 @@ export default async function ResultPage({
           : { data: null };
         if (parentResult) siblingTab = { label: "고민 사주", href: `/results/${parentResult.id}` };
       }
-      return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} siblingTab={siblingTab} />;
+      return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} siblingTab={siblingTab} isLoggedIn={!!viewer} />;
     }
   }
 

@@ -10,16 +10,20 @@
 import { useEffect, useRef, useState } from "react";
 import type { LifeReportPayload } from "@/lib/saju/life-report";
 import { LIFEBOOK_CSS } from "./lifebook-css";
+import { HeaderMenu } from "@/components/HeaderMenu";
 
 export default function LifeBookViewer({
   payload,
   storageKey,
   siblingTab,
+  isLoggedIn = false,
 }: {
   payload: LifeReportPayload;
   storageKey: string;
   /** 번들 형제 결과지(고민 사주)로 이동하는 탭 */
   siblingTab?: { label: string; href: string };
+  /** 헤더 메뉴(발바닥) 로그인 상태 */
+  isLoggedIn?: boolean;
 }) {
   // 과거 생성분에 표지 뷰(label === "")가 있으면 제외하고 1장부터 시작
   const views = payload.views.filter((v) => v.label !== "");
@@ -87,15 +91,9 @@ export default function LifeBookViewer({
           >
             냥점
           </a>
-          <button className="menu-btn" onClick={() => setTocOpen(true)} aria-label="목차">
-            <img
-              src="/images/paw.png"
-              alt=""
-              width={28}
-              height={28}
-              style={{ width: 28, height: 28, objectFit: "contain", display: "block" }}
-            />
-          </button>
+          <span style={{ marginLeft: "auto" }}>
+            <HeaderMenu isLoggedIn={isLoggedIn} />
+          </span>
         </header>
 
         {/* 번들 형제 결과지 탭 — 결과지 페이지의 알약 탭과 동일한 문법 */}
