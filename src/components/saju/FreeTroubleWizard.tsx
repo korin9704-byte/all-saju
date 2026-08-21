@@ -308,7 +308,7 @@ export function FreeTroubleWizard({
 
           {step === "job" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>요즘은 어떤 일을 하며 지내세요?</h1>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>어떤 일을 하고 있나요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {JOB_OPTIONS.map((opt) => radioRow(job === opt, opt, () => setJob(opt), opt))}
               </div>
