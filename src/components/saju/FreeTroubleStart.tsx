@@ -34,7 +34,7 @@ export function FreeTroubleStart({
       type="button"
       onClick={() => setStarted(true)}
       className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90"
-      style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
+      style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)", boxShadow: "0 8px 24px rgba(143, 123, 214, 0.45)" }}
     >
       시작하기
     </button>
