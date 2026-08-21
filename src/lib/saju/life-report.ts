@@ -98,7 +98,7 @@ function addTails(doc: string): string {
 }
 
 // ── 컨텍스트 ────────────────────────────────────────
-function buildBaseCtx(a: Api, name: string, job?: string): string {
+function buildBaseCtx(a: Api, name: string, job?: string, loveStatus?: string): string {
   const g = a.ganji;
   const parts = [
     `[사주 원국] 년주 ${g.year.gan}${g.year.ji} / 월주 ${g.month.gan}${g.month.ji} / 일주 ${g.day.gan}${g.day.ji}` +
@@ -141,6 +141,9 @@ function buildBaseCtx(a: Api, name: string, job?: string): string {
   }
   if (job) {
     parts.push(`[현재 직업] ${job} — 직업운·재물운·연운 풀이의 생활 장면을 이 상황에 맞춘다.`);
+  }
+  if (loveStatus) {
+    parts.push(`[연애 상태] ${loveStatus} — 연애&결혼운·연운 풀이를 이 상황에 맞춘다 (기혼이면 부부 관계 중심, 솔로면 인연의 시기 중심).`);
   }
   parts.push(`[호칭] 내담자를 "${name}님"으로 부른다.`);
   return parts.join("\n");
@@ -598,7 +601,7 @@ function assembleViews(
 // ── 진입점 ──────────────────────────────────────────
 export async function generateLifeReport(
   analysis: SajuAnalysisResponse,
-  opts: { name: string; birthDate: string; birthTime: string | null; timeUnknown: boolean; calendar: "solar" | "lunar"; gender: "male" | "female"; job?: string },
+  opts: { name: string; birthDate: string; birthTime: string | null; timeUnknown: boolean; calendar: "solar" | "lunar"; gender: "male" | "female"; job?: string; loveStatus?: string },
 ): Promise<{ payload: LifeReportPayload; provider: string; model: string }> {
   const a = analysis as Api;
   if (!a?.ganji?.day) throw new Error("인생 사주 생성에는 만세력 풀 분석(ganji)이 필요합니다");
@@ -610,7 +613,7 @@ export async function generateLifeReport(
 
   const currentYear = Number((analysis as Api).seun?.currentSeun?.year ?? new Date().getFullYear());
 
-  const baseCtx = buildBaseCtx(a, name, opts.job);
+  const baseCtx = buildBaseCtx(a, name, opts.job, opts.loveStatus);
   const { jobs, samjae, years } = buildJobs(a, name, currentYear);
   const { results, provider, model } = await runJobs(jobs, baseCtx, name);
   const views = assembleViews(a, name, birthLabel, results, samjae, years);

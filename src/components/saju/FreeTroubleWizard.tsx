@@ -8,10 +8,11 @@ import { toast } from "sonner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "job", "email", "concern"] as const;
+const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "concern"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비 중", "학생", "주부", "기타"] as const;
+const LOVE_OPTIONS = ["솔로", "연애 중", "기혼"] as const;
 
 function clamp2(raw: string, max: number): string {
   const v = raw.replace(/\D/g, "").slice(0, 2);
@@ -44,7 +45,7 @@ export function FreeTroubleWizard({
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
   const steps: readonly Step[] = STEPS.filter(
-    (s) => (askConcern || s !== "concern") && (askJob || s !== "job"),
+    (s) => (askConcern || s !== "concern") && (askJob || (s !== "job" && s !== "love")),
   );
   const step: Step = steps[stepIdx];
   const isLastStep = stepIdx === steps.length - 1;
@@ -60,6 +61,7 @@ export function FreeTroubleWizard({
   const [gender, setGender] = useState<"male" | "female" | null>(null);
   const [name, setName] = useState("");
   const [job, setJob] = useState<string | null>(null);
+  const [love, setLove] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -108,6 +110,7 @@ export function FreeTroubleWizard({
     if (step === "gender" && !gender) { toast.error("성별을 선택해 주세요."); return; }
     if (step === "name" && !name.trim()) { toast.error("이름 또는 닉네임을 입력해 주세요."); return; }
     if (step === "job" && !job) { toast.error("지금 하시는 일을 선택해 주세요."); return; }
+    if (step === "love" && !love) { toast.error("연애 상태를 선택해 주세요."); return; }
     if (step === "email") {
       if (!email.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요."); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
@@ -133,6 +136,7 @@ export function FreeTroubleWizard({
       calendar,
       concerns: [
         ...(askJob && job ? [`[직업] ${job}`] : []),
+        ...(askJob && love ? [`[연애] ${love}`] : []),
         ...(concern.trim() ? [concern.trim()] : []),
       ],
       guestEmail: email.trim(),
@@ -186,7 +190,7 @@ export function FreeTroubleWizard({
     <label key={key ?? label}
       className={`flex items-center gap-3 cursor-pointer rounded-2xl px-4 py-3 transition-colors ${selected ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}>
       <input type="radio" checked={selected} onChange={onClick} className="w-4 h-4 accent-[#7761C8]" />
-      <span className="text-sm text-[#4A3A72]">{label}</span>
+      <span className="text-sm text-[#4A3A72] whitespace-nowrap">{label}</span>
     </label>
   );
 
@@ -311,6 +315,19 @@ export function FreeTroubleWizard({
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>어떤 일을 하고 있나요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {JOB_OPTIONS.map((opt) => radioRow(job === opt, opt, () => setJob(opt), opt))}
+              </div>
+              <div className="flex gap-3">
+                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+              </div>
+            </>
+          )}
+
+          {step === "love" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>연애 상태를 알려주세요.</h1>
+              <div className="grid grid-cols-3 gap-3 mb-8">
+                {LOVE_OPTIONS.map((opt) => radioRow(love === opt, opt, () => setLove(opt), opt))}
               </div>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
