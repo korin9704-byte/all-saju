@@ -34,7 +34,16 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
       <ul className="space-y-[18px]">
         {displayed.map((r) => (
           <li key={r.id}>
-            <div className="flex items-center justify-between px-1 pb-1.5">
+            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
+              <span
+                className="absolute -left-1.5 bottom-0.5 w-3.5 h-3.5 bg-[#EDE6F9] rounded-br-[14px]"
+                style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
+                aria-hidden
+              />
+              <p className="text-[14.5px] text-charcoal leading-[1.85]">{r.content}</p>
+            </div>
+            {/* 채팅 타임스탬프처럼 버블 아래에 별점 · 날짜 */}
+            <div className="flex items-center gap-2 px-1 pt-1.5">
               <span aria-label={`${r.rating}점`} className="text-[13px] tracking-[1px]">
                 <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
                 <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
@@ -44,14 +53,6 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
                 {r.product_name && <>{r.product_name} · </>}
                 {formatDate(r.created_at)}
               </span>
-            </div>
-            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
-              <span
-                className="absolute -left-1.5 bottom-0.5 w-3.5 h-3.5 bg-[#EDE6F9] rounded-br-[14px]"
-                style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
-                aria-hidden
-              />
-              <p className="text-[14.5px] text-charcoal leading-[1.85]">{r.content}</p>
             </div>
           </li>
         ))}
