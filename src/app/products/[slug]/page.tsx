@@ -168,7 +168,7 @@ export default async function ProductDetailPage({
 
             {/* 시작하기 → 단계형 위저드 (결제) — 고민 사주만 고민 입력 단계 포함 */}
             <section className="mt-8">
-              <FreeTroubleStart productId={product.id} mode="paid" askConcern={product.slug === "trouble-saju"} basePrice={product.price} bundle={bundle} />
+              <FreeTroubleStart productId={product.id} mode="paid" askConcern={product.slug === "trouble-saju"} askJob={product.slug === "life-saju"} basePrice={product.price} bundle={bundle} />
             </section>
           </div>
         </div>

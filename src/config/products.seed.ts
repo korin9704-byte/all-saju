@@ -28,7 +28,7 @@ export const productsSeed: ProductSeed[] = [
     description: "내 인생 전체를 담은 13장의 평생 리포트.\n불만족 시 100% 환불!",
     price: 52000,
     display_order: 95,
-    is_active: false,
+    is_active: true,
   },
   {
     slug: "premium-saju",

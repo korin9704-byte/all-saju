@@ -181,6 +181,7 @@ export async function generateAndStoreResult(
     if (!fullAnalysis) {
       throw new Error("인생 사주 결과지 생성 실패: 만세력 풀 분석 API를 사용할 수 없습니다");
     }
+    const jobConcern = (input.concerns as string[]).find((c) => c.startsWith("[직업]"));
     const life = await generateLifeReport(fullAnalysis, {
       name: input.name ?? "",
       birthDate: input.birth_date,
@@ -188,6 +189,7 @@ export async function generateAndStoreResult(
       timeUnknown: input.time_unknown,
       calendar: input.calendar,
       gender: input.gender,
+      job: jobConcern?.replace("[직업]", "").trim() || undefined,
     });
     llm = { text: JSON.stringify(life.payload), provider: life.provider, model: life.model };
   } else if (promptSlug === "worry-saju") {

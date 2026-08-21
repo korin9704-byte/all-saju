@@ -8,8 +8,10 @@ import { toast } from "sonner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "email", "concern"] as const;
+const STEPS = ["birth", "time", "gender", "name", "job", "email", "concern"] as const;
 type Step = typeof STEPS[number];
+
+const JOB_OPTIONS = ["직장인", "사업·자영업", "취업준비중", "학생", "주부", "기타"] as const;
 
 function clamp2(raw: string, max: number): string {
   const v = raw.replace(/\D/g, "").slice(0, 2);
@@ -22,6 +24,7 @@ export function FreeTroubleWizard({
   onBack,
   mode = "free",
   askConcern = true,
+  askJob = false,
   basePrice,
   bundle,
 }: {
@@ -31,6 +34,8 @@ export function FreeTroubleWizard({
   mode?: "free" | "paid";
   /** false면 고민 입력 단계 없이 이메일 단계에서 바로 결제 (사주 풀이 등 일반 풀이 상품용) */
   askConcern?: boolean;
+  /** true면 이름 뒤에 직업 선택 단계 추가 (인생 사주 — 직업운·재물운 맞춤용) */
+  askJob?: boolean;
   /** 단품 가격 (추가 상품 선택 UI 표시용) */
   basePrice?: number;
   /** 추가 상품(정통 사주) 번들 — 있으면 마지막 단계에 패키지 선택 노출 */
@@ -38,7 +43,9 @@ export function FreeTroubleWizard({
 }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
-  const steps: readonly Step[] = askConcern ? STEPS : STEPS.filter((s) => s !== "concern");
+  const steps: readonly Step[] = STEPS.filter(
+    (s) => (askConcern || s !== "concern") && (askJob || s !== "job"),
+  );
   const step: Step = steps[stepIdx];
   const isLastStep = stepIdx === steps.length - 1;
 
@@ -52,6 +59,7 @@ export function FreeTroubleWizard({
   const timeUnknown = knowsTime === false;
   const [gender, setGender] = useState<"male" | "female" | null>(null);
   const [name, setName] = useState("");
+  const [job, setJob] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -99,6 +107,7 @@ export function FreeTroubleWizard({
     }
     if (step === "gender" && !gender) { toast.error("성별을 선택해 주세요."); return; }
     if (step === "name" && !name.trim()) { toast.error("이름 또는 닉네임을 입력해 주세요."); return; }
+    if (step === "job" && !job) { toast.error("지금 하시는 일을 선택해 주세요."); return; }
     if (step === "email") {
       if (!email.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요."); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
@@ -122,7 +131,10 @@ export function FreeTroubleWizard({
       timeUnknown,
       gender,
       calendar,
-      concerns: concern.trim() ? [concern.trim()] : [],
+      concerns: [
+        ...(askJob && job ? [`[직업] ${job}`] : []),
+        ...(concern.trim() ? [concern.trim()] : []),
+      ],
       guestEmail: email.trim(),
     };
 
@@ -287,6 +299,21 @@ export function FreeTroubleWizard({
                 onChange={(e) => setName(e.target.value)}
                 placeholder="풀이에서 이렇게 불러드릴게요."
                 className={`${textInputCls} mb-8`} />
+              <div className="flex gap-3">
+                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+              </div>
+            </>
+          )}
+
+          {step === "job" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 어떤 일을 하고 계세요?</h1>
+              <p className="text-sm text-[#7A6B9E] mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>정확히 입력할수록 더 깊이 봐드려요.</p>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {JOB_OPTIONS.map((opt) => radioRow(job === opt, opt, () => setJob(opt), opt))}
+              </div>
+              <p className="text-xs text-center text-[#9C8FBF] mb-8" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>직업운·재물운 풀이를 지금 상황에 맞춰 드려요.</p>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>

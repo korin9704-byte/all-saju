@@ -8,12 +8,14 @@ export function FreeTroubleStart({
   productId,
   mode = "free",
   askConcern = true,
+  askJob = false,
   basePrice,
   bundle,
 }: {
   productId: string;
   mode?: "free" | "paid";
   askConcern?: boolean;
+  askJob?: boolean;
   basePrice?: number;
   bundle?: { productId: string; price: number } | null;
 }) {
@@ -22,7 +24,7 @@ export function FreeTroubleStart({
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} basePrice={basePrice} bundle={bundle} onBack={() => setStarted(false)} />
+        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} basePrice={basePrice} bundle={bundle} onBack={() => setStarted(false)} />
       </div>
     );
   }

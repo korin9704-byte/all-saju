@@ -98,7 +98,7 @@ function addTails(doc: string): string {
 }
 
 // ── 컨텍스트 ────────────────────────────────────────
-function buildBaseCtx(a: Api, name: string): string {
+function buildBaseCtx(a: Api, name: string, job?: string): string {
   const g = a.ganji;
   const parts = [
     `[사주 원국] 년주 ${g.year.gan}${g.year.ji} / 월주 ${g.month.gan}${g.month.ji} / 일주 ${g.day.gan}${g.day.ji}` +
@@ -138,6 +138,9 @@ function buildBaseCtx(a: Api, name: string): string {
   if (a.daeun?.all_daeun) {
     const d = a.daeun;
     parts.push(`[대운] ${d.direction}, ${d.daeun_start_age}세 시작, 현재 ${d.current_daeun?.ganji} 대운(${d.current_daeun?.age_start}~${d.current_daeun?.age_end}세) — 전체: ${d.all_daeun.map((x: Api) => `${x.age_start}세 ${x.ganji}(${x.sipseong?.gan}/${x.sipseong?.ji}, ${x.twelveFortune?.fortune ?? ""})`).join(" → ")}`);
+  }
+  if (job) {
+    parts.push(`[현재 직업] ${job} — 직업운·재물운·연운 풀이의 생활 장면을 이 상황에 맞춘다.`);
   }
   parts.push(`[호칭] 내담자를 "${name}님"으로 부른다.`);
   return parts.join("\n");
@@ -595,7 +598,7 @@ function assembleViews(
 // ── 진입점 ──────────────────────────────────────────
 export async function generateLifeReport(
   analysis: SajuAnalysisResponse,
-  opts: { name: string; birthDate: string; birthTime: string | null; timeUnknown: boolean; calendar: "solar" | "lunar"; gender: "male" | "female" },
+  opts: { name: string; birthDate: string; birthTime: string | null; timeUnknown: boolean; calendar: "solar" | "lunar"; gender: "male" | "female"; job?: string },
 ): Promise<{ payload: LifeReportPayload; provider: string; model: string }> {
   const a = analysis as Api;
   if (!a?.ganji?.day) throw new Error("인생 사주 생성에는 만세력 풀 분석(ganji)이 필요합니다");
@@ -607,7 +610,7 @@ export async function generateLifeReport(
 
   const currentYear = Number((analysis as Api).seun?.currentSeun?.year ?? new Date().getFullYear());
 
-  const baseCtx = buildBaseCtx(a, name);
+  const baseCtx = buildBaseCtx(a, name, opts.job);
   const { jobs, samjae, years } = buildJobs(a, name, currentYear);
   const { results, provider, model } = await runJobs(jobs, baseCtx, name);
   const views = assembleViews(a, name, birthLabel, results, samjae, years);
