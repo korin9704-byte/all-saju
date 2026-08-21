@@ -19,6 +19,7 @@ import {
   jobSajuReviews,
   businessSajuReviews,
   troubleSajuReviews,
+  lifeSajuReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
 
@@ -35,6 +36,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "job-saju":        jobSajuReviews,
   "business-saju":   businessSajuReviews,
   "trouble-saju":    troubleSajuReviews,
+  "life-saju":       lifeSajuReviews,
 };
 
 export default async function ProductDetailPage({
@@ -94,8 +96,7 @@ export default async function ProductDetailPage({
   const wizardHeroes: Record<string, string> = {
     "trouble-saju": "/images/trouble.webp",
     "today-fortune": "/images/today.webp",
-    // TODO: 인생 사주 전용 히어로 이미지로 교체 (임시로 정통 사주 이미지 사용)
-    "life-saju": "/images/today.webp",
+    "life-saju": "/images/life-saju.png",
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {

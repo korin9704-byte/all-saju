@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { isSupabaseConfigured } from "@/lib/env";
-import { troubleSajuReviews, todayFortuneReviews } from "@/config/dummy-reviews";
+import { troubleSajuReviews, todayFortuneReviews, lifeSajuReviews } from "@/config/dummy-reviews";
 
 export const metadata = { title: "리뷰" };
 
@@ -27,6 +27,7 @@ export default async function ReviewsPage() {
   const dummyReviews: Review[] = [
     ...troubleSajuReviews.map((r) => ({ ...r, product_name: "고민 사주" })),
     ...todayFortuneReviews.map((r) => ({ ...r, product_name: "정통 사주" })),
+    ...lifeSajuReviews.map((r) => ({ ...r, product_name: "인생 사주" })),
   ]
     .map((r, i) => ({
       id: `d${i}`,
