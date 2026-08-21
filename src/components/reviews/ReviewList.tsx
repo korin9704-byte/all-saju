@@ -15,7 +15,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
     <section className="mb-10 pt-2">
       {title && (
         // 결과지 마름모 구분선 모티프의 포인트 헤더
-        <div className="mb-4 flex items-center gap-2 pl-4">
+        <div className="mb-4 flex items-center gap-2 pl-2">
           <span className="w-[7px] h-[7px] bg-[#8F7BD6] rotate-45 rounded-[1.5px]" aria-hidden />
           <h2 className="text-[14.5px] font-normal text-ink">{title}</h2>
         </div>
