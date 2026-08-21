@@ -500,8 +500,7 @@ export function FreeTroubleWizard({
                 type="button"
                 onClick={submit}
                 disabled={submitting}
-                className={`w-full mt-5 ${nextBtnCls}`}
-                style={nextBtnStyle}
+                className="w-full mt-5 h-14 rounded-full bg-[#DCD2F5] text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
               >
                 {submitting
                   ? "잠시만요..."
