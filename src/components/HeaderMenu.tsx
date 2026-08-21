@@ -30,8 +30,10 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         onClick={() => setOpen((v) => !v)}
         className="flex h-10 w-10 items-center justify-center -mr-2"
       >
-        {/* 냥이 발바닥 아이콘 */}
-        <img src="/images/paw.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" />
+        {/* 햄버거 메뉴 아이콘 */}
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path d="M3.5 5.5 H18.5 M3.5 11 H18.5 M3.5 16.5 H18.5" stroke="#4A3A72" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
       </button>
 
       {/* 시트는 body 포털로 — sticky/transform 조상 안에서도 화면 전체 기준으로 뜨게 */}
