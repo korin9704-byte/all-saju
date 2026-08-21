@@ -23,6 +23,15 @@ export const productsSeed: ProductSeed[] = [
     is_active: true,
   },
   {
+    slug: "life-saju",
+    name: "인생 사주",
+    description: "내 인생 전체를 담은 13장의 평생 리포트.
+불만족 시 100% 환불!",
+    price: 29900,
+    display_order: 95,
+    is_active: false,
+  },
+  {
     slug: "premium-saju",
     name: "대운 풀이",
     description: "물 들어올 때 노 젓는 방법",
