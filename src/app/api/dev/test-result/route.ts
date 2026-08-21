@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "개발 환경에서만 사용 가능합니다." }, { status: 403 });
   }
 
-  const { slug } = await request.json();
+  const { slug, ...overrides } = await request.json();
   const service = createServiceClient();
 
   // 1. 상품 ID 조회
@@ -51,12 +51,14 @@ export async function POST(request: NextRequest) {
   // 3. 테스트용 기본 입력값
   const testInput = {
     birth_date: "1990-03-15",
-    birth_time: "10:30",
+    birth_time: "10:30" as string | null,
     time_unknown: false,
-    calendar: "solar" as const,
-    gender: "female" as const,
-    concerns: ["올해 직장운과 재물운이 어떤지 궁금해요."],
+    calendar: "solar" as "solar" | "lunar",
+    gender: "female" as "male" | "female",
+    concerns: ["올해 직장운과 재물운이 어떤지 궁금해요."] as string[],
     name: "고영희",
+    // 요청 바디로 개별 필드 재정의 가능 (검증용)
+    ...overrides,
   };
 
   try {
@@ -70,7 +72,8 @@ export async function POST(request: NextRequest) {
         time_unknown: testInput.time_unknown,
         gender: testInput.gender,
         calendar: testInput.calendar,
-        concerns: [],
+        // 인생 사주는 [직업]/[연애] 태그만 사용 (자유 고민 텍스트 없음)
+        concerns: (testInput.concerns as string[]).filter((c) => c.startsWith("[")),
       });
       if (inputErr) {
         return NextResponse.json({ error: "사주 입력 저장 실패", detail: inputErr.message }, { status: 500 });
