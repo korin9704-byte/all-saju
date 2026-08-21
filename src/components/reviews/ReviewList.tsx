@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
-export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { reviews: Review[]; title?: string; initialCount?: number }) {
+export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
   const PAGE_SIZE = 5;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
