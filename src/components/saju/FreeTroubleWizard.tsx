@@ -308,12 +308,10 @@ export function FreeTroubleWizard({
 
           {step === "job" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 어떤 일을 하고 계세요?</h1>
-              <p className="text-sm text-[#7A6B9E] mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>정확히 입력할수록 더 깊이 봐드려요.</p>
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>요즘은 어떤 일을 하며 지내세요?</h1>
+              <div className="grid grid-cols-2 gap-3 mb-8">
                 {JOB_OPTIONS.map((opt) => radioRow(job === opt, opt, () => setJob(opt), opt))}
               </div>
-              <p className="text-xs text-center text-[#9C8FBF] mb-8" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>직업운·재물운 풀이를 지금 상황에 맞춰 드려요.</p>
               <div className="flex gap-3">
                 <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
