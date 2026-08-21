@@ -36,7 +36,7 @@ export function FreeTroubleStart({
       className="w-full h-14 rounded-full text-white text-[14px] font-medium transition-opacity hover:opacity-90"
       style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)", boxShadow: "0 8px 24px rgba(143, 123, 214, 0.45)" }}
     >
-      고민 끝내러 가기
+      고민 끝내러 가기!
     </button>
   );
 }
