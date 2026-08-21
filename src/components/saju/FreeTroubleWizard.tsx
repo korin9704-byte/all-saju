@@ -187,7 +187,7 @@ export function FreeTroubleWizard({
   // 원형 셰브론 이전(<)·다음(>) 버튼 나란히 + 마지막 단계만 넓은 플랫 알약
   const circleBtnCls = "w-14 h-14 shrink-0 rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnCls = "h-14 shrink-0 rounded-full bg-[#DCD2F5] px-7 flex items-center justify-center gap-1.5 text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
-  const nextWideCls = "h-14 rounded-full bg-[#E7DDF8] px-10 text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none";
+  const nextWideCls = "h-14 rounded-full bg-[#DCD2F5] px-10 text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnStyle = {};
   const prevBtnCls = circleBtnCls;
   const prevIcon = (
