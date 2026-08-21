@@ -5,6 +5,7 @@
 // =====================================================
 // 샘플 뷰어(public/sample-mobile.html)를 React 로 이식.
 // 서버에서 조립된 views(HTML)를 장 단위로 넘기며 읽는다.
+// 표지 없이 1장부터 바로 시작한다 (과거 payload 의 표지 뷰는 걸러냄).
 
 import { useEffect, useRef, useState } from "react";
 import type { LifeReportPayload } from "@/lib/saju/life-report";
@@ -17,7 +18,8 @@ export default function LifeBookViewer({
   payload: LifeReportPayload;
   storageKey: string;
 }) {
-  const views = payload.views;
+  // 과거 생성분에 표지 뷰(label === "")가 있으면 제외하고 1장부터 시작
+  const views = payload.views.filter((v) => v.label !== "");
   const N = views.length;
   const [cur, setCur] = useState(0);
   const [tocOpen, setTocOpen] = useState(false);
@@ -58,14 +60,8 @@ export default function LifeBookViewer({
     }
   };
 
-  // 표지의 "리포트 읽기 시작" 버튼 (data-go) 위임 처리
-  const onBodyClick = (e: React.MouseEvent) => {
-    const el = (e.target as HTMLElement).closest("[data-go]");
-    if (el) go(Number(el.getAttribute("data-go")));
-  };
-
-  const label = cur === 0 ? "" : `${cur} / ${N - 1}`;
-  const fillPct = cur === 0 ? 0 : (cur / (N - 1)) * 100;
+  const label = `${cur + 1} / ${N}`;
+  const fillPct = ((cur + 1) / N) * 100;
 
   return (
     <div className="lifebook" ref={rootRef}>
@@ -83,51 +79,49 @@ export default function LifeBookViewer({
           </button>
         </header>
 
-        <main onClick={onBodyClick}>
+        <main>
           <article className="view on">
             {views[cur].label && (
               <p className="part">
                 <span>{views[cur].label}</span>
               </p>
             )}
-            {cur > 0 && <h2 className="chapter">{views[cur].title}</h2>}
+            <h2 className="chapter">{views[cur].title}</h2>
             <div dangerouslySetInnerHTML={{ __html: views[cur].html }} />
           </article>
         </main>
 
-        {cur > 0 && (
-          <nav className="bottom">
-            <button className="toc-btn" onClick={() => setTocOpen(true)}>
-              목차
-            </button>
-            <span id="prog">
-              <span className="prog-track" ref={trackRef}>
-                <span id="progLabel" className="prog-lab">
+        <nav className="bottom">
+          <button className="toc-btn" onClick={() => setTocOpen(true)}>
+            목차
+          </button>
+          <span id="prog">
+            <span className="prog-track" ref={trackRef}>
+              <span id="progLabel" className="prog-lab">
+                {label}
+              </span>
+              <span id="progFill" style={{ width: `${fillPct}%` }}>
+                <span id="progLabelW" className="prog-lab" style={{ width: trackW }}>
                   {label}
-                </span>
-                <span id="progFill" style={{ width: `${fillPct}%` }}>
-                  <span id="progLabelW" className="prog-lab" style={{ width: trackW }}>
-                    {label}
-                  </span>
                 </span>
               </span>
             </span>
-            <button className="arrow" disabled={cur === 0} onClick={() => go(cur - 1)} aria-label="이전 장">
-              &#8249;
-            </button>
-            <button className="arrow" disabled={cur === N - 1} onClick={() => go(cur + 1)} aria-label="다음 장">
-              &#8250;
-            </button>
-          </nav>
-        )}
+          </span>
+          <button className="arrow" disabled={cur === 0} onClick={() => go(cur - 1)} aria-label="이전 장">
+            &#8249;
+          </button>
+          <button className="arrow" disabled={cur === N - 1} onClick={() => go(cur + 1)} aria-label="다음 장">
+            &#8250;
+          </button>
+        </nav>
 
         <div id="tocSheet" className={tocOpen ? "on" : ""}>
           <div className="toc-bg" onClick={() => setTocOpen(false)} />
           <div className="toc-panel">
             <div className="toc-handle" />
             <ul>
-              {views.slice(1).map((v, i) => (
-                <li key={i} className={i + 1 === cur ? "cur" : ""} onClick={() => go(i + 1)}>
+              {views.map((v, i) => (
+                <li key={i} className={i === cur ? "cur" : ""} onClick={() => go(i)}>
                   <span className="toc-no">{v.label}</span>
                   <span className="toc-t">{v.title}</span>
                 </li>

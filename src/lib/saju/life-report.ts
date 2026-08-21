@@ -475,18 +475,6 @@ function assembleViews(
   const views: LifeView[] = [];
   const R = (key: string) => renderBody(parts[key] ?? "");
 
-  // 표지
-  views.push({
-    label: "",
-    title: "표지",
-    html:
-      `<div class="cover-view cover-typo"><p class="brand">냥점 🐱</p>` +
-      `<h1 class="cover-title">인생 사주</h1><p class="sub">${name}님의 평생 리포트</p>` +
-      `<div class="cover-pillars">${cards.coverPillars}</div>` +
-      `<p class="meta">${birthLabel}</p>` +
-      `<button class="start-btn" data-go="1">리포트 읽기 시작</button></div>`,
-  });
-
   // 1장 — 나의 사주팔자 (데이터 카드)
   views.push({
     label: "1장",
