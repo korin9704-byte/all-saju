@@ -461,7 +461,7 @@ export function FreeTroubleWizard({
                         고민 사주 + 인생 사주
                         {/* 도장 찍힌 느낌의 스탬프 배지 */}
                         <span
-                          className="shrink-0 relative -top-[3.25px] rounded px-1.5 py-0.5 text-[11px] font-medium text-[#C95FC0] border-[1.5px] border-[#C95FC0] -rotate-[4deg]"
+                          className="shrink-0 relative -top-[4.25px] rounded px-1.5 py-0.5 text-[11px] font-medium text-[#C95FC0] border-[1.5px] border-[#C95FC0] -rotate-[4deg]"
                           style={{ outline: "1px solid #F2D3EF", outlineOffset: 2 }}
                         >
                           9할이 선택
