@@ -15,12 +15,13 @@ export type ProductSeed = {
 
 export const productsSeed: ProductSeed[] = [
   {
+    // 판매 중단 — 목록에서 숨김 (기존 구매자 결과지는 유지)
     slug: "today-fortune",
     name: "정통 사주",
     description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
     price: 9900,
     display_order: 90,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "life-saju",
