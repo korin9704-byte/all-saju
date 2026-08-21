@@ -1,3 +1,6 @@
+// 인생 사주(13장, LLM 27회 병렬)까지 감당하도록 함수 실행 한도를 늘린다
+export const maxDuration = 300;
+
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { nanoid } from "nanoid";

@@ -13,6 +13,8 @@ import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInf
 import type { Myeongsik } from "@/lib/saju/manseryeok";
 import { formatDate } from "@/lib/utils";
 import { MINI_PRODUCTS, isMiniBaseSlug } from "@/lib/mini";
+import { parseLifePayload, LIFE_SLUG } from "@/lib/saju/life-report";
+import LifeBookViewer from "@/components/saju/LifeBookViewer";
 
 export const metadata = { title: "결과지" };
 
@@ -87,6 +89,14 @@ export default async function ResultPage({
     .select("name, birth_date, birth_time, time_unknown, calendar, gender, concerns")
     .eq("order_id", result.order_id)
     .maybeSingle();
+
+  // ── 인생 사주 — 13장 모바일 챕터 뷰어로 렌더 ──
+  if (product?.slug === LIFE_SLUG) {
+    const lifePayload = parseLifePayload(result.interpretation_md);
+    if (lifePayload) {
+      return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} />;
+    }
+  }
 
   const myeongsik     = result.myeongsik as unknown as Myeongsik;
 

@@ -9,7 +9,7 @@ import {
   buildLoveSajuPrompt,
 } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
-import { generateBundleResults } from "@/lib/saju/generate-result";
+import { generateBundleResults, generateAndStoreResult } from "@/lib/saju/generate-result";
 
 // 개발 전용 — 결제 없이 테스트 결과 생성
 export async function POST(request: NextRequest) {
@@ -60,6 +60,25 @@ export async function POST(request: NextRequest) {
   };
 
   try {
+    // 인생 사주: saju_inputs 저장 후 실제 파이프라인 그대로 실행 (13장 병렬 생성)
+    if (slug === "life-saju") {
+      const { error: inputErr } = await service.from("saju_inputs").insert({
+        order_id: order.id,
+        name: testInput.name,
+        birth_date: testInput.birth_date,
+        birth_time: testInput.birth_time,
+        time_unknown: testInput.time_unknown,
+        gender: testInput.gender,
+        calendar: testInput.calendar,
+        concerns: [],
+      });
+      if (inputErr) {
+        return NextResponse.json({ error: "사주 입력 저장 실패", detail: inputErr.message }, { status: 500 });
+      }
+      const lifeRes = await generateAndStoreResult(service, order.id, { skipEmail: true });
+      return NextResponse.json(lifeRes);
+    }
+
     // 번들: saju_inputs 저장 후 실제 번들 파이프라인 그대로 실행 (부모+자식 결과지)
     if (slug === "trouble-saju-bundle") {
       const { error: inputErr } = await service.from("saju_inputs").insert({

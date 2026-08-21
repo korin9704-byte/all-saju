@@ -26,7 +26,9 @@ import {
   formatSajuToManseryeok,
   ganjiToMyeongsik,
   type BirthInfo,
+  type SajuAnalysisResponse,
 } from "@/lib/saju/saju-api";
+import { generateLifeReport, LIFE_SLUG } from "@/lib/saju/life-report";
 
 type Service = ReturnType<typeof createServiceClient>;
 
@@ -122,6 +124,7 @@ export async function generateAndStoreResult(
   // 만세력/풀 분석: luckyloveme 키가 있으면 실제 API, 없거나 실패하면 mock 으로 fallback
   let myeongsik: Myeongsik;
   let manseryeokText: string | undefined;
+  let fullAnalysis: SajuAnalysisResponse | null = null;
 
   if (isSajuApiConfigured()) {
     try {
@@ -130,6 +133,7 @@ export async function generateAndStoreResult(
       const converted = ganjiToMyeongsik(analysis);
       if (converted) {
         myeongsik = converted;
+        fullAnalysis = analysis;
         manseryeokText = formatSajuToManseryeok(analysis, birthInfo);
         // 섀도 대조 — 로컬 만세력과의 차이 기록.
         // 동적 import + 이중 try/catch 로 어떤 실패도 판매 흐름에 전파되지 않게 격리.
@@ -172,7 +176,21 @@ export async function generateAndStoreResult(
   };
 
   let llm;
-  if (promptSlug === "worry-saju") {
+  if (promptSlug === LIFE_SLUG) {
+    // 인생 사주 — 13장 평생 리포트 (27개 파트 병렬 생성, luckyloveme 풀 분석 필수)
+    if (!fullAnalysis) {
+      throw new Error("인생 사주 결과지 생성 실패: 만세력 풀 분석 API를 사용할 수 없습니다");
+    }
+    const life = await generateLifeReport(fullAnalysis, {
+      name: input.name ?? "",
+      birthDate: input.birth_date,
+      birthTime: input.birth_time,
+      timeUnknown: input.time_unknown,
+      calendar: input.calendar,
+      gender: input.gender,
+    });
+    llm = { text: JSON.stringify(life.payload), provider: life.provider, model: life.model };
+  } else if (promptSlug === "worry-saju") {
     const { system, user } = buildWorryPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "today-fortune") {
