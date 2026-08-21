@@ -26,7 +26,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "life-saju",
     name: "인생 사주",
     description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
-    price: 52000,
+    price: 55900,
     display_order: 95,
     is_active: true,
   },
