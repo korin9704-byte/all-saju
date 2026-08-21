@@ -182,10 +182,12 @@ export function FreeTroubleWizard({
 
   const numInputCls = "w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] text-center placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors disabled:opacity-40";
   const textInputCls = "w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors";
-  // 플랫 소프트 다음 버튼 (결제 버튼과 동일 톤) + 원형 ← 이전 버튼
-  const nextBtnCls = "flex-1 h-14 rounded-full bg-[#E7DDF8] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none";
+  // 원형 셰브론 이전(<)·다음(>) 버튼 나란히 + 마지막 단계만 넓은 플랫 알약
+  const circleBtnCls = "w-14 h-14 shrink-0 rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none";
+  const nextBtnCls = "h-14 shrink-0 rounded-full bg-[#F3EDFB] px-7 flex items-center justify-center gap-1.5 text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#E7DDF8] disabled:opacity-50 disabled:pointer-events-none";
+  const nextWideCls = "h-14 rounded-full bg-[#E7DDF8] px-10 text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnStyle = {};
-  const prevBtnCls = "w-14 h-14 shrink-0 rounded-full bg-white border border-[#E7DDF8] transition-colors hover:bg-[#F3EDFB] flex items-center justify-center";
+  const prevBtnCls = circleBtnCls;
   const prevIcon = (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M12 4 L6 10 L12 16" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -251,11 +253,11 @@ export function FreeTroubleWizard({
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 {onBack && (
                   <button type="button" onClick={onBack} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 )}
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">다음</button>
               </div>
             </>
           )}
@@ -281,9 +283,9 @@ export function FreeTroubleWizard({
                   </div>
                 </div>
               )}
-              <div className="flex gap-3 mt-8">
+              <div className="flex gap-3 justify-center mt-8">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">다음</button>
               </div>
             </>
           )}
@@ -295,9 +297,9 @@ export function FreeTroubleWizard({
                 {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
                 {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">다음</button>
               </div>
             </>
           )}
@@ -309,9 +311,9 @@ export function FreeTroubleWizard({
                 onChange={(e) => setName(e.target.value)}
                 placeholder="풀이에서 이렇게 불러드릴게요."
                 className={`${textInputCls} mb-8`} />
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">다음</button>
               </div>
             </>
           )}
@@ -322,9 +324,9 @@ export function FreeTroubleWizard({
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {JOB_OPTIONS.map((opt) => radioRow(job === opt, opt, () => setJob(opt), opt))}
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">다음</button>
               </div>
             </>
           )}
@@ -335,9 +337,9 @@ export function FreeTroubleWizard({
               <div className="grid grid-cols-3 gap-3 mb-8">
                 {LOVE_OPTIONS.map((opt) => radioRow(love === opt, opt, () => setLove(opt), opt))}
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">다음</button>
               </div>
             </>
           )}
@@ -348,9 +350,9 @@ export function FreeTroubleWizard({
               <input type="email" value={email} placeholder="결과지를 보내드려요."
                 onChange={(e) => setEmail(e.target.value)}
                 className={`${textInputCls} mb-8`} />
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
+                <button type="button" onClick={next} disabled={submitting} className={isLastStep ? nextWideCls : nextBtnCls} style={nextBtnStyle} aria-label="다음">
                   {!isLastStep
                     ? "다음"
                     : submitting
@@ -376,7 +378,7 @@ export function FreeTroubleWizard({
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button
                   type="button"
@@ -389,7 +391,7 @@ export function FreeTroubleWizard({
                     submit();
                   }}
                   disabled={submitting}
-                  className={nextBtnCls}
+                  className={nextWideCls}
                   style={nextBtnStyle}
                 >
                   {submitting
