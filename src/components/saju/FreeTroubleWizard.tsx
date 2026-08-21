@@ -12,7 +12,7 @@ const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "conce
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비 중", "학생", "주부", "기타"] as const;
-const LOVE_OPTIONS = ["솔로", "연애 중", "기혼"] as const;
+const LOVE_OPTIONS = ["솔로", "연애중", "기혼"] as const;
 
 function clamp2(raw: string, max: number): string {
   const v = raw.replace(/\D/g, "").slice(0, 2);
@@ -325,7 +325,7 @@ export function FreeTroubleWizard({
 
           {step === "love" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>연애 상태를 알려주세요.</h1>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 연애하고 있나요?</h1>
               <div className="grid grid-cols-3 gap-3 mb-8">
                 {LOVE_OPTIONS.map((opt) => radioRow(love === opt, opt, () => setLove(opt), opt))}
               </div>
