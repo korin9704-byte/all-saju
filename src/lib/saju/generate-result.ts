@@ -92,7 +92,7 @@ function toComputeInput(input: SajuInputRow) {
 export async function generateAndStoreResult(
   service: Service,
   orderRowId: string,
-  opts?: { skipEmail?: boolean },
+  opts?: { skipEmail?: boolean; forceLocalLife?: boolean },
 ): Promise<{ resultId: string }> {
   const { data: order } = await service
     .from("orders")
@@ -177,13 +177,23 @@ export async function generateAndStoreResult(
 
   let llm;
   if (promptSlug === LIFE_SLUG) {
-    // 인생 사주 — 13장 평생 리포트 (27개 파트 병렬 생성, luckyloveme 풀 분석 필수)
-    if (!fullAnalysis) {
-      throw new Error("인생 사주 결과지 생성 실패: 만세력 풀 분석 API를 사용할 수 없습니다");
+    // 인생 사주 — 13장 평생 리포트 (27개 파트 병렬 생성)
+    // luckyloveme 풀 분석을 우선 사용하고, 불가하면 로컬 만세력 어댑터로 폴백
+    let analysisForLife = opts?.forceLocalLife ? null : fullAnalysis;
+    if (!analysisForLife) {
+      console.warn("[life-saju] luckyloveme 미사용 — 로컬 만세력으로 생성");
+      const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+      analysisForLife = computeLocalFullAnalysis({
+        birthDate: input.birth_date,
+        birthTime: input.birth_time,
+        timeUnknown: input.time_unknown,
+        calendar: input.calendar,
+        gender: input.gender,
+      });
     }
     const jobConcern = (input.concerns as string[]).find((c) => c.startsWith("[직업]"));
     const loveConcern = (input.concerns as string[]).find((c) => c.startsWith("[연애]"));
-    const life = await generateLifeReport(fullAnalysis, {
+    const life = await generateLifeReport(analysisForLife, {
       name: input.name ?? "",
       birthDate: input.birth_date,
       birthTime: input.birth_time,

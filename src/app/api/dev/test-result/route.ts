@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       if (inputErr) {
         return NextResponse.json({ error: "사주 입력 저장 실패", detail: inputErr.message }, { status: 500 });
       }
-      const lifeRes = await generateAndStoreResult(service, order.id, { skipEmail: true });
+      const lifeRes = await generateAndStoreResult(service, order.id, { skipEmail: true, forceLocalLife: !!(overrides as { forceLocal?: boolean }).forceLocal });
       return NextResponse.json(lifeRes);
     }
 
