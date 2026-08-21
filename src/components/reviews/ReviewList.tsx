@@ -14,8 +14,11 @@ export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 
   return (
     <section className="mb-10 pt-2">
       {title && (
-        <div className="mb-4">
-          <h2 className="text-[14.5px] font-semibold text-ink">{title}</h2>
+        // 카톡 날짜 구분선처럼 가운데 알약 헤더
+        <div className="mb-4 flex justify-center">
+          <h2 className="rounded-full bg-[#F3EDFB] border border-[#E7DDF8] px-4 py-1.5 text-[13px] font-normal text-body">
+            {title}
+          </h2>
         </div>
       )}
       {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
