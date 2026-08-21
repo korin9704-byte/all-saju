@@ -106,11 +106,11 @@ export const productsSeed: ProductSeed[] = [
   },
   {
     // 고민 사주 결제 단계 추가 상품 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
-    // 고민 사주 + 인생 사주, 정가 59,800원(가격×2 표기)의 50% 할인가
+    // 고민 사주 + 인생 사주, 13,800원에서 5,000원 할인 = 8,800원
     slug: "trouble-saju-bundle",
     name: "고민 사주 + 인생 사주",
     description: "고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트",
-    price: 29900,
+    price: 8800,
     display_order: 996,
     is_active: true,
   },

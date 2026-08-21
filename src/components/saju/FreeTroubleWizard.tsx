@@ -470,8 +470,8 @@ export function FreeTroubleWizard({
                       <span className="mt-1 text-xs font-normal text-body">고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트.</span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="block text-xs text-[#C95FC0]">50% 할인</span>
-                      <span className="block text-xs text-mute line-through">{(bundle.price * 2).toLocaleString()}원</span>
+                      <span className="block text-xs text-[#C95FC0]">5,000원 할인</span>
+                      <span className="block text-xs text-mute line-through">{(bundle.price + 5000).toLocaleString()}원</span>
                       <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
                     </span>
                   </div>
