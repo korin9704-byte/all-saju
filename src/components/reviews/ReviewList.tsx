@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { formatDate } from "@/lib/utils";
 
 type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
-export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { reviews: Review[]; title?: string; initialCount?: number }) {
+export function ReviewList({ reviews, title = "이용 후기", initialCount = 3 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
   const PAGE_SIZE = 5;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -15,19 +14,8 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
   return (
     <section className="mb-10 pt-2">
       {title && (
-        <div className="mb-4 flex items-center gap-2.5">
+        <div className="mb-4">
           <h2 className="text-[14.5px] font-semibold text-ink">{title}</h2>
-          {/* 별점 평균 · 리뷰 개수 */}
-          {reviews.length > 0 && (
-            <span className="flex items-center gap-1.5 text-[14.5px] text-body">
-              <span className="text-[#C95FC0]">★</span>
-              <span className="font-semibold text-ink">
-                {(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}
-              </span>
-              <span>·</span>
-              <span>{reviews.length.toLocaleString()}개</span>
-            </span>
-          )}
         </div>
       )}
       {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
@@ -42,18 +30,10 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
               />
               <p className="text-[14.5px] text-charcoal leading-[1.85]">{r.content}</p>
             </div>
-            {/* 채팅 타임스탬프처럼 버블 아래에 별점 · 날짜 */}
-            <div className="flex items-center gap-2 px-1 pt-1.5">
-              <span aria-label={`${r.rating}점`} className="text-[13px] tracking-[1px]">
-                <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
-                <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
-              </span>
-              {/* 상품명 — 전체 리뷰 페이지처럼 여러 상품이 섞일 때 구분용 */}
-              <span className="text-xs text-mute">
-                {r.product_name && <>{r.product_name} · </>}
-                {formatDate(r.created_at)}
-              </span>
-            </div>
+            {/* 상품명 — 전체 리뷰 페이지처럼 여러 상품이 섞일 때 구분용 */}
+            {r.product_name && (
+              <div className="px-1 pt-1.5 text-xs text-mute">{r.product_name}</div>
+            )}
           </li>
         ))}
       </ul>
