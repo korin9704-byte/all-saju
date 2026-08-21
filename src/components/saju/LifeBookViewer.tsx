@@ -75,10 +75,23 @@ export default function LifeBookViewer({
       />
       <style dangerouslySetInnerHTML={{ __html: LIFEBOOK_CSS }} />
       <div className="app">
+        {/* 사이트 공통 헤더와 같은 모습 — 로고는 홈으로, 발바닥은 목차 열기 */}
         <header className="top">
-          <span className="logo">냥점</span>
+          <a
+            href="/"
+            className="logo"
+            style={{ fontSize: 20, letterSpacing: "0.08em", color: "#4A3A72", textDecoration: "none" }}
+          >
+            냥점
+          </a>
           <button className="menu-btn" onClick={() => setTocOpen(true)} aria-label="목차">
-            &#9776;
+            <img
+              src="/images/paw.png"
+              alt=""
+              width={28}
+              height={28}
+              style={{ width: 28, height: 28, objectFit: "contain", display: "block" }}
+            />
           </button>
         </header>
 
