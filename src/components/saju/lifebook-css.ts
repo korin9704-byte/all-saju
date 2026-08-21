@@ -144,7 +144,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .cover-pillars span{background:#E8B7D8;border-radius:10px;padding:10px 11px;font-size:20px;line-height:1.4;font-family:'Gowun Dodum';text-align:center;}
 .lifebook .meta{text-align:center;font-size:13px;color:var(--mute);}
 .lifebook .start-btn{display:block;width:calc(100% - 40px);margin:22px auto 30px;height:52px;border:0;border-radius:26px;color:#fff;font-size:15px;font-family:'Gowun Dodum';background:linear-gradient(90deg,var(--vio),var(--pink));}
-.lifebook nav.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:30;background:rgba(253,251,255,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;padding:8px 14px calc(8px + env(safe-area-inset-bottom));}
+.lifebook nav.bottom{position:sticky;bottom:0;width:100%;z-index:30;background:rgba(253,251,255,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;padding:8px 14px calc(8px + env(safe-area-inset-bottom));}
 .lifebook .toc-btn{border:0;width:40px;height:40px;border-radius:50%;background:var(--soft);color:var(--ink);font-size:11.5px;font-family:'Gowun Dodum';display:flex;align-items:center;justify-content:center;flex:none;}
 .lifebook #prog{flex:1;display:flex;justify-content:center;padding:0 16px;}
 .lifebook .prog-track{position:relative;display:block;width:100%;max-width:170px;height:20px;border-radius:10px;background:var(--soft);overflow:hidden;}
