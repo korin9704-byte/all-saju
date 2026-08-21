@@ -29,6 +29,8 @@ export default function LifeBookViewer({
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLSpanElement>(null);
   const [trackW, setTrackW] = useState(170);
+  // 목차 시트 폭 — 스크롤바를 뺀 콘텐츠 영역 폭에 맞춰 본문과 정렬
+  const [sheetW, setSheetW] = useState<number | null>(null);
 
   // 이어보기 복원
   useEffect(() => {
@@ -45,6 +47,7 @@ export default function LifeBookViewer({
   useEffect(() => {
     const update = () => {
       if (trackRef.current) setTrackW(trackRef.current.clientWidth);
+      if (rootRef.current) setSheetW(rootRef.current.clientWidth);
     };
     update();
     window.addEventListener("resize", update);
@@ -154,7 +157,7 @@ export default function LifeBookViewer({
           </button>
         </nav>
 
-        <div id="tocSheet" className={tocOpen ? "on" : ""}>
+        <div id="tocSheet" className={tocOpen ? "on" : ""} style={sheetW ? { width: sheetW } : undefined}>
           <div className="toc-bg" onClick={() => setTocOpen(false)} />
           <div className="toc-panel">
             <div className="toc-handle" />
