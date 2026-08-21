@@ -30,11 +30,12 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           )}
         </div>
       )}
-      <ul className="space-y-3">
+      {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
+      <ul className="space-y-[18px]">
         {displayed.map((r) => (
-          <li key={r.id} className="bg-[#F3EDFB] border border-[#E7DDF8] rounded-2xl px-5 py-4">
-            <div className="flex items-center justify-between mb-2">
-              <span aria-label={`${r.rating}점`}>
+          <li key={r.id}>
+            <div className="flex items-center justify-between px-1 pb-1.5">
+              <span aria-label={`${r.rating}점`} className="text-[13px] tracking-[1px]">
                 <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
                 <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
               </span>
@@ -44,7 +45,14 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
                 {formatDate(r.created_at)}
               </span>
             </div>
-            <p className="text-[14.5px] text-charcoal leading-relaxed">{r.content}</p>
+            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
+              <span
+                className="absolute -left-1.5 bottom-0.5 w-3.5 h-3.5 bg-[#EDE6F9] rounded-br-[14px]"
+                style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
+                aria-hidden
+              />
+              <p className="text-[14.5px] text-charcoal leading-[1.85]">{r.content}</p>
+            </div>
           </li>
         ))}
       </ul>
