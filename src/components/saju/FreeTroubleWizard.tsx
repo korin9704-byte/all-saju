@@ -182,9 +182,15 @@ export function FreeTroubleWizard({
 
   const numInputCls = "w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] text-center placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors disabled:opacity-40";
   const textInputCls = "w-full bg-white border border-[#E7DDF8] rounded-2xl px-4 py-3 text-sm text-[#4A3A72] placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors";
-  const nextBtnCls = "flex-1 h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none";
-  const nextBtnStyle = { background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" };
-  const prevBtnCls = "w-24 h-14 rounded-full bg-white border border-[#E7DDF8] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#F3EDFB]";
+  // 플랫 소프트 다음 버튼 (결제 버튼과 동일 톤) + 원형 ← 이전 버튼
+  const nextBtnCls = "flex-1 h-14 rounded-full bg-[#E7DDF8] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none";
+  const nextBtnStyle = {};
+  const prevBtnCls = "w-14 h-14 shrink-0 rounded-full bg-white border border-[#E7DDF8] transition-colors hover:bg-[#F3EDFB] flex items-center justify-center";
+  const prevIcon = (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M12 4 L6 10 L12 16" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
 
   const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
     <label key={key ?? label}
@@ -247,7 +253,7 @@ export function FreeTroubleWizard({
               </div>
               <div className="flex gap-3">
                 {onBack && (
-                  <button type="button" onClick={onBack} className={prevBtnCls}>이전</button>
+                  <button type="button" onClick={onBack} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 )}
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
               </div>
@@ -276,7 +282,7 @@ export function FreeTroubleWizard({
                 </div>
               )}
               <div className="flex gap-3 mt-8">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
               </div>
             </>
@@ -290,7 +296,7 @@ export function FreeTroubleWizard({
                 {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
               </div>
               <div className="flex gap-3">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
               </div>
             </>
@@ -304,7 +310,7 @@ export function FreeTroubleWizard({
                 placeholder="풀이에서 이렇게 불러드릴게요."
                 className={`${textInputCls} mb-8`} />
               <div className="flex gap-3">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
               </div>
             </>
@@ -317,7 +323,7 @@ export function FreeTroubleWizard({
                 {JOB_OPTIONS.map((opt) => radioRow(job === opt, opt, () => setJob(opt), opt))}
               </div>
               <div className="flex gap-3">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
               </div>
             </>
@@ -330,7 +336,7 @@ export function FreeTroubleWizard({
                 {LOVE_OPTIONS.map((opt) => radioRow(love === opt, opt, () => setLove(opt), opt))}
               </div>
               <div className="flex gap-3">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle}>다음</button>
               </div>
             </>
@@ -343,7 +349,7 @@ export function FreeTroubleWizard({
                 onChange={(e) => setEmail(e.target.value)}
                 className={`${textInputCls} mb-8`} />
               <div className="flex gap-3">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle}>
                   {!isLastStep
                     ? "다음"
@@ -371,7 +377,7 @@ export function FreeTroubleWizard({
               </div>
 
               <div className="flex gap-3">
-                <button type="button" onClick={prev} className={prevBtnCls}>이전</button>
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button
                   type="button"
                   onClick={() => {
