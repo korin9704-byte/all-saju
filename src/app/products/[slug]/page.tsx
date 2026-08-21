@@ -96,7 +96,7 @@ export default async function ProductDetailPage({
   const wizardHeroes: Record<string, string> = {
     "trouble-saju": "/images/trouble.webp",
     "today-fortune": "/images/today.webp",
-    "life-saju": "/images/life-saju.png",
+    "life-saju": "/images/life.png",
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
