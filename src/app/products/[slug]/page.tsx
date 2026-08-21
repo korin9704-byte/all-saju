@@ -141,7 +141,7 @@ export default async function ProductDetailPage({
             <div className="mt-auto pb-2">
               <h1 className="text-[22px] font-normal text-ink" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>{product.name}</h1>
               {product.description && (
-                <p className="mt-2 text-[16.5px] text-body" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>
+                <p className="mt-2 text-[16.5px] text-body">
                   {product.description.split("\n").map((line, i) => (
                     <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0]" : ""}`}>{line}</span>
                   ))}
