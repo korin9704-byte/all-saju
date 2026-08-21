@@ -11,7 +11,7 @@ const MAX_CONCERN = 200;
 const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "concern"] as const;
 type Step = typeof STEPS[number];
 
-const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비 중", "학생", "주부", "기타"] as const;
+const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
 const LOVE_OPTIONS = ["솔로", "연애중", "기혼"] as const;
 
 function clamp2(raw: string, max: number): string {
