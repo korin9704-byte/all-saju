@@ -58,7 +58,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           <button
             type="button"
             onClick={() => setVisibleCount(INITIAL_COUNT)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
+            className="w-28 shrink-0 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
           >
             <span>접기</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
