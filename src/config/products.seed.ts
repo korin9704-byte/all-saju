@@ -25,7 +25,7 @@ export const productsSeed: ProductSeed[] = [
   {
     slug: "life-saju",
     name: "인생 사주",
-    description: "내 인생 전체를 담은 13장의 평생 리포트.\n불만족 시 100% 환불!",
+    description: "내 인생 전체를 13개의 장에 담은 평생 리포트.\n불만족 시 100% 환불!",
     price: 52000,
     display_order: 95,
     is_active: true,
