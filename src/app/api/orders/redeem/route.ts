@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
-import { generateAndStoreResult } from "@/lib/saju/generate-result";
+import { generateAndStoreResult, generateBundleResults, BUNDLE_SLUG } from "@/lib/saju/generate-result";
 import { birthDateSchema } from "@/lib/validation";
 
 // 무료권으로 상품 열람: 0원 주문 생성 + 무료권 원자적 차감 + 결과 생성
@@ -113,7 +113,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { resultId } = await generateAndStoreResult(service, order.id);
+    // 번들은 부모(고민)+자식(인생) 결과지를 함께 생성
+    const { resultId } =
+      product.slug === BUNDLE_SLUG
+        ? await generateBundleResults(service, order.id)
+        : await generateAndStoreResult(service, order.id);
     return NextResponse.json({ resultId });
   } catch (err) {
     // 생성 실패 — 무료권 복구, 주문은 failed 처리

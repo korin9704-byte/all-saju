@@ -144,8 +144,8 @@ export function FreeTroubleWizard({
       guestEmail: email.trim(),
     };
 
-    // 유료 + 무료 이용권 보유: 결제 대신 이용권으로 즉시 결과 생성 (번들 선택 시엔 일반 결제)
-    if (mode === "paid" && hasCredit && !withAddon) {
+    // 유료 + 무료 이용권 보유: 결제 대신 이용권으로 즉시 결과 생성 (번들 포함)
+    if (mode === "paid" && hasCredit) {
       try {
         sessionStorage.setItem("saju_generate", JSON.stringify({ kind: "redeem", payload }));
       } catch { /* ignore */ }
@@ -398,7 +398,7 @@ export function FreeTroubleWizard({
                 >
                   {submitting
                     ? "잠시만요..."
-                    : hasCredit && !withAddon
+                    : hasCredit
                       ? "무료 이용권으로 결과보기"
                       : mode === "paid"
                         ? "결제하기 · 불만족 시 100% 환불"
@@ -516,7 +516,7 @@ export function FreeTroubleWizard({
               >
                 {submitting
                   ? "잠시만요..."
-                  : hasCredit && !withAddon
+                  : hasCredit
                     ? "무료 이용권으로 결과보기"
                     : "결제하기 · 불만족 시 100% 환불"}
               </button>
