@@ -30,11 +30,11 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           )}
         </div>
       )}
-      {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
-      <ul className="space-y-[18px]">
+      {/* 미니멀 구분선 스타일 — 카드 없이 리뷰 사이 얇은 선 */}
+      <ul>
         {displayed.map((r) => (
-          <li key={r.id}>
-            <div className="flex items-center justify-between px-1 pb-1.5">
+          <li key={r.id} className="py-4 px-1 border-b border-[#E7DDF8] first:border-t">
+            <div className="flex items-center justify-between mb-2">
               <span aria-label={`${r.rating}점`} className="text-[13px] tracking-[1px]">
                 <span className="text-[#C95FC0]">{"★".repeat(r.rating)}</span>
                 <span className="text-[#D8CCEE]">{"★".repeat(5 - r.rating)}</span>
@@ -45,14 +45,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
                 {formatDate(r.created_at)}
               </span>
             </div>
-            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
-              <span
-                className="absolute -left-1.5 bottom-0.5 w-3.5 h-3.5 bg-[#EDE6F9] rounded-br-[14px]"
-                style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
-                aria-hidden
-              />
-              <p className="text-[14.5px] text-charcoal leading-[1.85]">{r.content}</p>
-            </div>
+            <p className="text-[14.5px] text-charcoal leading-[1.8]">{r.content}</p>
           </li>
         ))}
       </ul>
@@ -62,7 +55,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           <button
             type="button"
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 text-[14.5px] text-body hover:text-ink transition-colors"
           >
             <span>더 보기 ({reviews.length - visibleCount}개 남음)</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +68,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
           <button
             type="button"
             onClick={() => setVisibleCount(INITIAL_COUNT)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 py-3 text-[14.5px] text-body hover:text-ink transition-colors"
           >
             <span>접기</span>
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
