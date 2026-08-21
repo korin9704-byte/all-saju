@@ -481,7 +481,10 @@ export function FreeTroubleWizard({
               {/* 번들 선택 시 — 직업·연애 상태 질문 */}
               {withAddon && (
                 <div className="mt-3 rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4">
-                  <p className="text-xs text-body mb-2 pl-1">어떤 일을 하고 있나요?</p>
+                  <p className="flex items-center gap-1.5 text-[13px] text-[#4A3A72] mb-2 pl-1">
+                    <span className="w-1.5 h-1.5 bg-[#8F7BD6] rotate-45 rounded-[1px]" aria-hidden />
+                    어떤 일을 하고 있나요?
+                  </p>
                   <div className="grid grid-cols-3 gap-2 mb-4">
                     {JOB_OPTIONS.map((opt) => (
                       <button key={opt} type="button" onClick={() => setJob(opt)}
@@ -490,7 +493,10 @@ export function FreeTroubleWizard({
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-body mb-2 pl-1">지금 연애하고 있나요?</p>
+                  <p className="flex items-center gap-1.5 text-[13px] text-[#4A3A72] mb-2 pl-1">
+                    <span className="w-1.5 h-1.5 bg-[#8F7BD6] rotate-45 rounded-[1px]" aria-hidden />
+                    지금 연애하고 있나요?
+                  </p>
                   <div className="grid grid-cols-3 gap-2">
                     {LOVE_OPTIONS.map((opt) => (
                       <button key={opt} type="button" onClick={() => setLove(opt)}
