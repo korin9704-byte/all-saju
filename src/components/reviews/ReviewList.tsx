@@ -10,6 +10,8 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
   const displayed = reviews.slice(0, visibleCount);
   const hasMore = visibleCount < reviews.length;
+  // 페이드형 더 보기 — 다음 리뷰를 살짝 보여주고 그라데이션으로 가림
+  const teaser = hasMore ? reviews[visibleCount] : null;
 
   return (
     <section className="mb-10 pt-2">
@@ -40,34 +42,42 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 3 }: { re
         ))}
       </ul>
 
-      <div className="mt-3 flex gap-2">
-        {hasMore && (
-          <button
-            type="button"
-            onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
+      {teaser && (
+        <div className="relative mt-[18px]">
+          {/* 잘려 보이는 다음 리뷰 */}
+          <div className="max-h-[110px] overflow-hidden" aria-hidden>
+            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
+              <p className="text-[14.5px] text-charcoal leading-[1.85]">{teaser.content}</p>
+            </div>
+          </div>
+          {/* 페이드 + 떠 있는 더 보기 버튼 */}
+          <div
+            className="absolute inset-0 flex items-end justify-center pb-0.5"
+            style={{ background: "linear-gradient(180deg, rgba(248,244,253,0), #F8F4FD 78%)" }}
           >
-            <span>더 보기 ({reviews.length - visibleCount}개 남음)</span>
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="10" cy="10" r="9" fill="#d0d0d0" />
-              <path d="M6.5 8.5 L10 12 L13.5 8.5" stroke="#888" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        )}
-        {visibleCount > INITIAL_COUNT && (
+            <button
+              type="button"
+              onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+              className="flex items-center gap-1.5 rounded-full bg-white border border-[#E7DDF8] px-5 py-2.5 text-[14.5px] text-body shadow-[0_4px_14px_rgba(143,123,214,0.18)] hover:bg-[#F3EDFB] transition-colors"
+            >
+              <span>더 보기 ({reviews.length - visibleCount}개 남음)</span>
+              <span className="text-[11px] text-mute" aria-hidden>▼</span>
+            </button>
+          </div>
+        </div>
+      )}
+      {visibleCount > INITIAL_COUNT && (
+        <div className={`flex justify-center ${teaser ? "mt-3" : "mt-5"}`}>
           <button
             type="button"
             onClick={() => setVisibleCount(INITIAL_COUNT)}
-            className="w-28 shrink-0 flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#F3EDFB] border border-[#E7DDF8] text-[14.5px] text-body hover:bg-[#E7DDF8] transition-colors"
+            className="flex items-center gap-1.5 rounded-full bg-white border border-[#E7DDF8] px-5 py-2.5 text-[14.5px] text-body shadow-[0_4px_14px_rgba(143,123,214,0.18)] hover:bg-[#F3EDFB] transition-colors"
           >
             <span>접기</span>
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="10" cy="10" r="9" fill="#d0d0d0" />
-              <path d="M6.5 12 L10 8.5 L13.5 12" stroke="#888" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <span className="text-[11px] text-mute" aria-hidden>▲</span>
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 }
