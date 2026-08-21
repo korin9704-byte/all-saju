@@ -143,7 +143,7 @@ export default async function ProductDetailPage({
               {product.description && (
                 <p className="mt-2 text-sm text-body">
                   {product.description.split("\n").map((line, i) => (
-                    <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0] font-bold" : ""}`}>{line}</span>
+                    <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0]" : ""}`}>{line}</span>
                   ))}
                 </p>
               )}
