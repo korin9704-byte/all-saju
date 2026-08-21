@@ -61,6 +61,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
+          "Gowun Dodum",
           "SF Pro Rounded",
           "-apple-system",
           "BlinkMacSystemFont",

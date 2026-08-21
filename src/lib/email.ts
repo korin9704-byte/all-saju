@@ -31,10 +31,10 @@ export async function sendResultEmail({
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
   </style>
 </head>
-<body style="margin:0;padding:0;background:#f9f9f9;font-family:'Jua','Apple SD Gothic Neo',sans-serif;">
+<body style="margin:0;padding:0;background:#f9f9f9;font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;padding:40px 0;">
     <tr><td align="center">
       <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">

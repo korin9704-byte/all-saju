@@ -44,9 +44,7 @@
   body {
     @apply bg-background text-foreground;
     font-family:
-      "Jua", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-    /* Jua는 400 단일 굵기 폰트 — 브라우저 가짜 볼드(faux bold) 합성 방지 */
-    font-synthesis: none;
+      "Gowun Dodum", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   }
   input, textarea, select, button {
     font-family: inherit;
