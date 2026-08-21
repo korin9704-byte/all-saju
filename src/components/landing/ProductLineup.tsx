@@ -217,7 +217,7 @@ export async function ProductLineup() {
               <p className="text-base font-semibold text-ink">{p.name}</p>
               {p.description && (
                 <p className="mt-1 text-sm text-body leading-snug">{p.description.split("\n").map((line, i) => (
-                    <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0]" : ""}`}>{line}</span>
+                    <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0] font-bold" : ""}`}>{line}</span>
                   ))}</p>
               )}
               <p className="mt-4 text-lg font-medium text-ink">{formatKRW(p.price)}</p>
