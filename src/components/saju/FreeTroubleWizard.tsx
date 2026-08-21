@@ -459,7 +459,13 @@ export function FreeTroubleWizard({
                     <span className="flex flex-col">
                       <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
                         고민 사주 + 인생 사주
-                        <span className="shrink-0 rounded-md px-1.5 py-0.5 text-[11px] font-medium bg-[#F5D98B] text-[#6B5320]">9할이 선택</span>
+                        {/* 도장 찍힌 느낌의 스탬프 배지 */}
+                        <span
+                          className="shrink-0 rounded px-1.5 py-0.5 text-[11px] font-medium text-[#C95FC0] border-[1.5px] border-[#C95FC0] -rotate-[4deg]"
+                          style={{ outline: "1px solid #F2D3EF", outlineOffset: 2 }}
+                        >
+                          9할이 선택
+                        </span>
                       </span>
                       <span className="mt-1 text-xs font-normal text-body">고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트.</span>
                     </span>
