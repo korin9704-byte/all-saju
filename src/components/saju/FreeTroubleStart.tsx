@@ -11,6 +11,7 @@ export function FreeTroubleStart({
   askJob = false,
   basePrice,
   bundle,
+  label = "고민 오늘 끝내기!!",
 }: {
   productId: string;
   mode?: "free" | "paid";
@@ -18,6 +19,8 @@ export function FreeTroubleStart({
   askJob?: boolean;
   basePrice?: number;
   bundle?: { productId: string; price: number } | null;
+  /** 시작 버튼 문구 — 상품별로 다르게 지정 가능 */
+  label?: string;
 }) {
   const [started, setStarted] = useState(false);
 
@@ -35,7 +38,7 @@ export function FreeTroubleStart({
       onClick={() => setStarted(true)}
       className="w-full h-12 rounded-full bg-[#E7DDF8] text-ink text-[14px] font-medium transition-colors hover:bg-[#DCD2F5]"
     >
-      고민 오늘 끝내기!!
+      {label}
     </button>
   );
 }
