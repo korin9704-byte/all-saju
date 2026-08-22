@@ -214,13 +214,14 @@ export async function ProductLineup() {
             </div>
             {/* 텍스트 */}
             <div className="p-5">
-              <p className="text-base font-semibold text-ink">{p.name}</p>
+              {/* 상품 상세 히어로와 동일한 크기 (제목·가격 22px, 설명 16.5px) */}
+              <p className="text-[22px] font-normal text-ink">{p.name}</p>
               {p.description && (
-                <p className="mt-1 text-sm text-body leading-snug">{p.description.split("\n").map((line, i) => (
+                <p className="mt-1 text-[16.5px] text-body leading-snug">{p.description.split("\n").map((line, i) => (
                     <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0]" : ""}`}>{line}</span>
                   ))}</p>
               )}
-              <p className="mt-4 text-lg font-medium text-ink">{formatKRW(p.price)}</p>
+              <p className="mt-4 text-[22px] text-ink">{formatKRW(p.price)}</p>
             </div>
           </Link>
         ))}
