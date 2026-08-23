@@ -158,7 +158,7 @@ export const LIFEBOOK_CSS = `
 .lifebook #tocSheet.on{display:block;}
 .lifebook .toc-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);}
 .lifebook .toc-panel{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:72dvh;background:#FDFBFF;border-radius:18px 18px 0 0;overflow:auto;padding:10px 0 24px;box-shadow:0 -8px 32px rgba(74,58,114,.18);}
-.lifebook .toc-handle{width:40px;height:5px;border-radius:3px;background:#D8CCEE;margin:6px auto 12px;}
+.lifebook .toc-handle{width:40px;height:3px;border-radius:2px;background:#D8CCEE;margin:6px auto 12px;}
 .lifebook .toc-head{font-family:'Gowun Dodum';font-size:17px;padding:0 22px 8px;}
 .lifebook .toc-panel ul{list-style:none;margin:0;padding:0;}
 .lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;border-bottom:1px solid #F1EAFB;background:#FDFBFF;}
