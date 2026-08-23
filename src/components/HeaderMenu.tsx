@@ -64,14 +64,17 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
             >
               {/* 상단 — '메뉴' 타이틀 + 닫기 */}
               <div className="flex items-center justify-between px-[20px] pb-3 border-b border-[#E7DDF8]">
-                <span className="text-[17px] text-ink" style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}>
+                <span
+                  className="flex h-6 items-center text-[17px] leading-none text-ink"
+                  style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}
+                >
                   메뉴
                 </span>
                 <button
                   type="button"
                   aria-label="메뉴 닫기"
                   onClick={() => setOpen(false)}
-                  className="text-[18px] leading-none text-body"
+                  className="flex h-6 w-6 items-center justify-center text-[18px] leading-none text-body"
                 >
                   ✕
                 </button>
