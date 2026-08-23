@@ -72,16 +72,20 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
               </button>
 
-              {/* 메뉴 항목 — 2열 카드 그리드 */}
-              <nav className="grid grid-cols-2 gap-2.5 px-5 pt-1">
+              {/* 메뉴 항목 */}
+              <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
                 <MenuLink href="/reviews">리뷰</MenuLink>
                 {isLoggedIn ? (
                   <>
                     <MenuLink href="/mypage">마이페이지</MenuLink>
-                    <form action="/api/auth/signout" method="post" className="contents">
-                      <button type="submit" className={CARD_CLS}>
+                    <form action="/api/auth/signout" method="post">
+                      <button
+                        type="submit"
+                        className="flex w-full items-center gap-1.5 px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
+                      >
+                        <span className="shrink-0 text-[#C95FC0]">▸</span>
                         로그아웃
                       </button>
                     </form>
@@ -102,13 +106,11 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   );
 }
 
-// 2열 카드 공통 스타일
-const CARD_CLS =
-  "flex items-center rounded-2xl bg-white border border-[#E7DDF8] px-4 py-4 text-sm font-medium text-ink text-left transition-colors hover:bg-[#F3EDFB]";
-
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className={CARD_CLS}>
+    <Link href={href} className="flex items-center gap-1.5 px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+      {/* 화살표 기호 — 메뉴 항목 앞에 표시 */}
+      <span className="shrink-0 text-[#C95FC0]">▸</span>
       {children}
     </Link>
   );
