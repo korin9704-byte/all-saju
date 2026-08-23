@@ -72,27 +72,25 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
               </button>
 
-              {/* 메뉴 항목 */}
-              <nav className="flex flex-col">
-                <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
-                <MenuLink href="/products/life-saju">인생 사주</MenuLink>
-                <MenuLink href="/reviews">리뷰</MenuLink>
+              {/* 메뉴 항목 — 2열 카드 그리드 */}
+              <nav className="grid grid-cols-2 gap-2.5 px-5 pt-1">
+                <MenuLink href="/products/trouble-saju" emoji="😿">고민 사주</MenuLink>
+                <MenuLink href="/products/life-saju" emoji="📖">인생 사주</MenuLink>
+                <MenuLink href="/reviews" emoji="💬">리뷰</MenuLink>
                 {isLoggedIn ? (
                   <>
-                    <MenuLink href="/mypage">마이페이지</MenuLink>
-                    <form action="/api/auth/signout" method="post">
-                      <button
-                        type="submit"
-                        className="flex w-full items-center px-7 py-[13px] text-left text-[16.5px] font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
-                      >
+                    <MenuLink href="/mypage" emoji="🐱">마이페이지</MenuLink>
+                    <form action="/api/auth/signout" method="post" className="contents">
+                      <button type="submit" className={CARD_CLS}>
+                        <span className="text-lg leading-none">👋</span>
                         로그아웃
                       </button>
                     </form>
                   </>
                 ) : (
                   <>
-                    <MenuLink href="/login">로그인</MenuLink>
-                    <MenuLink href="/signup">회원가입</MenuLink>
+                    <MenuLink href="/login" emoji="🐾">로그인</MenuLink>
+                    <MenuLink href="/signup" emoji="✨">회원가입</MenuLink>
                   </>
                 )}
               </nav>
@@ -105,9 +103,14 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   );
 }
 
-function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
+// 2열 카드 공통 스타일
+const CARD_CLS =
+  "flex flex-col items-start gap-1.5 rounded-2xl bg-white border border-[#E7DDF8] px-4 py-4 text-sm font-medium text-ink text-left transition-colors hover:bg-[#F3EDFB]";
+
+function MenuLink({ href, emoji, children }: { href: string; emoji: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="flex items-center px-7 py-[13px] text-[16.5px] font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+    <Link href={href} className={CARD_CLS}>
+      <span className="text-lg leading-none">{emoji}</span>
       {children}
     </Link>
   );
