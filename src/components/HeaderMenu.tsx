@@ -78,7 +78,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 >
                   {/* 굵은 ✕ (SVG) */}
                   <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <path d="M5 5 L15 15 M15 5 L5 15" stroke="#7A6B9E" strokeWidth="2.2" strokeLinecap="round" />
+                    <path d="M5 5 L15 15 M15 5 L5 15" stroke="#C95FC0" strokeWidth="2.2" strokeLinecap="round" />
                   </svg>
                 </button>
               </div>
