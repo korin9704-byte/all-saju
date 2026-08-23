@@ -23,15 +23,21 @@ export function AskAnotherConcern({
   price,
   saju,
   guestEmail,
+  defaultOpen = false,
+  onClose,
 }: {
   productId: string;
   /** 할인 적용가 (followup-question 상품 가격) */
   price: number;
   saju: AskSaju;
   guestEmail?: string | null;
+  /** true면 바로 고민 입력 화면으로 시작 (외부 버튼으로 여는 경우) */
+  defaultOpen?: boolean;
+  /** 외부 제어 모드 — 닫힐 때 호출되고, 접힌 트리거 버튼은 렌더하지 않음 */
+  onClose?: () => void;
 }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -88,7 +94,7 @@ export function AskAnotherConcern({
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
               <div className="flex gap-3">
-                <button type="button" onClick={() => setOpen(false)}
+                <button type="button" onClick={() => { setOpen(false); onClose?.(); }}
                   className="w-24 h-14 rounded-full bg-white border border-[#E7DDF8] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#F3EDFB]">이전</button>
                 <button type="button" onClick={submit} disabled={submitting}
                   className="flex-1 h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
@@ -102,6 +108,9 @@ export function AskAnotherConcern({
       </div>
     );
   }
+
+  // 외부 제어 모드 — 닫히면 아무것도 렌더하지 않음
+  if (onClose) return null;
 
   return (
     <section className="mt-8 px-4">

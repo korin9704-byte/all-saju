@@ -11,25 +11,39 @@ import { useEffect, useRef, useState } from "react";
 import type { LifeReportPayload } from "@/lib/saju/life-report";
 import { LIFEBOOK_CSS } from "./lifebook-css";
 import { HeaderMenu } from "@/components/HeaderMenu";
+import { AskAnotherConcern, type AskSaju } from "@/components/saju/AskAnotherConcern";
+
+/** "1장" → "01." (장 표기 없이 번호만) */
+function fmtLabel(label: string): string {
+  const m = label.match(/^(\d+)\s*장$/);
+  return m ? `${m[1].padStart(2, "0")}.` : label;
+}
 
 export default function LifeBookViewer({
   payload,
   storageKey,
   siblingTab,
+  currentTabLabel = "인생 사주",
   isLoggedIn = false,
+  ask,
 }: {
   payload: LifeReportPayload;
   storageKey: string;
-  /** 번들 형제 결과지(고민 사주)로 이동하는 탭 */
+  /** 번들 형제 결과지로 이동하는 탭 */
   siblingTab?: { label: string; href: string };
+  /** 현재 결과지 탭 라벨 (기본: 인생 사주) */
+  currentTabLabel?: string;
   /** 헤더 메뉴(발바닥) 로그인 상태 */
   isLoggedIn?: boolean;
+  /** 추가 질문(50% 할인 followup) — 있으면 하단 내비에 버튼 노출 */
+  ask?: { productId: string; price: number; saju: AskSaju; guestEmail?: string | null };
 }) {
   // 과거 생성분에 표지 뷰(label === "")가 있으면 제외하고 1장부터 시작
   const views = payload.views.filter((v) => v.label !== "");
   const N = views.length;
   const [cur, setCur] = useState(0);
   const [tocOpen, setTocOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLSpanElement>(null);
   const [trackW, setTrackW] = useState(170);
@@ -96,40 +110,102 @@ export default function LifeBookViewer({
           </span>
         </header>
 
-        {/* 번들 형제 결과지 탭 — 결과지 페이지의 알약 탭과 동일한 문법 */}
-        {siblingTab && (
-          <div style={{ display: "flex", justifyContent: "center", gap: 8, padding: "12px 16px 0" }}>
-            <a
-              href={siblingTab.href}
-              style={{
-                padding: "8px 20px", borderRadius: 999, fontSize: 14, textDecoration: "none",
-                background: "#fff", border: "1px solid #E7DDF8", color: "#4A3A72",
-              }}
-            >
+        {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
+        {siblingTab && (() => {
+          const base: React.CSSProperties = {
+            padding: "7px 20px",
+            borderRadius: 999,
+            fontSize: 14,
+            textDecoration: "none",
+          };
+          const link = (
+            <a key="link" href={siblingTab.href} style={{ ...base, color: "#7A6B9E" }}>
               {siblingTab.label}
             </a>
+          );
+          const current = (
             <span
-              style={{
-                padding: "8px 20px", borderRadius: 999, fontSize: 14, color: "#fff",
-                background: "linear-gradient(90deg, #8F7BD6, #C95FC0)",
-              }}
+              key="cur"
+              style={{ ...base, background: "#fff", color: "#4A3A72", boxShadow: "0 2px 8px rgba(122,95,190,0.18)" }}
             >
-              인생 사주
+              {currentTabLabel}
             </span>
-          </div>
-        )}
+          );
+          const currentFirst = currentTabLabel === "고민 사주";
+          return (
+            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 0" }}>
+              <div
+                style={{
+                  display: "flex",
+                  background: "#F3EDFB",
+                  border: "1px solid #E7DDF8",
+                  borderRadius: 999,
+                  padding: 4,
+                }}
+              >
+                {currentFirst ? [current, link] : [link, current]}
+              </div>
+            </div>
+          );
+        })()}
 
         <main>
           <article className="view on">
-            {views[cur].label && (
-              <p className="part">
-                <span>{views[cur].label}</span>
+            {views[cur].sub ? (
+              <p className="sub-h" style={{ marginTop: 4 }}>
+                {views[cur].label ? `${fmtLabel(views[cur].label)} ` : ""}
+                {views[cur].title}
               </p>
+            ) : (
+              // 알약 없이 "01. 제목" 한 줄
+              <h2 className="chapter">
+                {views[cur].label ? `${fmtLabel(views[cur].label)} ` : ""}
+                {views[cur].title}
+              </h2>
             )}
-            <h2 className="chapter">{views[cur].title}</h2>
             <div dangerouslySetInnerHTML={{ __html: views[cur].html }} />
           </article>
         </main>
+
+        {/* 플로팅 추가 질문 버튼 — 모든 장에서 하단 내비 위에 떠 있음 */}
+        {ask && (
+          <div
+            style={{
+              position: "sticky",
+              bottom: 76,
+              height: 0,
+              display: "flex",
+              justifyContent: "flex-end",
+              padding: "0 16px",
+              zIndex: 25,
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setAskOpen(true)}
+              style={{
+                transform: "translateY(-100%)",
+                border: 0,
+                cursor: "pointer",
+                borderRadius: 999,
+                height: 44,
+                padding: "0 18px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                whiteSpace: "nowrap",
+                lineHeight: 1,
+                fontFamily: "inherit",
+                fontSize: 13.5,
+                color: "#4A3A72",
+                background: "#E7DDF8",
+                boxShadow: "0 6px 18px rgba(122,95,190,0.25)",
+              }}
+            >
+              또 다른 고민 물어보기 (50% 할인)
+            </button>
+          </div>
+        )}
 
         <nav className="bottom">
           <button className="toc-btn" onClick={() => setTocOpen(true)}>
@@ -155,6 +231,18 @@ export default function LifeBookViewer({
           </button>
         </nav>
 
+        {/* 추가 질문 — 고민 입력 후 50% 할인 결제 (기존 followup 플로우 재사용) */}
+        {ask && askOpen && (
+          <AskAnotherConcern
+            productId={ask.productId}
+            price={ask.price}
+            saju={ask.saju}
+            guestEmail={ask.guestEmail}
+            defaultOpen
+            onClose={() => setAskOpen(false)}
+          />
+        )}
+
         <div id="tocSheet" className={tocOpen ? "on" : ""} style={sheetW ? { width: sheetW } : undefined}>
           <div className="toc-bg" onClick={() => setTocOpen(false)} />
           <div className="toc-panel">
@@ -162,8 +250,11 @@ export default function LifeBookViewer({
             <ul>
               {views.map((v, i) => (
                 <li key={i} className={i === cur ? "cur" : ""} onClick={() => go(i)}>
-                  <span className="toc-no">{v.label}</span>
-                  <span className="toc-t">{v.title}</span>
+                  {/* 번호 알약 없이 "01. 제목" 한 줄 */}
+                  <span className="toc-t">
+                    {v.label ? `${fmtLabel(v.label)} ` : ""}
+                    {v.title}
+                  </span>
                 </li>
               ))}
             </ul>

@@ -14,6 +14,7 @@ import type { Myeongsik } from "@/lib/saju/manseryeok";
 import { formatDate } from "@/lib/utils";
 import { MINI_PRODUCTS, isMiniBaseSlug } from "@/lib/mini";
 import { parseLifePayload, LIFE_SLUG } from "@/lib/saju/life-report";
+import { buildTroubleBookPayload } from "@/lib/saju/trouble-book";
 import LifeBookViewer from "@/components/saju/LifeBookViewer";
 
 export const metadata = { title: "결과지" };
@@ -108,6 +109,7 @@ export default async function ResultPage({
           : { data: null };
         if (parentResult) siblingTab = { label: "고민 사주", href: `/results/${parentResult.id}` };
       }
+      // 인생 사주에는 추가 질문(플로팅) 버튼을 노출하지 않는다 — 고민 사주 뷰어 전용
       return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} siblingTab={siblingTab} isLoggedIn={!!viewer} />;
     }
   }
@@ -198,6 +200,60 @@ export default async function ResultPage({
       )}
     </div>
   ) : null;
+
+  // ── 고민 사주 — 인생 사주와 같은 챕터 뷰어로 렌더 (내용·프롬프트는 그대로, 형식만 변환) ──
+  if ((product?.slug === "trouble-saju" || product?.slug === BUNDLE_SLUG) && sajuInput && result.locked !== true) {
+    const question =
+      ((sajuInput.concerns ?? []) as string[]).find((c) => !c.startsWith("["))?.trim() || null;
+    const birthLabel =
+      [
+        sajuInput.birth_date ? formatBirthDate(sajuInput.birth_date) : "",
+        sajuInput.time_unknown ? "" : sajuInput.birth_time ? formatTime(sajuInput.birth_time) : "",
+        `(${sajuInput.calendar === "lunar" ? "음력" : "양력"})`,
+      ]
+        .filter(Boolean)
+        .join(" ") + ` · ${sajuInput.gender === "male" ? "남성" : "여성"}`;
+    // 인생 사주식 풀 명식표(십성·십이운성·신살·귀인) — 로컬 만세력으로 계산
+    let msCardHtml: string | undefined;
+    try {
+      const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+      const { buildMyeongsikCardHtml } = await import("@/lib/saju/life-report");
+      const analysis = computeLocalFullAnalysis({
+        birthDate: sajuInput.birth_date as string,
+        birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
+        timeUnknown: !!sajuInput.time_unknown,
+        calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+        gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
+      });
+      msCardHtml = buildMyeongsikCardHtml(analysis, sajuInput.name ?? "고객", birthLabel);
+    } catch (err) {
+      console.error("[trouble-book] 풀 명식표 생성 실패 — 간이 명식표로 폴백:", err);
+    }
+    const troublePayload = buildTroubleBookPayload({
+      name: sajuInput.name ?? "고객",
+      birthLabel,
+      question,
+      myeongsik,
+      md: result.interpretation_md,
+      myeongsikCardHtml: msCardHtml,
+    });
+    // 번들 부모면 인생 사주(자식) 결과지 탭 연결
+    const lifeTab = bundleTabs?.find((t) => t.resultId);
+    const troubleAsk =
+      followupProduct && askSaju
+        ? { productId: followupProduct.id, price: followupProduct.price, saju: askSaju, guestEmail: order?.guest_email }
+        : undefined;
+    return (
+      <LifeBookViewer
+        payload={troublePayload}
+        storageKey={`nyang_trouble_pos_${result.id}`}
+        siblingTab={lifeTab ? { label: lifeTab.label, href: `/results/${lifeTab.resultId}` } : undefined}
+        currentTabLabel="고민 사주"
+        isLoggedIn={!!viewer}
+        ask={troubleAsk}
+      />
+    );
+  }
 
   // MINI(-mini 접미사)는 원본 상품 기준으로 레이아웃을 결정한다
   const rawSlug        = product?.slug ?? "";

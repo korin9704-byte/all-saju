@@ -15,7 +15,13 @@ type Api = any;
 export const LIFE_SLUG = "life-saju";
 export const LIFE_PAYLOAD_TYPE = "life-saju-v1";
 
-export type LifeView = { label: string; title: string; html: string };
+export type LifeView = {
+  label: string;
+  title: string;
+  html: string;
+  /** true면 제목을 큰 챕터 제목 대신 소제목(sub-h) 스타일로 렌더 */
+  sub?: boolean;
+};
 export type LifeReportPayload = {
   type: typeof LIFE_PAYLOAD_TYPE;
   name: string;
@@ -460,6 +466,11 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     myeongsikCard, msFocusCard, msFocusColCard, daeunCard, seunCard,
     ohengCardFull, ohengCardCompact, singangCard, coverPillars, hasHour,
   };
+}
+
+/** 풀 명식표 카드 html — 고민 사주 뷰어 등 외부 재사용 */
+export function buildMyeongsikCardHtml(a: Api, name: string, birthLabel: string): string {
+  return (buildCards(a, name, birthLabel, []) as { myeongsikCard: string }).myeongsikCard;
 }
 
 // ── 뷰 조립 ─────────────────────────────────────────

@@ -69,11 +69,12 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 onClick={() => setOpen(false)}
                 className="flex w-full justify-center pt-3 pb-2"
               >
-                <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
+                {/* 목차 시트 핸들과 동일 크기 (40 x 5) */}
+                <span className="h-[5px] w-[40px] rounded-full bg-[#D8CCEE]" />
               </button>
 
-              {/* 메뉴 항목 */}
-              <nav className="flex flex-col">
+              {/* 메뉴 항목 — 목차와 같은 담백 리스트(얇은 구분선) + 01. 번호 */}
+              <nav className="flex flex-col divide-y divide-[#F1EAFB]">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
                 <MenuLink href="/reviews">리뷰</MenuLink>
@@ -83,9 +84,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                     <form action="/api/auth/signout" method="post">
                       <button
                         type="submit"
-                        className="flex w-full items-center gap-1.5 px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
+                        className="flex w-full items-center px-[20px] py-[12px] text-left text-[14px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]"
                       >
-                        <span className="shrink-0 text-[#C95FC0]">▸</span>
                         로그아웃
                       </button>
                     </form>
@@ -108,9 +108,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="flex items-center gap-1.5 px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
-      {/* 화살표 기호 — 메뉴 항목 앞에 표시 */}
-      <span className="shrink-0 text-[#C95FC0]">▸</span>
+    <Link href={href} className="flex items-center px-[20px] py-[12px] text-[14px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]">
       {children}
     </Link>
   );
