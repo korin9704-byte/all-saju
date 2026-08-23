@@ -62,18 +62,23 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               className="absolute top-0 right-0 bottom-0 w-[66%] max-w-[300px] bg-[#F8F4FD] pt-4 overflow-y-auto"
               style={{ animation: "drawerIn 0.25s ease-out", boxShadow: "-8px 0 28px rgba(74,58,114,0.22)" }}
             >
-              {/* 닫기 */}
-              <button
-                type="button"
-                aria-label="메뉴 닫기"
-                onClick={() => setOpen(false)}
-                className="flex w-full justify-end px-4 pb-2 text-[18px] leading-none text-body"
-              >
-                ✕
-              </button>
+              {/* 상단 — '메뉴' 타이틀 + 닫기 */}
+              <div className="flex items-center justify-between px-[20px] pb-3 border-b border-[#E7DDF8]">
+                <span className="text-[17px] text-ink" style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}>
+                  메뉴
+                </span>
+                <button
+                  type="button"
+                  aria-label="메뉴 닫기"
+                  onClick={() => setOpen(false)}
+                  className="text-[18px] leading-none text-body"
+                >
+                  ✕
+                </button>
+              </div>
 
-              {/* 메뉴 항목 — 목차와 같은 담백 리스트(얇은 구분선) + 01. 번호 */}
-              <nav className="flex flex-col divide-y divide-[#F1EAFB]">
+              {/* 메뉴 항목 — 구분선 없이 */}
+              <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
                 {isLoggedIn ? (
