@@ -76,14 +76,14 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               <nav className="flex flex-col divide-y divide-[#F1EAFB]">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
-                <MenuLink href="/reviews">리뷰</MenuLink>
                 {isLoggedIn ? (
                   <>
                     <MenuLink href="/mypage">마이페이지</MenuLink>
                     <form action="/api/auth/signout" method="post">
                       <button
                         type="submit"
-                        className="flex w-full items-center px-[20px] py-[12px] text-left text-[14px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]"
+                        className="flex w-full items-center px-[20px] py-[12px] text-left text-[15px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]"
+                        style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}
                       >
                         로그아웃
                       </button>
@@ -107,7 +107,11 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="flex items-center px-[20px] py-[12px] text-[14px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]">
+    <Link
+      href={href}
+      className="flex items-center px-[20px] py-[12px] text-[15px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]"
+      style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}
+    >
       {children}
     </Link>
   );

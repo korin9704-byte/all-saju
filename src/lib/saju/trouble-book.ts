@@ -91,13 +91,13 @@ export function buildTroubleBookPayload(opts: {
     label: `${no(1)}.`,
     title: dot("나의 사주와 고민"),
     html: (() => {
-      // 고민(Q)은 명식표 카드와 분리해 표 위에 "OO님의 고민" 카드로 둔다
+      // 고민(Q)은 명식표 카드 아래에 별도 카드로 둔다 (카드 제목: "OO님의 사주와 고민")
       const qBlock = question
-        ? `<div class="card"><p class="card-title">${esc(name)}님의 고민</p>` +
-          `<p class="card-desc" style="margin:0">${esc(question)}</p></div>`
+        ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
-      const card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
-      const cardWithQ = qBlock + card;
+      let card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
+      if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 고민<`);
+      const cardWithQ = card + qBlock;
       return (
         // 인생 사주와 동일하게 말풍선 그룹의 첫 버블에만 꼬리를 단다
         `<div class="nyan tail"><span class="say">안녕하세요, ${esc(name)}님. 냥점의 점술사 묘묘예요. 이렇게 인연이 닿아 정말 기뻐요.</span></div>` +
