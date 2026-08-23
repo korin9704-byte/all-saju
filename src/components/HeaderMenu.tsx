@@ -74,9 +74,12 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   type="button"
                   aria-label="메뉴 닫기"
                   onClick={() => setOpen(false)}
-                  className="relative -top-[4px] flex h-6 w-6 items-center justify-center text-[18px] leading-none text-body"
+                  className="relative -top-[4px] flex h-6 w-6 items-center justify-center text-body"
                 >
-                  ✕
+                  {/* 굵은 ✕ (SVG) */}
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path d="M5 5 L15 15 M15 5 L5 15" stroke="#7A6B9E" strokeWidth="2.2" strokeLinecap="round" />
+                  </svg>
                 </button>
               </div>
 
