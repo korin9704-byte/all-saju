@@ -9,7 +9,7 @@ export const LIFEBOOK_CSS = `
 .lifebook header.top{position:sticky;top:0;z-index:20;background:rgba(253,251,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px;}
 .lifebook .logo{font-family:'Gowun Dodum';letter-spacing:.08em;font-size:15px;flex:none;}
 .lifebook .menu-btn{margin-left:auto;border:0;background:none;color:var(--ink);font-size:19px;line-height:1;padding:2px 2px;cursor:pointer;}
-.lifebook main{padding:22px 20px 96px;}
+.lifebook main{padding:22px 20px 24px;}
 .lifebook .view{display:none;animation:lb-fade .25s ease;}
 .lifebook .view.on{display:block;}
 .lifebook .part{margin:0 0 8px;}
