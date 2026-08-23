@@ -149,7 +149,8 @@ export default function LifeBookViewer({
           );
         })()}
 
-        <main>
+        {/* 플로팅 버튼이 본문 마지막 줄을 가리지 않도록 하단 여백 확보 */}
+        <main style={ask ? { paddingBottom: 76 } : undefined}>
           <article className="view on">
             {views[cur].sub ? (
               <p className="sub-h" style={{ marginTop: 4 }}>
