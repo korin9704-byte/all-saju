@@ -53,7 +53,11 @@ function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
     <header className="border-b border-hairline bg-[#F8F4FD]">
       <div className="container flex h-14 items-center justify-between">
-        <Link href="/" className="font-bold text-[18px] text-ink tracking-[0.08em]">
+        <Link
+          href="/"
+          className="text-[18px] text-ink tracking-[0.08em]"
+          style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}
+        >
           냥점
         </Link>
         <HeaderMenu isLoggedIn={isLoggedIn} />
