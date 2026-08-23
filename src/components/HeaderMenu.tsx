@@ -74,7 +74,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   type="button"
                   aria-label="메뉴 닫기"
                   onClick={() => setOpen(false)}
-                  className="flex h-6 w-6 items-center justify-center text-[18px] leading-none text-body"
+                  className="relative -top-[4px] flex h-6 w-6 items-center justify-center text-[18px] leading-none text-body"
                 >
                   ✕
                 </button>
