@@ -66,8 +66,7 @@ export function TossWidget({ orderId, amount, customerKey, productName, customer
         type="button"
         onClick={handlePay}
         disabled={!ready || paying}
-        className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
-        style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
+        className="w-full h-14 rounded-full bg-[#E7DDF8] text-ink text-sm font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none"
       >
         {paying ? "결제 진행 중..." : "결제하기"}
       </button>

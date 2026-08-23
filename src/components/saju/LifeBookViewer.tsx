@@ -92,7 +92,7 @@ export default function LifeBookViewer({
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Do+Hyeon&display=swap"
       />
       <style dangerouslySetInnerHTML={{ __html: LIFEBOOK_CSS }} />
       <div className="app">
@@ -260,7 +260,7 @@ export default function LifeBookViewer({
             <ul>
               {views.map((v, i) => (
                 <li key={i} className={i === cur ? "cur" : ""} onClick={() => go(i)}>
-                  {/* 번호 알약 없이 "01. 제목" 한 줄 */}
+                  {/* "01. 제목" 한 줄 */}
                   <span className="toc-t">
                     {v.label ? `${fmtLabel(v.label)} ` : ""}
                     {v.title}

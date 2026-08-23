@@ -161,11 +161,10 @@ export const LIFEBOOK_CSS = `
 .lifebook .toc-handle{width:40px;height:3px;border-radius:2px;background:#D8CCEE;margin:6px auto 12px;}
 .lifebook .toc-head{font-family:'Gowun Dodum';font-size:17px;padding:0 22px 8px;}
 .lifebook .toc-panel ul{list-style:none;margin:0;padding:0;}
-.lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;border-bottom:1px solid #F1EAFB;background:#FDFBFF;}
-.lifebook .toc-panel li:last-child{border-bottom:0;}
+.lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;background:#FDFBFF;}
 .lifebook .toc-panel li.cur{background:#FDFBFF;}
 .lifebook .toc-no{flex:none;font-size:10.5px;color:var(--ink);background:var(--soft);border-radius:999px;padding:3px 10px;letter-spacing:.04em;}
-.lifebook .toc-t{font-size:14px;line-height:1.6;color:var(--ink);}
+.lifebook .toc-t{font-family:'Do Hyeon','Gowun Dodum',sans-serif;font-size:15px;line-height:1.6;color:var(--ink);}
 .lifebook .toc-panel li.cur .toc-no,.lifebook .toc-panel li.cur .toc-t{color:var(--pink);}
 .lifebook footer.disc{padding:26px 20px 10px;text-align:center;font-size:11px;color:var(--mute);}
 @keyframes lb-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
