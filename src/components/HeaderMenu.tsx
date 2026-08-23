@@ -69,10 +69,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 onClick={() => setOpen(false)}
                 className="flex w-full justify-center pt-3 pb-2"
               >
-                {/* 소프트 삼각형(▼) 핸들 — 아래로 닫힘 힌트 */}
-                <svg width="18" height="11" viewBox="0 0 18 11" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <path d="M3 2 H15 Q16.5 2 15.6 3.4 L10.3 9.4 Q9 10.8 7.7 9.4 L2.4 3.4 Q1.5 2 3 2 Z" fill="#C9BEE2" />
-                </svg>
+                <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
               </button>
 
               {/* 메뉴 항목 */}
