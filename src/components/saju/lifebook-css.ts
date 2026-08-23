@@ -5,11 +5,11 @@ export const LIFEBOOK_CSS = `
 .lifebook *{box-sizing:border-box}
 .lifebook{margin:0;background:#EFE7FA;}
 .lifebook{font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;color:var(--ink);}
-.lifebook .app{max-width:480px;margin:0 auto;background:#FDFBFF;min-height:100dvh;position:relative;}
+.lifebook .app{max-width:480px;margin:0 auto;background:#FDFBFF;min-height:100dvh;position:relative;display:flex;flex-direction:column;}
 .lifebook header.top{position:sticky;top:0;z-index:20;background:rgba(253,251,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px;}
 .lifebook .logo{font-family:'Gowun Dodum';letter-spacing:.08em;font-size:15px;flex:none;}
 .lifebook .menu-btn{margin-left:auto;border:0;background:none;color:var(--ink);font-size:19px;line-height:1;padding:2px 2px;cursor:pointer;}
-.lifebook main{padding:22px 20px 24px;}
+.lifebook main{padding:22px 20px 24px;flex:1 0 auto;}
 .lifebook .view{display:none;animation:lb-fade .25s ease;}
 .lifebook .view.on{display:block;}
 .lifebook .part{margin:0 0 8px;}
