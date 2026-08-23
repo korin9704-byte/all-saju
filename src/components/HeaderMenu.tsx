@@ -30,9 +30,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         onClick={() => setOpen((v) => !v)}
         className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8]"
       >
-        {/* 원형 소프트 배경 + 햄버거 3줄 */}
-        <svg width="18" height="18" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-          <path d="M4 6 H18 M4 11 H18 M4 16 H18" stroke="#4A3A72" strokeWidth="1.2" strokeLinecap="round" />
+        {/* 원형 소프트 배경 + 반짝임(✦) 아이콘 */}
+        <svg width="19" height="19" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path d="M11 3.5 12.6 9 18 11 12.6 13 11 18.5 9.4 13 4 11 9.4 9Z" fill="#4A3A72" />
         </svg>
       </button>
 
