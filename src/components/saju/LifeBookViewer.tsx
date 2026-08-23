@@ -101,7 +101,7 @@ export default function LifeBookViewer({
           <a
             href="/"
             className="logo"
-            style={{ fontSize: 20, letterSpacing: "0.08em", color: "#4A3A72", textDecoration: "none" }}
+            style={{ fontSize: 18, letterSpacing: "0.08em", color: "#4A3A72", textDecoration: "none" }}
           >
             냥점
           </a>
@@ -209,8 +209,17 @@ export default function LifeBookViewer({
         )}
 
         <nav className="bottom">
-          <button className="toc-btn" onClick={() => setTocOpen(true)}>
-            목차
+          <button className="toc-btn" onClick={() => setTocOpen(true)} aria-label="목차">
+            {/* 책갈피(북마크) 아이콘 */}
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <path
+                d="M4 3.5h9a2 2 0 012 2V17l-3.5-2.2L8 17V5.5a2 2 0 00-2-2H4z"
+                stroke="#4A3A72"
+                strokeWidth="1.3"
+                strokeLinejoin="round"
+              />
+              <path d="M4 3.5v13" stroke="#4A3A72" strokeWidth="1.3" strokeLinecap="round" />
+            </svg>
           </button>
           <span id="prog">
             <span className="prog-track" ref={trackRef}>
