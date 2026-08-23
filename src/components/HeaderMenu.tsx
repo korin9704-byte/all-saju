@@ -40,9 +40,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
       {open && createPortal(
         <div className="fixed inset-0 z-[70]">
           <style>{`
-            @keyframes sheetUp {
-              from { transform: translateY(100%); }
-              to   { transform: translateY(0); }
+            @keyframes drawerIn {
+              from { transform: translateX(100%); }
+              to   { transform: translateX(0); }
             }
             @keyframes backdropIn {
               from { opacity: 0; }
@@ -57,20 +57,19 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               style={{ animation: "backdropIn 0.2s ease-out" }}
               onClick={() => setOpen(false)}
             />
-            {/* 바텀 시트 */}
+            {/* 우측 드로어 */}
             <div
-              className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] pb-8"
-              style={{ animation: "sheetUp 0.25s ease-out", boxShadow: "0 -8px 32px rgba(74,58,114,0.18)" }}
+              className="absolute top-0 right-0 bottom-0 w-[66%] max-w-[300px] bg-[#F8F4FD] pt-4 overflow-y-auto"
+              style={{ animation: "drawerIn 0.25s ease-out", boxShadow: "-8px 0 28px rgba(74,58,114,0.22)" }}
             >
-              {/* 핸들 바 */}
+              {/* 닫기 */}
               <button
                 type="button"
                 aria-label="메뉴 닫기"
                 onClick={() => setOpen(false)}
-                className="flex w-full justify-center pt-3 pb-2"
+                className="flex w-full justify-end px-4 pb-2 text-[18px] leading-none text-body"
               >
-                {/* 목차 시트 핸들과 동일 크기 (40 x 5) */}
-                <span className="h-[5px] w-[40px] rounded-full bg-[#D8CCEE]" />
+                ✕
               </button>
 
               {/* 메뉴 항목 — 목차와 같은 담백 리스트(얇은 구분선) + 01. 번호 */}
