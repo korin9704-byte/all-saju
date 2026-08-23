@@ -83,9 +83,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                     <form action="/api/auth/signout" method="post">
                       <button
                         type="submit"
-                        className="flex w-full items-center gap-2 px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
+                        className="flex w-full items-center gap-1.5 px-6 py-4 text-left text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]"
                       >
-                        <span className="shrink-0 w-[7px] h-[7px] bg-[#8F7BD6] rotate-45 rounded-[1.5px]" aria-hidden />
+                        <span className="shrink-0 text-[#C95FC0]">▸</span>
                         로그아웃
                       </button>
                     </form>
@@ -108,9 +108,9 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
 
 function MenuLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="flex items-center gap-2 px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
-      {/* 마름모 포인트 — 리뷰 헤더와 동일 문법 */}
-      <span className="shrink-0 w-[7px] h-[7px] bg-[#8F7BD6] rotate-45 rounded-[1.5px]" aria-hidden />
+    <Link href={href} className="flex items-center gap-1.5 px-6 py-4 text-sm font-medium text-ink transition-colors hover:bg-[#F3EDFB]">
+      {/* 화살표 기호 — 메뉴 항목 앞에 표시 */}
+      <span className="shrink-0 text-[#C95FC0]">▸</span>
       {children}
     </Link>
   );
