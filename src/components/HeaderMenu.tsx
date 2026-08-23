@@ -28,11 +28,11 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         aria-label="메뉴"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex h-10 w-10 items-center justify-center -mr-2"
+        className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8]"
       >
-        {/* 햄버거 메뉴 아이콘 */}
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-          <path d="M3.5 5.5 H18.5 M3.5 11 H18.5 M3.5 16.5 H18.5" stroke="#4A3A72" strokeWidth="1.6" strokeLinecap="round" />
+        {/* 뷰어 '목차' 버튼과 같은 원형 소프트 배경 + 햄버거 아이콘 */}
+        <svg width="18" height="18" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path d="M4 6 H18 M4 11 H18 M4 16 H18" stroke="#4A3A72" strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       </button>
 
