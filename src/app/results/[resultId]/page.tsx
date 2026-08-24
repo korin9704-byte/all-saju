@@ -202,7 +202,8 @@ export default async function ResultPage({
   ) : null;
 
   // ── 고민 사주 — 인생 사주와 같은 챕터 뷰어로 렌더 (내용·프롬프트는 그대로, 형식만 변환) ──
-  if ((product?.slug === "trouble-saju" || product?.slug === BUNDLE_SLUG) && sajuInput && result.locked !== true) {
+  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", BUNDLE_SLUG];
+  if (product && TROUBLE_VIEWER_SLUGS.includes(product.slug) && sajuInput && result.locked !== true) {
     const question =
       ((sajuInput.concerns ?? []) as string[]).find((c) => !c.startsWith("["))?.trim() || null;
     const birthLabel =
