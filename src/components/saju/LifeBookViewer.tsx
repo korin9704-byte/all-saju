@@ -101,7 +101,13 @@ export default function LifeBookViewer({
           <a
             href="/"
             className="logo"
-            style={{ fontSize: 18, letterSpacing: "0.08em", color: "#4A3A72", textDecoration: "none" }}
+            style={{
+              fontSize: 23,
+              fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif",
+              letterSpacing: "0.08em",
+              color: "#4A3A72",
+              textDecoration: "none",
+            }}
           >
             냥점
           </a>
