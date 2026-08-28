@@ -30,9 +30,10 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         onClick={() => setOpen((v) => !v)}
         className="flex h-[40px] w-[40px] shrink-0 items-center justify-center transition-opacity hover:opacity-70"
       >
-        {/* 배경 원 없이 짧아지는 3줄 */}
-        <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-          <path d="M4 6 H18 M4 11 H14 M4 16 H10" stroke="#4A3A72" strokeWidth="1.2" strokeLinecap="round" />
+        {/* 낙관 도장 사각 + 흰 3줄 */}
+        <svg width="26" height="26" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+          <path d="M6.5 7.5 H15.5 M6.5 11 H13.5 M6.5 14.5 H12" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       </button>
 

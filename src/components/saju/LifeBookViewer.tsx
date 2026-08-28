@@ -102,10 +102,10 @@ export default function LifeBookViewer({
             href="/"
             className="logo"
             style={{
-              fontSize: 23,
-              fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif",
-              letterSpacing: "0.08em",
-              color: "#4A3A72",
+              fontSize: 27,
+              fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
+              letterSpacing: "0.05em",
+              color: "#C95FC0",
               textDecoration: "none",
             }}
           >

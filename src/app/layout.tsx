@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* 본문: 고운돋움 / 메뉴 항목: 도현 */}
-        <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Do+Hyeon&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Do+Hyeon&family=Kirang+Haerang&display=swap" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning className="bg-[#EFE7FA]">
         <MetaPixel pixelId="2209519539888659" />
@@ -55,8 +55,8 @@ function SiteHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
       <div className="container flex h-14 items-center justify-between">
         <Link
           href="/"
-          className="text-[23px] text-ink tracking-[0.08em]"
-          style={{ fontFamily: "'Do Hyeon', 'Gowun Dodum', sans-serif" }}
+          className="text-[27px] text-[#C95FC0] tracking-[0.05em]"
+          style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
         >
           냥점
         </Link>
