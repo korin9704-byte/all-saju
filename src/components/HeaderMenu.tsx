@@ -31,7 +31,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
         className="flex h-[40px] w-[40px] shrink-0 items-center justify-center transition-opacity hover:opacity-70"
       >
         {/* 배경 원 없이 짧아지는 3줄 */}
-        <svg width="18" height="18" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
           <path d="M4 6 H18 M4 11 H14 M4 16 H10" stroke="#4A3A72" strokeWidth="1.2" strokeLinecap="round" />
         </svg>
       </button>
