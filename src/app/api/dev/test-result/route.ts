@@ -82,6 +82,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(lifeRes);
     }
 
+    // usePipeline: 어떤 상품이든 실제 판매 파이프라인(generateAndStoreResult) 그대로 실행.
+    // forceLocal 이면 luckyloveme 를 건너뛰고 로컬 만세력으로 생성 — API/로컬 결과지 비교용.
+    if ((overrides as { usePipeline?: boolean }).usePipeline) {
+      const { error: inputErr } = await service.from("saju_inputs").insert({
+        order_id: order.id,
+        name: testInput.name,
+        birth_date: testInput.birth_date,
+        birth_time: testInput.birth_time,
+        time_unknown: testInput.time_unknown,
+        gender: testInput.gender,
+        calendar: testInput.calendar,
+        concerns: testInput.concerns,
+      });
+      if (inputErr) {
+        return NextResponse.json({ error: "사주 입력 저장 실패", detail: inputErr.message }, { status: 500 });
+      }
+      const res = await generateAndStoreResult(service, order.id, {
+        skipEmail: true,
+        forceLocal: !!(overrides as { forceLocal?: boolean }).forceLocal,
+      });
+      return NextResponse.json(res);
+    }
+
     // 번들: saju_inputs 저장 후 실제 번들 파이프라인 그대로 실행 (부모+자식 결과지)
     if (slug === "trouble-saju-bundle") {
       const { error: inputErr } = await service.from("saju_inputs").insert({

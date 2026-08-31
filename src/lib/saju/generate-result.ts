@@ -92,7 +92,7 @@ function toComputeInput(input: SajuInputRow) {
 export async function generateAndStoreResult(
   service: Service,
   orderRowId: string,
-  opts?: { skipEmail?: boolean; forceLocalLife?: boolean },
+  opts?: { skipEmail?: boolean; forceLocalLife?: boolean; forceLocal?: boolean },
 ): Promise<{ resultId: string }> {
   const { data: order } = await service
     .from("orders")
@@ -121,47 +121,44 @@ export async function generateAndStoreResult(
   const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : isBundle ? "trouble-saju" : product.slug;
   const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : isBundle ? "고민 사주" : product.name;
 
-  // 만세력/풀 분석: luckyloveme 키가 있으면 실제 API, 없거나 실패하면 로컬 만세력으로 폴백.
-  // 로컬 계산까지 실패하는 극단 상황에서만 mock 명식을 마지막 안전망으로 쓴다.
+  // 만세력/풀 분석: 로컬 만세력이 주경로 (luckyloveme 재현 검증 완료 — 2026-09 전환).
+  // 로컬 계산이 실패하면 luckyloveme(키가 있으면) → mock 순으로 안전망.
+  // SAJU_SHADOW_COMPARE=1 이면 luckyloveme 를 백그라운드로 호출해 로컬과의 차이를 계속 기록한다.
   const birthInfo = toBirthInfo(input);
   let myeongsik: Myeongsik;
   let manseryeokText: string | undefined;
   let fullAnalysis: SajuAnalysisResponse | null = null;
 
-  let apiAnalysis: SajuAnalysisResponse | null = null;
-  if (isSajuApiConfigured()) {
-    try {
-      const analysis = await fetchSajuAnalysis(birthInfo, [], { source: "confirm" }); // [] = 16종 전체
-      if (ganjiToMyeongsik(analysis)) apiAnalysis = analysis;
-      else console.error("[saju-api] ganji 필드 누락 — 로컬 만세력으로 폴백");
-    } catch (apiErr) {
-      console.error("[saju-api] 호출 실패 — 로컬 만세력으로 폴백:", apiErr);
+  let analysis: SajuAnalysisResponse | null = null;
+  try {
+    const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+    analysis = computeLocalFullAnalysis(toComputeInput(input));
+  } catch (localErr) {
+    console.error("[local-adapter] 로컬 만세력 계산 실패 — luckyloveme 로 폴백:", localErr);
+    if (isSajuApiConfigured() && !opts?.forceLocal) {
+      try {
+        const apiAnalysis = await fetchSajuAnalysis(birthInfo, [], { source: "confirm" }); // [] = 16종 전체
+        if (ganjiToMyeongsik(apiAnalysis)) analysis = apiAnalysis;
+      } catch (apiErr) {
+        console.error("[saju-api] 폴백 호출도 실패:", apiErr);
+      }
     }
   }
 
-  const analysis = apiAnalysis ?? (await (async () => {
-    try {
-      const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
-      return computeLocalFullAnalysis(toComputeInput(input));
-    } catch (localErr) {
-      console.error("[local-adapter] 로컬 만세력 계산 실패:", localErr);
-      return null;
-    }
-  })());
-
   if (analysis) {
-    myeongsik = ganjiToMyeongsik(analysis)!; // 로컬 계산은 ganji 를 항상 포함
+    myeongsik = ganjiToMyeongsik(analysis)!; // 로컬/API 모두 ganji 포함 확인 후 도달
     fullAnalysis = analysis;
     manseryeokText = formatSajuToManseryeok(analysis, birthInfo);
   } else {
-    // 로컬 계산까지 실패 — 결과지는 무조건 생성해야 하므로 mock 명식 사용
+    // 로컬·API 모두 실패 — 결과지는 무조건 생성해야 하므로 mock 명식 사용
     myeongsik = await computeMyeongsik(toComputeInput(input));
   }
 
-  if (apiAnalysis) {
-    // 섀도 대조 — 실판매 API 응답 vs 로컬 만세력 차이 기록 (API 를 실제로 썼을 때만).
-    // 동적 import + 이중 try/catch 로 어떤 실패도 판매 흐름에 전파되지 않게 격리.
+  if (process.env.SAJU_SHADOW_COMPARE === "1" && isSajuApiConfigured() && !opts?.forceLocal) {
+    // 섀도 대조(역방향) — 이제 로컬이 주경로이므로, 검증용으로만 luckyloveme 를 호출해
+    // 차이를 기록한다. 동적 import + 이중 try/catch 로 판매 흐름에서 완전 격리.
     try {
+      const apiAnalysis = await fetchSajuAnalysis(birthInfo, [], { source: "confirm" });
       const { recordShadowDiff } = await import("@/lib/saju/shadow-compare");
       await recordShadowDiff(service, order.id, {
         birth_date: input.birth_date,
@@ -266,50 +263,32 @@ export async function generateAndStoreResult(
 
       if (partnerBirthDate) {
         try {
-          if (isSajuApiConfigured()) {
-            const pBirthInfo: BirthInfo = (() => {
-              const [py, pm, pd] = partnerBirthDate.split("-");
-              const hasT = !partnerTimeUnknown && !!partnerBirthTime;
-              const [phh, pmm] = hasT ? partnerBirthTime!.split(":") : [undefined, undefined];
-              return {
-                birthYear: py,
-                birthMonth: String(parseInt(pm, 10)),
-                birthDay: String(parseInt(pd, 10)),
-                ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
-                calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
-                gender: partnerGender ?? "female",
-              };
-            })();
-            try {
-              const pAnalysis = await fetchSajuAnalysis(pBirthInfo, [], { source: "confirm" });
-              const pConverted = ganjiToMyeongsik(pAnalysis);
-              partnerMyeongsik = pConverted ?? await computeMyeongsik({
-                birthDate: partnerBirthDate,
-                birthTime: partnerBirthTime,
-                timeUnknown: partnerTimeUnknown,
-                calendar: partnerCalendar,
-                gender: partnerGender ?? "female",
-              });
-            } catch {
-              partnerMyeongsik = await computeMyeongsik({
-                birthDate: partnerBirthDate,
-                birthTime: partnerBirthTime,
-                timeUnknown: partnerTimeUnknown,
-                calendar: partnerCalendar,
-                gender: partnerGender ?? "female",
-              });
-            }
-          } else {
-            partnerMyeongsik = await computeMyeongsik({
-              birthDate: partnerBirthDate,
-              birthTime: partnerBirthTime,
-              timeUnknown: partnerTimeUnknown,
-              calendar: partnerCalendar,
-              gender: partnerGender ?? "female",
-            });
-          }
+          // 파트너 원국도 로컬 만세력으로 계산 (luckyloveme 불필요 — 2026-09 전환)
+          const { computeLocalGanji } = await import("@/lib/saju/local-ganji");
+          const [py, pm, pd] = partnerBirthDate.split("-");
+          const hasT = !partnerTimeUnknown && !!partnerBirthTime;
+          const [phh, pmm] = hasT ? partnerBirthTime!.split(":") : [undefined, undefined];
+          const pGanji = computeLocalGanji({
+            birthYear: py,
+            birthMonth: String(parseInt(pm, 10)),
+            birthDay: String(parseInt(pd, 10)),
+            ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
+            calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
+          });
+          const pillar = (p: { gan: string; ji: string }) => ({ cheongan: p.gan, jiji: p.ji });
+          partnerMyeongsik = {
+            year: pillar(pGanji.year), month: pillar(pGanji.month), day: pillar(pGanji.day),
+            hour: pGanji.hour ? pillar(pGanji.hour) : null,
+          };
         } catch (e) {
-          console.error("[love-saju] partner myeongsik failed:", e);
+          console.error("[love-saju] 파트너 로컬 명식 실패 — mock 사용:", e);
+          partnerMyeongsik = await computeMyeongsik({
+            birthDate: partnerBirthDate,
+            birthTime: partnerBirthTime,
+            timeUnknown: partnerTimeUnknown,
+            calendar: partnerCalendar,
+            gender: partnerGender ?? "female",
+          });
         }
       }
     }
