@@ -18,6 +18,26 @@ import {
   judgeUn,
   type LocalAnalysis,
 } from "@/lib/saju/local-analysis";
+import {
+  SIPSEONG_TYPE,
+  sipseongMeaning,
+  sipseongAnalysis,
+  TWELVE_FORTUNE_INTERP,
+  TWELVE_FORTUNE_EXTRA,
+  iljiAnalysisOf,
+  yeokmaDetail,
+  sinStrengthAnalysis,
+  sinStrengthQualitative,
+  naegeokDetail,
+  GUIIN_DESC,
+  SINSAL_MEANING,
+  SIBISINSAL_DESC,
+  bigyeonGeobjaeMeaning,
+  bigyeonGeobjaeAnalysis,
+  unInterpretation,
+  cheonganHapInfo,
+  daeunMeta,
+} from "@/lib/saju/local-prose";
 import type { SajuAnalysisResponse } from "@/lib/saju/saju-api";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -49,10 +69,6 @@ function wrapPillar(p: { gan: string; ji: string }) {
     eumyang: { gan: GAN_YANG[p.gan] ? "양" : "음", ji: JI_YANG[p.ji] ? "양" : "음" },
     ohaeng: { gan: GAN_OH[p.gan], ji: JI_OH[p.ji] },
   };
-}
-
-function wrapSeunItem(s: any) {
-  return { ...s, twelveFortune: { fortune: s.twelveFortune } };
 }
 
 export type LocalFullInput = {
@@ -104,7 +120,14 @@ export function computeLocalFullAnalysis(input: LocalFullInput, now: Date = new 
   // 세운/월운 판정 셋 — 원국과 별도 재판정 (luckyloveme 실측 규칙)
   const unSet = computeUnYongsinSet(local);
   const wrapSeun = (s: any) => ({
-    ...wrapSeunItem(s),
+    ...s,
+    // 세운 12운성은 API 처럼 위치·간지를 포함한 객체 + 해석
+    twelveFortune: {
+      position: "세운", gan: s.gan, ji: s.ji, fortune: s.twelveFortune,
+      interpretation: TWELVE_FORTUNE_INTERP[s.twelveFortune]
+        ? { ...TWELVE_FORTUNE_INTERP[s.twelveFortune], ...TWELVE_FORTUNE_EXTRA[s.twelveFortune] }
+        : null,
+    },
     hapChungRelations: computeUnHapChung(s.gan, s.ji, local.ganji, "세운"),
     yongsinJudgment: judgeUn(s.gan, s.ji, unSet, local.ganji, "세운"),
   });
@@ -124,10 +147,89 @@ export function computeLocalFullAnalysis(input: LocalFullInput, now: Date = new 
     upcomingWeoluns: local.weolun.upcomingWeoluns.map(wrapWeolun),
   };
 
+  // ── 해설 문장 주입 (local-prose 자체 템플릿 — API 문장 복사 아님) ──
+  // 십성: 정/편 + 위치별 의미 + 총평 + 천간합 구조
+  const sipseong: any = {
+    ...local.sipseong,
+    sipseongs: local.sipseong.sipseongs.map((s) => ({
+      ...s, type: SIPSEONG_TYPE[s.sipseong], meaning: sipseongMeaning(s.position, s.sipseong),
+    })),
+    analysis: sipseongAnalysis(local.sipseong.summary as any),
+    cheonganHap: cheonganHapInfo(local.ganji),
+  };
+  // 12운성: 운성별 해석 객체 + 일지 분석
+  const fortuneInterp = (name: string) =>
+    TWELVE_FORTUNE_INTERP[name] ? { ...TWELVE_FORTUNE_INTERP[name], ...TWELVE_FORTUNE_EXTRA[name] } : null;
+  const iljiFortune = local.twelveFortune.fortunes.find((f) => f.position === "일지");
+  const twelveFortune: any = {
+    ...local.twelveFortune,
+    fortunes: local.twelveFortune.fortunes.map((f) => ({
+      ...f, interpretation: fortuneInterp(f.fortune),
+    })),
+    iljiAnalysis: iljiFortune ? iljiAnalysisOf(iljiFortune.fortune) : "",
+  };
+  // 신강/신약: 총평 + 정성 유형
+  const qualitative = sinStrengthQualitative(local.sinStrength);
+  const sinStrength: any = {
+    ...local.sinStrength,
+    analysis: sinStrengthAnalysis(local.sinStrength),
+    qualitativeType: qualitative.type,
+    qualitativeAnalysis: qualitative.analysis,
+  };
+  // 격국: 내격 상세
+  const gyeokguk: any = {
+    ...local.gyeokguk,
+    naegeokDetail: naegeokDetail(local.ganji, local.ganji.day.gan, local.gyeokguk),
+    종합설명: local.gyeokguk.reason,
+  };
+  // 귀인·신살: 항목별 한 줄 설명
+  const guiin: any = Object.fromEntries(Object.entries(local.guiin as Record<string, any[]>).map(([k, list]) => [
+    k, (list ?? []).map((x: any) => ({ ...x, description: GUIIN_DESC[k] ?? "" })),
+  ]));
+  const withMeaning = (list: any[], key: string) => (list ?? []).map((x: any) => ({ ...x, meaning: SINSAL_MEANING[key] }));
+  const dohwa: any = { dohwa: withMeaning(local.dohwa.dohwa, "도화") };
+  const hongyeom: any = { hongyeom: withMeaning(local.hongyeom.hongyeom, "홍염") };
+  const hwagae: any = { hwagae: withMeaning(local.hwagae.hwagae, "화개") };
+  const sibisinsals: any = {
+    sibisinsals: local.sibisinsals.sibisinsals.map((x) => ({ ...x, description: SIBISINSAL_DESC[x.name] ?? "" })),
+    yeokma: yeokmaDetail(local.ganji),
+  };
+  // 비견/겁재: 항목 의미 + 총평
+  const bg = local.bigyeonGeobjae;
+  const bigyeonGeobjae: any = {
+    ...bg,
+    bigyeon: bg.bigyeon.map((x: any) => ({ ...x, type: "비견", meaning: bigyeonGeobjaeMeaning("비견", x.position) })),
+    geobjae: bg.geobjae.map((x: any) => ({ ...x, type: "겁재", meaning: bigyeonGeobjaeMeaning("겁재", x.position) })),
+    analysis: bigyeonGeobjaeAnalysis(bg.bigyeonCount, bg.geobjaeCount),
+  };
+  // 세운/월운: 항목별 해석 문장
+  const addSeunInterp = (s: any) => ({
+    ...s, interpretation: unInterpretation("해", s.sipseongRelation?.gan, s.twelveFortune?.fortune, s.yongsinJudgment?.종합판정),
+  });
+  const addWeolunInterp = (w: any) => ({
+    ...w, interpretation: unInterpretation("달", w.sipseongRelation?.gan, undefined, w.yongsinJudgment?.종합판정),
+  });
+  for (const k of ["currentSeun", "nextSeun"]) seun[k] = addSeunInterp(seun[k]);
+  seun.recentSeuns = seun.recentSeuns.map(addSeunInterp);
+  seun.upcomingSeuns = seun.upcomingSeuns.map(addSeunInterp);
+  for (const k of ["currentWeolun", "nextWeolun"]) weolun[k] = addWeolunInterp(weolun[k]);
+  weolun.recentWeoluns = weolun.recentWeoluns.map(addWeolunInterp);
+  weolun.upcomingWeoluns = weolun.upcomingWeoluns.map(addWeolunInterp);
+
   return {
     ...local,
     ganji,
-    daeun,
+    sipseong,
+    twelveFortune,
+    sinStrength,
+    gyeokguk,
+    guiin,
+    dohwa,
+    hongyeom,
+    hwagae,
+    sibisinsals,
+    bigyeonGeobjae,
+    daeun: { ...daeun, ...daeunMeta(input, local.ganji) },
     seun,
     weolun,
   } as SajuAnalysisResponse;

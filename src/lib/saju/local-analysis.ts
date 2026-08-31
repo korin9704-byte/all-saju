@@ -101,9 +101,9 @@ export function sibisinsalOf(baseJi: string, targetJi: string): string {
 
 // 홍염살 (일간 → 지지)
 const HONGYEOM: Record<string, string[]> = {
-  갑: ["오"], 을: ["오"], 병: ["인"], 정: ["미"], 무: ["진"],
+  갑: ["오", "신"], 을: ["오"], 병: ["인"], 정: ["미"], 무: ["진"],
   기: ["진"], 경: ["신"], 신: ["유"], 임: ["자", "신"], 계: ["신"],
-};
+};  // 갑→신 은 API 실측 6/6 (2026-09 표적 프로브)
 
 // 귀인 테이블 (일간 → 지지 목록)
 const CHEONEUL: Record<string, string[]> = {
@@ -737,6 +737,31 @@ function elemToSipsin(be: string, elem: string): string {
 /** 양인지 — 양간의 제왕지. 월지가 여기에 해당하고 격이 겁재면 양인격 */
 const YANGIN_JI: Record<string, string> = { 갑: "묘", 병: "오", 무: "오", 경: "유", 임: "자" };
 
+/** 내격 판정용 월지 지장간 선택 — 투간(본기→중기→여기) 우선, 없으면 본기.
+ *  왕지(자·오·묘·유)의 본기와 같은 오행인 지장간은 후보에서 제외 (API 실측).
+ *  naegeokDetail 격근거 생성에도 쓰이므로 export. */
+export function naegyeokStemPick(ganji: LocalGanji, dayGan: string): {
+  pickStem: string; bongi: string; monthSipseong: string;
+  tugan: boolean; grade: "본기" | "중기" | "여기"; isWangji: boolean;
+} {
+  const grades = TONGGEUN_GRADE[ganji.month.ji];
+  const stemOf = (g: "본기" | "중기" | "여기") => Object.keys(grades).find((h) => grades[h] === g);
+  const bongi = stemOf("본기")!;
+  const cands = (["본기", "중기", "여기"] as const)
+    .map(stemOf)
+    .filter((h): h is string => !!h && (h === bongi || GAN_ELEM[h] !== GAN_ELEM[bongi]));
+  const others = PILLARS.filter((p) => p !== "day" && (p !== "hour" || ganji.hour)).map((p) => ganji[p]!.gan);
+  const tuganStem = cands.find((h) => others.includes(h));
+  const pickStem = tuganStem ?? bongi;
+  return {
+    pickStem, bongi,
+    monthSipseong: sipseongOfGan(dayGan, pickStem),
+    tugan: !!tuganStem,
+    grade: grades[pickStem],
+    isWangji: ["자", "오", "묘", "유"].includes(ganji.month.ji),
+  };
+}
+
 /** 억부법 과다 카테고리별 용신·희신·기신·구신 (십신 기준, luckyloveme 실측) */
 const EOKBU_YONGSIN: Record<string, { 용: string; 희: string; 기: string; 구: string }> = {
   "신강/비겁": { 용: "관성", 희: "재성", 기: "비겁", 구: "인성" },
@@ -841,16 +866,7 @@ function computeGyeokguk(
   }
 
   // ③ 내격 — 월지 지장간의 투간(본기→중기→여기 순) 우선, 없으면 본기.
-  //    왕지(자·오·묘·유)의 본기와 같은 오행인 지장간은 후보에서 제외 (API 실측)
-  const grades = TONGGEUN_GRADE[ganji.month.ji];
-  const stemOf = (g: "본기" | "중기" | "여기") => Object.keys(grades).find((h) => grades[h] === g);
-  const bongi = stemOf("본기")!;
-  const cands = (["본기", "중기", "여기"] as const)
-    .map(stemOf)
-    .filter((h): h is string => !!h && (h === bongi || GAN_ELEM[h] !== GAN_ELEM[bongi]));
-  const others = PILLARS.filter((p) => p !== "day" && (p !== "hour" || ganji.hour)).map((p) => ganji[p]!.gan);
-  const pickStem = cands.find((h) => others.includes(h)) ?? bongi;
-  const monthSipseong = sipseongOfGan(dayGan, pickStem);
+  const { pickStem, bongi, monthSipseong } = naegyeokStemPick(ganji, dayGan);
   // 비겁 계열 격 이름 — 비견은 건록격, 겁재는 월지가 양인지면 양인격,
   // 그 외에는 월지가 그 본기의 록지(자오묘유·인신사해)일 때만 월겁격, 나머지는 건록격
   const name = monthSipseong !== "겁재"
