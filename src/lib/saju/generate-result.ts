@@ -121,45 +121,58 @@ export async function generateAndStoreResult(
   const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : isBundle ? "trouble-saju" : product.slug;
   const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : isBundle ? "고민 사주" : product.name;
 
-  // 만세력/풀 분석: luckyloveme 키가 있으면 실제 API, 없거나 실패하면 mock 으로 fallback
+  // 만세력/풀 분석: luckyloveme 키가 있으면 실제 API, 없거나 실패하면 로컬 만세력으로 폴백.
+  // 로컬 계산까지 실패하는 극단 상황에서만 mock 명식을 마지막 안전망으로 쓴다.
+  const birthInfo = toBirthInfo(input);
   let myeongsik: Myeongsik;
   let manseryeokText: string | undefined;
   let fullAnalysis: SajuAnalysisResponse | null = null;
 
+  let apiAnalysis: SajuAnalysisResponse | null = null;
   if (isSajuApiConfigured()) {
     try {
-      const birthInfo = toBirthInfo(input);
       const analysis = await fetchSajuAnalysis(birthInfo, [], { source: "confirm" }); // [] = 16종 전체
-      const converted = ganjiToMyeongsik(analysis);
-      if (converted) {
-        myeongsik = converted;
-        fullAnalysis = analysis;
-        manseryeokText = formatSajuToManseryeok(analysis, birthInfo);
-        // 섀도 대조 — 로컬 만세력과의 차이 기록.
-        // 동적 import + 이중 try/catch 로 어떤 실패도 판매 흐름에 전파되지 않게 격리.
-        try {
-          const { recordShadowDiff } = await import("@/lib/saju/shadow-compare");
-          await recordShadowDiff(service, order.id, {
-            birth_date: input.birth_date,
-            birth_time: input.birth_time,
-            time_unknown: input.time_unknown,
-            calendar: input.calendar,
-            gender: input.gender,
-          }, analysis);
-        } catch (shadowErr) {
-          console.error("[shadow-compare] 기록 생략:", shadowErr);
-        }
-      } else {
-        // ganji 필드 누락 — mock 으로 폴백
-        myeongsik = await computeMyeongsik(toComputeInput(input));
-      }
+      if (ganjiToMyeongsik(analysis)) apiAnalysis = analysis;
+      else console.error("[saju-api] ganji 필드 누락 — 로컬 만세력으로 폴백");
     } catch (apiErr) {
-      // luckyloveme 호출 실패 — 결과지는 무조건 생성해야 하므로 mock 으로 폴백
-      console.error("[saju-api] fallback to mock:", apiErr);
-      myeongsik = await computeMyeongsik(toComputeInput(input));
+      console.error("[saju-api] 호출 실패 — 로컬 만세력으로 폴백:", apiErr);
     }
+  }
+
+  const analysis = apiAnalysis ?? (await (async () => {
+    try {
+      const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+      return computeLocalFullAnalysis(toComputeInput(input));
+    } catch (localErr) {
+      console.error("[local-adapter] 로컬 만세력 계산 실패:", localErr);
+      return null;
+    }
+  })());
+
+  if (analysis) {
+    myeongsik = ganjiToMyeongsik(analysis)!; // 로컬 계산은 ganji 를 항상 포함
+    fullAnalysis = analysis;
+    manseryeokText = formatSajuToManseryeok(analysis, birthInfo);
   } else {
+    // 로컬 계산까지 실패 — 결과지는 무조건 생성해야 하므로 mock 명식 사용
     myeongsik = await computeMyeongsik(toComputeInput(input));
+  }
+
+  if (apiAnalysis) {
+    // 섀도 대조 — 실판매 API 응답 vs 로컬 만세력 차이 기록 (API 를 실제로 썼을 때만).
+    // 동적 import + 이중 try/catch 로 어떤 실패도 판매 흐름에 전파되지 않게 격리.
+    try {
+      const { recordShadowDiff } = await import("@/lib/saju/shadow-compare");
+      await recordShadowDiff(service, order.id, {
+        birth_date: input.birth_date,
+        birth_time: input.birth_time,
+        time_unknown: input.time_unknown,
+        calendar: input.calendar,
+        gender: input.gender,
+      }, apiAnalysis);
+    } catch (shadowErr) {
+      console.error("[shadow-compare] 기록 생략:", shadowErr);
+    }
   }
 
   const promptInput = {
