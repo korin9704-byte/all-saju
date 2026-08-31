@@ -11,7 +11,13 @@
 //  - daeun: current_daeun/next_daeun 파생, all_daeun[].twelveFortune 문자열 → 객체
 //  - seun: 각 항목의 twelveFortune 문자열 → {fortune} 객체
 
-import { computeLocalAnalysisWithGender, type LocalAnalysis } from "@/lib/saju/local-analysis";
+import {
+  computeLocalAnalysisWithGender,
+  computeUnHapChung,
+  computeUnYongsinSet,
+  judgeUn,
+  type LocalAnalysis,
+} from "@/lib/saju/local-analysis";
 import type { SajuAnalysisResponse } from "@/lib/saju/saju-api";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -95,11 +101,27 @@ export function computeLocalFullAnalysis(input: LocalFullInput, now: Date = new 
   };
 
   // 세운/월운 — 12운성 객체화
+  // 세운/월운 판정 셋 — 원국과 별도 재판정 (luckyloveme 실측 규칙)
+  const unSet = computeUnYongsinSet(local);
+  const wrapSeun = (s: any) => ({
+    ...wrapSeunItem(s),
+    hapChungRelations: computeUnHapChung(s.gan, s.ji, local.ganji, "세운"),
+    yongsinJudgment: judgeUn(s.gan, s.ji, unSet, local.ganji, "세운"),
+  });
   const seun: any = {
-    currentSeun: wrapSeunItem(local.seun.currentSeun),
-    nextSeun: wrapSeunItem(local.seun.nextSeun),
-    recentSeuns: local.seun.recentSeuns.map(wrapSeunItem),
-    upcomingSeuns: local.seun.upcomingSeuns.map(wrapSeunItem),
+    currentSeun: wrapSeun(local.seun.currentSeun),
+    nextSeun: wrapSeun(local.seun.nextSeun),
+    recentSeuns: local.seun.recentSeuns.map(wrapSeun),
+    upcomingSeuns: local.seun.upcomingSeuns.map(wrapSeun),
+  };
+
+  // 월운 — 판정만 추가 (luckyloveme 는 월운에 합충 목록을 노출하지 않음)
+  const wrapWeolun = (w: any) => ({ ...w, yongsinJudgment: judgeUn(w.gan, w.ji, unSet, local.ganji, "월운") });
+  const weolun: any = {
+    currentWeolun: wrapWeolun(local.weolun.currentWeolun),
+    nextWeolun: wrapWeolun(local.weolun.nextWeolun),
+    recentWeoluns: local.weolun.recentWeoluns.map(wrapWeolun),
+    upcomingWeoluns: local.weolun.upcomingWeoluns.map(wrapWeolun),
   };
 
   return {
@@ -107,5 +129,6 @@ export function computeLocalFullAnalysis(input: LocalFullInput, now: Date = new 
     ganji,
     daeun,
     seun,
+    weolun,
   } as SajuAnalysisResponse;
 }

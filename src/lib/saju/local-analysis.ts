@@ -253,6 +253,12 @@ export type LocalAnalysis = {
     isStrong: boolean; strength: string; level: number; score: number;
     bigyeopCount: number; inseongCount: number;
     deukryeong: boolean; deukji: boolean; deukse: boolean; description: string;
+    wolryeong: string;
+    detailAnalysis: {
+      scoreBreakdown: Record<string, number>;
+      supportElements: string[];
+      weakenElements: string[];
+    };
   };
   gyeokguk: {
     type: string; name: string; reason: string;
@@ -375,13 +381,39 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
   const ieElem = (Object.keys(SAENG) as string[]).find((k) => SAENG[k] === beElem)!;
   const isHelpElem = (elem: string) => elem === beElem || elem === ieElem;
   let score = 0;
+  const scoreBreakdown: Record<string, number> = { year: 0, month: 0, day: 0, hour: 0 };
+  const supportElements: string[] = [];
+  const weakenElements: string[] = [];
   for (const p of PILLARS) {
     // 시주 미상이면 API 는 시주 몫으로 중간값 10점을 고정 가산한다 (실측 30/30)
-    if (p === "hour" && !ganji.hour) { score += 10; continue; }
-    if (p !== "day" && isHelpElem(GAN_ELEM[ganji[p]!.gan])) score += SIN_GAN_SCORE[p];
+    if (p === "hour" && !ganji.hour) {
+      score += 10; scoreBreakdown.hour = 10;
+      supportElements.push("시주: 미상 → 중간값 적용");
+      continue;
+    }
+    let pts = 0;
+    if (p !== "day") {
+      const ge = GAN_ELEM[ganji[p]!.gan];
+      if (isHelpElem(ge)) {
+        pts += SIN_GAN_SCORE[p];
+        supportElements.push(`${GAN_POS[p]}: ${ge} → ${ge === beElem ? "비겁(동료 기운)" : "인성(지원 기운)"}`);
+      } else {
+        weakenElements.push(`${GAN_POS[p]}: ${ge} → ${SIPSEONG_CATEGORY[sipseongOfGan(dayGan, ganji[p]!.gan)]}`);
+      }
+    }
     const grade = tonggeunGrade(ganji[p]!.ji, isHelpElem);
-    if (grade) score += SIN_JI_SCORE[p][grade];
+    if (grade) {
+      pts += SIN_JI_SCORE[p][grade];
+      const table = TONGGEUN_GRADE[ganji[p]!.ji];
+      const hidden = Object.keys(table).find((h) => table[h] === grade)!;
+      const he = GAN_ELEM[hidden];
+      supportElements.push(`${JI_POS[p]}: ${ganji[p]!.ji}(${hidden}·${he}) → ${grade} 통근(${he === beElem ? "비겁" : "인성"})`);
+    } else {
+      weakenElements.push(`${JI_POS[p]}: ${ganji[p]!.ji} → 무근`);
+    }
+    score += pts; scoreBreakdown[p] = pts;
   }
+  scoreBreakdown.total = score;
   // 등급 — 점수 구간 + 득력 강등 (실측 120/120 재현)
   let level = score >= 70 ? 7 : score >= 60 ? 6 : score >= 50 ? 5 : score >= 40 ? 4 : score >= 30 ? 3 : score >= 20 ? 2 : 1;
   if (level === 7 && deukCount < 3) level = 6;
@@ -550,7 +582,7 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
     })();
     return {
       year: y, month: mo, monthLabel: `${y}년 ${mo}월`,
-      isCurrentMonth: y === now.getFullYear() && mo === now.getMonth() + 1,
+      isCurrentMonth: y === ny && mo === nm,   // ny/nm = 절기월 기준 현재 월 (호출 시점엔 확정됨)
       ganji: `${gan}${ji}`, ganji_hanja: hanja(gan, ji), gan, ji,
       ganElement: GAN_ELEM[gan], jiElement: JI_ELEM[ji],
       sipseongRelation: { gan: sipseongOfGan(dayGan, gan), ji: sipseongOfJi(dayGan, ji) },
@@ -560,7 +592,14 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
     const t = y * 12 + (mo - 1) + delta;
     return { y: Math.floor(t / 12), mo: (t % 12) + 1 };
   };
-  const ny = now.getFullYear(), nm = now.getMonth() + 1;
+  // '현재 월'은 달력이 아니라 절기월 기준 (API 실측 — 예: 9/1은 백로 전이라 신월=8월).
+  // 오늘의 실제 월주와 이번 달 15일 기준 월주가 다르면 아직 전월 절기이므로 한 달 물린다.
+  let { y: ny, mo: nm } = { y: now.getFullYear(), mo: now.getMonth() + 1 };
+  {
+    const todayMp = Solar.fromYmdHms(ny, nm, now.getDate(), 12, 0, 0).getLunar().getEightChar().getMonth();
+    const midMp = Solar.fromYmdHms(ny, nm, 15, 12, 0, 0).getLunar().getEightChar().getMonth();
+    if (todayMp !== midMp) ({ y: ny, mo: nm } = addMonth(ny, nm, now.getDate() < 15 ? -1 : 1));
+  }
   const weolun = {
     currentWeolun: weolunItem(ny, nm),
     nextWeolun: (() => { const t = addMonth(ny, nm, 1); return weolunItem(t.y, t.mo); })(),
@@ -583,6 +622,8 @@ export function computeLocalAnalysis(input: LocalGanjiInput, now: Date = new Dat
       isStrong, strength: STRENGTH_LABEL[level], level, score,
       bigyeopCount, inseongCount, deukryeong, deukji, deukse,
       description: `${STRENGTH_LABEL[level]}(${level}/7단계) - 점수: ${score}점, 득력: ${deukCount}/3개`,
+      wolryeong: wolryeongOf(dayGan, ganji.month.ji),
+      detailAnalysis: { scoreBreakdown, supportElements, weakenElements },
     },
     gyeokguk: computeGyeokguk(ganji, dayGan, powers, summary, isStrong, score),
     guiin,
@@ -824,5 +865,174 @@ function computeGyeokguk(
     reason: `월지 지장간이 ${monthSipseong}에 해당합니다.`,
     ...eokbu(),
     신강여부: isStrong, 신강점수: score,
+  };
+}
+
+// =====================================================
+// 운(대운·세운·월운) 판정 — luckyloveme yongsinJudgment 재현
+// =====================================================
+// 판정 셋(용신·희신·기신)은 원국과 별개로 재판정한다 (실측 35/35):
+//  · 신강 = 점수>=60, 또는 월지 본기가 비겁이고 점수>=40
+//  · 카테고리·용희기구 = 억부 규칙 동일 (EOKBU_YONGSIN)
+//  · 전왕격·화격·종격 등 비억부 사주는 원국 격국 셋을 그대로 사용
+// 종합점수는 근사(±15 내외) — 역할 베이스 + 합충 보정. 판정 라벨·근거는 정확 재현.
+
+/** 월령 관계 한 줄 설명 (sinStrength.wolryeong) */
+function wolryeongOf(dayGan: string, monthJi: string): string {
+  const ss = sipseongOfJi(dayGan, monthJi);
+  const cat = SIPSEONG_CATEGORY[ss];
+  if (cat === "비겁성") return `월지 ${monthJi}에서 일간 ${dayGan}이 득령함 (${ss})`;
+  if (cat === "인성") return `월지 ${monthJi}에서 일간 ${dayGan}이 생함을 받음 (인성)`;
+  if (cat === "식상성") return `일간 ${dayGan}이 월지 ${monthJi}에 생함을 줌 (식상)`;
+  if (cat === "재성") return `월지 ${monthJi}을 일간 ${dayGan}이 극함 (재성)`;
+  return `월지 ${monthJi}에서 일간 ${dayGan}이 극함을 받음 (관성)`;
+}
+
+export type UnHapChungRelation = {
+  type: string; source: string; target: string;
+  sourcePosition: string; targetPosition: string; meaning: string;
+};
+
+const UN_REL_MEANING: Record<string, string> = {
+  합: "천간합 — 운의 천간이 원국 천간과 결합해 협력·인연의 기운이 생깁니다.",
+  충: "천간충 — 의지와 명분이 부딪혀 갈등과 전환의 계기가 생깁니다.",
+  육합: "지지육합 — 두 지지가 은근히 결합해 화합의 기운이 흐릅니다.",
+  지충: "지지충 — 해당 영역의 기반이 흔들리며 변화·이동수가 생깁니다.",
+  형: "지지형(刑) — 마찰과 조정의 기운. 법적·제도적 문제나 관계 조율에 주의가 필요합니다.",
+  파: "지지파(破) — 진행하던 일이 중도에 깨지기 쉬우나 새 국면의 전환점이 되기도 합니다.",
+  해: "지지해(害) — 은근한 방해와 어긋남. 신뢰 관계 관리가 중요합니다.",
+  원진: "원진 — 이유 없는 불화·미움의 기운. 감정 소모를 줄이는 지혜가 필요합니다.",
+  삼합: "삼합 완성 — 원국 지지와 세 글자 국을 이뤄 해당 오행 기운이 강하게 발동합니다.",
+  반합: "반합(삼합 일부) — 해당 오행 기운이 부분적으로 결합해 잠재적으로 작동합니다.",
+  방합: "방합 완성 — 같은 방위 세 글자가 모여 해당 계절 오행이 왕성해집니다.",
+  반방합: "반방합(방합 일부) — 같은 방위 기운이 부분적으로 결합합니다.",
+};
+
+/** 운 간지 vs 원국의 합충 관계 — luckyloveme 세운 hapChungRelations 재현 (실측 720/720) */
+export function computeUnHapChung(
+  unGan: string, unJi: string, ganji: LocalGanji, sourcePosition: string,
+): UnHapChungRelation[] {
+  const out: UnHapChungRelation[] = [];
+  const natalJis = PILLARS.filter((p) => p !== "hour" || ganji.hour).map((p) => ganji[p]!.ji);
+  const push = (type: string, source: string, target: string, targetPosition: string) =>
+    out.push({ type, source, target, sourcePosition, targetPosition, meaning: UN_REL_MEANING[type] ?? "" });
+  for (const p of PILLARS) {
+    if (p === "hour" && !ganji.hour) continue;
+    const pos = PILLAR_POS[p];
+    const { gan, ji } = ganji[p]!;
+    // 천간합 · 천간충
+    const hap = CHEONGAN_HAP.find(([x, y]) => (x === unGan && y === gan) || (x === gan && y === unGan));
+    if (hap) push("합", unGan, gan, pos);
+    if (Math.abs(GANS.indexOf(unGan as typeof GANS[number]) - GANS.indexOf(gan as typeof GANS[number])) === 6) push("충", unGan, gan, pos);
+    // 지지 2자 관계
+    const a = unJi, b = ji;
+    const isYukhap = YUKHAP.some(([x, y]) => (x === a && y === b) || (x === b && y === a));
+    if (isYukhap) push("육합", a, b, pos);
+    if (CHUNG.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) push("충", a, b, pos);
+    if (PA.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) push("파", a, b, pos);
+    if (WONJIN.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) push("원진", a, b, pos);
+    if (HAE.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) push("해", a, b, pos);
+    if (HYEONG_PAIRS.some(([x, y]) => (a === b ? (x === a && y === a) : (x === a && y === b) || (x === b && y === a)))) push("형", a, b, pos);
+    // 삼합 — 두 글자면 반합(왕지 불요), 원국에 셋째 글자가 있으면 삼합으로 승격 (실측)
+    for (const [x, y, z] of SAMHAP) {
+      const t = [x, y, z];
+      if (!(t.includes(a) && t.includes(b) && a !== b)) continue;
+      const third = t.find((c) => c !== a && c !== b)!;
+      push(natalJis.includes(third) ? "삼합" : "반합", a, b, pos);
+    }
+    // 방합 — 같은 쌍이 육합이면 표기 생략, 완성이면 방합, 미완성은 왕지 포함 시만 반방합 (실측)
+    for (const [x, y, z] of BANGHAP) {
+      const t = [x, y, z];
+      if (!(t.includes(a) && t.includes(b) && a !== b)) continue;
+      if (isYukhap) continue;
+      const third = t.find((c) => c !== a && c !== b)!;
+      if (natalJis.includes(third)) { push("방합", a, b, pos); continue; }
+      if (a === y || b === y) push("반방합", a, b, pos);
+    }
+  }
+  return out;
+}
+
+export type UnYongsinSet = {
+  용신오행: string; 희신오행: string; 기신오행: string; 구신오행: string; 한신오행: string;
+  판정근거: string;
+};
+
+/** 운 판정용 용신 셋 — 원국과 별도로 재판정 (실측 35/35 재현) */
+export function computeUnYongsinSet(analysis: LocalAnalysis): UnYongsinSet {
+  const dayGan = analysis.ganji.day.gan;
+  const be = GAN_ELEM[dayGan];
+  const catElem = categoryElem(be);
+  const 한신Of = (used: string[]) => (["목", "화", "토", "금", "수"] as string[]).find((e) => !used.includes(e))!;
+  // 비억부 사주(전왕격·화격·종격)는 원국 격국 셋 그대로
+  if (analysis.gyeokguk.yongsin.method !== "억부법") {
+    const g = analysis.gyeokguk;
+    return {
+      용신오행: g.yongsin.오행, 희신오행: g.희신오행, 기신오행: g.기신오행, 구신오행: g.구신오행,
+      한신오행: 한신Of([g.yongsin.오행, g.희신오행, g.기신오행, g.구신오행]),
+      판정근거: g.reason,
+    };
+  }
+  // 신강 재판정 — (월지 본기가 비겁 && 점수>=40) 또는 (득령 && 점수>=60), 실측 41/41
+  const score = analysis.sinStrength.score;
+  const monthJi = analysis.ganji.month.ji;
+  const grades = TONGGEUN_GRADE[monthJi];
+  const bongi = Object.keys(grades).find((h) => grades[h] === "본기")!;
+  const strong = (GAN_ELEM[bongi] === be && score >= 40) || (analysis.sinStrength.deukryeong && score >= 60);
+  const s = analysis.sipseong.summary;
+  const counts: Record<string, number> = { 비겁: s.bigyeop, 식상: s.siksang, 재성: s.jaeseong, 관성: s.gwanseong, 인성: s.inseong };
+  const order = strong ? ["인성", "비겁"] : ["식상", "재성", "관성"];
+  const category = order.find((k) => counts[k] >= 2);
+  const key = category ? `${strong ? "신강" : "신약"}/${category}` : (strong ? "신강/식상" : "신약/기본");
+  const { 용, 희, 기, 구 } = EOKBU_YONGSIN[key];
+  const 판정근거 = category
+    ? `${strong ? "신강" : "신약"} 사주에서 ${category}이 과다하여 ${용}을 용신으로 선택`
+    : strong ? "신강 사주에서 설기를 위해 식상을 용신으로 선택" : "신약 사주의 기본 원리에 따라 인성을 용신으로 선택";
+  const set = { 용신오행: catElem[용], 희신오행: catElem[희], 기신오행: catElem[기], 구신오행: catElem[구] };
+  return { ...set, 한신오행: 한신Of(Object.values(set)), 판정근거 };
+}
+
+export type UnYongsinJudgment = {
+  종합판정: string; 종합점수: number; 천간판정: string; 지지판정: string;
+  용신오행: string; 희신오행: string; 기신오행: string; 판정근거: string;
+};
+
+// 종합점수 근사 베이스 (세운 720 + 월운 600 샘플 회귀 반올림 — 세운 RMSE ~14, 월운 ~13)
+const UN_SCORE_BASE: Record<string, { gan: Record<string, number>; ji: Record<string, number>; good: number; bad: number }> = {
+  세운: {
+    gan: { 용신운: 28, 희신운: 18, 기신운: -23, 구신운: -10, 한신운: 0 },
+    ji: { 용신운: 27, 희신운: 13, 기신운: -19, 구신운: -17, 한신운: 0 },
+    good: 4, bad: -5,
+  },
+  월운: {
+    gan: { 용신운: 32, 희신운: 19, 기신운: -26, 구신운: -14, 한신운: -1 },
+    ji: { 용신운: 67, 희신운: 40, 기신운: -72, 구신운: -35, 한신운: 0 },
+    good: 3, bad: -3,
+  },
+};
+const GOOD_REL = new Set(["합", "육합", "반합", "삼합", "방합", "반방합"]);
+
+/** 운 1건(세운/월운) 판정 — 라벨·근거는 정확, 점수는 근사 */
+export function judgeUn(
+  unGan: string, unJi: string, set: UnYongsinSet, ganji: LocalGanji,
+  kind: "세운" | "월운",
+): UnYongsinJudgment {
+  const role = (elem: string) =>
+    elem === set.용신오행 ? "용신운" : elem === set.희신오행 ? "희신운"
+      : elem === set.기신오행 ? "기신운" : elem === set.구신오행 ? "구신운" : "한신운";
+  const ganRole = role(GAN_ELEM[unGan]);
+  const jiRole = role(JI_ELEM[unJi]);
+  const base = UN_SCORE_BASE[kind];
+  let score = base.gan[ganRole] + base.ji[jiRole];
+  for (const r of computeUnHapChung(unGan, unJi, ganji, kind)) {
+    score += GOOD_REL.has(r.type) ? base.good : base.bad;
+  }
+  // 판정 구간 (실측 경계): 세운은 |점수|<=10 평, 월운은 0만 평
+  const 종합판정 = kind === "세운"
+    ? (score >= 40 ? "대길" : score >= 11 ? "소길" : score >= -10 ? "평" : score >= -39 ? "소흉" : "대흉")
+    : (score >= 50 ? "대길" : score >= 1 ? "소길" : score === 0 ? "평" : score >= -49 ? "소흉" : "대흉");
+  return {
+    종합판정, 종합점수: score, 천간판정: ganRole, 지지판정: jiRole,
+    용신오행: set.용신오행, 희신오행: set.희신오행, 기신오행: set.기신오행, 판정근거: set.판정근거,
   };
 }
