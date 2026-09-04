@@ -53,8 +53,7 @@ export async function sendResultEmail({
         </td></tr>
         <tr><td style="padding:24px 40px 40px;border-top:1px solid #f0f0f0;">
           <p style="margin:0;font-size:13px;color:#aaa;line-height:1.6;">
-            이 메일은 냥점(nyangjeom.com) 결제 완료 후 자동 발송됩니다.<br>
-            문의: <a href="mailto:hspjcho9@naver.com" style="color:#6366f1;">hspjcho9@naver.com</a>
+            이 메일은 냥점(nyangjeom.com) 결제 완료 후 자동 발송됩니다.
           </p>
         </td></tr>
       </table>

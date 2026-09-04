@@ -78,9 +78,8 @@ function SiteFooter() {
   ].join(" | ");
 
   const contactLine = [
-    `고객센터: ${businessInfo.email}`,
     businessInfo.phone
-      ? `핸드폰${businessInfo.phoneNote ? `(${businessInfo.phoneNote})` : ""}: ${businessInfo.phone}`
+      ? `고객센터: 핸드폰${businessInfo.phoneNote ? `(${businessInfo.phoneNote})` : ""}: ${businessInfo.phone}`
       : null,
   ]
     .filter(Boolean)

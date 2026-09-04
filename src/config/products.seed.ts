@@ -27,7 +27,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "life-saju",
     name: "인생 사주",
     description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
-    price: 9900,
+    price: 10900,
     display_order: 95,
     is_active: true,
   },
@@ -106,11 +106,11 @@ export const productsSeed: ProductSeed[] = [
   },
   {
     // 고민 사주 결제 단계 추가 상품 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
-    // 고민 사주 + 인생 사주, 13,800원에서 5,000원 할인 = 8,800원
+    // 고민 사주 + 인생 사주, 14,800원에서 5,000원 할인 = 9,800원
     slug: "trouble-saju-bundle",
     name: "고민 사주 + 인생 사주",
     description: "고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트",
-    price: 8800,
+    price: 9800,
     display_order: 996,
     is_active: true,
   },
