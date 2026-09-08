@@ -423,7 +423,7 @@ export function FreeTroubleWizard({
                 <button
                   type="button"
                   onClick={() => setWithAddon(false)}
-                  className={`flex w-full items-center gap-3 py-4 text-left transition-opacity ${withAddon ? "opacity-55" : ""}`}
+                  className="flex w-full items-center gap-3 py-4 text-left"
                 >
                   <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${!withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
                   <span className="flex-1">
@@ -436,7 +436,7 @@ export function FreeTroubleWizard({
                 <button
                   type="button"
                   onClick={() => setWithAddon(true)}
-                  className={`flex w-full items-center gap-3 py-4 text-left transition-opacity ${withAddon ? "" : "opacity-55"}`}
+                  className="flex w-full items-center gap-3 py-4 text-left"
                 >
                   <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
                   <span className="flex-1">
