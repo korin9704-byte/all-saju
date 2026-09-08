@@ -79,7 +79,7 @@ function SiteFooter() {
 
   const contactLine = [
     businessInfo.phone
-      ? `고객센터: 핸드폰${businessInfo.phoneNote ? `(${businessInfo.phoneNote})` : ""}: ${businessInfo.phone}`
+      ? `고객센터: ${businessInfo.phone}${businessInfo.phoneNote ? ` ᓚᘏᗢ ${businessInfo.phoneNote}` : ""}`
       : null,
   ]
     .filter(Boolean)
