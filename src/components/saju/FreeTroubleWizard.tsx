@@ -188,7 +188,7 @@ export function FreeTroubleWizard({
   // 이전은 고스트 원형으로 낮추고, 다음을 크고 진하게 — 주 행동 강조
   const circleBtnCls = "w-[42px] h-[42px] shrink-0 rounded-full border border-[#E3D8F4] bg-transparent transition-colors hover:bg-[#F3EDFB] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnCls = "w-14 h-14 shrink-0 rounded-full bg-[#DCD2F5] shadow-[0_4px_14px_rgba(143,123,214,0.3)] flex items-center justify-center transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
-  const nextWideCls = "h-12 flex-1 rounded-full bg-[#DCD2F5] text-[#4A3A72] text-[14px] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
+  const nextWideCls = "h-12 w-[min(340px,62vw)] rounded-full bg-[#DCD2F5] text-[#4A3A72] text-[14px] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnStyle = {};
   const prevBtnCls = circleBtnCls;
   const prevIcon = (
@@ -370,11 +370,14 @@ export function FreeTroubleWizard({
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} disabled={submitting} className={isLastStep ? nextWideCls : nextBtnCls} style={nextBtnStyle} aria-label="다음">
-                  {!isLastStep
-                    ? nextIcon
-                    : <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund={mode === "paid"} />}
-                </button>
+                <div className="relative">
+                  {isLastStep && mode === "paid" && !hasCredit && <RefundTag floating />}
+                  <button type="button" onClick={next} disabled={submitting} className={isLastStep ? nextWideCls : nextBtnCls} style={nextBtnStyle} aria-label="다음">
+                    {!isLastStep
+                      ? nextIcon
+                      : <PayLabel submitting={submitting} hasCredit={hasCredit} />}
+                  </button>
+                </div>
               </div>
             </>
           )}
@@ -392,7 +395,9 @@ export function FreeTroubleWizard({
 
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button
+                <div className="relative">
+                  {mode === "paid" && !hasCredit && <RefundTag floating />}
+                  <button
                   type="button"
                   onClick={() => {
                     if (showAddon) {
@@ -406,8 +411,9 @@ export function FreeTroubleWizard({
                   className={nextWideCls}
                   style={nextBtnStyle}
                 >
-                  <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund={mode === "paid"} />
+                  <PayLabel submitting={submitting} hasCredit={hasCredit} />
                 </button>
+                </div>
               </div>
             </>
           )}
@@ -518,13 +524,14 @@ export function FreeTroubleWizard({
               )}
 
               <div className="mt-5">
+                {!hasCredit && <RefundTag />}
                 <button
                   type="button"
                   onClick={submit}
                   disabled={submitting}
                   className="w-full h-12 rounded-full bg-[#DCD2F5] text-[14px] text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
                 >
-                  <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund />
+                  <PayLabel submitting={submitting} hasCredit={hasCredit} />
                 </button>
               </div>
             </div>
@@ -536,16 +543,21 @@ export function FreeTroubleWizard({
 }
 
 
-/** 결제 버튼 라벨 — 결제하기 아래에 환불 보증 문구를 함께 표기 */
-function PayLabel({ submitting, hasCredit, showRefund = false }: { submitting: boolean; hasCredit: boolean; showRefund?: boolean }) {
+/** 결제 버튼 라벨 */
+function PayLabel({ submitting, hasCredit }: { submitting: boolean; hasCredit: boolean }) {
   if (submitting) return <>잠시만요...</>;
   if (hasCredit) return <>무료 이용권으로 결과보기</>;
-  if (!showRefund) return <>결제하기</>;
+  return <>결제하기</>;
+}
+
+/** 결제 버튼 위 왼쪽에 붙는 환불 보증 태그 (핑크 솔리드 미니 라벨).
+ *  floating — 버튼을 감싼 relative 컨테이너 기준으로 버튼 왼쪽 위에 절대 배치 */
+export function RefundTag({ floating = false }: { floating?: boolean }) {
   return (
-    <span className="inline-flex items-center justify-center whitespace-nowrap">
-      결제하기
-      <span className="mx-1.5 font-normal text-[#8F7BD6]">·</span>
-      <span className="text-xs font-normal text-[#8F7BD6]">불만족 시 100% 환불</span>
-    </span>
+    <div className={floating ? "absolute bottom-full left-3 mb-[6px] whitespace-nowrap" : "mb-[7px] pl-4"}>
+      <span className="rounded-[99px] rounded-bl-[3px] bg-[#C95FC0] px-[9px] py-[2px] text-[10.5px] text-white">
+        불만족 시 100% 환불
+      </span>
+    </div>
   );
 }
