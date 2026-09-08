@@ -373,14 +373,9 @@ export function FreeTroubleWizard({
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <div className="relative">
-                  {isLastStep && mode === "paid" && !hasCredit && <RefundTag floating />}
-                  <button type="button" onClick={next} disabled={submitting} className={isLastStep ? nextWideCls : nextBtnCls} style={nextBtnStyle} aria-label="다음">
-                    {!isLastStep
-                      ? nextIcon
-                      : <PayLabel submitting={submitting} hasCredit={hasCredit} />}
-                  </button>
-                </div>
+                <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label={isLastStep ? "결제하기" : "다음"}>
+                  {nextIcon}
+                </button>
               </div>
             </>
           )}

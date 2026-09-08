@@ -93,21 +93,23 @@ export function AskAnotherConcern({
                   className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
-              {/* 위저드와 동일 — 원형 셰브론 이전 + 플랫 소프트 결제 버튼 */}
-              <div className="flex gap-3 justify-center">
+              {/* 위저드와 동일 — 고스트 이전(<) + 진한 다음(>) 원형 */}
+              <div className="flex items-center gap-3 justify-center">
                 <button
                   type="button"
                   aria-label="이전"
                   onClick={() => { setOpen(false); onClose?.(); }}
-                  className="w-14 h-14 shrink-0 rounded-full bg-[#F3EDFB] flex items-center justify-center transition-colors hover:bg-[#E7DDF8]"
+                  className="w-[42px] h-[42px] shrink-0 rounded-full border border-[#E3D8F4] bg-transparent transition-colors hover:bg-[#F3EDFB] flex items-center justify-center"
                 >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <path d="M12 4 L6 10 L12 16" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path d="M12 4 L6 10 L12 16" stroke="#B9A8DD" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
-                <button type="button" onClick={submit} disabled={submitting}
-                  className="h-14 shrink-0 rounded-full bg-[#DCD2F5] px-7 text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none">
-                  {submitting ? "잠시만요..." : `${formatKRW(price)} 결제하기 (50% 할인)`}
+                <button type="button" onClick={submit} disabled={submitting} aria-label={`${formatKRW(price)} 결제하기 (50% 할인)`}
+                  className="w-14 h-14 shrink-0 rounded-full bg-[#DCD2F5] shadow-[0_4px_14px_rgba(143,123,214,0.3)] flex items-center justify-center transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none">
+                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path d="M8 4 L14 10 L8 16" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </button>
               </div>
             </div>
