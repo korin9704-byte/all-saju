@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { loadWidgets } from "@/lib/toss/client";
 import { publicEnv } from "@/lib/env";
-import { RefundTag } from "@/components/saju/FreeTroubleWizard";
 
 type Props = {
   orderId: string;
@@ -63,17 +62,14 @@ export function TossWidget({ orderId, amount, customerKey, productName, customer
     <div className="space-y-4">
       <div id="payment-methods" ref={paymentMethodsRef} />
       <div id="agreement" ref={agreementRef} />
-      <div>
-        <RefundTag />
-        <button
-          type="button"
-          onClick={handlePay}
-          disabled={!ready || paying}
-          className="w-full h-12 rounded-full bg-[#E7DDF8] text-ink text-[14px] font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none"
-        >
-          {paying ? "결제 진행 중..." : "결제하기"}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handlePay}
+        disabled={!ready || paying}
+        className="w-full h-12 rounded-full bg-[#E7DDF8] text-ink text-[14px] font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none"
+      >
+        {paying ? "결제 진행 중..." : "결제하기"}
+      </button>
     </div>
   );
 }

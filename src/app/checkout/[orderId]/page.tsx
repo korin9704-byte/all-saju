@@ -60,6 +60,7 @@ export default async function CheckoutPage({
       <h1 className="text-xl font-bold text-ink">결제</h1>
       <p className="mt-2 mb-8 text-sm text-body">
         {product?.name ?? "사주 상품"} · <span className="font-semibold text-foreground">{formatKRW(order.amount)}</span>
+        <span className="text-[#C95FC0]"> · 불만족 시 100% 환불</span>
       </p>
       <TossWidget
         orderId={order.order_id}

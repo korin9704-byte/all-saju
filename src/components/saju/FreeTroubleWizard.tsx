@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "concern"] as const;
+const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -44,8 +44,13 @@ export function FreeTroubleWizard({
 }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
+  // 번들이 있으면 마지막에 상품 선택 스텝 추가
+  const showAddon = mode === "paid" && !!bundle;
   const steps: readonly Step[] = STEPS.filter(
-    (s) => (askConcern || s !== "concern") && (askJob || (s !== "job" && s !== "love")),
+    (s) =>
+      (askConcern || s !== "concern") &&
+      (askJob || (s !== "job" && s !== "love")) &&
+      (showAddon || s !== "product"),
   );
   const step: Step = steps[stepIdx];
   const isLastStep = stepIdx === steps.length - 1;
@@ -67,9 +72,6 @@ export function FreeTroubleWizard({
   const [submitting, setSubmitting] = useState(false);
   // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
   const [withAddon, setWithAddon] = useState(false);
-  // 결제하기 클릭 시 상품 선택 바텀 시트 노출
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const showAddon = mode === "paid" && !!bundle;
 
   // 무료 이용권 (리퍼럴 보상) — 보유 시 결제 대신 자동 사용 (유료 모드 전용)
   const [credit, setCredit] = useState<{ available: number } | null>(null);
@@ -116,6 +118,7 @@ export function FreeTroubleWizard({
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
       if (isLastStep) { submit(); return; }
     }
+    if (step === "concern" && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     setStepIdx((i) => Math.min(i + 1, steps.length - 1));
   }
 
@@ -395,101 +398,60 @@ export function FreeTroubleWizard({
 
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <div className="relative">
-                  {mode === "paid" && !hasCredit && <RefundTag floating />}
-                  <button
-                  type="button"
-                  onClick={() => {
-                    if (showAddon) {
-                      if (!concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
-                      setSheetOpen(true);
-                      return;
-                    }
-                    submit();
-                  }}
-                  disabled={submitting}
-                  className={nextWideCls}
-                  style={nextBtnStyle}
-                >
-                  <PayLabel submitting={submitting} hasCredit={hasCredit} />
-                </button>
-                </div>
+                {showAddon ? (
+                  // 번들이 있으면 다음 스텝(상품 선택)으로
+                  <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+                ) : (
+                  <div className="relative">
+                    {mode === "paid" && !hasCredit && <RefundTag floating />}
+                    <button
+                      type="button"
+                      onClick={() => { if (!concern.trim()) { toast.error("고민을 입력해 주세요."); return; } submit(); }}
+                      disabled={submitting}
+                      className={nextWideCls}
+                      style={nextBtnStyle}
+                    >
+                      <PayLabel submitting={submitting} hasCredit={hasCredit} />
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           )}
-        </div>
-      </div>
 
-      {/* 상품 선택 바텀 시트 — 결제하기 클릭 시 노출 */}
-      {sheetOpen && bundle && (
-        <div className="fixed inset-0 z-[60]">
-          <style>{`
-            @keyframes paySheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-            @keyframes payBackdropIn { from { opacity: 0; } to { opacity: 1; } }
-          `}</style>
-          <div className="mx-auto w-full max-w-lg h-full relative overflow-hidden">
-            <div
-              className="absolute inset-0 bg-black/40"
-              style={{ animation: "payBackdropIn 0.2s ease-out" }}
-              onClick={() => setSheetOpen(false)}
-            />
-            <div
-              className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] px-4 pt-4 pb-6"
-              style={{ animation: "paySheetUp 0.25s ease-out", boxShadow: "0 -8px 32px rgba(74,58,114,0.18)" }}
-            >
-              {/* 시트 위 우측, 배경에 떠 있는 닫기 — 흰 원형 + 낙관 도장 ✕ */}
-              <button
-                type="button"
-                aria-label="닫기"
-                onClick={() => setSheetOpen(false)}
-                className="absolute -top-[52px] right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-[0_4px_14px_rgba(0,0,0,0.2)] transition-opacity hover:opacity-80"
-              >
-                <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
-                  <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
-              </button>
-
-              {/* auto-rows-fr — 두 카드 높이 동일 */}
-              <div className="grid auto-rows-fr gap-3">
+          {/* 상품 선택 스텝 — 번들이 있을 때 마지막 페이지 */}
+          {step === "product" && bundle && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>받아볼 풀이를 골라주세요.</h1>
+              {/* 흰 패널 라디오 리스트 — 미선택 줄은 반투명 */}
+              <div className="rounded-[20px] border border-[#E7DDF8] bg-white px-5">
                 <button
                   type="button"
                   onClick={() => setWithAddon(false)}
-                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors flex flex-col justify-center ${!withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                  className={`flex w-full items-center gap-3 py-4 text-left transition-opacity ${withAddon ? "opacity-55" : ""}`}
                 >
-                  <div className="flex items-start justify-between">
-                    <span className="text-sm font-medium text-[#4A3A72]">고민 사주</span>
-                    <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
-                  </div>
-                  <p className="mt-1 text-xs text-body">내 고민에 정조준한 맞춤 풀이.</p>
+                  <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${!withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
+                  <span className="flex-1">
+                    <span className="block text-sm font-medium text-[#4A3A72]">고민 사주</span>
+                    <span className="mt-[2px] block text-xs text-body">내 고민에 정조준한 맞춤 풀이.</span>
+                  </span>
+                  <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
                 </button>
+                <div className="h-px bg-[#F0EAF9]" />
                 <button
                   type="button"
                   onClick={() => setWithAddon(true)}
-                  className={`w-full rounded-2xl px-5 py-4 text-left transition-colors flex flex-col justify-center ${withAddon ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}
+                  className={`flex w-full items-center gap-3 py-4 text-left transition-opacity ${withAddon ? "" : "opacity-55"}`}
                 >
-                  <div className="flex items-start justify-between gap-2 w-full">
-                    <span className="flex flex-col">
-                      <span className="flex items-center gap-1.5 text-sm font-medium text-[#4A3A72]">
-                        고민 사주 + 인생 사주
-                        {/* 도장 찍힌 느낌의 스탬프 배지 */}
-                        <span
-                          className="shrink-0 relative -top-[4.25px] rounded px-1.5 py-0.5 text-[11px] font-medium text-[#C95FC0] border-[1.5px] border-[#C95FC0] -rotate-[4deg]"
-                          style={{ outline: "1px solid #F2D3EF", outlineOffset: 2 }}
-                        >
-                          9할이 선택
-                        </span>
-                      </span>
-                      <span className="mt-1 text-xs font-normal text-body">고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트.</span>
-                    </span>
-                    <span className="shrink-0 self-center text-right">
-                      <span className="block text-xs text-[#C95FC0]">6,000원 할인</span>
-                      <span className="mt-[2px] block whitespace-nowrap">
-                        <span className="mr-[5px] text-xs text-mute line-through">{(bundle.price + 6000).toLocaleString()}원</span>
-                        <span className="text-[15px] font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
-                      </span>
-                    </span>
-                  </div>
+                  <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
+                  <span className="flex-1">
+                    <span className="block text-sm font-medium text-[#4A3A72]">고민 사주 + 인생 사주</span>
+                    <span className="mt-[2px] block text-xs text-body">내 고민 맞춤 풀이 + 인생 전체 8만자 리포트 <span className="text-[#C95FC0]">· BEST</span></span>
+                  </span>
+                  <span className="shrink-0 text-right">
+                    <span className="block text-[11px] text-mute line-through">{(bundle.price + 6000).toLocaleString()}원</span>
+                    <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
+                  </span>
                 </button>
               </div>
 
@@ -523,21 +485,17 @@ export function FreeTroubleWizard({
                 </div>
               )}
 
-              <div className="mt-5">
-                {!hasCredit && <RefundTag />}
-                <button
-                  type="button"
-                  onClick={submit}
-                  disabled={submitting}
-                  className="w-full h-12 rounded-full bg-[#DCD2F5] text-[14px] text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
-                >
-                  <PayLabel submitting={submitting} hasCredit={hasCredit} />
+              <div className="mt-8 flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label="결제하기">
+                  {nextIcon}
                 </button>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
-      )}
+      </div>
+
     </div>
   );
 }
