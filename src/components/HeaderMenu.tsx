@@ -58,31 +58,32 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               style={{ animation: "backdropIn 0.2s ease-out" }}
               onClick={() => setOpen(false)}
             />
+            {/* 드로어 밖 좌측, 배경 위에 떠 있는 닫기 — 흰 원형 + 낙관 도장 ✕ */}
+            <button
+              type="button"
+              aria-label="메뉴 닫기"
+              onClick={() => setOpen(false)}
+              className="absolute top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-[0_4px_14px_rgba(0,0,0,0.2)] transition-opacity hover:opacity-80"
+              style={{ right: "calc(min(66%, 300px) + 12px)", animation: "backdropIn 0.25s ease-out" }}
+            >
+              <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+                <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
             {/* 우측 드로어 */}
             <div
               className="absolute top-0 right-0 bottom-0 w-[66%] max-w-[300px] bg-[#F8F4FD] pt-4 overflow-y-auto"
               style={{ animation: "drawerIn 0.25s ease-out", boxShadow: "-8px 0 28px rgba(74,58,114,0.22)" }}
             >
-              {/* 상단 — '메뉴' 타이틀 + 닫기 */}
-              <div className="flex items-center justify-between px-[20px] pb-3 border-b border-[#E7DDF8]">
+              {/* 상단 — '메뉴' 타이틀 */}
+              <div className="flex h-[41px] items-center px-[20px] pb-3 border-b border-[#E7DDF8]">
                 <span
                   className="flex h-6 items-center text-[17px] leading-none text-ink"
                   style={{ fontFamily: "'Gowun Dodum', sans-serif" }}
                 >
                   메뉴
                 </span>
-                <button
-                  type="button"
-                  aria-label="메뉴 닫기"
-                  onClick={() => setOpen(false)}
-                  className="flex h-[36px] w-[36px] shrink-0 -mr-[5px] items-center justify-center transition-opacity hover:opacity-70"
-                >
-                  {/* 낙관 도장 ✕ — 헤더 열기 버튼(도장+3줄)과 세트 */}
-                  <svg width="26" height="26" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
-                    <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                </button>
               </div>
 
               {/* 메뉴 항목 — 구분선 없이 */}
@@ -98,6 +99,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   재회 사주
                   <span className="rounded-full bg-[#F3EDFB] px-2 py-0.5 text-[11px] text-[#8F7BD6]">Coming Soon</span>
                 </span>
+                {/* 상품 메뉴와 계정 메뉴 구분선 */}
+                <div className="mx-[20px] my-[6px] border-t border-[#E7DDF8]" />
                 {isLoggedIn ? (
                   <>
                     <MenuLink href="/mypage">마이페이지</MenuLink>
@@ -113,8 +116,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   </>
                 ) : (
                   <>
-                    <MenuLink href="/login">로그인</MenuLink>
-                    <MenuLink href="/signup">회원가입</MenuLink>
+                    <MenuLink href="/login">로그인 · 회원가입</MenuLink>
                   </>
                 )}
               </nav>
