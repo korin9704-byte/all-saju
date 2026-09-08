@@ -417,28 +417,37 @@ export function FreeTroubleWizard({
           {/* 상품 선택 스텝 — 번들이 있을 때 마지막 페이지 */}
           {step === "product" && bundle && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>받아볼 풀이를 골라주세요.</h1>
-              {/* 흰 패널 라디오 리스트 — 미선택 줄은 반투명 */}
-              <div className="rounded-[20px] border border-[#E7DDF8] bg-white px-5">
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>어디까지 봐드릴까요?</h1>
+              {/* 뉴모피즘 소프트 — 선택 줄은 눌린(오목), 미선택 줄은 떠 있는(볼록) */}
+              <div className="grid gap-3">
                 <button
                   type="button"
                   onClick={() => setWithAddon(false)}
-                  className="flex w-full items-center gap-3 py-4 text-left"
+                  className="relative flex w-full items-center gap-3 rounded-[18px] px-5 py-4 text-left transition-all"
+                  style={{
+                    background: "#FBF9FE",
+                    boxShadow: "4px 4px 12px rgba(143,123,214,0.2), -3px -3px 10px rgba(255,255,255,0.9)",
+                    border: !withAddon ? "1.5px solid #C95FC0" : "1.5px solid transparent",
+                  }}
                 >
-                  <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${!withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
+                  {!withAddon && <SelectedCheck />}
                   <span className="flex-1">
                     <span className="block text-sm font-medium text-[#4A3A72]">고민 사주</span>
                     <span className="mt-[2px] block text-xs text-body">내 고민에 정조준한 맞춤 풀이</span>
                   </span>
                   <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
                 </button>
-                <div className="h-px bg-[#F0EAF9]" />
                 <button
                   type="button"
                   onClick={() => setWithAddon(true)}
-                  className="flex w-full items-center gap-3 py-4 text-left"
+                  className="relative flex w-full items-center gap-3 rounded-[18px] px-5 py-4 text-left transition-all"
+                  style={{
+                    background: "#FBF9FE",
+                    boxShadow: "4px 4px 12px rgba(143,123,214,0.2), -3px -3px 10px rgba(255,255,255,0.9)",
+                    border: withAddon ? "1.5px solid #C95FC0" : "1.5px solid transparent",
+                  }}
                 >
-                  <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
+                  {withAddon && <SelectedCheck />}
                   <span className="flex-1">
                     <span className="block text-sm font-medium text-[#4A3A72]">
                       고민 사주 + 인생 사주{" "}
@@ -505,6 +514,16 @@ export function FreeTroubleWizard({
   );
 }
 
+
+/** 선택된 상품 줄 우상단에 걸치는 체크 동그라미 */
+function SelectedCheck() {
+  return (
+    <svg className="absolute -right-[6px] -top-[8px]" width="22" height="22" viewBox="0 0 22 22" aria-hidden>
+      <circle cx="11" cy="11" r="10" fill="#C95FC0" stroke="#fff" strokeWidth="2" />
+      <path d="M6.5 11.5 L9.5 14.5 L15.5 8" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 /** 결제 버튼 라벨 */
 function PayLabel({ submitting, hasCredit }: { submitting: boolean; hasCredit: boolean }) {

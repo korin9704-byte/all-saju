@@ -58,10 +58,10 @@ export default async function CheckoutPage({
     <div className="container py-12 max-w-2xl">
       <CheckoutPixel amount={order.amount} />
       <h1 className="text-xl font-bold text-ink">결제</h1>
-      <p className="mt-2 mb-8 text-sm text-body">
+      <p className="mt-2 text-sm text-body">
         {product?.name ?? "사주 상품"} · <span className="font-semibold text-foreground">{formatKRW(order.amount)}</span>
-        <span className="text-[#C95FC0]"> · 불만족 시 100% 환불</span>
       </p>
+      <p className="mt-1 mb-8 text-sm text-[#C95FC0]">불만족 시 100% 환불</p>
       <TossWidget
         orderId={order.order_id}
         amount={order.amount}
