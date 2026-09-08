@@ -88,9 +88,11 @@ function SiteFooter() {
   return (
     <footer className="border-t border-hairline mt-20">
       <div className="container py-10 text-xs text-body space-y-4">
-        <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+        <div className="flex flex-wrap items-center gap-y-1.5">
           <Link href="/legal/terms" className="hover:text-ink">이용약관</Link>
+          <span className="mx-2 text-mute">·</span>
           <Link href="/legal/privacy" className="hover:text-ink">개인정보처리방침</Link>
+          <span className="mx-2 text-mute">·</span>
           <Link href="/legal/refund-policy" className="hover:text-ink">환불정책</Link>
         </div>
         <p className="text-mute leading-relaxed">{businessLine}</p>
