@@ -69,9 +69,21 @@ export function AnalysisProgress({
         className="relative flex flex-col items-center justify-center overflow-hidden"
         style={{ minHeight: "88vh", background: "linear-gradient(180deg,#584A93,#7D6BB8 55%,#B394CF)" }}
       >
-        {/* 위·아래 경계를 페이지 배경색으로 부드럽게 페이드 */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-[#F8F4FD] to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-t from-[#F8F4FD] to-transparent" />
+        {/* 위·아래 경계를 페이지 배경색으로 부드럽게 페이드 — 이징 멀티스톱으로 띠 없이 녹임 */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-48"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(248,244,253,1) 0%, rgba(248,244,253,0.87) 14%, rgba(248,244,253,0.66) 30%, rgba(248,244,253,0.42) 48%, rgba(248,244,253,0.22) 66%, rgba(248,244,253,0.08) 84%, rgba(248,244,253,0) 100%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-48"
+          style={{
+            background:
+              "linear-gradient(0deg, rgba(248,244,253,1) 0%, rgba(248,244,253,0.87) 14%, rgba(248,244,253,0.66) 30%, rgba(248,244,253,0.42) 48%, rgba(248,244,253,0.22) 66%, rgba(248,244,253,0.08) 84%, rgba(248,244,253,0) 100%)",
+          }}
+        />
 
         {/* 배경 잔별 */}
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 375 700" preserveAspectRatio="none" aria-hidden>
