@@ -428,7 +428,7 @@ export function FreeTroubleWizard({
                   <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${!withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
                   <span className="flex-1">
                     <span className="block text-sm font-medium text-[#4A3A72]">고민 사주</span>
-                    <span className="mt-[2px] block text-xs text-body">내 고민에 정조준한 맞춤 풀이.</span>
+                    <span className="mt-[2px] block text-xs text-body">내 고민에 정조준한 맞춤 풀이</span>
                   </span>
                   <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
                 </button>
@@ -440,8 +440,18 @@ export function FreeTroubleWizard({
                 >
                   <span className={`h-5 w-5 shrink-0 rounded-full bg-white ${withAddon ? "border-[6px] border-[#C95FC0]" : "border-[1.5px] border-[#D8CCEE]"}`} aria-hidden />
                   <span className="flex-1">
-                    <span className="block text-sm font-medium text-[#4A3A72]">고민 사주 + 인생 사주</span>
-                    <span className="mt-[2px] block text-xs text-body">내 고민 맞춤 풀이 + 인생 전체 8만자 리포트 <span className="text-[#C95FC0]">· BEST</span></span>
+                    <span className="block text-sm font-medium text-[#4A3A72]">
+                      고민 사주 + 인생 사주{" "}
+                      <span className="ml-0.5 inline-flex items-center gap-[3px] align-[1px] text-[11px] font-normal text-[#C95FC0]">
+                        <svg width="12" height="10" viewBox="0 0 14 11" aria-hidden>
+                          <path d="M1 3.5 L4 6 L7 1.5 L10 6 L13 3.5 L12 9.5 H2 Z" fill="#FBE38E" stroke="#EFBE68" strokeWidth="1" />
+                        </svg>
+                        BEST
+                        <span className="text-[#B9A8DD]">·</span>
+                        6,000원 할인
+                      </span>
+                    </span>
+                    <span className="mt-[2px] block text-xs text-body">내 고민 맞춤 풀이 + 인생 전체 8만자 분량의 리포트</span>
                   </span>
                   <span className="shrink-0 text-right">
                     <span className="block text-[11px] text-mute line-through">{(bundle.price + 6000).toLocaleString()}원</span>
