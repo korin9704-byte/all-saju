@@ -115,7 +115,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                     </form>
                   </>
                 ) : (
-                  <MenuLink href="/login">로그인 · 회원가입</MenuLink>
+                  <MenuLink href="/login">Login · Register</MenuLink>
                 )}
               </nav>
             </div>

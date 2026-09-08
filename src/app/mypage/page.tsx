@@ -45,39 +45,18 @@ export default async function MyPage() {
         <li>
           <Link
             href="/mypage/orders"
-            className="flex items-center gap-3 py-4 text-[15px] font-medium text-ink hover:text-body"
+            className="flex items-center py-4 text-[15px] font-medium text-ink hover:text-body"
           >
-            {/* 영수증 아이콘 */}
-            <svg className="shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-              <path d="M5 2.5 H15 V17 L12.5 15.5 L10 17 L7.5 15.5 L5 17 Z" stroke="#C95FC0" strokeWidth="1.7" strokeLinejoin="round" />
-              <path d="M7.5 7 H12.5 M7.5 10.5 H12.5" stroke="#C95FC0" strokeWidth="1.7" strokeLinecap="round" />
-            </svg>
-            <span>결제 내역 · 결과지</span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/mypage/reviews"
-            className="flex items-center gap-3 py-4 text-[15px] font-medium text-ink hover:text-body"
-          >
-            {/* 별 아이콘 */}
-            <svg className="shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-              <path d="M10 2.8 L12.2 7.4 L17.2 8 L13.5 11.4 L14.5 16.4 L10 13.9 L5.5 16.4 L6.5 11.4 L2.8 8 L7.8 7.4 Z" stroke="#C95FC0" strokeWidth="1.7" strokeLinejoin="round" />
-            </svg>
-            <span>내 리뷰</span>
+            결제 내역 · 결과지
           </Link>
         </li>
         <li>
           <form action="/api/auth/signout" method="post">
             <button
               type="submit"
-              className="w-full flex items-center gap-3 py-4 text-[15px] font-medium text-body hover:text-ink"
+              className="w-full flex items-center py-4 text-left text-[15px] font-medium text-body hover:text-ink"
             >
-              {/* 나가기 아이콘 */}
-              <svg className="shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-                <path d="M12.5 6.5 V4 H4 V16 H12.5 V13.5 M8 10 H17 M17 10 L14 7 M17 10 L14 13" stroke="#C95FC0" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span>Logout</span>
+              Logout
             </button>
           </form>
         </li>
