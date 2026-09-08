@@ -187,7 +187,7 @@ export function FreeTroubleWizard({
   // 원형 셰브론 이전(<)·다음(>) 버튼 나란히 + 마지막 단계만 넓은 플랫 알약
   const circleBtnCls = "w-14 h-14 shrink-0 rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnCls = "h-14 shrink-0 rounded-full bg-[#DCD2F5] px-7 flex items-center justify-center gap-1.5 text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
-  const nextWideCls = "h-14 rounded-full bg-[#DCD2F5] px-10 text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
+  const nextWideCls = "h-14 flex-1 rounded-full bg-[#DCD2F5] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnStyle = {};
   const prevBtnCls = circleBtnCls;
   const prevIcon = (
@@ -215,18 +215,28 @@ export function FreeTroubleWizard({
           backgroundPosition: "center top",
         }}
       >
-        {/* 진행 표시 */}
-        <div className="flex justify-center gap-2 pt-2">
-          {steps.map((s, i) => (
+        {/* 진행 표시 — 별똥별 바: 진행 끝에서 별이 앞장서 간다 (밤하늘 배경과 세트) */}
+        <div className="flex justify-center pt-3">
+          <div className="relative w-[200px] h-[5px] rounded-full bg-white/25">
             <div
-              key={s}
-              className="h-1.5 rounded-full transition-all duration-300"
+              className="h-full rounded-full transition-all duration-300"
               style={{
-                width: i === stepIdx ? 34 : 18,
-                backgroundColor: i === stepIdx ? "#8F7BD6" : "#E7DDF8",
+                width: `${((stepIdx + 1) / steps.length) * 100}%`,
+                background: "linear-gradient(90deg, rgba(255,255,255,0.25), #fff)",
               }}
             />
-          ))}
+            <svg
+              width="18" height="18" viewBox="0 0 20 20"
+              className="absolute -top-[7px] transition-all duration-300"
+              style={{ left: `calc(${((stepIdx + 1) / steps.length) * 100}% - 9px)` }}
+              aria-hidden
+            >
+              <path
+                d="M10 2.4 L12.3 7.2 L17.6 7.9 L13.7 11.5 L14.7 16.8 L10 14.2 L5.3 16.8 L6.3 11.5 L2.4 7.9 L7.7 7.2 Z"
+                fill="#FBE38E" stroke="#EFBE68" strokeWidth="1.2" strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         </div>
 
         {/* 본문 (하단 정렬 — 상단은 배경 그림 노출) */}
@@ -357,13 +367,7 @@ export function FreeTroubleWizard({
                 <button type="button" onClick={next} disabled={submitting} className={isLastStep ? nextWideCls : nextBtnCls} style={nextBtnStyle} aria-label="다음">
                   {!isLastStep
                     ? "다음"
-                    : submitting
-                      ? "잠시만요..."
-                      : hasCredit
-                        ? "무료 이용권으로 결과보기"
-                        : mode === "paid"
-                          ? "결제하기 · 불만족 시 100% 환불"
-                          : "결제하기"}
+                    : <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund={mode === "paid"} />}
                 </button>
               </div>
             </>
@@ -396,13 +400,7 @@ export function FreeTroubleWizard({
                   className={nextWideCls}
                   style={nextBtnStyle}
                 >
-                  {submitting
-                    ? "잠시만요..."
-                    : hasCredit
-                      ? "무료 이용권으로 결과보기"
-                      : mode === "paid"
-                        ? "결제하기 · 불만족 시 100% 환불"
-                        : "결제하기"}
+                  <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund={mode === "paid"} />
                 </button>
               </div>
             </>
@@ -427,15 +425,20 @@ export function FreeTroubleWizard({
               className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] px-4 pb-6"
               style={{ animation: "paySheetUp 0.25s ease-out", boxShadow: "0 -8px 32px rgba(74,58,114,0.18)" }}
             >
-              {/* 핸들 바 */}
-              <button
-                type="button"
-                aria-label="닫기"
-                onClick={() => setSheetOpen(false)}
-                className="flex w-full justify-center pt-3 pb-3"
-              >
-                <span className="h-1.5 w-10 rounded-full bg-[#D8CCEE]" />
-              </button>
+              {/* 우측 상단 닫기 — 낙관 도장 ✕ (메뉴 드로어·목차와 세트) */}
+              <div className="flex justify-end pt-2 pb-1">
+                <button
+                  type="button"
+                  aria-label="닫기"
+                  onClick={() => setSheetOpen(false)}
+                  className="flex h-[36px] w-[36px] -mr-1 shrink-0 items-center justify-center transition-opacity hover:opacity-70"
+                >
+                  <svg width="26" height="26" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+                    <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </div>
 
               {/* auto-rows-fr — 두 카드 높이 동일 */}
               <div className="grid auto-rows-fr gap-3">
@@ -469,10 +472,12 @@ export function FreeTroubleWizard({
                       </span>
                       <span className="mt-1 text-xs font-normal text-body">고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트.</span>
                     </span>
-                    <span className="shrink-0 text-right">
+                    <span className="shrink-0 self-center text-right">
                       <span className="block text-xs text-[#C95FC0]">6,000원 할인</span>
-                      <span className="block text-xs text-mute line-through">{(bundle.price + 6000).toLocaleString()}원</span>
-                      <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
+                      <span className="mt-[2px] block whitespace-nowrap">
+                        <span className="mr-[5px] text-xs text-mute line-through">{(bundle.price + 6000).toLocaleString()}원</span>
+                        <span className="text-[15px] font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
+                      </span>
                     </span>
                   </div>
                 </button>
@@ -508,22 +513,35 @@ export function FreeTroubleWizard({
                 </div>
               )}
 
-              <button
-                type="button"
-                onClick={submit}
-                disabled={submitting}
-                className="w-full mt-5 h-14 rounded-full bg-[#DCD2F5] text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
-              >
-                {submitting
-                  ? "잠시만요..."
-                  : hasCredit
-                    ? "무료 이용권으로 결과보기"
-                    : "결제하기 · 불만족 시 100% 환불"}
-              </button>
+              <div className="mt-5">
+                <button
+                  type="button"
+                  onClick={submit}
+                  disabled={submitting}
+                  className="w-full h-14 rounded-full bg-[#DCD2F5] text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+
+/** 결제 버튼 라벨 — 결제하기 아래에 환불 보증 문구를 함께 표기 */
+function PayLabel({ submitting, hasCredit, showRefund = false }: { submitting: boolean; hasCredit: boolean; showRefund?: boolean }) {
+  if (submitting) return <>잠시만요...</>;
+  if (hasCredit) return <>무료 이용권으로 결과보기</>;
+  if (!showRefund) return <>결제하기</>;
+  return (
+    <span className="inline-flex items-center justify-center whitespace-nowrap">
+      결제하기
+      <span className="mx-1.5 font-normal text-[#8F7BD6]">·</span>
+      <span className="text-xs font-normal text-[#8F7BD6]">불만족 시 100% 환불</span>
+    </span>
   );
 }

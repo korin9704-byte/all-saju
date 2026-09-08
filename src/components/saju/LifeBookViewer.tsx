@@ -262,7 +262,18 @@ export default function LifeBookViewer({
         <div id="tocSheet" className={tocOpen ? "on" : ""} style={sheetW ? { width: sheetW } : undefined}>
           <div className="toc-bg" onClick={() => setTocOpen(false)} />
           <div className="toc-panel">
-            <div className="toc-handle" />
+            {/* 우측 상단 닫기 — 헤더 메뉴 드로어와 같은 낙관 도장 ✕ */}
+            <button
+              type="button"
+              aria-label="목차 닫기"
+              onClick={() => setTocOpen(false)}
+              className="toc-close"
+            >
+              <svg width="26" height="26" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+                <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
             <ul>
               {views.map((v, i) => (
                 <li key={i} className={i === cur ? "cur" : ""} onClick={() => go(i)}>

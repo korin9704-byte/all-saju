@@ -158,13 +158,13 @@ export const LIFEBOOK_CSS = `
 .lifebook #tocSheet.on{display:block;}
 .lifebook .toc-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);}
 .lifebook .toc-panel{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:72dvh;background:#FDFBFF;border-radius:18px 18px 0 0;overflow:auto;padding:10px 0 24px;box-shadow:0 -8px 32px rgba(74,58,114,.18);}
-.lifebook .toc-handle{width:40px;height:3px;border-radius:2px;background:#D8CCEE;margin:6px auto 12px;}
+.lifebook .toc-close{border:0;background:none;padding:0;cursor:pointer;position:sticky;top:0;margin-left:auto;margin-right:16px;margin-top:2px;display:flex;width:36px;height:36px;align-items:center;justify-content:center;z-index:2;}
 .lifebook .toc-head{font-family:'Gowun Dodum';font-size:17px;padding:0 22px 8px;}
 .lifebook .toc-panel ul{list-style:none;margin:0;padding:0;}
 .lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;background:#FDFBFF;}
 .lifebook .toc-panel li.cur{background:#FDFBFF;}
 .lifebook .toc-no{flex:none;font-size:10.5px;color:var(--ink);background:var(--soft);border-radius:999px;padding:3px 10px;letter-spacing:.04em;}
-.lifebook .toc-t{font-family:'Do Hyeon','Gowun Dodum',sans-serif;font-size:15px;line-height:1.6;color:var(--ink);}
+.lifebook .toc-t{font-family:'Gowun Dodum',sans-serif;font-size:13.5px;line-height:1.6;color:var(--ink);}
 .lifebook .toc-panel li.cur .toc-no,.lifebook .toc-panel li.cur .toc-t{color:var(--pink);}
 .lifebook footer.disc{padding:26px 20px 10px;text-align:center;font-size:11px;color:var(--mute);}
 @keyframes lb-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
