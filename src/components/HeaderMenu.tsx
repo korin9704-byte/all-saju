@@ -82,7 +82,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   className="flex h-6 items-center text-[17px] leading-none text-ink"
                   style={{ fontFamily: "'Gowun Dodum', sans-serif" }}
                 >
-                  메뉴
+                  Menu
                 </span>
               </div>
 
@@ -102,7 +102,18 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 {/* 상품 메뉴와 계정 메뉴 구분선 */}
                 <div className="mx-[20px] my-[6px] border-t border-[#E7DDF8]" />
                 {isLoggedIn ? (
-                  <MenuLink href="/mypage">My Page</MenuLink>
+                  <>
+                    <MenuLink href="/mypage">My Page</MenuLink>
+                    <form action="/api/auth/signout" method="post">
+                      <button
+                        type="submit"
+                        className="flex w-full items-center px-[20px] py-[12px] text-left text-[16px] leading-[1.6] text-ink transition-colors hover:bg-[#F3EDFB]"
+                        style={{ fontFamily: "'Gowun Dodum', sans-serif" }}
+                      >
+                        Logout
+                      </button>
+                    </form>
+                  </>
                 ) : (
                   <MenuLink href="/login">로그인 · 회원가입</MenuLink>
                 )}

@@ -77,7 +77,7 @@ export default async function MyPage() {
               <svg className="shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path d="M12.5 6.5 V4 H4 V16 H12.5 V13.5 M8 10 H17 M17 10 L14 7 M17 10 L14 13" stroke="#C95FC0" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span>로그아웃</span>
+              <span>Logout</span>
             </button>
           </form>
         </li>
