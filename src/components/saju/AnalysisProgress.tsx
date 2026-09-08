@@ -2,6 +2,17 @@
 
 // 결과 생성 진행 화면 — /generating 과 /resume 에서 공용
 // 보라 밤하늘 + 잔별 배경 위에, 진행률만큼 별이 이어져 냥이 얼굴 별자리가 그려진다.
+import { useEffect, useState } from "react";
+
+// 한 줄씩 돌아가며 보여주는 진행 문구
+const MESSAGES = [
+  "지금 결과지를 쓰고 있어요.",
+  "보통 1~2분 정도 걸려요.",
+  "화면을 닫아도 이메일로 보내드려요.",
+  "만세력을 펼치고 있어요.",
+  "오행을 살피고 있어요.",
+  "냥이 별자리가 거의 다 그려졌어요.",
+];
 
 // 냥이 얼굴 별자리 좌표 (viewBox 260x220) — 왼뺨→왼귀→귀사이→오른귀→오른뺨→턱을 돌아 닫힘
 const CAT_PTS: [number, number][] = [
@@ -20,6 +31,20 @@ export function AnalysisProgress({
   done?: boolean;
   title?: string;
 }) {
+  // 문구 로테이션 — 3.6초마다 페이드로 교체
+  const [msgIdx, setMsgIdx] = useState(0);
+  const [msgVisible, setMsgVisible] = useState(true);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setMsgVisible(false);
+      setTimeout(() => {
+        setMsgIdx((i) => (i + 1) % MESSAGES.length);
+        setMsgVisible(true);
+      }, 400);
+    }, 3600);
+    return () => clearInterval(timer);
+  }, []);
+
   const total = CAT_PTS.length;
   const complete = done || pct >= 100;
   const lit = complete ? total : Math.max(1, Math.min(total, Math.ceil((pct / 100) * total)));
@@ -44,6 +69,10 @@ export function AnalysisProgress({
         className="relative flex flex-col items-center justify-center overflow-hidden"
         style={{ minHeight: "88vh", background: "linear-gradient(180deg,#584A93,#7D6BB8 55%,#B394CF)" }}
       >
+        {/* 위·아래 경계를 페이지 배경색으로 부드럽게 페이드 */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-[#F8F4FD] to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-t from-[#F8F4FD] to-transparent" />
+
         {/* 배경 잔별 */}
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 375 700" preserveAspectRatio="none" aria-hidden>
           <g style={{ animation: "starTwinkleA 3.2s ease-in-out infinite" }}>
@@ -100,8 +129,12 @@ export function AnalysisProgress({
               </g>
             )}
           </svg>
-          <p className="mt-2 text-[14.5px] text-white">지금 결과지를 쓰고 있어요...</p>
-          <p className="mt-1 text-xs text-white/75">보통 1~2분 정도 걸려요!!</p>
+          <p
+            className="mt-2 text-[14.5px] text-white transition-opacity duration-[400ms]"
+            style={{ opacity: msgVisible ? 1 : 0 }}
+          >
+            {MESSAGES[msgIdx]}
+          </p>
         </div>
       </div>
     </>
