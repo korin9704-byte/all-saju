@@ -185,9 +185,9 @@ export function FreeTroubleWizard({
   const numInputCls = "w-full bg-white border border-[#E7DDF8] rounded-full px-4 py-3 text-sm text-[#4A3A72] text-center placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors disabled:opacity-40";
   const textInputCls = "w-full bg-white border border-[#E7DDF8] rounded-full px-5 py-3 text-sm text-[#4A3A72] placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors";
   // 원형 셰브론 이전(<)·다음(>) 버튼 나란히 + 마지막 단계만 넓은 플랫 알약
-  const circleBtnCls = "w-14 h-14 shrink-0 rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none";
-  const nextBtnCls = "h-14 shrink-0 rounded-full bg-[#DCD2F5] px-7 flex items-center justify-center gap-1.5 text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
-  const nextWideCls = "h-14 flex-1 rounded-full bg-[#DCD2F5] text-[#4A3A72] text-sm font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
+  const circleBtnCls = "w-12 h-12 shrink-0 rounded-full bg-[#F3EDFB] transition-colors hover:bg-[#E7DDF8] flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none";
+  const nextBtnCls = "h-12 shrink-0 rounded-full bg-[#DCD2F5] px-7 flex items-center justify-center gap-1.5 text-[14px] text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
+  const nextWideCls = "h-12 flex-1 rounded-full bg-[#DCD2F5] text-[#4A3A72] text-[14px] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none";
   const nextBtnStyle = {};
   const prevBtnCls = circleBtnCls;
   const prevIcon = (
@@ -516,7 +516,7 @@ export function FreeTroubleWizard({
                   type="button"
                   onClick={submit}
                   disabled={submitting}
-                  className="w-full h-14 rounded-full bg-[#DCD2F5] text-sm text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
+                  className="w-full h-12 rounded-full bg-[#DCD2F5] text-[14px] text-[#4A3A72] font-medium transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none"
                 >
                   <PayLabel submitting={submitting} hasCredit={hasCredit} showRefund />
                 </button>
