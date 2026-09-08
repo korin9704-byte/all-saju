@@ -422,23 +422,21 @@ export function FreeTroubleWizard({
               onClick={() => setSheetOpen(false)}
             />
             <div
-              className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] px-4 pb-6"
+              className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-[#F8F4FD] px-4 pt-4 pb-6"
               style={{ animation: "paySheetUp 0.25s ease-out", boxShadow: "0 -8px 32px rgba(74,58,114,0.18)" }}
             >
-              {/* 우측 상단 닫기 — 낙관 도장 ✕ (메뉴 드로어·목차와 세트) */}
-              <div className="flex justify-end pt-2 pb-1">
-                <button
-                  type="button"
-                  aria-label="닫기"
-                  onClick={() => setSheetOpen(false)}
-                  className="flex h-[36px] w-[36px] -mr-1 shrink-0 items-center justify-center transition-opacity hover:opacity-70"
-                >
-                  <svg width="26" height="26" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
-                    <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
+              {/* 시트 위 우측, 배경에 떠 있는 닫기 — 흰 원형 + 낙관 도장 ✕ */}
+              <button
+                type="button"
+                aria-label="닫기"
+                onClick={() => setSheetOpen(false)}
+                className="absolute -top-[52px] right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-[0_4px_14px_rgba(0,0,0,0.2)] transition-opacity hover:opacity-80"
+              >
+                <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+                  <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+              </button>
 
               {/* auto-rows-fr — 두 카드 높이 동일 */}
               <div className="grid auto-rows-fr gap-3">

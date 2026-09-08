@@ -157,8 +157,9 @@ export const LIFEBOOK_CSS = `
 .lifebook #tocSheet{position:fixed;inset:0;z-index:40;display:none;}
 .lifebook #tocSheet.on{display:block;}
 .lifebook .toc-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);}
-.lifebook .toc-panel{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:72dvh;background:#FDFBFF;border-radius:18px 18px 0 0;overflow:auto;padding:10px 0 24px;box-shadow:0 -8px 32px rgba(74,58,114,.18);}
-.lifebook .toc-close{border:0;background:none;padding:0;cursor:pointer;position:sticky;top:0;margin-left:auto;margin-right:16px;margin-top:2px;display:flex;width:36px;height:36px;align-items:center;justify-content:center;z-index:2;}
+.lifebook .toc-wrap{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none;}
+.lifebook .toc-panel{pointer-events:auto;width:100%;max-height:72dvh;background:#FDFBFF;border-radius:18px 18px 0 0;overflow:auto;padding:10px 0 24px;box-shadow:0 -8px 32px rgba(74,58,114,.18);}
+.lifebook .toc-close{pointer-events:auto;border:0;cursor:pointer;margin:0 16px 10px 0;display:flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.92);box-shadow:0 4px 14px rgba(0,0,0,0.2);}
 .lifebook .toc-head{font-family:'Gowun Dodum';font-size:17px;padding:0 22px 8px;}
 .lifebook .toc-panel ul{list-style:none;margin:0;padding:0;}
 .lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;background:#FDFBFF;}
