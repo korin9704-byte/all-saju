@@ -59,20 +59,22 @@ export default async function CheckoutPage({
       <CheckoutPixel amount={order.amount} />
       <h1 className="text-xl font-bold text-ink">결제</h1>
       <p className="mt-2 text-sm text-body">
-        {/* 상품명 속 +는 냥점 로고와 같은 기랑해랑 폰트로 */}
-        {(product?.name ?? "사주 상품").split("+").map((part, i) => (
-          <span key={i}>
-            {i > 0 && (
-              <span
-                className="text-[17px] leading-none"
-                style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
-              >
-                +
-              </span>
-            )}
-            {part}
-          </span>
-        ))}{" "}
+        {/* 상품명 속 +는 냥점 로고와 같은 기랑해랑 폰트로 — 색·굵기는 가격과 동일 */}
+        <span className="font-semibold text-foreground">
+          {(product?.name ?? "사주 상품").split("+").map((part, i) => (
+            <span key={i}>
+              {i > 0 && (
+                <span
+                  className="text-[17px] font-normal leading-none"
+                  style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
+                >
+                  +
+                </span>
+              )}
+              {part}
+            </span>
+          ))}
+        </span>{" "}
         · <span className="font-semibold text-foreground">{formatKRW(order.amount)}</span>
       </p>
       <p className="mt-1 mb-8 text-sm text-[#C95FC0]">불만족 시 100% 환불</p>
