@@ -60,7 +60,20 @@ export default async function MyOrdersPage() {
               <li key={o.id} className="py-5 flex items-center justify-between gap-4">
                 <div className="min-w-0">
                   <p className="font-medium text-ink truncate">
-                    {productMap.get(o.product_id) ?? "-"}
+                    {/* 상품명 속 +는 냥점 로고와 같은 기랑해랑 폰트로 */}
+                    {(productMap.get(o.product_id) ?? "-").split("+").map((part, i) => (
+                      <span key={i}>
+                        {i > 0 && (
+                          <span
+                            className="text-[17px] leading-none"
+                            style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
+                          >
+                            +
+                          </span>
+                        )}
+                        {part}
+                      </span>
+                    ))}
                   </p>
                   <p className="text-xs text-body mt-1">
                     {formatDate(o.created_at)} · <span>{formatKRW(o.amount)}</span>
