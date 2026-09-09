@@ -74,9 +74,23 @@ export default async function ResultPage({
 
   const { data: order } = await service
     .from("orders")
-    .select("order_id, product_id, paid_at, user_id, guest_email")
+    .select("order_id, product_id, paid_at, user_id, guest_email, status")
     .eq("id", result.order_id)
     .single();
+
+  // 환불된 주문의 결과지는 열람 차단 (삭제하지 않으므로 status 복구 시 다시 열람 가능)
+  if (order?.status === "refunded") {
+    return (
+      <div className="container flex min-h-[60vh] max-w-lg flex-col items-center justify-center py-24 text-center">
+        <h1 className="text-xl font-bold text-ink">환불이 완료된 주문이에요</h1>
+        <p className="mt-3 text-sm leading-relaxed text-body">
+          환불 처리되어 이 결과지는 더 이상 열람할 수 없어요.
+          <br />
+          궁금한 점이 있으면 고객센터로 문의해 주세요.
+        </p>
+      </div>
+    );
+  }
 
   const supabaseAuth = await createClient();
   const { data: { user: viewer } } = await supabaseAuth.auth.getUser();

@@ -4,6 +4,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/env";
 import { Badge } from "@/components/ui/badge";
 import { formatKRW, formatDate } from "@/lib/utils";
+import { RefundButton } from "./RefundButton";
 
 export const metadata = { title: "관리자 - 결제 내역" };
 
@@ -13,6 +14,7 @@ const STATUS_LABEL: Record<string, string> = {
   paid: "결제완료",
   pending: "결제대기",
   failed: "실패",
+  refunded: "환불완료",
 };
 
 type OrderRow = {
@@ -45,8 +47,8 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
       .select("id, order_id, amount, status, created_at, user_id, guest_email, product_id, toss_payment_key")
       .order("created_at", { ascending: false })
       .limit(200);
-    if (status && ["pending", "paid", "failed"].includes(status)) {
-      query = query.eq("status", status as "pending" | "paid" | "failed");
+    if (status && ["pending", "paid", "failed", "refunded"].includes(status)) {
+      query = query.eq("status", status as "pending" | "paid" | "failed" | "refunded");
     }
     const { data } = await query;
     orders = (data ?? []) as OrderRow[];
@@ -69,6 +71,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
     { key: "paid", label: "결제완료" },
     { key: "pending", label: "결제대기" },
     { key: "failed", label: "실패" },
+    { key: "refunded", label: "환불완료" },
   ];
 
   return (
@@ -139,13 +142,22 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                   </Badge>
                 </td>
                 <td className="px-4 py-3">
-                  {resultMap.get(o.id) ? (
-                    <Link href={`/results/${resultMap.get(o.id)}`} className="text-xs underline underline-offset-2">
-                      보기
-                    </Link>
-                  ) : (
-                    <span className="text-xs text-mute">-</span>
-                  )}
+                  <div className="flex items-center gap-3">
+                    {resultMap.get(o.id) ? (
+                      <Link href={`/results/${resultMap.get(o.id)}`} className="text-xs underline underline-offset-2">
+                        보기
+                      </Link>
+                    ) : (
+                      <span className="text-xs text-mute">-</span>
+                    )}
+                    {/* 번들 자식(-jt)은 부모 환불 시 함께 처리되므로 버튼 없음 */}
+                    {o.status === "paid" && !o.order_id.endsWith("-jt") && (
+                      <RefundButton
+                        orderRowId={o.id}
+                        orderLabel={`${productMap.get(o.product_id) ?? "-"} · ${formatKRW(o.amount)} (${o.order_id})`}
+                      />
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

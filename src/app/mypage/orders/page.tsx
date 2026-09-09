@@ -13,6 +13,7 @@ const STATUS_LABEL: Record<string, string> = {
   paid: "결제완료",
   pending: "결제대기",
   failed: "실패",
+  refunded: "환불완료",
 };
 
 export default async function MyOrdersPage() {
@@ -92,7 +93,7 @@ export default async function MyOrdersPage() {
                   >
                     {STATUS_LABEL[o.status] ?? o.status}
                   </Badge>
-                  {resultId && (
+                  {resultId && o.status === "paid" && (
                     <Link href={`/results/${resultId}`} className="text-sm font-medium underline underline-offset-4 text-ink">
                       결과지 보기
                     </Link>

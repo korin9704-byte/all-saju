@@ -9,7 +9,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type OrderStatus = "pending" | "paid" | "failed";
+export type OrderStatus = "pending" | "paid" | "failed" | "refunded";
 export type CalendarKind = "solar" | "lunar";
 export type GenderKind = "male" | "female";
 
