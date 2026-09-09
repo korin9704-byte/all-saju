@@ -31,28 +31,30 @@ export async function sendResultEmail({
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Kirang+Haerang&display=swap');
   </style>
 </head>
-<body style="margin:0;padding:0;background:#f9f9f9;font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;padding:40px 0;">
+<body style="margin:0;padding:0;background:#F3EEFA;font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F3EEFA;padding:40px 0;">
     <tr><td align="center">
-      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-        <tr><td style="background:#111111;padding:32px 40px;text-align:center;">
-          <span style="color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.5px;">냥점🐱</span>
+      <!-- 밤하늘 다크 — 보라 배경 + 별 -->
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#584A93;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(74,58,114,0.18);">
+        <tr><td style="padding:36px 40px 8px;text-align:center;">
+          <span style="color:#ffffff;font-size:26px;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;letter-spacing:0.05em;">냥점</span>
+          <p style="margin:6px 0 0;color:#C9BDE6;font-size:13px;">&#10022; &#730; &#183; &#10023; &#183; &#730; &#10022;</p>
         </td></tr>
-        <tr><td style="padding:40px 40px 24px;">
-          <h1 style="margin:0 0 24px;font-size:22px;font-weight:700;color:#111;line-height:1.6;">
+        <tr><td style="padding:22px 40px 34px;text-align:center;">
+          <h1 style="margin:0 0 26px;font-size:21px;font-weight:400;color:#ffffff;line-height:1.7;">
             ${greeting}<br>
-            <span style="color:#764ae6;">'${productName}'</span><br>
+            <span style="color:#F3BFE7;">'${productName}'</span><br>
             결과가 도착했어요.
           </h1>
-          <a href="${url}" style="display:block;background:#111111;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:12px;font-size:17px;font-weight:600;letter-spacing:-0.3px;text-align:center;">
-            지금 보러가기
+          <a href="${url}" style="display:inline-block;background:#ffffff;color:#584A93;text-decoration:none;padding:15px 110px;border-radius:999px;font-size:16px;font-weight:400;text-align:center;">
+            결과 보기!!
           </a>
         </td></tr>
-        <tr><td style="padding:24px 40px 40px;border-top:1px solid #f0f0f0;">
-          <p style="margin:0;font-size:13px;color:#aaa;line-height:1.6;">
+        <tr><td style="padding:20px 40px 32px;border-top:1px solid rgba(255,255,255,0.15);text-align:center;">
+          <p style="margin:0;font-size:12.5px;color:#B9A8DD;line-height:1.6;">
             이 메일은 냥점(nyangjeom.com) 결제 완료 후 자동 발송됩니다.
           </p>
         </td></tr>
