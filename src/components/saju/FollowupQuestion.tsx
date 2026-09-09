@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { formatKRW } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 const MAX_Q = 100;
 
@@ -85,7 +86,13 @@ export function FollowupQuestion({
         className="w-full h-14 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
         style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}
       >
-        {submitting ? "잠시만요..." : `${formatKRW(price)} 결제하기`}
+        {submitting ? (
+          <span className="inline-flex items-center justify-center">
+            <Spinner size={18} track="rgba(255,255,255,0.4)" arc="#ffffff" />
+          </span>
+        ) : (
+          `${formatKRW(price)} 결제하기`
+        )}
       </button>
     </div>
   );

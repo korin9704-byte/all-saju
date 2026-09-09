@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { formatKRW } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
@@ -107,9 +108,13 @@ export function AskAnotherConcern({
                 </button>
                 <button type="button" onClick={submit} disabled={submitting} aria-label={`${formatKRW(price)} 결제하기 (50% 할인)`}
                   className="w-14 h-14 shrink-0 rounded-full bg-[#DCD2F5] shadow-[0_4px_14px_rgba(143,123,214,0.3)] flex items-center justify-center transition-colors hover:bg-[#CFC0EE] disabled:opacity-50 disabled:pointer-events-none">
-                  <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <path d="M8 4 L14 10 L8 16" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  {submitting ? (
+                    <Spinner size={22} />
+                  ) : (
+                    <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <path d="M8 4 L14 10 L8 16" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>

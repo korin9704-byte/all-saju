@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { loadWidgets } from "@/lib/toss/client";
 import { publicEnv } from "@/lib/env";
+import { Spinner } from "@/components/ui/spinner";
 
 type Props = {
   orderId: string;
@@ -68,7 +69,13 @@ export function TossWidget({ orderId, amount, customerKey, productName, customer
         disabled={!ready || paying}
         className="w-full h-12 rounded-full bg-[#E7DDF8] text-ink text-[14px] font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none"
       >
-        {paying ? "결제 진행 중..." : "구매하고 결과 보기!!"}
+        {paying ? (
+          <span className="inline-flex items-center justify-center">
+            <Spinner size={18} />
+          </span>
+        ) : (
+          "구매하고 결과 보기!!"
+        )}
       </button>
     </div>
   );

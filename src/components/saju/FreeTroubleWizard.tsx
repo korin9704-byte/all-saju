@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
@@ -578,7 +579,12 @@ export function FreeTroubleWizard({
 
 /** 결제 버튼 라벨 */
 function PayLabel({ submitting, hasCredit }: { submitting: boolean; hasCredit: boolean }) {
-  if (submitting) return <>잠시만요...</>;
+  if (submitting)
+    return (
+      <span className="inline-flex items-center justify-center">
+        <Spinner size={18} />
+      </span>
+    );
   if (hasCredit) return <>무료 이용권으로 결과보기</>;
   return <>결제하기</>;
 }

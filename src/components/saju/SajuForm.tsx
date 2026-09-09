@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { createClient } from "@/lib/supabase/client";
 import { isValidBirthDate } from "@/lib/validation";
 
@@ -963,7 +964,11 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
         className="w-full h-14 !mt-10 rounded-full text-white text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none"
         style={{ background: "linear-gradient(90deg, #8F7BD6, #C95FC0)" }}>
         {submitting
-          ? "잠시만요..."
+          ? (
+              <span className="inline-flex items-center justify-center">
+                <Spinner size={18} track="rgba(255,255,255,0.4)" arc="#ffffff" />
+              </span>
+            )
           : freeTroubleMode
             ? "무료로 결과보기"
             : miniMode
