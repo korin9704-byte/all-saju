@@ -516,7 +516,7 @@ export function FreeTroubleWizard({
                       >
                         +
                       </span>{" "}
-                      인생 전체 8만자 분량의 리포트
+                      인생 전체 8만 자 분량의 리포트
                     </span>
                     <span className="shrink-0 whitespace-nowrap text-[15px] font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
                   </span>
