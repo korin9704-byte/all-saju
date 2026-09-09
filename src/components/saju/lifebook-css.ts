@@ -163,7 +163,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .toc-head{font-family:'Gowun Dodum';font-size:17px;padding:0 22px 8px;}
 .lifebook .toc-panel ul{list-style:none;margin:0;padding:0;}
 .lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;background:#FDFBFF;}
-.lifebook .toc-panel li.cur{background:#FDFBFF;}
+.lifebook .toc-panel li+li{border-top:1.5px dashed #E9DFF6;}
 .lifebook .toc-no{flex:none;font-size:10.5px;color:var(--ink);background:var(--soft);border-radius:999px;padding:3px 10px;letter-spacing:.04em;}
 .lifebook .toc-t{font-family:'Gowun Dodum',sans-serif;font-size:13.5px;line-height:1.6;color:var(--ink);}
 .lifebook .toc-panel li.cur .toc-no,.lifebook .toc-panel li.cur .toc-t{color:var(--pink);}
