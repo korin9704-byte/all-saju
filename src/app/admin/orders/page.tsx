@@ -8,7 +8,7 @@ import { RefundButton } from "./RefundButton";
 
 export const metadata = { title: "관리자 - 결제 내역" };
 
-type SearchParams = Promise<{ status?: string }>;
+type SearchParams = Promise<{ status?: string; q?: string; page?: string }>;
 
 const STATUS_LABEL: Record<string, string> = {
   paid: "결제완료",
@@ -29,13 +29,18 @@ type OrderRow = {
   toss_payment_key: string | null;
 };
 
+const PAGE_SIZE = 200;
+
 export default async function AdminOrdersPage({ searchParams }: { searchParams: SearchParams }) {
   await requireAdminPassword("/admin/orders");
 
-  const { status } = await searchParams;
+  const { status, q, page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1") || 1);
+  const search = (q ?? "").trim();
   const demoMode = !isSupabaseConfigured();
 
   let orders: OrderRow[] = [];
+  let hasNext = false;
   let productMap = new Map<string, string>();
   let resultMap = new Map<string, string>();
 
@@ -46,12 +51,19 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
       .from("orders")
       .select("id, order_id, amount, status, created_at, user_id, guest_email, product_id, toss_payment_key")
       .order("created_at", { ascending: false })
-      .limit(200);
+      // 다음 페이지 존재 여부 판단용으로 1건 더 조회
+      .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if (status && ["pending", "paid", "failed", "refunded"].includes(status)) {
       query = query.eq("status", status as "pending" | "paid" | "failed" | "refunded");
     }
+    if (search) {
+      // 주문번호 또는 게스트 이메일 부분 일치 검색
+      query = query.or(`order_id.ilike.%${search}%,guest_email.ilike.%${search}%`);
+    }
     const { data } = await query;
-    orders = (data ?? []) as OrderRow[];
+    const rows = (data ?? []) as OrderRow[];
+    hasNext = rows.length > PAGE_SIZE;
+    orders = rows.slice(0, PAGE_SIZE);
 
     const productIds = Array.from(new Set(orders.map((o) => o.product_id)));
     const { data: products } = productIds.length
@@ -89,13 +101,17 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         </div>
       ) : null}
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-4">
         {filters.map((f) => {
           const active = (status ?? "") === f.key;
+          const params = new URLSearchParams();
+          if (f.key) params.set("status", f.key);
+          if (search) params.set("q", search);
+          const qs = params.toString();
           return (
             <Link
               key={f.key || "all"}
-              href={f.key ? `/admin/orders?status=${f.key}` : "/admin/orders"}
+              href={qs ? `/admin/orders?${qs}` : "/admin/orders"}
               className={`px-4 h-8 inline-flex items-center rounded-full text-sm border transition-colors ${active ? "bg-ink text-canvas border-ink" : "border-hairline text-ink hover:border-ink"}`}
             >
               {f.label}
@@ -104,7 +120,29 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         })}
       </div>
 
-      <p className="text-xs text-mute font-mono mb-3">{orders.length} ROWS</p>
+      {/* 주문번호·이메일 검색 — 200건 이전의 옛 주문도 찾을 수 있게 */}
+      <form method="get" action="/admin/orders" className="mb-6 flex gap-2">
+        {status ? <input type="hidden" name="status" value={status} /> : null}
+        <input
+          type="text"
+          name="q"
+          defaultValue={search}
+          placeholder="주문번호 또는 이메일 검색"
+          className="h-9 w-full max-w-xs rounded-full border border-hairline bg-white px-4 text-sm text-ink placeholder:text-mute focus:outline-none focus:border-ink"
+        />
+        <button type="submit" className="h-9 shrink-0 rounded-full border border-hairline px-4 text-sm text-ink transition-colors hover:border-ink">
+          검색
+        </button>
+        {search && (
+          <Link href={status ? `/admin/orders?status=${status}` : "/admin/orders"} className="h-9 inline-flex items-center px-2 text-sm text-mute underline underline-offset-2">
+            초기화
+          </Link>
+        )}
+      </form>
+
+      <p className="text-xs text-mute font-mono mb-3">
+        {orders.length} ROWS{page > 1 ? ` · PAGE ${page}` : ""}
+      </p>
 
       <div className="border border-hairline rounded-lg overflow-x-auto">
         {orders.length === 0 ? (
@@ -165,6 +203,36 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         </table>
         )}
       </div>
+
+      {/* 페이지 이동 — 200건 단위 */}
+      {(page > 1 || hasNext) && (
+        <div className="mt-6 flex items-center justify-center gap-3">
+          {page > 1 ? (
+            <Link
+              href={`/admin/orders?${buildQuery({ status, q: search, page: page - 1 })}`}
+              className="h-9 inline-flex items-center rounded-full border border-hairline px-4 text-sm text-ink transition-colors hover:border-ink"
+            >
+              ← 이전 200건
+            </Link>
+          ) : null}
+          {hasNext ? (
+            <Link
+              href={`/admin/orders?${buildQuery({ status, q: search, page: page + 1 })}`}
+              className="h-9 inline-flex items-center rounded-full border border-hairline px-4 text-sm text-ink transition-colors hover:border-ink"
+            >
+              다음 200건 →
+            </Link>
+          ) : null}
+        </div>
+      )}
     </div>
   );
+}
+
+function buildQuery({ status, q, page }: { status?: string; q?: string; page: number }) {
+  const params = new URLSearchParams();
+  if (status) params.set("status", status);
+  if (q) params.set("q", q);
+  if (page > 1) params.set("page", String(page));
+  return params.toString();
 }
