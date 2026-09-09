@@ -11,10 +11,11 @@ export function formatKRW(amount: number): string {
 
 export function formatDate(value: string | Date): string {
   const d = typeof value === "string" ? new Date(value) : value;
+  // ko-KR 포맷은 "2026. 09. 08."처럼 끝에 마침표가 붙어 제거
   return new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
     timeZone: "Asia/Seoul",
-  }).format(d);
+  }).format(d).replace(/\.$/, "");
 }

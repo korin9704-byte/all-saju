@@ -4,6 +4,9 @@ import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { formatKRW, formatDate } from "@/lib/utils";
 
+// 번들 자식 주문 order_id 접미사 (generate-result.ts와 동일 — 결과지 페이지처럼 로컬 상수로 유지)
+const BUNDLE_CHILD_SUFFIX = "-jt";
+
 export const metadata = { title: "결제 내역 · 결과지" };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -19,11 +22,13 @@ export default async function MyOrdersPage() {
 
   // 본인 user_id + guest_email 매칭 둘 다 조회 (게스트 결제 후 가입한 케이스)
   const service = createServiceClient();
-  const { data: orders } = await service
+  const { data: allOrders } = await service
     .from("orders")
     .select("id, order_id, amount, status, created_at, product_id, user_id")
     .or(`user_id.eq.${user.id},guest_email.eq.${user.email}`)
     .order("created_at", { ascending: false });
+  // 번들 자식 주문(0원 내부 주문)은 목록에서 숨김 — 결과지는 번들 결과지 안에서 함께 볼 수 있음
+  const orders = (allOrders ?? []).filter((o) => !o.order_id.endsWith(BUNDLE_CHILD_SUFFIX));
 
   const productIds = Array.from(new Set((orders ?? []).map((o) => o.product_id)));
   const { data: products } = productIds.length

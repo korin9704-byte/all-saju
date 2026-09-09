@@ -209,7 +209,18 @@ export default function LifeBookViewer({
                 boxShadow: "0 6px 18px rgba(122,95,190,0.25)",
               }}
             >
-              또 다른 고민 물어보기 (50% 할인)
+              또 다른 고민 물어보기{" "}
+              <span
+                style={{
+                  fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
+                  fontSize: 16,
+                  lineHeight: 1,
+                  color: "#C95FC0",
+                  marginLeft: 5,
+                }}
+              >
+                50% 할인
+              </span>
             </button>
           </div>
         )}
