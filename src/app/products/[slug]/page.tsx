@@ -147,7 +147,7 @@ export default async function ProductDetailPage({
                   ))}
                 </p>
               )}
-              <p className="mt-5 text-[22px] text-ink">{formatKRW(product.price)}</p>
+              <p className="mt-5 text-[20px] text-ink">{formatKRW(product.price)}</p>
             </div>
           </div>
 

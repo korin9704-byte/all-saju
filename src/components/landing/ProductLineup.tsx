@@ -221,7 +221,7 @@ export async function ProductLineup() {
                     <span key={i} className={`block ${line.includes("100% 환불") ? "text-[#C95FC0]" : ""}`}>{line}</span>
                   ))}</p>
               )}
-              <p className="mt-4 text-[22px] text-ink">{formatKRW(p.price)}</p>
+              <p className="mt-4 text-[20px] text-ink">{formatKRW(p.price)}</p>
             </div>
           </Link>
         ))}

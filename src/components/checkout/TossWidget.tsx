@@ -68,7 +68,7 @@ export function TossWidget({ orderId, amount, customerKey, productName, customer
         disabled={!ready || paying}
         className="w-full h-12 rounded-full bg-[#E7DDF8] text-ink text-[14px] font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50 disabled:pointer-events-none"
       >
-        {paying ? "결제 진행 중..." : "결제하고 결과 보기!!"}
+        {paying ? "결제 진행 중..." : "구매하고 결과 보기!!"}
       </button>
     </div>
   );
