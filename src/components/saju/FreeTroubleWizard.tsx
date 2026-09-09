@@ -201,7 +201,14 @@ export function FreeTroubleWizard({
   );
   const nextIcon = (
     <svg width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path d="M8 4 L14 10 L8 16" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8 4 L14 10 L8 16" stroke="#C95FC0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+  // 주문 생성 등 대기 중 표시 — 화살표 대신 도는 스피너
+  const spinnerIcon = (
+    <svg className="animate-spin" width="22" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <circle cx="10" cy="10" r="7" stroke="#C9BDE6" strokeWidth="2.4" />
+      <path d="M10 3 a7 7 0 0 1 7 7" stroke="#C95FC0" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   );
 
@@ -374,7 +381,7 @@ export function FreeTroubleWizard({
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label={isLastStep ? "결제하기" : "다음"}>
-                  {nextIcon}
+                  {submitting ? spinnerIcon : nextIcon}
                 </button>
               </div>
             </>
@@ -556,7 +563,7 @@ export function FreeTroubleWizard({
               <div className="mt-8 flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={submit} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label="결제하기">
-                  {nextIcon}
+                  {submitting ? spinnerIcon : nextIcon}
                 </button>
               </div>
             </>
