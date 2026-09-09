@@ -423,48 +423,102 @@ export function FreeTroubleWizard({
                 <button
                   type="button"
                   onClick={() => setWithAddon(false)}
-                  className="relative flex w-full items-center gap-3 rounded-[18px] px-5 py-4 text-left transition-all"
+                  className="relative block w-full rounded-[18px] text-left transition-all"
                   style={{
-                    background: "#FBF9FE",
-                    boxShadow: "4px 4px 12px rgba(143,123,214,0.2), -3px -3px 10px rgba(255,255,255,0.9)",
-                    border: !withAddon ? "1.5px solid #C95FC0" : "1.5px solid transparent",
+                    // 선택 시 핑크 글로우, 미선택은 뉴모피즘 볼록
+                    boxShadow: !withAddon
+                      ? "0 0 0 3px rgba(201,95,192,0.14), 0 4px 18px rgba(201,95,192,0.35)"
+                      : "4px 4px 12px rgba(143,123,214,0.2), -3px -3px 10px rgba(255,255,255,0.9)",
                   }}
                 >
-                  {!withAddon && <SelectedCheck />}
-                  <span className="flex-1">
-                    <span className="block text-sm font-medium text-[#4A3A72]">고민 사주</span>
-                    <span className="mt-[2px] block text-xs text-body">내 고민에 정조준한 맞춤 풀이</span>
+                  {/* 배경·테두리 레이어 */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 rounded-[18px]"
+                    style={{
+                      background: "#FBF9FE",
+                      border: !withAddon ? "1.5px solid #DDA3D2" : "1.5px solid transparent",
+                    }}
+                  />
+                  {/* 번들 티켓과 동일 구조·크기 — 스트립 / 절취선 / 본문 */}
+                  <span className="relative flex items-center gap-[6px] px-4 pb-[14px] pt-[14px]">
+                    <span className="text-sm font-medium text-[#4A3A72]"><span className="inline-block align-middle text-sm font-medium leading-5">고민 사주</span><span aria-hidden className="inline-block w-0 align-middle text-[17px] leading-none">&#8203;</span></span>
+                    {/* 냥이 코+수염 장식 */}
+                    <svg width="30" height="14" viewBox="0 0 30 14" aria-hidden className="shrink-0">
+                      <circle cx="15" cy="7" r="2" fill="#E88BC4" />
+                      <path
+                        d="M11 5 C7 3.5, 4 3.5, 1 4.5 M11 8 C7 8, 4 8.5, 1.5 10 M19 5 C23 3.5, 26 3.5, 29 4.5 M19 8 C23 8, 26 8.5, 28.5 10"
+                        stroke="#C9BDE6"
+                        strokeWidth="1.2"
+                        fill="none"
+                        strokeLinecap="round"
+                      />
+                    </svg>
                   </span>
-                  <span className="text-sm font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
+                  <span className="relative mx-2 block border-t-[1.5px] border-dashed border-[#E3D8F4]" />
+                  <span className="relative flex items-center gap-2 px-4 pb-[12px] pt-[12px]">
+                    <span className="flex-1 whitespace-nowrap text-xs leading-relaxed text-body">
+                      내 고민에 정조준한
+                      <br />
+                      맞춤 풀이
+                    </span>
+                    <span className="shrink-0 whitespace-nowrap text-[15px] font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
+                  </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setWithAddon(true)}
-                  className="relative flex w-full items-center gap-3 rounded-[18px] px-5 py-4 text-left transition-all"
+                  className="relative block w-full rounded-[18px] text-left transition-all"
                   style={{
-                    background: "#FBF9FE",
-                    boxShadow: "4px 4px 12px rgba(143,123,214,0.2), -3px -3px 10px rgba(255,255,255,0.9)",
-                    border: withAddon ? "1.5px solid #C95FC0" : "1.5px solid transparent",
+                    // 선택 시 핑크 글로우, 미선택은 뉴모피즘 볼록
+                    boxShadow: withAddon
+                      ? "0 0 0 3px rgba(201,95,192,0.14), 0 4px 18px rgba(201,95,192,0.35)"
+                      : "4px 4px 12px rgba(143,123,214,0.2), -3px -3px 10px rgba(255,255,255,0.9)",
                   }}
                 >
-                  {withAddon && <SelectedCheck />}
-                  <span className="flex-1">
-                    <span className="block text-sm font-medium text-[#4A3A72]">
-                      고민 사주 + 인생 사주{" "}
-                      <span className="ml-0.5 inline-flex items-center gap-[3px] align-[1px] text-[11px] font-normal text-[#C95FC0]">
-                        <svg width="12" height="10" viewBox="0 0 14 11" aria-hidden>
-                          <path d="M1 3.5 L4 6 L7 1.5 L10 6 L13 3.5 L12 9.5 H2 Z" fill="#FBE38E" stroke="#EFBE68" strokeWidth="1" />
-                        </svg>
-                        BEST
-                        <span className="text-[#B9A8DD]">·</span>
-                        6,000원 할인
-                      </span>
+                  {/* 배경·테두리 레이어 */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 rounded-[18px]"
+                    style={{
+                      background: "#FBF9FE",
+                      border: withAddon ? "1.5px solid #DDA3D2" : "1.5px solid transparent",
+                    }}
+                  />
+                  {/* 절취선 티켓 — 상단 스트립(제목 + 할인) / 카드 끝까지 닿는 점선 + 양옆 펀칭 홈 / 본문 */}
+                  <span className="relative flex items-center gap-[6px] px-4 pb-[14px] pt-[14px]">
+                    <span className="text-sm font-medium text-[#4A3A72]">
+                      고민 사주{" "}
+                      <span
+                        className="text-[17px] leading-none"
+                        style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
+                      >
+                        +
+                      </span>{" "}
+                      인생 사주
                     </span>
-                    <span className="mt-[2px] block text-xs text-body">내 고민 맞춤 풀이 + 인생 전체 8만자 분량의 리포트</span>
+                    {/* 냥점 로고와 같은 기랑해랑 폰트 */}
+                    <span
+                      className="text-[17px] leading-none text-[#C95FC0]"
+                      style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
+                    >
+                      6,000원 할인
+                    </span>
                   </span>
-                  <span className="shrink-0 text-right">
-                    <span className="block text-[11px] text-mute line-through">{(bundle.price + 6000).toLocaleString()}원</span>
-                    <span className="block text-sm font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
+                  <span className="relative mx-2 block border-t-[1.5px] border-dashed border-[#E3D8F4]" />
+                  <span className="relative flex items-center gap-2 px-4 pb-[12px] pt-[12px]">
+                    <span className="flex-1 whitespace-nowrap text-xs leading-relaxed text-body">
+                      내 고민에 정조준한 맞춤 풀이
+                      <br />
+                      <span
+                        className="text-[14px] leading-none"
+                        style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
+                      >
+                        +
+                      </span>{" "}
+                      인생 전체 8만자 분량의 리포트
+                    </span>
+                    <span className="shrink-0 whitespace-nowrap text-[15px] font-medium text-[#4A3A72]">{bundle.price.toLocaleString()}원</span>
                   </span>
                 </button>
               </div>
@@ -514,16 +568,6 @@ export function FreeTroubleWizard({
   );
 }
 
-
-/** 선택된 상품 줄 우상단에 걸치는 체크 동그라미 */
-function SelectedCheck() {
-  return (
-    <svg className="absolute -right-[6px] -top-[8px]" width="22" height="22" viewBox="0 0 22 22" aria-hidden>
-      <circle cx="11" cy="11" r="10" fill="#C95FC0" stroke="#fff" strokeWidth="2" />
-      <path d="M6.5 11.5 L9.5 14.5 L15.5 8" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 /** 결제 버튼 라벨 */
 function PayLabel({ submitting, hasCredit }: { submitting: boolean; hasCredit: boolean }) {
