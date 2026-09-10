@@ -9,25 +9,32 @@ export function FreeTroubleStart({
   mode = "free",
   askConcern = true,
   askJob = false,
+  askPartner = false,
   basePrice,
   bundle,
   label = "고민 오늘 끝내기!!",
+  concernQuestion,
+  concernPlaceholder,
 }: {
   productId: string;
   mode?: "free" | "paid";
   askConcern?: boolean;
   askJob?: boolean;
+  askPartner?: boolean;
   basePrice?: number;
   bundle?: { productId: string; price: number } | null;
   /** 시작 버튼 문구 — 상품별로 다르게 지정 가능 */
   label?: string;
+  /** 고민 입력 스텝 제목/placeholder — 상품별 커스텀 */
+  concernQuestion?: string;
+  concernPlaceholder?: string;
 }) {
   const [started, setStarted] = useState(false);
 
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} basePrice={basePrice} bundle={bundle} onBack={() => setStarted(false)} />
+        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} onBack={() => setStarted(false)} />
       </div>
     );
   }

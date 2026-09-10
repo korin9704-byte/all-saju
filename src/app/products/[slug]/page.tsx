@@ -20,6 +20,7 @@ import {
   businessSajuReviews,
   troubleSajuReviews,
   lifeSajuReviews,
+  reunionSajuReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
 
@@ -37,6 +38,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "business-saju":   businessSajuReviews,
   "trouble-saju":    troubleSajuReviews,
   "life-saju":       lifeSajuReviews,
+  "reunion-saju":    reunionSajuReviews,
 };
 
 export default async function ProductDetailPage({
@@ -95,6 +97,7 @@ export default async function ProductDetailPage({
         today-fortune은 고민 입력 단계 없이 진행 ── */
   const wizardHeroes: Record<string, string> = {
     "trouble-saju": "/images/trouble.webp",
+    "reunion-saju": "/images/trouble.webp", // TODO: 재회 사주 전용 일러스트로 교체
     "today-fortune": "/images/today.webp",
     "life-saju": "/images/life.png",
   };
@@ -168,7 +171,18 @@ export default async function ProductDetailPage({
 
             {/* 시작하기 → 단계형 위저드 (결제) — 고민 사주만 고민 입력 단계 포함 */}
             <section className="mt-8">
-              <FreeTroubleStart productId={product.id} mode="paid" askConcern={product.slug === "trouble-saju"} askJob={product.slug === "life-saju"} basePrice={product.price} bundle={bundle} label={product.slug === "life-saju" ? "인생 설명서 보기!!" : undefined} />
+              <FreeTroubleStart
+                productId={product.id}
+                mode="paid"
+                askConcern={product.slug === "trouble-saju" || product.slug === "reunion-saju"}
+                askJob={product.slug === "life-saju"}
+                askPartner={product.slug === "reunion-saju"}
+                basePrice={product.price}
+                bundle={bundle}
+                label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
+                concernQuestion={product.slug === "reunion-saju" ? "어떤 이별이었나요?" : undefined}
+                concernPlaceholder={product.slug === "reunion-saju" ? "언제, 어떻게 헤어졌는지, 지금 어떤 마음인지 편하게 적어 주세요." : undefined}
+              />
             </section>
           </div>
         </div>

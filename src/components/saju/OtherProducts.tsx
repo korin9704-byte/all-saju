@@ -14,6 +14,8 @@ const THUMB_SRC: Record<string, string> = {
   "job-saju":        "/images/job-saju.png",
   "business-saju":   "/images/business-saju.png",
   "trouble-saju":    "/images/trouble-saju.png",
+  // TODO: 재회 사주 전용 일러스트로 교체
+  "reunion-saju":    "/images/love-saju.png",
 };
 
 /** 결과지 하단 — 다른 상품 진열 섹션 */

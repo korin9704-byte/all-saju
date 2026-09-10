@@ -216,7 +216,7 @@ export default async function ResultPage({
   ) : null;
 
   // ── 고민 사주 — 인생 사주와 같은 챕터 뷰어로 렌더 (내용·프롬프트는 그대로, 형식만 변환) ──
-  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", BUNDLE_SLUG];
+  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", "reunion-saju", BUNDLE_SLUG];
   if (product && TROUBLE_VIEWER_SLUGS.includes(product.slug) && sajuInput && result.locked !== true) {
     const question =
       ((sajuInput.concerns ?? []) as string[]).find((c) => !c.startsWith("["))?.trim() || null;
@@ -755,7 +755,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden">
-        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question" || product?.slug === BUNDLE_SLUG) ? "고민 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question" || product?.slug === BUNDLE_SLUG) ? "고민 풀이" : product?.slug === "reunion-saju" ? "재회 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
 

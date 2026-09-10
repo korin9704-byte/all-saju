@@ -18,6 +18,7 @@ import {
   buildJobSajuPrompt,
   buildBusinessSajuPrompt,
   buildTroubleSajuPrompt,
+  buildReunionSajuPrompt,
 } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
@@ -34,6 +35,66 @@ type Service = ReturnType<typeof createServiceClient>;
 
 /** 고민 사주 + 정통 사주 번들 상품 slug */
 export const BUNDLE_SLUG = "trouble-saju-bundle";
+
+// [상대방] 태그 concern에서 상대 정보 파싱 + 로컬 만세력으로 명식 계산 (love-saju·reunion-saju 공용)
+// 포맷: "[상대방] 이름:X 생년월일:YYYY-MM-DD 시간:HH:MM|시간모름 성별:남성|여성 달력:양력|음력"
+async function parsePartnerFromConcerns(concerns: string[]): Promise<{
+  partnerMyeongsik?: Myeongsik;
+  partnerName?: string;
+  partnerBirthDate?: string;
+  partnerGender?: "male" | "female";
+}> {
+  const partnerConcern = concerns.find((c) => c.startsWith("[상대방]")) ?? "";
+  if (!partnerConcern) return {};
+
+  const nameMatch      = partnerConcern.match(/이름:([^\s]+)/);
+  const birthMatch     = partnerConcern.match(/생년월일:(\d{4}-\d{2}-\d{2})/);
+  const timeMatch      = partnerConcern.match(/시간:([^\s]+)/);
+  const genderMatch    = partnerConcern.match(/성별:(남성|여성)/);
+  const calendarMatch  = partnerConcern.match(/달력:(양력|음력)/);
+
+  const partnerName      = nameMatch?.[1] === "미입력" ? undefined : nameMatch?.[1];
+  const partnerBirthDate = birthMatch?.[1];
+  const partnerGender    = genderMatch?.[1] === "남성" ? ("male" as const) : ("female" as const);
+  const partnerCalendar: "solar" | "lunar" = calendarMatch?.[1] === "음력" ? "lunar" : "solar";
+  const partnerTimeRaw = timeMatch?.[1] ?? "";
+  const partnerTimeUnknown = !partnerTimeRaw || partnerTimeRaw === "시간모름" || partnerTimeRaw === "미입력";
+  const partnerBirthTime: string | null = partnerTimeUnknown ? null : partnerTimeRaw;
+
+  if (!partnerBirthDate) return { partnerName, partnerGender };
+
+  let partnerMyeongsik: Myeongsik | undefined;
+  try {
+    // 파트너 원국도 로컬 만세력으로 계산 (luckyloveme 불필요 — 2026-09 전환)
+    const { computeLocalGanji } = await import("@/lib/saju/local-ganji");
+    const [py, pm, pd] = partnerBirthDate.split("-");
+    const hasT = !partnerTimeUnknown && !!partnerBirthTime;
+    const [phh, pmm] = hasT ? partnerBirthTime!.split(":") : [undefined, undefined];
+    const pGanji = computeLocalGanji({
+      birthYear: py,
+      birthMonth: String(parseInt(pm, 10)),
+      birthDay: String(parseInt(pd, 10)),
+      ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
+      calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
+    });
+    const pillar = (p: { gan: string; ji: string }) => ({ cheongan: p.gan, jiji: p.ji });
+    partnerMyeongsik = {
+      year: pillar(pGanji.year), month: pillar(pGanji.month), day: pillar(pGanji.day),
+      hour: pGanji.hour ? pillar(pGanji.hour) : null,
+    };
+  } catch (e) {
+    console.error("[partner] 파트너 로컬 명식 실패 — mock 사용:", e);
+    partnerMyeongsik = await computeMyeongsik({
+      birthDate: partnerBirthDate,
+      birthTime: partnerBirthTime,
+      timeUnknown: partnerTimeUnknown,
+      calendar: partnerCalendar,
+      gender: partnerGender ?? "female",
+    });
+  }
+
+  return { partnerMyeongsik, partnerName, partnerBirthDate, partnerGender };
+}
 /** 번들 자식 주문(정통 사주) order_id 접미사 */
 export const BUNDLE_CHILD_SUFFIX = "-jt";
 
@@ -238,68 +299,14 @@ export async function generateAndStoreResult(
   } else if (promptSlug === "trouble-saju" || promptSlug === "followup-question" || promptSlug === "trouble-saju-free") {
     const { system, user } = buildTroubleSajuPrompt(promptInput);
     llm = await generateInterpretation({ system, user });
+  } else if (promptSlug === "reunion-saju") {
+    // 상대방 정보가 있으면 명식까지 계산해 프롬프트에 포함 (없으면 내 사주만으로 풀이)
+    const partner = await parsePartnerFromConcerns(input.concerns as string[]);
+    const { system, user } = buildReunionSajuPrompt({ ...promptInput, ...partner });
+    llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "love-saju") {
-    // 상대방 사주 파싱 및 명식 계산
-    const partnerConcern = (input.concerns as string[]).find((c: string) => c.startsWith("[상대방]")) ?? "";
-    let partnerMyeongsik: Myeongsik | undefined;
-    let partnerName: string | undefined;
-    let partnerBirthDate: string | undefined;
-    let partnerGender: "male" | "female" | undefined;
-
-    if (partnerConcern) {
-      const nameMatch      = partnerConcern.match(/이름:([^\s]+)/);
-      const birthMatch     = partnerConcern.match(/생년월일:(\d{4}-\d{2}-\d{2})/);
-      const timeMatch      = partnerConcern.match(/시간:([^\s]+)/);
-      const genderMatch    = partnerConcern.match(/성별:(남성|여성)/);
-      const calendarMatch  = partnerConcern.match(/달력:(양력|음력)/);
-
-      partnerName      = nameMatch?.[1]  === "미입력" ? undefined : nameMatch?.[1];
-      partnerBirthDate = birthMatch?.[1];
-      partnerGender    = genderMatch?.[1] === "남성" ? "male" : "female";
-      const partnerCalendar: "solar" | "lunar" = calendarMatch?.[1] === "음력" ? "lunar" : "solar";
-      const partnerTimeRaw = timeMatch?.[1] ?? "";
-      const partnerTimeUnknown = !partnerTimeRaw || partnerTimeRaw === "시간모름" || partnerTimeRaw === "미입력";
-      const partnerBirthTime: string | null = partnerTimeUnknown ? null : partnerTimeRaw;
-
-      if (partnerBirthDate) {
-        try {
-          // 파트너 원국도 로컬 만세력으로 계산 (luckyloveme 불필요 — 2026-09 전환)
-          const { computeLocalGanji } = await import("@/lib/saju/local-ganji");
-          const [py, pm, pd] = partnerBirthDate.split("-");
-          const hasT = !partnerTimeUnknown && !!partnerBirthTime;
-          const [phh, pmm] = hasT ? partnerBirthTime!.split(":") : [undefined, undefined];
-          const pGanji = computeLocalGanji({
-            birthYear: py,
-            birthMonth: String(parseInt(pm, 10)),
-            birthDay: String(parseInt(pd, 10)),
-            ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
-            calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
-          });
-          const pillar = (p: { gan: string; ji: string }) => ({ cheongan: p.gan, jiji: p.ji });
-          partnerMyeongsik = {
-            year: pillar(pGanji.year), month: pillar(pGanji.month), day: pillar(pGanji.day),
-            hour: pGanji.hour ? pillar(pGanji.hour) : null,
-          };
-        } catch (e) {
-          console.error("[love-saju] 파트너 로컬 명식 실패 — mock 사용:", e);
-          partnerMyeongsik = await computeMyeongsik({
-            birthDate: partnerBirthDate,
-            birthTime: partnerBirthTime,
-            timeUnknown: partnerTimeUnknown,
-            calendar: partnerCalendar,
-            gender: partnerGender ?? "female",
-          });
-        }
-      }
-    }
-
-    const { system, user } = buildLoveSajuPrompt({
-      ...promptInput,
-      partnerMyeongsik,
-      partnerName,
-      partnerBirthDate,
-      partnerGender,
-    });
+    const partner = await parsePartnerFromConcerns(input.concerns as string[]);
+    const { system, user } = buildLoveSajuPrompt({ ...promptInput, ...partner });
     llm = await generateInterpretation({ system, user });
   } else {
     const { system, user } = buildSajuPrompt(promptInput);

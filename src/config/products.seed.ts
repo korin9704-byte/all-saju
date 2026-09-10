@@ -27,7 +27,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "life-saju",
     name: "인생 사주",
     description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
-    price: 10900,
+    price: 9900,
     display_order: 95,
     is_active: true,
   },
@@ -91,9 +91,18 @@ export const productsSeed: ProductSeed[] = [
     slug: "trouble-saju",
     name: "고민 사주",
     description: "오늘 해결해 드릴게요.\n불만족 시 100% 환불!",
-    price: 4900,
+    price: 3900,
     display_order: 10,
     is_active: true,
+  },
+  {
+    // 준비 완료, 오픈 전 숨김 — 켜려면 is_active: true 로 바꾸고 pnpm seed:products
+    slug: "reunion-saju",
+    name: "재회 사주",
+    description: "다시 만날 수 있을까요?\n불만족 시 100% 환불!",
+    price: 4900,
+    display_order: 15,
+    is_active: false,
   },
   {
     // 비공개 링크 전용 무료 버전 (/free-trouble-mx7q92) — 목록 비노출
@@ -106,11 +115,11 @@ export const productsSeed: ProductSeed[] = [
   },
   {
     // 고민 사주 결제 단계 추가 상품 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
-    // 고민 사주 + 인생 사주, 15,800원에서 6,000원 할인 = 9,800원
+    // 고민 사주 + 인생 사주, 13,800원에서 5,000원 할인 = 8,800원
     slug: "trouble-saju-bundle",
     name: "고민 사주 + 인생 사주",
     description: "고민 맞춤 풀이 + 인생 전체를 13개의 장에 담은 8만 자 분량의 리포트",
-    price: 9800,
+    price: 8800,
     display_order: 996,
     is_active: true,
   },
@@ -119,7 +128,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "followup-question",
     name: "고민 사주",
     description: "결과지를 보고 또 다른 고민을 물어보세요.",
-    price: 2450,
+    price: 1950,
     display_order: 998,
     is_active: true,
   },

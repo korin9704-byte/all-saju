@@ -89,6 +89,7 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               {/* 메뉴 항목 — 구분선 없이 */}
               <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
+                {/* 재회 사주 — 오픈 전 숨김: <MenuLink href="/products/reunion-saju">재회 사주</MenuLink> */}
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
                 {/* 출시 예정 — 링크 없음 */}
                 <span

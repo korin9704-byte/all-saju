@@ -104,6 +104,8 @@ const thumbMap: Record<string, React.ReactNode> = {
   "job-saju":        <img src="/images/job-saju.png" alt="나는 어떤 직무가 맞을까?" className="w-full h-full object-cover" />,
   "business-saju":   <img src="/images/business-saju.png" alt="나는 사업해도 되는 사주일까?" className="w-full h-full object-cover" />,
   "trouble-saju":    <img src="/images/trouble-saju.png" alt="고민 사주" className="w-full h-full object-cover" />,
+  // TODO: 재회 사주 전용 일러스트로 교체
+  "reunion-saju":    <img src="/images/love-saju.png" alt="재회 사주" className="w-full h-full object-cover" />,
 };
 
 /* ── 상품 페이지 ── */

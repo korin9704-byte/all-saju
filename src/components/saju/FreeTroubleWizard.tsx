@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "concern", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "partner", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -27,8 +27,11 @@ export function FreeTroubleWizard({
   mode = "free",
   askConcern = true,
   askJob = false,
+  askPartner = false,
   basePrice,
   bundle,
+  concernQuestion = "어떤 고민이 있으세요?",
+  concernPlaceholder = "지금 마음에 걸리는 고민을 자유롭게 작성해 주세요.",
 }: {
   productId: string;
   onBack?: () => void;
@@ -38,10 +41,16 @@ export function FreeTroubleWizard({
   askConcern?: boolean;
   /** true면 이름 뒤에 직업 선택 단계 추가 (인생 사주 — 직업운·재물운 맞춤용) */
   askJob?: boolean;
+  /** true면 고민 입력 전에 상대방 생년월일·성별 단계 추가 (재회 사주용) */
+  askPartner?: boolean;
   /** 단품 가격 (추가 상품 선택 UI 표시용) */
   basePrice?: number;
   /** 추가 상품(정통 사주) 번들 — 있으면 마지막 단계에 패키지 선택 노출 */
   bundle?: { productId: string; price: number } | null;
+  /** 고민 입력 스텝 제목 (기본: "어떤 고민이 있으세요?") — 재회 사주 등 상품별 커스텀 */
+  concernQuestion?: string;
+  /** 고민 입력 스텝 placeholder */
+  concernPlaceholder?: string;
 }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
@@ -51,6 +60,7 @@ export function FreeTroubleWizard({
     (s) =>
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
+      (askPartner || s !== "partner") &&
       (showAddon || s !== "product"),
   );
   const step: Step = steps[stepIdx];
@@ -71,6 +81,14 @@ export function FreeTroubleWizard({
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // 상대방 정보 (재회 사주 — askPartner일 때만 사용)
+  const [pCalendar, setPCalendar] = useState<"solar" | "lunar">("solar");
+  const [pYear, setPYear] = useState("");
+  const [pMonth, setPMonth] = useState("");
+  const [pDay, setPDay] = useState("");
+  const [pGender, setPGender] = useState<"male" | "female" | null>(null);
+  // "생년월일을 잘 몰라요"로 건너뛴 경우 — 상대 정보 없이 진행
+  const [partnerUnknown, setPartnerUnknown] = useState(false);
   // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
   const [withAddon, setWithAddon] = useState(false);
 
@@ -92,9 +110,15 @@ export function FreeTroubleWizard({
   const monthRef = useRef<HTMLInputElement>(null);
   const dayRef = useRef<HTMLInputElement>(null);
   const minuteRef = useRef<HTMLInputElement>(null);
+  const pMonthRef = useRef<HTMLInputElement>(null);
+  const pDayRef = useRef<HTMLInputElement>(null);
 
   const birthDate = year.length === 4 && month && day
     ? `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+    : "";
+
+  const partnerBirthDate = pYear.length === 4 && pMonth && pDay
+    ? `${pYear}-${pMonth.padStart(2, "0")}-${pDay.padStart(2, "0")}`
     : "";
 
   function isValidDate(d: string): boolean {
@@ -118,6 +142,11 @@ export function FreeTroubleWizard({
       if (!email.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요."); return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
       if (isLastStep) { submit(); return; }
+    }
+    if (step === "partner") {
+      if (!partnerBirthDate || !isValidDate(partnerBirthDate)) { toast.error("상대방 생년월일을 다시 확인해 주세요."); return; }
+      if (!pGender) { toast.error("상대방 성별을 선택해 주세요."); return; }
+      setPartnerUnknown(false);
     }
     if (step === "concern" && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     setStepIdx((i) => Math.min(i + 1, steps.length - 1));
@@ -143,6 +172,10 @@ export function FreeTroubleWizard({
       concerns: [
         ...((askJob || withAddon) && job ? [`[직업] ${job}`] : []),
         ...((askJob || withAddon) && love ? [`[연애] ${love}`] : []),
+        // 상대방 정보 (재회 사주) — love-saju와 동일한 [상대방] 태그 포맷
+        ...(askPartner && !partnerUnknown && partnerBirthDate && pGender
+          ? [`[상대방] 이름:미입력 생년월일:${partnerBirthDate} 시간:시간모름 성별:${pGender === "male" ? "남성" : "여성"} 달력:${pCalendar === "lunar" ? "음력" : "양력"}`]
+          : []),
         ...(concern.trim() ? [concern.trim()] : []),
       ],
       guestEmail: email.trim(),
@@ -388,13 +421,56 @@ export function FreeTroubleWizard({
             </>
           )}
 
+          {step === "partner" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>그 사람은 언제 태어났나요?</h1>
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                {radioRow(pCalendar === "solar", "양력", () => setPCalendar("solar"), "p-solar")}
+                {radioRow(pCalendar === "lunar", "음력", () => setPCalendar("lunar"), "p-lunar")}
+              </div>
+              <div className="grid grid-cols-3 gap-2 mb-5">
+                <div className="relative">
+                  <input type="text" inputMode="numeric" maxLength={4} value={pYear} placeholder="1990"
+                    onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setPYear(v); if (v.length === 4) pMonthRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
+                </div>
+                <div className="relative">
+                  <input ref={pMonthRef} type="text" inputMode="numeric" maxLength={2} value={pMonth} placeholder="05"
+                    onChange={(e) => { const v = clamp2(e.target.value, 12); setPMonth(v); if (v.length === 2) pDayRef.current?.focus(); }} className={`${numInputCls} pr-6`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
+                </div>
+                <div className="relative">
+                  <input ref={pDayRef} type="text" inputMode="numeric" maxLength={2} value={pDay} placeholder="15"
+                    onChange={(e) => setPDay(clamp2(e.target.value, 31))} className={`${numInputCls} pr-6`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                {radioRow(pGender === "female", "여자", () => setPGender("female"), "p-female")}
+                {radioRow(pGender === "male", "남자", () => setPGender("male"), "p-male")}
+              </div>
+              {/* 상대 생일을 모르면 내 사주만으로 풀이 */}
+              <button
+                type="button"
+                onClick={() => { setPartnerUnknown(true); setStepIdx((i) => Math.min(i + 1, steps.length - 1)); }}
+                className="mb-8 block w-full text-center text-sm text-mute underline underline-offset-4 transition-colors hover:text-[#8F7BD6]"
+              >
+                생년월일을 잘 몰라요
+              </button>
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
           {step === "concern" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>어떤 고민이 있으세요?</h1>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>{concernQuestion}</h1>
               <div className="relative mb-8">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
-                  placeholder="지금 마음에 걸리는 고민을 자유롭게 작성해 주세요."
+                  placeholder={concernPlaceholder}
                   className="block w-full resize-none rounded-[28px] bg-white border border-[#E7DDF8] px-6 py-5 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
@@ -470,7 +546,7 @@ export function FreeTroubleWizard({
                       <br />
                       맞춤 풀이
                     </span>
-                    <span className="shrink-0 whitespace-nowrap text-[15px] font-medium text-[#4A3A72]">{(basePrice ?? 4900).toLocaleString()}원</span>
+                    <span className="shrink-0 whitespace-nowrap text-[15px] font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
                   </span>
                 </button>
                 <button
@@ -510,7 +586,7 @@ export function FreeTroubleWizard({
                       className="text-[17px] leading-none text-[#C95FC0]"
                       style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
                     >
-                      6,000원 할인
+                      5,000원 할인
                     </span>
                   </span>
                   <span className="relative mx-2 block border-t-[1.5px] border-dashed border-[#E3D8F4]" />
