@@ -85,25 +85,40 @@ export async function POST(request: NextRequest) {
   }
 
   // 3-b. 사주 생성 (번들이면 고민 사주 + 정통 사주 결과지를 병렬 생성)
-  try {
-    const { data: paidProduct } = await service
-      .from("products")
-      .select("slug")
-      .eq("id", order.product_id)
-      .single();
-    const { resultId } =
-      paidProduct?.slug === BUNDLE_SLUG
-        ? await generateBundleResults(service, order.id)
-        : await generateAndStoreResult(service, order.id);
-    return NextResponse.json({ resultId });
-  } catch (err) {
-    return NextResponse.json(
-      {
-        error: "사주 해석 생성 실패",
-        detail: err instanceof Error ? err.message : String(err),
-        hint: "결제는 정상 승인되었습니다. /admin/orders 에서 수동 재생성하거나 환불을 진행하세요.",
-      },
-      { status: 500 },
-    );
+  // 일시적 LLM 오류 대비 1회 자동 재시도 — 그래도 실패하면 /admin/orders 재생성 버튼으로 복구
+  const { data: paidProduct } = await service
+    .from("products")
+    .select("slug")
+    .eq("id", order.product_id)
+    .single();
+
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const { resultId } =
+        paidProduct?.slug === BUNDLE_SLUG
+          ? await generateBundleResults(service, order.id)
+          : await generateAndStoreResult(service, order.id);
+      return NextResponse.json({ resultId });
+    } catch (err) {
+      lastErr = err;
+      console.error(`[confirm] 결과지 생성 실패 (시도 ${attempt}/2):`, err);
+      // 부분 성공(결과 저장 후 후처리 실패) 시 재시도로 중복 생성하지 않도록 방어
+      const { data: partial } = await service
+        .from("saju_results")
+        .select("id")
+        .eq("order_id", order.id)
+        .maybeSingle();
+      if (partial) return NextResponse.json({ resultId: partial.id });
+      if (attempt < 2) await new Promise((r) => setTimeout(r, 3000));
+    }
   }
+  return NextResponse.json(
+    {
+      error: "사주 해석 생성 실패",
+      detail: lastErr instanceof Error ? lastErr.message : String(lastErr),
+      hint: "결제는 정상 승인되었습니다. /admin/orders 에서 재생성 버튼으로 복구하세요.",
+    },
+    { status: 500 },
+  );
 }

@@ -412,8 +412,16 @@ export async function generateBundleResults(
       .single();
     if (childErr || !child) throw new Error(`번들 자식 주문 생성 실패: ${childErr?.message ?? "unknown"}`);
     childRowId = child.id;
+  }
 
-    // 인생 사주는 [직업]/[연애] 태그만 사용 (자유 고민 텍스트 제외)
+  // 자식 사주 입력 — 자식 주문 생성 직후 크래시한 재시도 케이스에도 채워지도록
+  // 주문 재사용 여부와 무관하게 없으면 저장 (인생 사주는 [직업]/[연애] 태그만 사용)
+  const { data: existingChildInput } = await service
+    .from("saju_inputs")
+    .select("id")
+    .eq("order_id", childRowId)
+    .maybeSingle();
+  if (!existingChildInput) {
     const parentConcerns: string[] = Array.isArray(input.concerns) ? input.concerns : [];
     const { error: inputErr } = await service.from("saju_inputs").insert({
       order_id: childRowId,

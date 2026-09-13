@@ -5,6 +5,7 @@ import { isSupabaseConfigured } from "@/lib/env";
 import { Badge } from "@/components/ui/badge";
 import { formatKRW, formatDate } from "@/lib/utils";
 import { RefundButton } from "./RefundButton";
+import { RegenerateButton } from "./RegenerateButton";
 
 export const metadata = { title: "관리자 - 결제 내역" };
 
@@ -187,6 +188,13 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                       </Link>
                     ) : (
                       <span className="text-xs text-mute">-</span>
+                    )}
+                    {/* 결제완료인데 결과지가 없는 주문 — 생성 실패 복구 버튼 */}
+                    {o.status === "paid" && !o.order_id.endsWith("-jt") && !resultMap.get(o.id) && (
+                      <RegenerateButton
+                        orderRowId={o.id}
+                        orderLabel={`${productMap.get(o.product_id) ?? "-"} · ${formatKRW(o.amount)} (${o.order_id})`}
+                      />
                     )}
                     {/* 번들 자식(-jt)은 부모 환불 시 함께 처리되므로 버튼 없음 */}
                     {o.status === "paid" && !o.order_id.endsWith("-jt") && (
