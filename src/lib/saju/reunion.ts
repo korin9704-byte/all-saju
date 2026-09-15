@@ -387,7 +387,6 @@ export function buildReunionBookPayload(opts: {
 
   const views: LifeReportPayload["views"] = [];
   const no = (n: number) => String(n).padStart(2, "0");
-  const dot = (t: string) => (/[.!?…]$/.test(t) ? t : `${t}.`);
 
   // ── 프롤로그 — 묘묘의 인사 + 재회 가능성 게이지 + 명식표 ──
   const partnerLabel = opts.partnerBirthDate
@@ -427,7 +426,7 @@ export function buildReunionBookPayload(opts: {
   );
   views.push({
     label: "1장",
-    title: "프롤로그.",
+    title: "프롤로그",
     html: prologueParts.join(""),
     sub: true,
   });
@@ -451,7 +450,7 @@ export function buildReunionBookPayload(opts: {
     const displayTitle = sec.title === "묘묘의 마지막 편지" ? "마지막 편지" : sec.title;
     views.push({
       label: `${i + 2}장`,
-      title: dot(displayTitle),
+      title: displayTitle,
       html: widget + bodyHtml(sec.body),
       sub: true,
     });
