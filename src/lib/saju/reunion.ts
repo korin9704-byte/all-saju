@@ -447,7 +447,13 @@ export function buildReunionBookPayload(opts: {
   sections.forEach((sec, i) => {
     const widget = widgetFor(sec.title);
     // 표시용 제목 치환 — LLM 출력 제목은 그대로 두고 뷰어에서만 바꾼다
-    const displayTitle = sec.title === "묘묘의 마지막 편지" ? "마지막 편지" : sec.title;
+    const TITLE_MAP: Record<string, string> = {
+      "묘묘의 마지막 편지": "마지막 편지",
+      "우리는 어떤 두 사람이었을까": "우리는 어떤 두 사람이었을까?",
+      "다시 만난다면": "다시 만난다면?",
+      "만약 놓아준다면": "만약 놓아준다면?",
+    };
+    const displayTitle = TITLE_MAP[sec.title] ?? sec.title;
     views.push({
       label: `${i + 2}장`,
       title: displayTitle,
