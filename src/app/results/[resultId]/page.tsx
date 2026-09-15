@@ -258,6 +258,7 @@ export default async function ResultPage({
         md: result.interpretation_md,
         myeongsikCardHtml: msCardHtml,
         partnerMyeongsik: partner.partnerMyeongsik,
+        partnerName: partner.partnerName,
         partnerBirthDate: partner.partnerBirthDate,
         partnerGender: partner.partnerGender,
       });

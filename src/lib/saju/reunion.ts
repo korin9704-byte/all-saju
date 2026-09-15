@@ -21,18 +21,43 @@ export const REUNION_CHAPTERS = [
 ] as const;
 
 export function buildReunionPromptV2(input: PromptInput): { system: string; user: string } {
-  const ctx = makeContext(input);
+  // 태그([상대방]·[연애 기간] 등)는 아래 전용 섹션으로 정리하므로 공통 컨텍스트의 고민란에서는 제외
+  const ctx = makeContext({ ...input, concerns: input.concerns.filter((c) => !c.startsWith("[")) });
   const concern = input.concerns
     .map((c) => c.replace(/^\[질문\]\s*/, ""))
     .filter((c) => !c.startsWith("["))
     .join(" ");
 
+  // 입력폼 태그([연애 기간] 등)에서 이별 상황 정보 추출
+  const tag = (label: string) => {
+    const found = input.concerns.find((c) => c.startsWith(`[${label}]`));
+    return found ? found.slice(label.length + 2).trim() : null;
+  };
+  const loveDuration = tag("연애 기간");
+  const breakupAgo = tag("이별한 지");
+  const breakupCause = tag("이별 원인");
+  const breakupBy = tag("이별 통보한 쪽");
+  const feeling = tag("지금 마음");
+  const notYetBroken = breakupAgo === "아직 헤어지진 않았어요";
+  const situationLines = [
+    loveDuration && `- 연애 기간: ${loveDuration}`,
+    breakupAgo && `- 이별한 지: ${breakupAgo}`,
+    breakupCause && `- 이별의 원인: ${breakupCause}`,
+    breakupBy && `- 이별을 통보한 쪽: ${breakupBy}${breakupBy === "나" ? " (내담자)" : breakupBy === "상대" ? " (그 사람)" : ""}`,
+    feeling && `- 지금 내담자의 마음: ${feeling}`,
+  ].filter(Boolean);
+  const situationSection = situationLines.length > 0
+    ? `\n[이별 상황 정보 — 내담자가 입력폼에서 직접 선택한 사실]\n${situationLines.join("\n")}\n`
+    : "";
+
   const p = input.partnerMyeongsik;
+  const partnerName = input.partnerName?.trim() || null;
+  const partnerCall = partnerName ? `${partnerName}님` : "그 사람";
   const pil = (x: { cheongan: string; jiji: string } | null) => (x ? `${x.cheongan}${x.jiji}` : "(시 미상)");
   const partnerSection = p
     ? `
 [헤어진 상대방 정보]
-- 생년월일: ${input.partnerBirthDate ?? "미상"}${input.partnerGender ? ` · ${input.partnerGender === "male" ? "남성" : "여성"}` : ""}
+${partnerName ? `- 이름: ${partnerName}\n` : ""}- 생년월일: ${input.partnerBirthDate ?? "미상"}${input.partnerGender ? ` · ${input.partnerGender === "male" ? "남성" : "여성"}` : ""}
 - 상대방 사주 4기둥: 년주 ${pil(p.year)} / 월주 ${pil(p.month)} / 일주 ${pil(p.day)} / 시주 ${pil(p.hour)}
 `
     : "";
@@ -44,9 +69,9 @@ export function buildReunionPromptV2(input: PromptInput): { system: string; user
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   const user = `${ctx}
-${partnerSection}
+${partnerSection}${situationSection}
 ---
-내담자가 적은 이별 이야기: "${concern || "헤어진 사람과 다시 만나고 싶은 마음"}"
+내담자가 마지막으로 남긴 질문: "${concern || "(별도 질문 없음 — 재회 가능성이 가장 궁금한 상태)"}"
 오늘 날짜: ${todayStr}
 
 내담자는 헤어진 상대와의 재회를 간절히 바라며 찾아온 사람입니다. 아래에 정해 준 고정 목차 그대로, 재회 사주 결과지를 작성해 주세요.
@@ -113,6 +138,11 @@ ${partnerSection}
 
 ⚠️ 내용 규칙:
 ${partnerRule}
+${partnerName ? `- 상대방을 부를 때는 "그 사람" 대신 "${partnerCall}"이라고 자연스럽게 부르세요 (장 제목은 지정된 그대로 유지).` : ""}
+${situationLines.length > 0 ? `- [이별 상황 정보]는 내담자가 직접 선택한 사실입니다. 사주 해석과 반드시 연결해 쓰세요: 연애 기간·이별 시점은 "이별의 진짜 이유"와 "다시 이어지는 시기"의 근거로, 이별 원인·통보한 쪽은 "이별의 진짜 이유"와 "지금, 그 사람의 마음"에서 사주에 드러난 갈등의 기운과 맞물려 설명하세요. 상황 정보와 모순되는 서술(예: 상대가 통보했는데 내담자가 찼다는 식)은 절대 금지합니다.` : ""}
+${notYetBroken ? `- 내담자는 아직 완전히 헤어진 상태가 아닙니다(이별 직전·갈등 중). "재회"는 "멀어진 마음을 되돌리는 관계 회복"으로 해석해 쓰고, 골든타임도 화해의 타이밍으로 서술하세요.` : ""}
+${feeling ? `- 지금 내담자의 마음("${feeling}")에 맞춰 전체 톤을 조절하세요: 재회를 원하면 다가가는 전략을 두텁게, 미움·상처가 큰 상태면 감정을 먼저 다독인 뒤 판단을 돕고, 새 인연이 궁금한 상태면 "만약 놓아준다면" 장과 솔직한 비교를 특히 충실하게 쓰세요. "묘묘의 마지막 편지"에서도 이 마음을 직접 언급하며 답해 주세요.` : ""}
+${concern ? `- 내담자가 남긴 질문에는 가장 관련 있는 장에서 직접 답하고, "묘묘의 마지막 편지"에서 한 번 더 짚어 주세요.` : ""}
 - 각 ### 소제목 본문은 350~550자로 작성하세요. 첫 문장에 결론을 먼저 말하고, 사주 근거(오행 비유·기운의 충돌/합 등)를 일상어로 풀고, 현실 생활 예시를 1개 이상 넣으세요.
 - "재회 확률이 올라가는 골든타임" 본문에서는 점수 블록에 적은 골든타임 날짜 3개를 그대로, 각 날짜의 확률 %와 함께 왜 그 날인지 이유를 서술하세요 (이 섹션은 700자까지 허용).
 - "곁에 다가올 수 있는 사람"과 "새로 다가올 인연"에서는 상대의 분위기·스타일과 만나게 될 법한 장소를 구체적으로 묘사하되, 키·신체 수치 같은 단정은 피하세요.
@@ -339,6 +369,7 @@ export function buildReunionBookPayload(opts: {
   md: string;
   myeongsikCardHtml?: string;
   partnerMyeongsik?: Myeongsik;
+  partnerName?: string;
   partnerBirthDate?: string;
   partnerGender?: "male" | "female";
 }): LifeReportPayload {
@@ -381,7 +412,8 @@ export function buildReunionBookPayload(opts: {
     myeongsikCardHtml ?? simpleMsCard(`${name}님의 사주`, birthLabel, myeongsik),
   );
   if (opts.partnerMyeongsik) {
-    prologueParts.push(simpleMsCard("그 사람의 사주", partnerLabel, opts.partnerMyeongsik));
+    const pTitle = opts.partnerName ? `${opts.partnerName}님의 사주` : "그 사람의 사주";
+    prologueParts.push(simpleMsCard(pTitle, partnerLabel, opts.partnerMyeongsik));
   }
   if (question) {
     prologueParts.push(`<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`);
