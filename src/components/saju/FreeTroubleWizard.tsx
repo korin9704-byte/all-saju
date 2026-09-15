@@ -550,8 +550,8 @@ export function FreeTroubleWizard({
 
           {step === "relation" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>두 사람의 이야기를 들려주세요.</h1>
-              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*답변하지 않아도 다음으로 넘어갈 수 있어요.</p>
+              {subjectTag("선택")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>두 사람의 이야기를 들려주세요.</h1>
               <div className="flex items-center gap-2 mb-4">
                 <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>연애 기간은</span>
                 <div className="relative flex-1">
@@ -595,8 +595,8 @@ export function FreeTroubleWizard({
 
           {step === "breakup" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이별에 대해 조금만 더 알려주세요.</h1>
-              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*답변하지 않아도 다음으로 넘어갈 수 있어요.</p>
+              {subjectTag("선택")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이별에 대해 조금만 더 알려주세요.</h1>
               <div className="flex items-center gap-2 mb-4">
                 <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>이별의 원인은</span>
                 <div className="relative flex-1">
@@ -667,8 +667,8 @@ export function FreeTroubleWizard({
           {/* 마지막 자유 입력 (재회 사주 — 선택 사항, 기존 concern 상태 재사용) */}
           {step === "pconcern" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>마지막으로, 고민이 있다면 들려주세요.</h1>
-              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*답변하지 않아도 다음으로 넘어갈 수 있어요.</p>
+              {subjectTag("선택")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>마지막으로, 고민이 있다면 들려주세요.</h1>
               <div className="relative mb-8">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
