@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "partner", "concern", "product"] as const;
+const STEPS = ["profile", "birth", "time", "gender", "name", "job", "love", "email", "partner", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -28,6 +28,7 @@ export function FreeTroubleWizard({
   askConcern = true,
   askJob = false,
   askPartner = false,
+  combineProfile = false,
   basePrice,
   bundle,
   concernQuestion = "어떤 고민이 있으세요?",
@@ -43,6 +44,8 @@ export function FreeTroubleWizard({
   askJob?: boolean;
   /** true면 고민 입력 전에 상대방 생년월일·성별 단계 추가 (재회 사주용) */
   askPartner?: boolean;
+  /** true면 생년월일·시간·성별·이름 4단계를 한 화면으로 합침 (재회 사주용) */
+  combineProfile?: boolean;
   /** 단품 가격 (추가 상품 선택 UI 표시용) */
   basePrice?: number;
   /** 추가 상품(정통 사주) 번들 — 있으면 마지막 단계에 패키지 선택 노출 */
@@ -58,6 +61,9 @@ export function FreeTroubleWizard({
   const showAddon = mode === "paid" && !!bundle;
   const steps: readonly Step[] = STEPS.filter(
     (s) =>
+      (combineProfile
+        ? s !== "birth" && s !== "time" && s !== "gender" && s !== "name"
+        : s !== "profile") &&
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
       (askPartner || s !== "partner") &&
@@ -127,6 +133,13 @@ export function FreeTroubleWizard({
   }
 
   function next() {
+    if (step === "profile") {
+      if (!birthDate || !isValidDate(birthDate)) { toast.error("생년월일을 다시 확인해 주세요."); return; }
+      if (knowsTime === null) { toast.error("태어난 시간 여부를 선택해 주세요."); return; }
+      if (knowsTime && (hour === "" || minute === "")) { toast.error("태어난 시간을 입력해 주세요."); return; }
+      if (!gender) { toast.error("성별을 선택해 주세요."); return; }
+      if (!name.trim()) { toast.error("이름 또는 닉네임을 입력해 주세요."); return; }
+    }
     if (step === "birth") {
       if (!birthDate || !isValidDate(birthDate)) { toast.error("생년월일을 다시 확인해 주세요."); return; }
     }
@@ -289,8 +302,68 @@ export function FreeTroubleWizard({
           </div>
         </div>
 
-        {/* 본문 (하단 정렬 — 상단은 배경 그림 노출) */}
-        <div className="mt-auto pt-96">
+        {/* 본문 (하단 정렬 — 상단은 배경 그림 노출) · 통합 프로필 스텝은 내용이 길어 여백 축소 */}
+        <div className={`mt-auto ${step === "profile" ? "pt-40" : "pt-96"}`}>
+          {/* 통합 프로필 스텝 — 생년월일·시간·성별·이름 한 화면 (재회 사주) */}
+          {step === "profile" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>사주 정보를 알려주세요.</h1>
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
+                {radioRow(calendar === "lunar", "음력", () => setCalendar("lunar"), "lunar")}
+              </div>
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                <div className="relative">
+                  <input type="text" inputMode="numeric" maxLength={4} value={year} placeholder="1990"
+                    onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setYear(v); if (v.length === 4) monthRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">년</span>
+                </div>
+                <div className="relative">
+                  <input ref={monthRef} type="text" inputMode="numeric" maxLength={2} value={month} placeholder="05"
+                    onChange={(e) => { const v = clamp2(e.target.value, 12); setMonth(v); if (v.length === 2) dayRef.current?.focus(); }} className={`${numInputCls} pr-6`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">월</span>
+                </div>
+                <div className="relative">
+                  <input ref={dayRef} type="text" inputMode="numeric" maxLength={2} value={day} placeholder="15"
+                    onChange={(e) => setDay(clamp2(e.target.value, 31))} className={`${numInputCls} pr-6`} />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                {radioRow(knowsTime === true, "시간 알아요", () => setKnowsTime(true), "yes")}
+                {radioRow(knowsTime === false, "시간 몰라요", () => setKnowsTime(false), "no")}
+              </div>
+              {knowsTime === true && (
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="relative">
+                    <input type="text" inputMode="numeric" maxLength={2} value={hour} placeholder="14"
+                      onChange={(e) => { const v = clamp2(e.target.value, 23); setHour(v); if (v.length === 2) minuteRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
+                  </div>
+                  <div className="relative">
+                    <input ref={minuteRef} type="text" inputMode="numeric" maxLength={2} value={minute} placeholder="30"
+                      onChange={(e) => setMinute(clamp2(e.target.value, 59))} className={`${numInputCls} pr-8`} />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
+                  </div>
+                </div>
+              )}
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
+                {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
+              </div>
+              <input value={name} maxLength={10}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="이름 — 풀이에서 이렇게 불러드릴게요."
+                className={`${textInputCls} mb-8`} />
+              <div className="flex items-center gap-3 justify-center">
+                {onBack && (
+                  <button type="button" onClick={onBack} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                )}
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
           {step === "birth" && (
             <>
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 날이 언제인가요?</h1>
