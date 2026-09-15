@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "job", "love", "email", "concern", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "job", "love", "email", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -20,6 +20,7 @@ const DURATION_OPTIONS = ["3개월 미만", "3개월 이상 ~ 1년 미만", "1~3
 const BREAKUP_OPTIONS = ["아직 헤어지진 않았어요", "1개월 미만", "1개월 이상 ~ 3개월 미만", "3개월 이상 ~ 6개월 미만", "6개월 이상 ~ 1년 미만", "1년 이상"] as const;
 const CAUSE_OPTIONS = ["권태기가 왔어요", "성격이 너무 달랐어요", "싸우고 이별했어요", "환승이별 당했어요", "잠수이별 당했어요", "상황적인 문제가 있었어요", "잘 모르겠어요"] as const;
 const NOTIFIER_OPTIONS = ["나", "상대", "상호 협의"] as const;
+const FEELING_OPTIONS = ["그 사람과 재회하고 싶어요", "붙잡을까요? 새로운 사람을 만날까요?", "더 좋은 사람 만날 수 있을까요?", "상처를 많이 받아서 힘들어요", "그 사람이 너무 미워요"] as const;
 
 function clamp2(raw: string, max: number): string {
   const v = raw.replace(/\D/g, "").slice(0, 2);
@@ -66,7 +67,7 @@ export function FreeTroubleWizard({
     (s) =>
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
-      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname" && s !== "relation" && s !== "breakup")) &&
+      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname" && s !== "relation" && s !== "breakup" && s !== "feeling")) &&
       (showAddon || s !== "product"),
   );
   const step: Step = steps[stepIdx];
@@ -102,6 +103,8 @@ export function FreeTroubleWizard({
   const [breakupAgo, setBreakupAgo] = useState("");
   const [breakupCause, setBreakupCause] = useState("");
   const [breakupBy, setBreakupBy] = useState("");
+  // 지금 마음 (재회 사주 — 필수)
+  const [feeling, setFeeling] = useState("");
   // "생년월일을 잘 몰라요"로 건너뛴 경우 — 상대 정보 없이 진행
   const [partnerUnknown, setPartnerUnknown] = useState(false);
   // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
@@ -169,6 +172,7 @@ export function FreeTroubleWizard({
     }
     if (step === "pgender" && !pGender) { toast.error("상대방 성별을 선택해 주세요."); return; }
     if (step === "pname" && !pName.trim()) { toast.error("상대방 이름 또는 닉네임을 입력해 주세요."); return; }
+    if (step === "feeling" && !feeling) { toast.error("지금 마음을 선택해 주세요."); return; }
     if (step === "concern" && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     setStepIdx((i) => Math.min(i + 1, steps.length - 1));
   }
@@ -202,6 +206,7 @@ export function FreeTroubleWizard({
         ...(askPartner && breakupAgo ? [`[이별한 지] ${breakupAgo}`] : []),
         ...(askPartner && breakupCause ? [`[이별 원인] ${breakupCause}`] : []),
         ...(askPartner && breakupBy ? [`[이별 통보한 쪽] ${breakupBy}`] : []),
+        ...(askPartner && feeling ? [`[지금 마음] ${feeling}`] : []),
         ...(concern.trim() ? [concern.trim()] : []),
       ],
       guestEmail: email.trim(),
@@ -614,6 +619,33 @@ export function FreeTroubleWizard({
                   </svg>
                 </div>
                 <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>했어요.</span>
+              </div>
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "feeling" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 마음은 어떠세요?</h1>
+              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*필수 입력 항목이에요.</p>
+              <div className="flex items-center gap-2 mb-8">
+                <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>저는</span>
+                <div className="relative flex-1">
+                  <select
+                    value={feeling}
+                    onChange={(e) => setFeeling(e.target.value)}
+                    className={`w-full appearance-none bg-white border rounded-full pl-4 pr-9 py-3 text-sm focus:outline-none focus:border-[#8F7BD6] transition-colors ${feeling ? "text-[#4A3A72] border-[#E7DDF8]" : "text-[#4A3A72]/45 border-[#E7DDF8]"}`}
+                  >
+                    <option value="">선택하기</option>
+                    {FEELING_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" aria-hidden>
+                    <path d="M5 8 L10 13 L15 8" stroke="#B9A8DD" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
               </div>
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
