@@ -37,7 +37,7 @@ export const SYSTEM_BASE = `당신은 사주를 쉽고 친근하게 풀어주는
 - [명리학 근거 필수] 모든 해석에는 반드시 어떤 사주 데이터가 근거인지 자연스럽게 본문에 녹여 쓰세요. 전문 용어 없이 일상어로 표현하면 됩니다. 예시: "불의 기운을 타고난 당신의 사주에서 보면", "태어난 달의 기운이 유독 강해서", "현재 흘러오는 10년 대운이 물의 기운이라", "여름에 태어나 불의 에너지가 넘치는 사주라", "날 기둥에 이런 조합이 있으면". 단순히 "당신은 연애운이 좋아요" 같은 결론만 쓰지 말고, 반드시 왜 그런지 사주 근거를 함께 써 주세요.`;
 
 
-function makeContext(input: PromptInput): string {
+export function makeContext(input: PromptInput): string {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const m = input.myeongsik;

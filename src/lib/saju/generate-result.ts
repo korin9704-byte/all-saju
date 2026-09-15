@@ -18,7 +18,6 @@ import {
   buildJobSajuPrompt,
   buildBusinessSajuPrompt,
   buildTroubleSajuPrompt,
-  buildReunionSajuPrompt,
 } from "@/lib/saju/prompt";
 import { generateInterpretation } from "@/lib/saju/llm";
 import {
@@ -38,7 +37,7 @@ export const BUNDLE_SLUG = "trouble-saju-bundle";
 
 // [상대방] 태그 concern에서 상대 정보 파싱 + 로컬 만세력으로 명식 계산 (love-saju·reunion-saju 공용)
 // 포맷: "[상대방] 이름:X 생년월일:YYYY-MM-DD 시간:HH:MM|시간모름 성별:남성|여성 달력:양력|음력"
-async function parsePartnerFromConcerns(concerns: string[]): Promise<{
+export async function parsePartnerFromConcerns(concerns: string[]): Promise<{
   partnerMyeongsik?: Myeongsik;
   partnerName?: string;
   partnerBirthDate?: string;
@@ -301,8 +300,10 @@ export async function generateAndStoreResult(
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "reunion-saju") {
     // 상대방 정보가 있으면 명식까지 계산해 프롬프트에 포함 (없으면 내 사주만으로 풀이)
+    // v2: 고정 목차(프롤로그+7장) + [점수] 블록 — 뷰어에서 게이지·캘린더 위젯으로 렌더
+    const { buildReunionPromptV2 } = await import("@/lib/saju/reunion");
     const partner = await parsePartnerFromConcerns(input.concerns as string[]);
-    const { system, user } = buildReunionSajuPrompt({ ...promptInput, ...partner });
+    const { system, user } = buildReunionPromptV2({ ...promptInput, ...partner });
     llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "love-saju") {
     const partner = await parsePartnerFromConcerns(input.concerns as string[]);

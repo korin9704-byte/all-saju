@@ -244,14 +244,33 @@ export default async function ResultPage({
     } catch (err) {
       console.error("[trouble-book] 풀 명식표 생성 실패 — 간이 명식표로 폴백:", err);
     }
-    const troublePayload = buildTroubleBookPayload({
-      name: sajuInput.name ?? "고객",
-      birthLabel,
-      question,
-      myeongsik,
-      md: result.interpretation_md,
-      myeongsikCardHtml: msCardHtml,
-    });
+    // 재회 사주는 전용 북 빌더(프롤로그 게이지·상대 명식표·골든타임 캘린더) 사용
+    let troublePayload;
+    if (product.slug === "reunion-saju") {
+      const { buildReunionBookPayload } = await import("@/lib/saju/reunion");
+      const { parsePartnerFromConcerns } = await import("@/lib/saju/generate-result");
+      const partner = await parsePartnerFromConcerns((sajuInput.concerns ?? []) as string[]);
+      troublePayload = buildReunionBookPayload({
+        name: sajuInput.name ?? "고객",
+        birthLabel,
+        question,
+        myeongsik,
+        md: result.interpretation_md,
+        myeongsikCardHtml: msCardHtml,
+        partnerMyeongsik: partner.partnerMyeongsik,
+        partnerBirthDate: partner.partnerBirthDate,
+        partnerGender: partner.partnerGender,
+      });
+    } else {
+      troublePayload = buildTroubleBookPayload({
+        name: sajuInput.name ?? "고객",
+        birthLabel,
+        question,
+        myeongsik,
+        md: result.interpretation_md,
+        myeongsikCardHtml: msCardHtml,
+      });
+    }
     // 번들 부모면 인생 사주(자식) 결과지 탭 연결
     const lifeTab = bundleTabs?.find((t) => t.resultId);
     const troubleAsk =
@@ -263,7 +282,7 @@ export default async function ResultPage({
         payload={troublePayload}
         storageKey={`nyang_trouble_pos_${result.id}`}
         siblingTab={lifeTab ? { label: lifeTab.label, href: `/results/${lifeTab.resultId}` } : undefined}
-        currentTabLabel="고민 사주"
+        currentTabLabel={product.slug === "reunion-saju" ? "재회 사주" : "고민 사주"}
         isLoggedIn={!!viewer}
         ask={troubleAsk}
       />
