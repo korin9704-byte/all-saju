@@ -96,13 +96,12 @@ export const productsSeed: ProductSeed[] = [
     is_active: true,
   },
   {
-    // 준비 완료, 오픈 전 숨김 — 켜려면 is_active: true 로 바꾸고 pnpm seed:products
     slug: "reunion-saju",
     name: "재회 사주",
     description: "다시 만날 수 있을까요?\n불만족 시 100% 환불!",
     price: 4900,
     display_order: 15,
-    is_active: false,
+    is_active: true,
   },
   {
     // 비공개 링크 전용 무료 버전 (/free-trouble-mx7q92) — 목록 비노출
