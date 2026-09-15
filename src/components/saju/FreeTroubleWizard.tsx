@@ -668,11 +668,11 @@ export function FreeTroubleWizard({
           {step === "pconcern" && (
             <>
               {subjectTag("선택")}
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>마지막으로, 고민이 있다면 들려주세요.</h1>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>마지막으로, 궁금하신 점이 있다면 들려주세요.</h1>
               <div className="relative mb-8">
                 <textarea value={concern} rows={6}
                   onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
-                  placeholder={"묘묘에게 궁금하신 점을 자유롭게 입력해 주세요.\n(입력하지 않아도 넘어갈 수 있어요.)"}
+                  placeholder="궁금하신 점을 자유롭게 작성해 주세요."
                   className="block w-full resize-none rounded-[28px] bg-white border border-[#E7DDF8] px-6 py-5 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
                 <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
