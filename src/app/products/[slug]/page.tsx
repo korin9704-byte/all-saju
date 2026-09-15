@@ -97,7 +97,7 @@ export default async function ProductDetailPage({
         today-fortune은 고민 입력 단계 없이 진행 ── */
   const wizardHeroes: Record<string, string> = {
     "trouble-saju": "/images/trouble.webp",
-    "reunion-saju": "/images/trouble.webp", // TODO: 재회 사주 전용 일러스트로 교체
+    "reunion-saju": "/images/reunion-saju.png",
     "today-fortune": "/images/today.webp",
     "life-saju": "/images/life.png",
   };
