@@ -9,11 +9,15 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "job", "love", "email", "concern", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "job", "love", "email", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
 const LOVE_OPTIONS = ["솔로", "연애중", "기혼"] as const;
+
+// 재회 사주 — 연애 기간·이별 시점 선택지 (선택 안 해도 진행 가능)
+const DURATION_OPTIONS = ["3개월 미만", "3개월 이상 ~ 1년 미만", "1~3년", "3~5년", "5~10년", "10년 이상"] as const;
+const BREAKUP_OPTIONS = ["아직 헤어지진 않았어요", "1개월 미만", "1개월 이상 ~ 3개월 미만", "3개월 이상 ~ 6개월 미만", "6개월 이상 ~ 1년 미만", "1년 이상"] as const;
 
 function clamp2(raw: string, max: number): string {
   const v = raw.replace(/\D/g, "").slice(0, 2);
@@ -60,7 +64,7 @@ export function FreeTroubleWizard({
     (s) =>
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
-      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname")) &&
+      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname" && s !== "relation")) &&
       (showAddon || s !== "product"),
   );
   const step: Step = steps[stepIdx];
@@ -91,6 +95,9 @@ export function FreeTroubleWizard({
   const [pKnowsTime, setPKnowsTime] = useState<boolean | null>(null);
   const [pGender, setPGender] = useState<"male" | "female" | null>(null);
   const [pName, setPName] = useState("");
+  // 연애 기간·이별 시점 (재회 사주 — 선택 사항)
+  const [loveDuration, setLoveDuration] = useState("");
+  const [breakupAgo, setBreakupAgo] = useState("");
   // "생년월일을 잘 몰라요"로 건너뛴 경우 — 상대 정보 없이 진행
   const [partnerUnknown, setPartnerUnknown] = useState(false);
   // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
@@ -186,6 +193,9 @@ export function FreeTroubleWizard({
         ...(askPartner && !partnerUnknown && partnerBirthDate && pGender
           ? [`[상대방] 이름:${pName.trim().replace(/\s+/g, "") || "미입력"} 생년월일:${partnerBirthDate} 시간:${pKnowsTime ? `${pHour.padStart(2, "0")}:${pMinute.padStart(2, "0")}` : "시간모름"} 성별:${pGender === "male" ? "남성" : "여성"} 달력:${pCalendar === "lunar" ? "음력" : "양력"}`]
           : []),
+        // 연애 기간·이별 시점 (재회 사주 — 선택 시에만)
+        ...(askPartner && loveDuration ? [`[연애 기간] ${loveDuration}`] : []),
+        ...(askPartner && breakupAgo ? [`[이별한 지] ${breakupAgo}`] : []),
         ...(concern.trim() ? [concern.trim()] : []),
       ],
       guestEmail: email.trim(),
@@ -509,6 +519,51 @@ export function FreeTroubleWizard({
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {radioRow(pGender === "female", "여자", () => setPGender("female"), "p-female")}
                 {radioRow(pGender === "male", "남자", () => setPGender("male"), "p-male")}
+              </div>
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "relation" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>두 사람의 이야기를 들려주세요.</h1>
+              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*답변하지 않아도 다음으로 넘어갈 수 있어요.</p>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>연애 기간은</span>
+                <div className="relative flex-1">
+                  <select
+                    value={loveDuration}
+                    onChange={(e) => setLoveDuration(e.target.value)}
+                    className={`w-full appearance-none bg-white border rounded-full pl-4 pr-9 py-3 text-sm focus:outline-none focus:border-[#8F7BD6] transition-colors ${loveDuration ? "text-[#4A3A72] border-[#E7DDF8]" : "text-[#4A3A72]/45 border-[#E7DDF8]"}`}
+                  >
+                    <option value="">선택하기</option>
+                    {DURATION_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" aria-hidden>
+                    <path d="M5 8 L10 13 L15 8" stroke="#B9A8DD" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>이에요.</span>
+              </div>
+              <div className="flex items-center gap-2 mb-8">
+                <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>이별한 지</span>
+                <div className="relative flex-1">
+                  <select
+                    value={breakupAgo}
+                    onChange={(e) => setBreakupAgo(e.target.value)}
+                    className={`w-full appearance-none bg-white border rounded-full pl-4 pr-9 py-3 text-sm focus:outline-none focus:border-[#8F7BD6] transition-colors ${breakupAgo ? "text-[#4A3A72] border-[#E7DDF8]" : "text-[#4A3A72]/45 border-[#E7DDF8]"}`}
+                  >
+                    <option value="">선택하기</option>
+                    {BREAKUP_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" aria-hidden>
+                    <path d="M5 8 L10 13 L15 8" stroke="#B9A8DD" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>이에요.</span>
               </div>
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
