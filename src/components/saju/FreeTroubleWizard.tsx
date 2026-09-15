@@ -411,7 +411,7 @@ export function FreeTroubleWizard({
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이름을 알려주세요.</h1>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="풀이에서 이렇게 불러드릴게요."
+                placeholder={askPartner ? "풀네임으로 적어 주세요." : "풀이에서 이렇게 불러드릴게요."}
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
@@ -679,7 +679,7 @@ export function FreeTroubleWizard({
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이름을 알려주세요.</h1>
               <input value={pName} maxLength={10}
                 onChange={(e) => setPName(e.target.value)}
-                placeholder="풀이에서 이렇게 불러드릴게요."
+                placeholder="풀네임으로 적어 주세요."
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>

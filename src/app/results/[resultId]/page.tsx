@@ -305,8 +305,9 @@ export default async function ResultPage({
     }
     // 번들 부모면 인생 사주(자식) 결과지 탭 연결
     const lifeTab = bundleTabs?.find((t) => t.resultId);
+    // 재회 사주에는 추가 고민(50% 할인) 플로팅 버튼을 노출하지 않는다
     const troubleAsk =
-      followupProduct && askSaju
+      product.slug !== "reunion-saju" && followupProduct && askSaju
         ? { productId: followupProduct.id, price: followupProduct.price, saju: askSaju, guestEmail: order?.guest_email }
         : undefined;
     return (
