@@ -466,15 +466,7 @@ export function FreeTroubleWizard({
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
               </div>
-              {/* 상대 생일을 모르면 내 사주만으로 풀이 — 상대방 단계 전체 건너뜀 */}
-              <button
-                type="button"
-                onClick={() => { setPartnerUnknown(true); setStepIdx(steps.indexOf("pname") + 1); }}
-                className="mb-8 block w-full text-center text-sm text-mute underline underline-offset-4 transition-colors hover:text-[#8F7BD6]"
-              >
-                생년월일을 잘 몰라요
-              </button>
-              <div className="flex items-center gap-3 justify-center">
+              <div className="mt-3 flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
               </div>
