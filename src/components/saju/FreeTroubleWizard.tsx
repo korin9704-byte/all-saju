@@ -246,6 +246,11 @@ export function FreeTroubleWizard({
     </svg>
   );
 
+  // 재회 사주(상대방 단계가 있을 때)에서 본인/상대방 정보 구분 라벨 — 질문 제목과 같은 스타일
+  const subjectTag = (label: string) => (
+    <p className="text-2xl font-bold text-[#4A3A72] mb-1" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>({label})</p>
+  );
+
   const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
     <label key={key ?? label}
       className={`flex items-center gap-3 cursor-pointer rounded-full px-4 py-3 transition-colors ${selected ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}>
@@ -293,6 +298,7 @@ export function FreeTroubleWizard({
         <div className="mt-auto pt-96">
           {step === "birth" && (
             <>
+              {askPartner && subjectTag("본인")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 날이 언제인가요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
@@ -326,6 +332,7 @@ export function FreeTroubleWizard({
 
           {step === "time" && (
             <>
+              {askPartner && subjectTag("본인")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 시간을 아시나요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-4">
                 {radioRow(knowsTime === true, "예", () => setKnowsTime(true), "yes")}
@@ -354,6 +361,7 @@ export function FreeTroubleWizard({
 
           {step === "gender" && (
             <>
+              {askPartner && subjectTag("본인")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>성별을 알려주세요.</h1>
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
@@ -368,6 +376,7 @@ export function FreeTroubleWizard({
 
           {step === "name" && (
             <>
+              {askPartner && subjectTag("본인")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이름을 알려주세요.</h1>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
@@ -423,6 +432,7 @@ export function FreeTroubleWizard({
 
           {step === "partner" && (
             <>
+              {subjectTag("상대방")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>그 사람은 언제 태어났나요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {radioRow(pCalendar === "solar", "양력", () => setPCalendar("solar"), "p-solar")}
