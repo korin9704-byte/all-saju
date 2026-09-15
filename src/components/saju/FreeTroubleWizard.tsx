@@ -277,9 +277,9 @@ export function FreeTroubleWizard({
     </svg>
   );
 
-  // 재회 사주(상대방 단계가 있을 때)에서 본인/상대방 정보 구분 라벨 — 질문 제목과 같은 스타일
+  // 재회 사주(상대방 단계가 있을 때)에서 본인/상대방 정보 구분 라벨 — 제목보다 한 단계 작고 연하게
   const subjectTag = (label: string) => (
-    <p className="text-2xl font-bold text-[#4A3A72] mb-1" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>({label})</p>
+    <p className="text-[17px] font-bold text-[#9C8FBF] mb-1" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>({label})</p>
   );
 
   const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
