@@ -174,14 +174,12 @@ export default async function ProductDetailPage({
               <FreeTroubleStart
                 productId={product.id}
                 mode="paid"
-                askConcern={product.slug === "trouble-saju" || product.slug === "reunion-saju"}
+                askConcern={product.slug === "trouble-saju"}
                 askJob={product.slug === "life-saju"}
                 askPartner={product.slug === "reunion-saju"}
                 basePrice={product.price}
                 bundle={bundle}
                 label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
-                concernQuestion={product.slug === "reunion-saju" ? "어떤 이별이었나요?" : undefined}
-                concernPlaceholder={product.slug === "reunion-saju" ? "언제, 어떻게 헤어졌는지, 지금 어떤 마음인지 편하게 적어 주세요." : undefined}
               />
             </section>
           </div>

@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "job", "love", "email", "concern", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "pconcern", "job", "love", "email", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -67,7 +67,7 @@ export function FreeTroubleWizard({
     (s) =>
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
-      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname" && s !== "relation" && s !== "breakup" && s !== "feeling")) &&
+      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname" && s !== "relation" && s !== "breakup" && s !== "feeling" && s !== "pconcern")) &&
       (showAddon || s !== "product"),
   );
   const step: Step = steps[stepIdx];
@@ -454,9 +454,19 @@ export function FreeTroubleWizard({
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label={isLastStep ? "결제하기" : "다음"}>
-                  {submitting ? spinnerIcon : nextIcon}
-                </button>
+                {isLastStep && mode === "paid" ? (
+                  // 마지막 단계가 이메일인 상품(재회 사주) — 결제 와이드 버튼
+                  <div className="relative">
+                    {!hasCredit && <RefundTag floating />}
+                    <button type="button" onClick={next} disabled={submitting} className={nextWideCls} style={nextBtnStyle}>
+                      <PayLabel submitting={submitting} hasCredit={hasCredit} />
+                    </button>
+                  </div>
+                ) : (
+                  <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label={isLastStep ? "결제하기" : "다음"}>
+                    {submitting ? spinnerIcon : nextIcon}
+                  </button>
+                )}
               </div>
             </>
           )}
@@ -646,6 +656,25 @@ export function FreeTroubleWizard({
                     <path d="M5 8 L10 13 L15 8" stroke="#B9A8DD" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
+              </div>
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {/* 마지막 자유 입력 (재회 사주 — 선택 사항, 기존 concern 상태 재사용) */}
+          {step === "pconcern" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>마지막으로, 고민이 있다면 들려주세요.</h1>
+              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*답변하지 않아도 다음으로 넘어갈 수 있어요.</p>
+              <div className="relative mb-8">
+                <textarea value={concern} rows={6}
+                  onChange={(e) => setConcern(e.target.value.slice(0, MAX_CONCERN))}
+                  placeholder={"묘묘에게 궁금하신 점을 자유롭게 입력해 주세요.\n(입력하지 않아도 넘어갈 수 있어요.)"}
+                  className="block w-full resize-none rounded-[28px] bg-white border border-[#E7DDF8] px-6 py-5 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors" />
+                <p className="absolute bottom-4 right-5 text-xs text-mute">{concern.length}/{MAX_CONCERN}자</p>
               </div>
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
