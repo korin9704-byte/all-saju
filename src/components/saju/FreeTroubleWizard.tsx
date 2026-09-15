@@ -303,16 +303,20 @@ export function FreeTroubleWizard({
         </div>
 
         {/* 본문 (하단 정렬 — 상단은 배경 그림 노출) · 통합 프로필 스텝은 내용이 길어 여백 축소 */}
-        <div className={`mt-auto ${step === "profile" ? "pt-40" : "pt-96"}`}>
+        <div className={`mt-auto ${step === "profile" ? "pt-24" : "pt-96"}`}>
           {/* 통합 프로필 스텝 — 생년월일·시간·성별·이름 한 화면 (재회 사주) */}
           {step === "profile" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>사주 정보를 알려주세요.</h1>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>본인 정보를 알려주세요.</h1>
+              <p className="flex items-center gap-1.5 text-[13px] text-[#4A3A72] mb-2 pl-1" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>
+                <span className="w-1.5 h-1.5 bg-[#8F7BD6] rotate-45 rounded-[1px]" aria-hidden />
+                태어난 날이 언제인가요?
+              </p>
               <div className="grid grid-cols-2 gap-3 mb-3">
                 {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
                 {radioRow(calendar === "lunar", "음력", () => setCalendar("lunar"), "lunar")}
               </div>
-              <div className="grid grid-cols-3 gap-2 mb-3">
+              <div className="grid grid-cols-3 gap-2 mb-4">
                 <div className="relative">
                   <input type="text" inputMode="numeric" maxLength={4} value={year} placeholder="1990"
                     onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setYear(v); if (v.length === 4) monthRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
@@ -329,12 +333,16 @@ export function FreeTroubleWizard({
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                {radioRow(knowsTime === true, "시간 알아요", () => setKnowsTime(true), "yes")}
-                {radioRow(knowsTime === false, "시간 몰라요", () => setKnowsTime(false), "no")}
+              <p className="flex items-center gap-1.5 text-[13px] text-[#4A3A72] mb-2 pl-1" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>
+                <span className="w-1.5 h-1.5 bg-[#8F7BD6] rotate-45 rounded-[1px]" aria-hidden />
+                태어난 시간을 아시나요?
+              </p>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {radioRow(knowsTime === true, "예", () => setKnowsTime(true), "yes")}
+                {radioRow(knowsTime === false, "아니오", () => setKnowsTime(false), "no")}
               </div>
               {knowsTime === true && (
-                <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="grid grid-cols-2 gap-3 mb-4 -mt-1">
                   <div className="relative">
                     <input type="text" inputMode="numeric" maxLength={2} value={hour} placeholder="14"
                       onChange={(e) => { const v = clamp2(e.target.value, 23); setHour(v); if (v.length === 2) minuteRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
@@ -347,13 +355,21 @@ export function FreeTroubleWizard({
                   </div>
                 </div>
               )}
-              <div className="grid grid-cols-2 gap-3 mb-3">
+              <p className="flex items-center gap-1.5 text-[13px] text-[#4A3A72] mb-2 pl-1" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>
+                <span className="w-1.5 h-1.5 bg-[#8F7BD6] rotate-45 rounded-[1px]" aria-hidden />
+                성별을 알려주세요.
+              </p>
+              <div className="grid grid-cols-2 gap-3 mb-4">
                 {radioRow(gender === "female", "여자", () => setGender("female"), "female")}
                 {radioRow(gender === "male", "남자", () => setGender("male"), "male")}
               </div>
+              <p className="flex items-center gap-1.5 text-[13px] text-[#4A3A72] mb-2 pl-1" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>
+                <span className="w-1.5 h-1.5 bg-[#8F7BD6] rotate-45 rounded-[1px]" aria-hidden />
+                이름을 알려주세요.
+              </p>
               <input value={name} maxLength={10}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="이름 — 풀이에서 이렇게 불러드릴게요."
+                placeholder="풀이에서 이렇게 불러드릴게요."
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 {onBack && (
