@@ -372,6 +372,8 @@ export function buildReunionBookPayload(opts: {
   partnerName?: string;
   partnerBirthDate?: string;
   partnerGender?: "male" | "female";
+  /** 상대방 풀 명식표 html — 있으면 간이 명식표 대신 사용 */
+  partnerMsCardHtml?: string;
 }): LifeReportPayload {
   const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml } = opts;
   const { scores, body } = parseReunionScores(md);
@@ -411,7 +413,9 @@ export function buildReunionBookPayload(opts: {
     `<div class="nyan"><span class="say">먼저 두 분의 사주를 표로 정리했어요.</span></div>`,
     myeongsikCardHtml ?? simpleMsCard(`${name}님의 사주`, birthLabel, myeongsik),
   );
-  if (opts.partnerMyeongsik) {
+  if (opts.partnerMsCardHtml) {
+    prologueParts.push(opts.partnerMsCardHtml);
+  } else if (opts.partnerMyeongsik) {
     const pTitle = opts.partnerName ? `${opts.partnerName}님의 사주` : "그 사람의 사주";
     prologueParts.push(simpleMsCard(pTitle, partnerLabel, opts.partnerMyeongsik));
   }

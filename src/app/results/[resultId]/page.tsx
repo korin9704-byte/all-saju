@@ -250,6 +250,36 @@ export default async function ResultPage({
       const { buildReunionBookPayload } = await import("@/lib/saju/reunion");
       const { parsePartnerFromConcerns } = await import("@/lib/saju/generate-result");
       const partner = await parsePartnerFromConcerns((sajuInput.concerns ?? []) as string[]);
+      // 상대방도 본인과 같은 풀 명식표(십성·십이운성·신살·귀인)로 렌더
+      let partnerMsCardHtml: string | undefined;
+      const partnerTag = ((sajuInput.concerns ?? []) as string[]).find((c) => c.startsWith("[상대방]"));
+      if (partner.partnerBirthDate && partnerTag) {
+        try {
+          const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+          const { buildMyeongsikCardHtml } = await import("@/lib/saju/life-report");
+          const pTime = partnerTag.match(/시간:([0-2]?\d:\d{2})/)?.[1] ?? null;
+          const pCalendar = (partnerTag.match(/달력:(양력|음력)/)?.[1] === "음력" ? "lunar" : "solar") as "lunar" | "solar";
+          const pAnalysis = computeLocalFullAnalysis({
+            birthDate: partner.partnerBirthDate,
+            birthTime: pTime,
+            timeUnknown: !pTime,
+            calendar: pCalendar,
+            gender: (partner.partnerGender ?? "male") as "male" | "female",
+          });
+          const pBirthLabel =
+            [
+              formatBirthDate(partner.partnerBirthDate),
+              pTime ? formatTime(pTime) : "",
+              `(${pCalendar === "lunar" ? "음력" : "양력"})`,
+            ]
+              .filter(Boolean)
+              .join(" ") + (partner.partnerGender ? ` · ${partner.partnerGender === "male" ? "남성" : "여성"}` : "");
+          partnerMsCardHtml = buildMyeongsikCardHtml(pAnalysis, partner.partnerName ?? "그 사람", pBirthLabel)
+            .replace("그 사람님의 사주", "그 사람의 사주");
+        } catch (err) {
+          console.error("[reunion-book] 상대방 풀 명식표 생성 실패 — 간이 명식표로 폴백:", err);
+        }
+      }
       troublePayload = buildReunionBookPayload({
         name: sajuInput.name ?? "고객",
         birthLabel,
@@ -261,6 +291,7 @@ export default async function ResultPage({
         partnerName: partner.partnerName,
         partnerBirthDate: partner.partnerBirthDate,
         partnerGender: partner.partnerGender,
+        partnerMsCardHtml,
       });
     } else {
       troublePayload = buildTroubleBookPayload({
