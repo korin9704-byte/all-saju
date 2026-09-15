@@ -427,7 +427,7 @@ export function buildReunionBookPayload(opts: {
   );
   views.push({
     label: "프롤로그.",
-    title: "묘묘의 인사.",
+    title: "",
     html: prologueParts.join(""),
     sub: true,
   });
@@ -447,9 +447,11 @@ export function buildReunionBookPayload(opts: {
 
   sections.forEach((sec, i) => {
     const widget = widgetFor(sec.title);
+    // 표시용 제목 치환 — LLM 출력 제목은 그대로 두고 뷰어에서만 바꾼다
+    const displayTitle = sec.title === "묘묘의 마지막 편지" ? "마지막 편지" : sec.title;
     views.push({
       label: `${i + 1}장.`,
-      title: dot(sec.title),
+      title: dot(displayTitle),
       html: widget + bodyHtml(sec.body),
       sub: true,
     });
