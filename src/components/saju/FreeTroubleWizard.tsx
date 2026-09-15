@@ -639,8 +639,8 @@ export function FreeTroubleWizard({
 
           {step === "feeling" && (
             <>
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 마음은 어떠세요?</h1>
-              <p className="text-[12.5px] text-mute mb-6" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>*필수 입력 항목이에요.</p>
+              {subjectTag("필수")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 마음은 어떠세요?</h1>
               <div className="flex items-center gap-2 mb-8">
                 <span className="shrink-0 text-[15px] text-[#4A3A72] whitespace-nowrap" style={{ textShadow: "0 0 8px rgba(255,255,255,0.9)" }}>저는</span>
                 <div className="relative flex-1">
