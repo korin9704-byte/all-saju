@@ -177,7 +177,6 @@ export default async function ProductDetailPage({
                 askConcern={product.slug === "trouble-saju" || product.slug === "reunion-saju"}
                 askJob={product.slug === "life-saju"}
                 askPartner={product.slug === "reunion-saju"}
-                combineProfile={product.slug === "reunion-saju"}
                 basePrice={product.price}
                 bundle={bundle}
                 label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}

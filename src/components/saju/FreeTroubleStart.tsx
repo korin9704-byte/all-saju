@@ -10,7 +10,6 @@ export function FreeTroubleStart({
   askConcern = true,
   askJob = false,
   askPartner = false,
-  combineProfile = false,
   basePrice,
   bundle,
   label = "고민 오늘 끝내기!!",
@@ -22,8 +21,6 @@ export function FreeTroubleStart({
   askConcern?: boolean;
   askJob?: boolean;
   askPartner?: boolean;
-  /** 생년월일·시간·성별·이름 4단계를 한 화면으로 (재회 사주용) */
-  combineProfile?: boolean;
   basePrice?: number;
   bundle?: { productId: string; price: number } | null;
   /** 시작 버튼 문구 — 상품별로 다르게 지정 가능 */
@@ -37,7 +34,7 @@ export function FreeTroubleStart({
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} combineProfile={combineProfile} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} onBack={() => setStarted(false)} />
+        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} onBack={() => setStarted(false)} />
       </div>
     );
   }
