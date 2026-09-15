@@ -454,19 +454,9 @@ export function FreeTroubleWizard({
                 className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                {isLastStep && mode === "paid" ? (
-                  // 마지막 단계가 이메일인 상품(재회 사주) — 결제 와이드 버튼
-                  <div className="relative">
-                    {!hasCredit && <RefundTag floating />}
-                    <button type="button" onClick={next} disabled={submitting} className={nextWideCls} style={nextBtnStyle}>
-                      <PayLabel submitting={submitting} hasCredit={hasCredit} />
-                    </button>
-                  </div>
-                ) : (
-                  <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label={isLastStep ? "결제하기" : "다음"}>
-                    {submitting ? spinnerIcon : nextIcon}
-                  </button>
-                )}
+                <button type="button" onClick={next} disabled={submitting} className={nextBtnCls} style={nextBtnStyle} aria-label={isLastStep ? "결제하기" : "다음"}>
+                  {submitting ? spinnerIcon : nextIcon}
+                </button>
               </div>
             </>
           )}
