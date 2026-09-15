@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "job", "love", "email", "partner", "concern", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "job", "love", "email", "concern", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -60,7 +60,7 @@ export function FreeTroubleWizard({
     (s) =>
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
-      (askPartner || s !== "partner") &&
+      (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname")) &&
       (showAddon || s !== "product"),
   );
   const step: Step = steps[stepIdx];
@@ -86,7 +86,11 @@ export function FreeTroubleWizard({
   const [pYear, setPYear] = useState("");
   const [pMonth, setPMonth] = useState("");
   const [pDay, setPDay] = useState("");
+  const [pHour, setPHour] = useState("");
+  const [pMinute, setPMinute] = useState("");
+  const [pKnowsTime, setPKnowsTime] = useState<boolean | null>(null);
   const [pGender, setPGender] = useState<"male" | "female" | null>(null);
+  const [pName, setPName] = useState("");
   // "생년월일을 잘 몰라요"로 건너뛴 경우 — 상대 정보 없이 진행
   const [partnerUnknown, setPartnerUnknown] = useState(false);
   // 추가 상품(정통 사주) 선택 — 번들이 있을 때만 사용
@@ -112,6 +116,7 @@ export function FreeTroubleWizard({
   const minuteRef = useRef<HTMLInputElement>(null);
   const pMonthRef = useRef<HTMLInputElement>(null);
   const pDayRef = useRef<HTMLInputElement>(null);
+  const pMinuteRef = useRef<HTMLInputElement>(null);
 
   const birthDate = year.length === 4 && month && day
     ? `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
@@ -143,11 +148,16 @@ export function FreeTroubleWizard({
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { toast.error("이메일 형식을 다시 확인해 주세요."); return; }
       if (isLastStep) { submit(); return; }
     }
-    if (step === "partner") {
+    if (step === "pbirth") {
       if (!partnerBirthDate || !isValidDate(partnerBirthDate)) { toast.error("상대방 생년월일을 다시 확인해 주세요."); return; }
-      if (!pGender) { toast.error("상대방 성별을 선택해 주세요."); return; }
       setPartnerUnknown(false);
     }
+    if (step === "ptime") {
+      if (pKnowsTime === null) { toast.error("태어난 시간 여부를 선택해 주세요."); return; }
+      if (pKnowsTime && (pHour === "" || pMinute === "")) { toast.error("태어난 시간을 입력해 주세요."); return; }
+    }
+    if (step === "pgender" && !pGender) { toast.error("상대방 성별을 선택해 주세요."); return; }
+    if (step === "pname" && !pName.trim()) { toast.error("상대방 이름 또는 닉네임을 입력해 주세요."); return; }
     if (step === "concern" && !concern.trim()) { toast.error("고민을 입력해 주세요."); return; }
     setStepIdx((i) => Math.min(i + 1, steps.length - 1));
   }
@@ -174,7 +184,7 @@ export function FreeTroubleWizard({
         ...((askJob || withAddon) && love ? [`[연애] ${love}`] : []),
         // 상대방 정보 (재회 사주) — love-saju와 동일한 [상대방] 태그 포맷
         ...(askPartner && !partnerUnknown && partnerBirthDate && pGender
-          ? [`[상대방] 이름:미입력 생년월일:${partnerBirthDate} 시간:시간모름 성별:${pGender === "male" ? "남성" : "여성"} 달력:${pCalendar === "lunar" ? "음력" : "양력"}`]
+          ? [`[상대방] 이름:${pName.trim().replace(/\s+/g, "") || "미입력"} 생년월일:${partnerBirthDate} 시간:${pKnowsTime ? `${pHour.padStart(2, "0")}:${pMinute.padStart(2, "0")}` : "시간모름"} 성별:${pGender === "male" ? "남성" : "여성"} 달력:${pCalendar === "lunar" ? "음력" : "양력"}`]
           : []),
         ...(concern.trim() ? [concern.trim()] : []),
       ],
@@ -430,10 +440,11 @@ export function FreeTroubleWizard({
             </>
           )}
 
-          {step === "partner" && (
+          {/* 상대방 정보 — 본인과 동일한 4단계 (재회 사주) */}
+          {step === "pbirth" && (
             <>
               {subjectTag("상대방")}
-              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>그 사람은 언제 태어났나요?</h1>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 날이 언제인가요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {radioRow(pCalendar === "solar", "양력", () => setPCalendar("solar"), "p-solar")}
                 {radioRow(pCalendar === "lunar", "음력", () => setPCalendar("lunar"), "p-lunar")}
@@ -455,18 +466,73 @@ export function FreeTroubleWizard({
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">일</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                {radioRow(pGender === "female", "여자", () => setPGender("female"), "p-female")}
-                {radioRow(pGender === "male", "남자", () => setPGender("male"), "p-male")}
-              </div>
-              {/* 상대 생일을 모르면 내 사주만으로 풀이 */}
+              {/* 상대 생일을 모르면 내 사주만으로 풀이 — 상대방 단계 전체 건너뜀 */}
               <button
                 type="button"
-                onClick={() => { setPartnerUnknown(true); setStepIdx((i) => Math.min(i + 1, steps.length - 1)); }}
+                onClick={() => { setPartnerUnknown(true); setStepIdx(steps.indexOf("pname") + 1); }}
                 className="mb-8 block w-full text-center text-sm text-mute underline underline-offset-4 transition-colors hover:text-[#8F7BD6]"
               >
                 생년월일을 잘 몰라요
               </button>
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "ptime" && (
+            <>
+              {subjectTag("상대방")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 시간을 아시나요?</h1>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {radioRow(pKnowsTime === true, "예", () => setPKnowsTime(true), "p-yes")}
+                {radioRow(pKnowsTime === false, "아니오", () => setPKnowsTime(false), "p-no")}
+              </div>
+              {pKnowsTime === true && (
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="relative">
+                    <input type="text" inputMode="numeric" maxLength={2} value={pHour} placeholder="14"
+                      onChange={(e) => { const v = clamp2(e.target.value, 23); setPHour(v); if (v.length === 2) pMinuteRef.current?.focus(); }} className={`${numInputCls} pr-8`} />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">시</span>
+                  </div>
+                  <div className="relative">
+                    <input ref={pMinuteRef} type="text" inputMode="numeric" maxLength={2} value={pMinute} placeholder="30"
+                      onChange={(e) => setPMinute(clamp2(e.target.value, 59))} className={`${numInputCls} pr-8`} />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-body pointer-events-none">분</span>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center gap-3 justify-center mt-8">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "pgender" && (
+            <>
+              {subjectTag("상대방")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>성별을 알려주세요.</h1>
+              <div className="grid grid-cols-2 gap-3 mb-8">
+                {radioRow(pGender === "female", "여자", () => setPGender("female"), "p-female")}
+                {radioRow(pGender === "male", "남자", () => setPGender("male"), "p-male")}
+              </div>
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "pname" && (
+            <>
+              {subjectTag("상대방")}
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>이름을 알려주세요.</h1>
+              <input value={pName} maxLength={10}
+                onChange={(e) => setPName(e.target.value)}
+                placeholder="풀이에서 이렇게 불러드릴게요."
+                className={`${textInputCls} mb-8`} />
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
