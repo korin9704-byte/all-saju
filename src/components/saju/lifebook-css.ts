@@ -56,7 +56,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge{margin:10px 2px 16px;}
 .lifebook .g-lab{position:relative;height:22px;}
 .lifebook .g-cur{position:absolute;transform:translateX(-50%);font-size:13px;color:var(--pink);}
-.lifebook .g-track{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,#DCD2F2,var(--vio),var(--pink));}
+.lifebook .g-track{position:relative;height:10px;border-radius:5px;background:var(--pink);}
 .lifebook .g-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:#fff;border:4px solid var(--pink);box-shadow:0 1px 4px rgba(74,58,114,.25);}
 .lifebook .g-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:8px;}
 .lifebook .ch-banner{background:linear-gradient(135deg,#EDE6F9 0%,#FBE7F3 55%,#FDEFE3 100%);border-radius:16px;padding:38px 20px 34px;text-align:center;margin:2px 0 22px;}
