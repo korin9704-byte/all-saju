@@ -170,8 +170,8 @@ export const LIFEBOOK_CSS = `
 .lifebook footer.disc{padding:26px 20px 10px;text-align:center;font-size:11px;color:var(--mute);}
 /* ── 재회 사주 위젯: 점수 게이지 · 미니 게이지 · 골든타임 캘린더 · 행동 리스트 ── */
 .lifebook .gauge-card{text-align:center;}
-.lifebook .gauge-num{font-family:'Gowun Dodum';font-size:44px;line-height:1.1;margin:10px 0 12px;color:var(--ink);}
-.lifebook .gauge-num small{font-size:17px;color:var(--body);margin-left:2px;}
+.lifebook .gauge-num{font-family:'Gowun Dodum';font-size:28px;line-height:1.1;margin:8px 0 10px;color:var(--ink);}
+.lifebook .gauge-num small{font-size:14px;color:var(--body);margin-left:2px;}
 .lifebook .gauge-track{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;}
 .lifebook .gauge-track.sm{height:7px;flex:1;}
 .lifebook .gauge-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--vio),var(--pink));}
