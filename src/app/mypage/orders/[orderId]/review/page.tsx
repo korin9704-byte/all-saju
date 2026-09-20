@@ -81,15 +81,11 @@ export default async function WriteReviewPage({
 
   return (
     <div className="container py-12 max-w-xl">
-      <header className="mb-8">
-        <p className="text-xs font-mono text-mute mb-2">REVIEW</p>
-        <h1 className="text-2xl font-semibold tracking-tight">후기 작성</h1>
+      <header className="mb-6">
+        <h1 className="text-[20px] font-semibold tracking-tight">후기 작성</h1>
+        <p className="mt-1 text-[13px] text-mute">{product?.name ?? "-"}</p>
       </header>
-      <Card>
-        <CardContent className="pt-6">
-          <ReviewForm orderId={order.id} productName={product?.name ?? "-"} />
-        </CardContent>
-      </Card>
+      <ReviewForm orderId={order.id} productName={product?.name ?? "-"} />
     </div>
   );
 }

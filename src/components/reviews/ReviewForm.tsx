@@ -3,16 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
 type Props = {
   orderId: string;
-  productName: string;
+  /** 상품명 — 헤더에서 표시하므로 폼에서는 현재 미사용 */
+  productName?: string;
 };
 
-export function ReviewForm({ orderId, productName }: Props) {
+export function ReviewForm({ orderId }: Props) {
   const router = useRouter();
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");
@@ -43,45 +41,40 @@ export function ReviewForm({ orderId, productName }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <p className="text-sm text-body mb-1">상품</p>
-        <p className="text-base font-medium text-ink">{productName}</p>
+    <form onSubmit={handleSubmit}>
+      {/* 별점 — 중앙 큰 별 */}
+      <div className="flex justify-center gap-1 mb-5">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            type="button"
+            key={n}
+            onClick={() => setRating(n)}
+            aria-label={`${n}점`}
+            className="w-10 h-10 flex items-center justify-center text-[28px] leading-none"
+          >
+            <span className={n <= rating ? "text-[#C95FC0]" : "text-[#E3D8F4]"}>★</span>
+          </button>
+        ))}
       </div>
 
-      <div className="space-y-2">
-        <Label>별점</Label>
-        <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((n) => (
-            <button
-              type="button"
-              key={n}
-              onClick={() => setRating(n)}
-              aria-label={`${n}점`}
-              className="text-2xl leading-none w-9 h-9 flex items-center justify-center"
-            >
-              <span className={n <= rating ? "text-[#C95FC0]" : "text-hairline-strong"}>★</span>
-            </button>
-          ))}
-        </div>
-      </div>
+      <textarea
+        id="content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        rows={6}
+        maxLength={2000}
+        placeholder="사주가 어떠셨나요? 솔직한 후기를 남겨 주세요."
+        className="block w-full resize-none rounded-[22px] bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors"
+      />
+      <p className="text-[11.5px] text-mute text-right mt-1.5 mb-5 pr-1">{content.length} / 2000</p>
 
-      <div className="space-y-2">
-        <Label htmlFor="content">후기 내용</Label>
-        <Textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={6}
-          maxLength={2000}
-          placeholder="결과가 어떠셨나요? 다른 분들께 도움이 되는 후기를 남겨 주세요."
-        />
-        <p className="text-xs text-mute text-right">{content.length} / 2000</p>
-      </div>
-
-      <Button type="submit" disabled={submitting} size="lg" className="w-full">
-        {submitting ? "등록 중..." : "후기 등록"}
-      </Button>
+      <button
+        type="submit"
+        disabled={submitting}
+        className="w-full h-12 rounded-full bg-[#E7DDF8] text-ink text-[14px] font-medium transition-colors hover:bg-[#DCD2F5] disabled:opacity-50"
+      >
+        {submitting ? "등록 중..." : "후기 등록하기!!"}
+      </button>
     </form>
   );
 }
