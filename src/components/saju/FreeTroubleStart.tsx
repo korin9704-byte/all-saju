@@ -15,6 +15,9 @@ export function FreeTroubleStart({
   label = "고민 오늘 끝내기!!",
   concernQuestion,
   concernPlaceholder,
+  addonTitle,
+  addonSingleDescLines,
+  addonBundleDescLine1,
 }: {
   productId: string;
   mode?: "free" | "paid";
@@ -28,13 +31,17 @@ export function FreeTroubleStart({
   /** 고민 입력 스텝 제목/placeholder — 상품별 커스텀 */
   concernQuestion?: string;
   concernPlaceholder?: string;
+  /** 상품 선택(번들) 스텝 카드 라벨 — 상품별 커스텀 */
+  addonTitle?: string;
+  addonSingleDescLines?: [string, string];
+  addonBundleDescLine1?: string;
 }) {
   const [started, setStarted] = useState(false);
 
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} onBack={() => setStarted(false)} />
+        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} addonTitle={addonTitle} addonSingleDescLines={addonSingleDescLines} addonBundleDescLine1={addonBundleDescLine1} onBack={() => setStarted(false)} />
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { createServiceClient } from "@/lib/supabase/server";
-import { generateAndStoreResult, generateBundleResults, BUNDLE_SLUG } from "@/lib/saju/generate-result";
+import { generateAndStoreResult, generateBundleResults, isBundleSlug } from "@/lib/saju/generate-result";
 
 // 결제 승인 후 결과지 생성이 실패한 주문의 장애 복구 — 재생성 + 이메일 발송.
 // 인생 사주 번들까지 감당하도록 confirm과 동일한 실행 한도.
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       .eq("id", order.product_id)
       .single();
     const { resultId } =
-      product?.slug === BUNDLE_SLUG
+      isBundleSlug(product?.slug)
         ? await generateBundleResults(service, order.id)
         : await generateAndStoreResult(service, order.id);
     return NextResponse.json({ ok: true, resultId });

@@ -34,6 +34,12 @@ type Service = ReturnType<typeof createServiceClient>;
 
 /** 고민 사주 + 정통 사주 번들 상품 slug */
 export const BUNDLE_SLUG = "trouble-saju-bundle";
+/** 재회 사주 + 인생 사주 번들 상품 slug */
+export const REUNION_BUNDLE_SLUG = "reunion-saju-bundle";
+/** 번들(부모=본 상품 결과지 + 자식 -jt 주문=인생 사주) 상품 여부 */
+export function isBundleSlug(slug: string | null | undefined): boolean {
+  return slug === BUNDLE_SLUG || slug === REUNION_BUNDLE_SLUG;
+}
 
 // [상대방] 태그 concern에서 상대 정보 파싱 + 로컬 만세력으로 명식 계산 (love-saju·reunion-saju 공용)
 // 포맷: "[상대방] 이름:X 생년월일:YYYY-MM-DD 시간:HH:MM|시간모름 성별:남성|여성 달력:양력|음력"
@@ -176,10 +182,12 @@ export async function generateAndStoreResult(
 
   // MINI 상품(slug 접미사 -mini)은 원본 상품과 동일한 결과지를 생성하고 잠금 상태로 저장한다
   const isMini = product.slug.endsWith("-mini");
-  // 번들(고민+정통) 주문의 본 결과지는 고민 사주 풀이 — 정통 사주는 자식 주문에서 별도 생성
-  const isBundle = product.slug === BUNDLE_SLUG;
-  const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : isBundle ? "trouble-saju" : product.slug;
-  const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : isBundle ? "고민 사주" : product.name;
+  // 번들 주문의 본 결과지는 본 상품(고민/재회) 풀이 — 인생 사주는 자식 주문에서 별도 생성
+  const isBundle = isBundleSlug(product.slug);
+  const bundleBaseSlug = product.slug === REUNION_BUNDLE_SLUG ? "reunion-saju" : "trouble-saju";
+  const bundleBaseName = product.slug === REUNION_BUNDLE_SLUG ? "재회 사주" : "고민 사주";
+  const promptSlug = isMini ? product.slug.slice(0, -"-mini".length) : isBundle ? bundleBaseSlug : product.slug;
+  const promptName = isMini ? product.name.replace(/\s*MINI$/i, "") : isBundle ? bundleBaseName : product.name;
 
   // 만세력/풀 분석: 로컬 만세력이 주경로 (luckyloveme 재현 검증 완료 — 2026-09 전환).
   // 로컬 계산이 실패하면 luckyloveme(키가 있으면) → mock 순으로 안전망.
@@ -432,7 +440,9 @@ export async function generateBundleResults(
       time_unknown: input.time_unknown,
       gender: input.gender,
       calendar: input.calendar,
-      concerns: parentConcerns.filter((c) => typeof c === "string" && c.startsWith("[")),
+      concerns: parentConcerns.filter(
+        (c) => typeof c === "string" && (c.startsWith("[직업]") || c.startsWith("[연애]")),
+      ),
     });
     if (inputErr) throw new Error(`번들 자식 사주 입력 저장 실패: ${inputErr.message}`);
   }

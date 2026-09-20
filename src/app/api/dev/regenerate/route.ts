@@ -3,7 +3,7 @@ export const maxDuration = 300;
 
 import { NextResponse, type NextRequest } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
-import { generateAndStoreResult, generateBundleResults, BUNDLE_SLUG } from "@/lib/saju/generate-result";
+import { generateAndStoreResult, generateBundleResults, isBundleSlug } from "@/lib/saju/generate-result";
 
 // 개발 전용 — 결제 완료됐지만 결과지 생성에 실패한 주문을 재생성 (장애 복구용)
 // POST { orderId: "ord_..." }  (orders.order_id 텍스트 ID)
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const result =
-      product?.slug === BUNDLE_SLUG
+      isBundleSlug(product?.slug)
         ? await generateBundleResults(service, order.id)
         : await generateAndStoreResult(service, order.id);
     return NextResponse.json(result);

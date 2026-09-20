@@ -39,6 +39,9 @@ export function FreeTroubleWizard({
   bundle,
   concernQuestion = "어떤 고민이 있으세요?",
   concernPlaceholder = "지금 마음에 걸리는 고민을 자유롭게 작성해 주세요.",
+  addonTitle = "고민 사주",
+  addonSingleDescLines = ["내 고민에 정조준한", "맞춤 풀이"],
+  addonBundleDescLine1 = "내 고민에 정조준한 맞춤 풀이",
 }: {
   productId: string;
   onBack?: () => void;
@@ -58,6 +61,12 @@ export function FreeTroubleWizard({
   concernQuestion?: string;
   /** 고민 입력 스텝 placeholder */
   concernPlaceholder?: string;
+  /** 상품 선택(번들) 스텝 — 단품 카드 제목 (기본: 고민 사주) */
+  addonTitle?: string;
+  /** 상품 선택 스텝 — 단품 카드 설명 두 줄 */
+  addonSingleDescLines?: [string, string];
+  /** 상품 선택 스텝 — 번들 카드 설명 첫 줄 (둘째 줄은 공통: + 인생 전체 8만 자 리포트) */
+  addonBundleDescLine1?: string;
 }) {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
@@ -750,7 +759,7 @@ export function FreeTroubleWizard({
                   />
                   {/* 번들 티켓과 동일 구조·크기 — 스트립 / 절취선 / 본문 */}
                   <span className="relative flex items-center gap-[6px] px-4 pb-[14px] pt-[14px]">
-                    <span className="text-sm font-medium text-[#4A3A72]"><span className="inline-block align-middle text-sm font-medium leading-5">고민 사주</span><span aria-hidden className="inline-block w-0 align-middle text-[17px] leading-none">&#8203;</span></span>
+                    <span className="text-sm font-medium text-[#4A3A72]"><span className="inline-block align-middle text-sm font-medium leading-5">{addonTitle}</span><span aria-hidden className="inline-block w-0 align-middle text-[17px] leading-none">&#8203;</span></span>
                     {/* 냥이 코+수염 장식 */}
                     <svg width="30" height="14" viewBox="0 0 30 14" aria-hidden className="shrink-0">
                       <circle cx="15" cy="7" r="2" fill="#E88BC4" />
@@ -766,9 +775,9 @@ export function FreeTroubleWizard({
                   <span className="relative mx-2 block border-t-[1.5px] border-dashed border-[#E3D8F4]" />
                   <span className="relative flex items-center gap-2 px-4 pb-[12px] pt-[12px]">
                     <span className="flex-1 whitespace-nowrap text-xs leading-relaxed text-body">
-                      내 고민에 정조준한
+                      {addonSingleDescLines[0]}
                       <br />
-                      맞춤 풀이
+                      {addonSingleDescLines[1]}
                     </span>
                     <span className="shrink-0 whitespace-nowrap text-[15px] font-medium text-[#4A3A72]">{(basePrice ?? 3900).toLocaleString()}원</span>
                   </span>
@@ -796,7 +805,7 @@ export function FreeTroubleWizard({
                   {/* 절취선 티켓 — 상단 스트립(제목 + 할인) / 카드 끝까지 닿는 점선 + 양옆 펀칭 홈 / 본문 */}
                   <span className="relative flex items-center gap-[6px] px-4 pb-[14px] pt-[14px]">
                     <span className="text-sm font-medium text-[#4A3A72]">
-                      고민 사주{" "}
+                      {addonTitle}{" "}
                       <span
                         className="text-[17px] leading-none"
                         style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
@@ -816,7 +825,7 @@ export function FreeTroubleWizard({
                   <span className="relative mx-2 block border-t-[1.5px] border-dashed border-[#E3D8F4]" />
                   <span className="relative flex items-center gap-2 px-4 pb-[12px] pt-[12px]">
                     <span className="flex-1 whitespace-nowrap text-xs leading-relaxed text-body">
-                      내 고민에 정조준한 맞춤 풀이
+                      {addonBundleDescLine1}
                       <br />
                       <span
                         className="text-[14px] leading-none"

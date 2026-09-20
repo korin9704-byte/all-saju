@@ -103,14 +103,19 @@ export default async function ProductDetailPage({
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
-    // 고민 사주 결제 단계 추가 상품(정통 사주 번들) 조회
+    // 결제 단계 추가 상품(인생 사주 번들) 조회 — 고민 사주·재회 사주
+    const bundleSlugMap: Record<string, string> = {
+      "trouble-saju": "trouble-saju-bundle",
+      "reunion-saju": "reunion-saju-bundle",
+    };
     let bundle: { productId: string; price: number } | null = null;
-    if (product.slug === "trouble-saju" && isSupabaseConfigured()) {
+    const bundleSlug = bundleSlugMap[product.slug];
+    if (bundleSlug && isSupabaseConfigured()) {
       const supabase = await createClient();
       const { data: bundleProduct } = await supabase
         .from("products")
         .select("id, price")
-        .eq("slug", "trouble-saju-bundle")
+        .eq("slug", bundleSlug)
         .eq("is_active", true)
         .maybeSingle();
       if (bundleProduct) bundle = { productId: bundleProduct.id, price: bundleProduct.price };
@@ -180,6 +185,9 @@ export default async function ProductDetailPage({
                 basePrice={product.price}
                 bundle={bundle}
                 label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
+                addonTitle={product.slug === "reunion-saju" ? "재회 사주" : undefined}
+                addonSingleDescLines={product.slug === "reunion-saju" ? ["재회에 온전히 집중한", "맞춤 풀이"] : undefined}
+                addonBundleDescLine1={product.slug === "reunion-saju" ? "재회에 온전히 집중한 맞춤 풀이" : undefined}
               />
             </section>
           </div>

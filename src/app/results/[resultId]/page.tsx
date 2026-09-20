@@ -109,19 +109,26 @@ export default async function ResultPage({
   if (product?.slug === LIFE_SLUG) {
     const lifePayload = parseLifePayload(result.interpretation_md);
     if (lifePayload) {
-      // 번들 자식 주문(-jt)이면 부모(고민 사주) 결과지로 가는 탭 제공
+      // 번들 자식 주문(-jt)이면 부모(고민/재회 사주) 결과지로 가는 탭 제공
       let siblingTab: { label: string; href: string } | undefined;
       if (order?.order_id?.endsWith("-jt")) {
         const parentOrderId = order.order_id.slice(0, -"-jt".length);
         const { data: parentOrder } = await service
           .from("orders")
-          .select("id")
+          .select("id, product_id")
           .eq("order_id", parentOrderId)
           .maybeSingle();
         const { data: parentResult } = parentOrder
           ? await service.from("saju_results").select("id").eq("order_id", parentOrder.id).maybeSingle()
           : { data: null };
-        if (parentResult) siblingTab = { label: "고민 사주", href: `/results/${parentResult.id}` };
+        const { data: parentProduct } = parentOrder
+          ? await service.from("products").select("slug").eq("id", parentOrder.product_id).single()
+          : { data: null };
+        if (parentResult)
+          siblingTab = {
+            label: parentProduct?.slug === "reunion-saju-bundle" ? "재회 사주" : "고민 사주",
+            href: `/results/${parentResult.id}`,
+          };
       }
       // 인생 사주에는 추가 질문(플로팅) 버튼을 노출하지 않는다 — 고민 사주 뷰어 전용
       return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} siblingTab={siblingTab} isLoggedIn={!!viewer} />;
@@ -152,13 +159,16 @@ export default async function ResultPage({
     <AskAnotherConcern productId={followupProduct.id} price={followupProduct.price} saju={askSaju} guestEmail={order?.guest_email} />
   ) : null;
 
-  // ── 번들(고민 사주 + 인생 사주) — 형제 결과지 탭 ──
-  // 부모 주문(번들 상품) 결과지 = 고민 사주, 자식 주문(order_id 접미사 -jt) = 인생 사주
+  // ── 번들(고민/재회 사주 + 인생 사주) — 형제 결과지 탭 ──
+  // 부모 주문(번들 상품) 결과지 = 본 상품(고민/재회), 자식 주문(order_id 접미사 -jt) = 인생 사주
   const BUNDLE_SLUG = "trouble-saju-bundle";
+  const REUNION_BUNDLE_SLUG = "reunion-saju-bundle";
+  const isBundleParentSlug = (s?: string | null) => s === BUNDLE_SLUG || s === REUNION_BUNDLE_SLUG;
+  const bundleBaseLabel = (s?: string | null) => (s === REUNION_BUNDLE_SLUG ? "재회 사주" : "고민 사주");
   const BUNDLE_CHILD_SUFFIX = "-jt";
   let bundleTabs: { label: string; resultId: string | null }[] | null = null;
   if (order?.order_id) {
-    if (product?.slug === BUNDLE_SLUG) {
+    if (isBundleParentSlug(product?.slug)) {
       const { data: childOrder } = await service
         .from("orders")
         .select("id")
@@ -169,7 +179,7 @@ export default async function ResultPage({
         : { data: null };
       if (childResult) {
         bundleTabs = [
-          { label: "고민 사주", resultId: null },
+          { label: bundleBaseLabel(product?.slug), resultId: null },
           { label: "인생 사주", resultId: childResult.id },
         ];
       }
@@ -177,15 +187,18 @@ export default async function ResultPage({
       const parentOrderId = order.order_id.slice(0, -BUNDLE_CHILD_SUFFIX.length);
       const { data: parentOrder } = await service
         .from("orders")
-        .select("id")
+        .select("id, product_id")
         .eq("order_id", parentOrderId)
         .maybeSingle();
       const { data: parentResult } = parentOrder
         ? await service.from("saju_results").select("id").eq("order_id", parentOrder.id).maybeSingle()
         : { data: null };
+      const { data: parentProduct } = parentOrder
+        ? await service.from("products").select("slug").eq("id", parentOrder.product_id).single()
+        : { data: null };
       if (parentResult) {
         bundleTabs = [
-          { label: "고민 사주", resultId: parentResult.id },
+          { label: bundleBaseLabel(parentProduct?.slug), resultId: parentResult.id },
           { label: "인생 사주", resultId: null },
         ];
       }
@@ -216,7 +229,8 @@ export default async function ResultPage({
   ) : null;
 
   // ── 고민 사주 — 인생 사주와 같은 챕터 뷰어로 렌더 (내용·프롬프트는 그대로, 형식만 변환) ──
-  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", "reunion-saju", BUNDLE_SLUG];
+  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", "reunion-saju", BUNDLE_SLUG, REUNION_BUNDLE_SLUG];
+  const isReunionResult = product?.slug === "reunion-saju" || product?.slug === REUNION_BUNDLE_SLUG;
   if (product && TROUBLE_VIEWER_SLUGS.includes(product.slug) && sajuInput && result.locked !== true) {
     const question =
       ((sajuInput.concerns ?? []) as string[]).find((c) => !c.startsWith("["))?.trim() || null;
@@ -246,7 +260,7 @@ export default async function ResultPage({
     }
     // 재회 사주는 전용 북 빌더(프롤로그 게이지·상대 명식표·골든타임 캘린더) 사용
     let troublePayload;
-    if (product.slug === "reunion-saju") {
+    if (isReunionResult) {
       const { buildReunionBookPayload } = await import("@/lib/saju/reunion");
       const { parsePartnerFromConcerns } = await import("@/lib/saju/generate-result");
       const partner = await parsePartnerFromConcerns((sajuInput.concerns ?? []) as string[]);
@@ -307,7 +321,7 @@ export default async function ResultPage({
     const lifeTab = bundleTabs?.find((t) => t.resultId);
     // 재회 사주에는 추가 고민(50% 할인) 플로팅 버튼을 노출하지 않는다
     const troubleAsk =
-      product.slug !== "reunion-saju" && followupProduct && askSaju
+      !isReunionResult && followupProduct && askSaju
         ? { productId: followupProduct.id, price: followupProduct.price, saju: askSaju, guestEmail: order?.guest_email }
         : undefined;
     return (
@@ -315,7 +329,7 @@ export default async function ResultPage({
         payload={troublePayload}
         storageKey={`nyang_trouble_pos_${result.id}`}
         siblingTab={lifeTab ? { label: lifeTab.label, href: `/results/${lifeTab.resultId}` } : undefined}
-        currentTabLabel={product.slug === "reunion-saju" ? "재회 사주" : "고민 사주"}
+        currentTabLabel={isReunionResult ? "재회 사주" : "고민 사주"}
         isLoggedIn={!!viewer}
         ask={troubleAsk}
       />
@@ -807,7 +821,7 @@ export default async function ResultPage({
       </section>
 
       <article className="rounded-b-2xl overflow-hidden">
-        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question" || product?.slug === BUNDLE_SLUG) ? "고민 풀이" : product?.slug === "reunion-saju" ? "재회 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
+        <AccordionBody markdown={result.interpretation_md} headerTitle={(product?.slug === "trouble-saju" || product?.slug === "trouble-saju-free" || product?.slug === "followup-question" || product?.slug === BUNDLE_SLUG) ? "고민 풀이" : isReunionResult ? "재회 풀이" : (product?.slug === "realestate-saju" || product?.slug === "romance-saju" || product?.slug === "job-saju" || product?.slug === "business-saju") ? "풀이" : "질문 풀이"} limit={13} />
       </article>
 
 

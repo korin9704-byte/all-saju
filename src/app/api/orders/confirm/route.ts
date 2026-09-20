@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
-import { generateAndStoreResult, generateBundleResults, BUNDLE_SLUG } from "@/lib/saju/generate-result";
+import { generateAndStoreResult, generateBundleResults, isBundleSlug } from "@/lib/saju/generate-result";
 
 const bodySchema = z.object({
   paymentKey: z.string().min(1),
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const { resultId } =
-        paidProduct?.slug === BUNDLE_SLUG
+        isBundleSlug(paidProduct?.slug)
           ? await generateBundleResults(service, order.id)
           : await generateAndStoreResult(service, order.id);
       return NextResponse.json({ resultId });

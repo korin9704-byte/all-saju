@@ -118,11 +118,13 @@ export default async function ProductsPage() {
       .select("slug, name, description, price")
       .eq("is_active", true)
       .neq("slug", "followup-question")
+      .neq("slug", "trouble-saju-bundle")
+      .neq("slug", "reunion-saju-bundle")
       .order("display_order", { ascending: true });
     products = data;
   } else {
     products = productsSeed
-      .filter((p) => p.is_active && p.slug !== "followup-question")
+      .filter((p) => p.is_active && p.slug !== "followup-question" && p.slug !== "trouble-saju-bundle" && p.slug !== "reunion-saju-bundle")
       .sort((a, b) => a.display_order - b.display_order)
       .map(({ slug, name, description, price }) => ({ slug, name, description, price }));
   }
