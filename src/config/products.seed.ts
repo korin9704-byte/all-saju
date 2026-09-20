@@ -99,7 +99,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "reunion-saju",
     name: "재회 사주",
     description: "다시 만날 수 있을까요?\n불만족 시 100% 환불!",
-    price: 29800,
+    price: 29900,
     display_order: 15,
     is_active: true,
   },
