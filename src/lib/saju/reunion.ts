@@ -447,7 +447,7 @@ export function buildReunionBookPayload(opts: {
     const widget = widgetFor(sec.title);
     // 표시용 제목 치환 — LLM 출력 제목은 그대로 두고 뷰어에서만 바꾼다
     const TITLE_MAP: Record<string, string> = {
-      "묘묘의 마지막 편지": "마지막 편지",
+      "묘묘의 마지막 편지": "이야기를 마치며",
       "우리는 어떤 두 사람이었을까": "우리는 어떤 두 사람이었을까?",
       "다시 만난다면": "다시 만난다면?",
       "만약 놓아준다면": "만약 놓아준다면?",
