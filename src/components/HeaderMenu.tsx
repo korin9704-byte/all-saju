@@ -89,17 +89,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               {/* 메뉴 항목 — 구분선 없이 */}
               <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
-                {/* 재회 사주 — 오픈 전 숨김: <MenuLink href="/products/reunion-saju">재회 사주</MenuLink> */}
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
-                {/* 출시 예정 — 링크 없음 */}
-                <span
-                  className="flex items-center gap-2 px-[20px] py-[14px] text-[16px] leading-[1.6] text-mute"
-                  style={{ fontFamily: "'Gowun Dodum', sans-serif" }}
-                  aria-disabled
-                >
-                  재회 사주
-                  <span className="rounded-full bg-[#F3EDFB] px-2 py-0.5 text-[11px] text-[#8F7BD6]">Coming Soon</span>
-                </span>
+                <MenuLink href="/products/reunion-saju">재회 사주</MenuLink>
                 {/* 상품 메뉴와 계정 메뉴 구분선 */}
                 <div className="mx-[20px] my-[6px] border-t border-[#E7DDF8]" />
                 {isLoggedIn ? (
