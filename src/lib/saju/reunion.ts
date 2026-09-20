@@ -357,7 +357,7 @@ ${cells}
 </div>`;
     })
     .join("");
-  return `<div class="card">${tables}</div>`;
+  return `<div class="card cal-card">${tables}</div>`;
 }
 
 export function buildReunionBookPayload(opts: {

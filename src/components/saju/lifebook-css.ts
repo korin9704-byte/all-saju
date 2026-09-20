@@ -183,6 +183,9 @@ export const LIFEBOOK_CSS = `
 .lifebook .mini-g-num small{font-size:10px;color:var(--mute);margin-left:1px;}
 .lifebook .cal{margin:16px 0 6px;}
 .lifebook .cal + .cal{margin-top:20px;padding-top:18px;border-top:1.5px dashed #E9DFF6;}
+.lifebook .cal-card{padding:12px 14px 8px;}
+.lifebook .cal-card .cal:first-child{margin-top:0;}
+.lifebook .cal-card .cal:last-child{margin-bottom:0;}
 .lifebook .cal-title{font-family:'Gowun Dodum';font-size:15px;text-align:center;margin:0 0 8px;color:var(--ink);}
 .lifebook .cal-tbl{width:100%;border-collapse:collapse;table-layout:fixed;}
 .lifebook .cal-tbl th{font-size:10.5px;font-weight:400;color:var(--mute);padding:4px 0;}
