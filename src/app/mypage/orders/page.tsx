@@ -94,14 +94,17 @@ export default async function MyOrdersPage() {
                     {STATUS_LABEL[o.status] ?? o.status}
                   </Badge>
                   {resultId && o.status === "paid" && (
-                    <Link href={`/results/${resultId}`} className="text-[13px] font-medium underline underline-offset-4 text-ink">
+                    <Link
+                      href={`/results/${resultId}`}
+                      className="whitespace-nowrap rounded-xl border-[1.5px] border-dashed border-[#DDA3D2] px-3 py-1.5 text-[13px] font-medium text-[#C95FC0]"
+                    >
                       결과지 보기
                     </Link>
                   )}
                   {canReview && (
                     <Link
                       href={`/mypage/orders/${o.id}/review`}
-                      className="text-[13px] font-medium underline underline-offset-4 text-ink"
+                      className="whitespace-nowrap rounded-xl border-[1.5px] border-dashed border-[#E3D8F4] px-3 py-1.5 text-[13px] font-medium text-body"
                     >
                       후기 쓰기
                     </Link>
