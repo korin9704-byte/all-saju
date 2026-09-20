@@ -137,7 +137,8 @@ export default function LifeBookViewer({
               {currentTabLabel}
             </span>
           );
-          const currentFirst = currentTabLabel === "고민 사주";
+          // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
+          const currentFirst = currentTabLabel !== "인생 사주";
           return (
             <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 0" }}>
               <div
