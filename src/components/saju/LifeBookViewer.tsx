@@ -161,13 +161,13 @@ export default function LifeBookViewer({
             {views[cur].sub ? (
               <p className="sub-h" style={{ marginTop: 4 }}>
                 {views[cur].label ? `${fmtLabel(views[cur].label)} ` : ""}
-                {views[cur].title}
+                {views[cur].title.replace(/\.$/, "")}
               </p>
             ) : (
-              // 알약 없이 "01. 제목" 한 줄
+              // 알약 없이 "01. 제목" 한 줄 — 제목 끝 마침표 제거
               <h2 className="chapter">
                 {views[cur].label ? `${fmtLabel(views[cur].label)} ` : ""}
-                {views[cur].title}
+                {views[cur].title.replace(/\.$/, "")}
               </h2>
             )}
             <div dangerouslySetInnerHTML={{ __html: views[cur].html }} />
