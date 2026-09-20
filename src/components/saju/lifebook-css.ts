@@ -16,7 +16,6 @@ export const LIFEBOOK_CSS = `
 .lifebook .part span{display:inline-block;background:var(--soft);color:var(--ink);font-size:11.5px;letter-spacing:.06em;padding:4px 12px;border-radius:999px;}
 .lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 18px;line-height:1.4;}
 .lifebook .para{font-size:15px;line-height:2.0;margin:0 0 14px;text-align:justify;}
-.lifebook .caption{font-size:12.5px;color:#9C8FBF;line-height:1.8;margin:6px 4px 18px;}
 .lifebook .para.small{font-size:12px;color:var(--mute);}
 .lifebook .hl{color:var(--pink);font-weight:400;}
 .lifebook .sub-h{font-family:'Gowun Dodum';font-weight:400;font-size:16.5px;margin:24px 0 8px;color:#7761C8;}
