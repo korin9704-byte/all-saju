@@ -357,7 +357,7 @@ ${cells}
 </div>`;
     })
     .join("");
-  return `<div class="card"><p class="card-title">재회의 문이 열리는 날</p>${tables}</div>`;
+  return `<div class="card">${tables}</div>`;
 }
 
 export function buildReunionBookPayload(opts: {
