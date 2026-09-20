@@ -81,7 +81,7 @@ export default async function WriteReviewPage({
 
   return (
     <div className="container py-12 max-w-xl">
-      <header className="mb-6">
+      <header className="mb-6 pl-2">
         <h1 className="text-[20px] font-semibold tracking-tight">후기 작성</h1>
         <p className="mt-1 text-[13px] text-mute">{product?.name ?? "-"}</p>
       </header>
