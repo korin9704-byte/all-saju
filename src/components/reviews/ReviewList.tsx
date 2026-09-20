@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
-export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
+export function ReviewList({ reviews, title = "생생 후기", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
   const PAGE_SIZE = 5;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -16,10 +16,14 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { re
   return (
     <section className="mb-10 pt-2">
       {title && (
-        // 결과지 마름모 구분선 모티프의 포인트 헤더
-        <div className="mb-4 flex items-center gap-2 pl-2">
-          <span className="w-[7px] h-[7px] bg-[#8F7BD6] rotate-45 rounded-[1.5px]" aria-hidden />
-          <h2 className="text-[14.5px] font-normal text-ink">{title}</h2>
+        // 냥점 로고 폰트(기랑해랑) 핑크 포인트 헤더
+        <div className="mb-4 pl-2">
+          <h2
+            className="text-[19px] font-normal leading-none text-[#C95FC0]"
+            style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
+          >
+            {title}
+          </h2>
         </div>
       )}
       {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
