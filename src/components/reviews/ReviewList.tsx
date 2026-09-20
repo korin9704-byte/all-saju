@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
-export function ReviewList({ reviews, title = "Review", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
+export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
   const PAGE_SIZE = 5;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -16,11 +16,10 @@ export function ReviewList({ reviews, title = "Review", initialCount = 2 }: { re
   return (
     <section className="mb-10 pt-2">
       {title && (
-        // 중앙 정렬 + 양옆 라인 디바이더 헤더
-        <div className="mb-4 flex items-center gap-3">
-          <div className="h-px flex-1" style={{ background: "linear-gradient(90deg, transparent, #DCCFF0)" }} />
-          <h2 className="text-[14px] font-normal tracking-[0.08em] text-ink">{title}</h2>
-          <div className="h-px flex-1" style={{ background: "linear-gradient(270deg, transparent, #DCCFF0)" }} />
+        // 결과지 마름모 구분선 모티프의 포인트 헤더
+        <div className="mb-4 flex items-center gap-2 pl-2">
+          <span className="w-[7px] h-[7px] bg-[#8F7BD6] rotate-45 rounded-[1.5px]" aria-hidden />
+          <h2 className="text-[14.5px] font-normal text-ink">{title}</h2>
         </div>
       )}
       {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
