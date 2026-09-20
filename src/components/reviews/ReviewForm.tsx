@@ -42,8 +42,8 @@ export function ReviewForm({ orderId }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* 별점 — 중앙 큰 별 */}
-      <div className="flex justify-center gap-1 mb-5">
+      {/* 별점 — 왼쪽 정렬 큰 별 */}
+      <div className="flex justify-start gap-1 mb-5 -ml-1">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             type="button"
