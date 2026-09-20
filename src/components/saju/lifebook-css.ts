@@ -186,7 +186,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .cal-tbl th{font-size:10.5px;font-weight:400;color:var(--mute);padding:4px 0;}
 .lifebook .cal-tbl td{font-size:12px;color:var(--body);text-align:center;padding:5px 0;height:38px;vertical-align:top;}
 .lifebook .cal-hit{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%;background:var(--pink);color:#fff;}
-.lifebook .cal-pct{display:block;font-size:9.5px;color:var(--pink);margin-top:1px;}
+.lifebook .cal-pct{display:block;font-size:12.5px;color:var(--pink);margin-top:2px;}
 .lifebook .dolist{margin:0 0 14px;padding-left:2px;list-style:none;}
 .lifebook .dolist li{font-size:14.5px;line-height:1.85;margin:0 0 8px;padding-left:20px;position:relative;}
 .lifebook .dolist li::before{content:'';position:absolute;left:4px;top:12px;width:7px;height:7px;background:var(--vio);border-radius:2px;transform:rotate(45deg);}
