@@ -103,7 +103,7 @@ export default async function MyOrdersPage() {
                       href={`/mypage/orders/${o.id}/review`}
                       className="text-[13px] font-medium underline underline-offset-4 text-ink"
                     >
-                      리뷰 쓰기
+                      후기 쓰기
                     </Link>
                   )}
                 </div>
