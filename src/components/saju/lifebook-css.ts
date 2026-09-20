@@ -180,6 +180,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .mini-g-label{flex:none;width:118px;font-size:12.5px;color:var(--ink);}
 .lifebook .mini-g-num{flex:none;width:26px;text-align:right;font-size:13px;color:var(--pink);}
 .lifebook .cal{margin:16px 0 6px;}
+.lifebook .cal + .cal{margin-top:20px;padding-top:18px;border-top:1.5px dashed #E9DFF6;}
 .lifebook .cal-title{font-family:'Gowun Dodum';font-size:15px;text-align:center;margin:0 0 8px;color:var(--ink);}
 .lifebook .cal-tbl{width:100%;border-collapse:collapse;table-layout:fixed;}
 .lifebook .cal-tbl th{font-size:10.5px;font-weight:400;color:var(--mute);padding:4px 0;}
