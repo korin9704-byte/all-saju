@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Review = { id: string; rating: number; content: string; created_at: string; product_name?: string };
 
-export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
+export function ReviewList({ reviews, title = "REVIEW", initialCount = 2 }: { reviews: Review[]; title?: string; initialCount?: number }) {
   const INITIAL_COUNT = initialCount;
   const PAGE_SIZE = 5;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -16,18 +16,22 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { re
   return (
     <section className="mb-10 pt-2">
       {title && (
-        // 냥점 별 모티프(진행바·로딩 별자리와 동일한 금색 별) 포인트 헤더
-        <div className="mb-4 flex items-center gap-1.5 pl-2">
-          <svg width="15" height="15" viewBox="0 0 20 20" aria-hidden>
-            <path
-              d="M10 2.4 L12.3 7.2 L17.6 7.9 L13.7 11.5 L14.7 16.8 L10 14.2 L5.3 16.8 L6.3 11.5 L2.4 7.9 L7.7 7.2 Z"
-              fill="#FBE38E"
-              stroke="#EFBE68"
-              strokeWidth="1.2"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <h2 className="text-[14.5px] font-normal text-ink">{title}</h2>
+        // 냥점 별 모티프(진행바·로딩 별과 동일) — 중앙 정렬 + 양옆 라인 디바이더 헤더
+        <div className="mb-4 flex items-center gap-3">
+          <div className="h-px flex-1" style={{ background: "linear-gradient(90deg, transparent, #DCCFF0)" }} />
+          <span className="flex items-center gap-1.5">
+            <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden>
+              <path
+                d="M10 2.4 L12.3 7.2 L17.6 7.9 L13.7 11.5 L14.7 16.8 L10 14.2 L5.3 16.8 L6.3 11.5 L2.4 7.9 L7.7 7.2 Z"
+                fill="#FBE38E"
+                stroke="#EFBE68"
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <h2 className="text-[14px] font-normal tracking-[0.08em] text-ink">{title}</h2>
+          </span>
+          <div className="h-px flex-1" style={{ background: "linear-gradient(270deg, transparent, #DCCFF0)" }} />
         </div>
       )}
       {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
