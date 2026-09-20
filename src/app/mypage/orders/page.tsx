@@ -50,7 +50,7 @@ export default async function MyOrdersPage() {
   return (
     <div className="container py-12 max-w-3xl">
       <header className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">결제 내역 · 결과지</h1>
+        <h1 className="text-[20px] font-semibold tracking-tight">결제 내역 · 결과지</h1>
       </header>
 
       {!orders || orders.length === 0 ? (
@@ -65,13 +65,13 @@ export default async function MyOrdersPage() {
             return (
               <li key={o.id} className="py-5 flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="font-medium text-ink truncate">
+                  <p className="text-[15px] font-medium text-ink truncate">
                     {/* 상품명 속 +는 냥점 로고와 같은 기랑해랑 폰트로 */}
                     {(productMap.get(o.product_id) ?? "-").split("+").map((part, i) => (
                       <span key={i}>
                         {i > 0 && (
                           <span
-                            className="text-[17px] leading-none"
+                            className="text-[15px] leading-none"
                             style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
                           >
                             +
@@ -81,7 +81,7 @@ export default async function MyOrdersPage() {
                       </span>
                     ))}
                   </p>
-                  <p className="text-xs text-body mt-1">
+                  <p className="text-[12.5px] text-body mt-1">
                     {formatDate(o.created_at)} · <span>{formatKRW(o.amount)}</span>
                   </p>
                 </div>
@@ -94,14 +94,14 @@ export default async function MyOrdersPage() {
                     {STATUS_LABEL[o.status] ?? o.status}
                   </Badge>
                   {resultId && o.status === "paid" && (
-                    <Link href={`/results/${resultId}`} className="text-sm font-medium underline underline-offset-4 text-ink">
+                    <Link href={`/results/${resultId}`} className="text-[13px] font-medium underline underline-offset-4 text-ink">
                       결과지 보기
                     </Link>
                   )}
                   {canReview && (
                     <Link
                       href={`/mypage/orders/${o.id}/review`}
-                      className="text-sm font-medium underline underline-offset-4 text-ink"
+                      className="text-[13px] font-medium underline underline-offset-4 text-ink"
                     >
                       리뷰 쓰기
                     </Link>
