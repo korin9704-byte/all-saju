@@ -17,7 +17,7 @@ export function ReviewList({ reviews, title = "리뷰", initialCount = 2 }: { re
     <section className="mb-10 pt-2">
       {title && (
         // 냥점 별 모티프(진행바·로딩 별자리와 동일한 금색 별) 포인트 헤더
-        <div className="mb-4 flex items-center gap-2 pl-2">
+        <div className="mb-4 flex items-center gap-1.5 pl-2">
           <svg width="15" height="15" viewBox="0 0 20 20" aria-hidden>
             <path
               d="M10 2.4 L12.3 7.2 L17.6 7.9 L13.7 11.5 L14.7 16.8 L10 14.2 L5.3 16.8 L6.3 11.5 L2.4 7.9 L7.7 7.2 Z"
