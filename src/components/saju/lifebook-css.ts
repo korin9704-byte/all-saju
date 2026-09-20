@@ -174,7 +174,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge-num small{font-size:14px;color:var(--body);margin-left:2px;}
 .lifebook .gauge-track{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;}
 .lifebook .gauge-track.sm{height:7px;flex:1;}
-.lifebook .gauge-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--vio),var(--pink));}
+.lifebook .gauge-fill{height:100%;border-radius:999px;background:var(--pink);}
 .lifebook .gauge-cap{font-size:13px;color:var(--body);margin:12px 0 0;}
 .lifebook .mini-g{display:flex;align-items:center;gap:10px;margin:12px 0;}
 .lifebook .mini-g-label{flex:none;width:118px;font-size:12.5px;color:var(--ink);}
