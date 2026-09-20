@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "pconcern", "job", "love", "email", "concern", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "pconcern", "job", "love", "concern", "email", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
@@ -710,8 +710,8 @@ export function FreeTroubleWizard({
 
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
-                {showAddon ? (
-                  // 번들이 있으면 다음 스텝(상품 선택)으로
+                {!isLastStep ? (
+                  // 뒤에 단계(이메일·상품 선택)가 남아 있으면 다음으로
                   <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
                 ) : (
                   <div className="relative">
