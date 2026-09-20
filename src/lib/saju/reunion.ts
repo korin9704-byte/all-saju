@@ -305,9 +305,8 @@ function miniGaugesCard(items: { label: string; score: number }[]): string {
   const rows = items
     .map(
       (it) => `<div class="mini-g">
-<span class="mini-g-label">${esc(it.label)}</span>
+<div class="mini-g-top"><span class="mini-g-label">${esc(it.label)}</span><span class="mini-g-num">${it.score}<small>점</small></span></div>
 <div class="gauge-track sm"><div class="gauge-fill" style="width:${it.score}%"></div></div>
-<span class="mini-g-num">${it.score}</span>
 </div>`,
     )
     .join("");

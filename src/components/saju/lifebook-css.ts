@@ -176,9 +176,11 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge-track.sm{height:7px;flex:1;}
 .lifebook .gauge-fill{height:100%;border-radius:999px;background:var(--pink);}
 .lifebook .gauge-cap{font-size:13px;color:var(--body);margin:12px 0 0;}
-.lifebook .mini-g{display:flex;align-items:center;gap:10px;margin:12px 0;}
-.lifebook .mini-g-label{flex:none;width:118px;font-size:12.5px;color:var(--ink);}
-.lifebook .mini-g-num{flex:none;width:26px;text-align:right;font-size:13px;color:var(--pink);}
+.lifebook .mini-g{margin:14px 0;}
+.lifebook .mini-g-top{display:flex;justify-content:space-between;align-items:baseline;margin:0 2px 6px;}
+.lifebook .mini-g-label{font-size:12.5px;color:var(--ink);}
+.lifebook .mini-g-num{font-size:15px;color:var(--pink);}
+.lifebook .mini-g-num small{font-size:10px;color:var(--mute);margin-left:1px;}
 .lifebook .cal{margin:16px 0 6px;}
 .lifebook .cal + .cal{margin-top:20px;padding-top:18px;border-top:1.5px dashed #E9DFF6;}
 .lifebook .cal-title{font-family:'Gowun Dodum';font-size:15px;text-align:center;margin:0 0 8px;color:var(--ink);}
