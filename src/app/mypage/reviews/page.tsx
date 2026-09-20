@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = { title: "내 리뷰" };
+export const metadata = { title: "내 후기" };
 
 function Stars({ value }: { value: number }) {
   return (
@@ -34,11 +34,11 @@ export default async function MyReviewsPage() {
   return (
     <div className="container py-12 max-w-2xl">
       <header className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">내 리뷰</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">내 후기</h1>
       </header>
 
       {!reviews || reviews.length === 0 ? (
-        <div className="text-center py-20 text-sm text-body">작성한 리뷰가 없습니다.</div>
+        <div className="text-center py-20 text-sm text-body">작성한 후기가 없습니다.</div>
       ) : (
         <ul className="divide-y divide-hairline border-y border-hairline">
           {reviews.map((r) => (
