@@ -92,7 +92,7 @@ export function AskReunionFollowup({
         >
           <div className="mt-auto pt-24">
             <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ wordBreak: "keep-all", textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>
-              그 후로, 어떻게 됐나요?
+              더 궁금한 게 있나요?
             </h1>
 
             {/* 상황 선택 (필수) */}
