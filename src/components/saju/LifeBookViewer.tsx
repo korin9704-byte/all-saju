@@ -227,7 +227,7 @@ export default function LifeBookViewer({
                   </span>
                 </>
               ) : (
-                <>또 다른 고민 물어보기{" "}
+                <>또 다른 고민 물어보기!!{" "}
                   <span
                     style={{
                       fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
