@@ -93,7 +93,7 @@ export function AskReunionFollowup({
 
             {/* 질문 선택지 — 누르면 입력란에 문구가 채워지고 자유롭게 고칠 수 있다 */}
             <p
-              className="mb-2 text-[17px] text-[#9C8FBF]"
+              className="mb-2 text-[17px] text-[#C95FC0]"
               style={{ textShadow: "0 0 6px rgba(255,255,255,1), 0 0 12px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.9)" }}
             >
               (예시)
