@@ -167,6 +167,71 @@ ${concern ? `- 내담자가 남긴 질문에는 가장 관련 있는 장에서 �
   return { system: SYSTEM_BASE, user };
 }
 
+// ─── 재회 추가 질문 (reunion-followup) 프롬프트 ────────
+// 재회 결과지 이후의 상황 변화([상황] 태그 + 자유 입력)를 원 결과지의
+// 상대방·이별 상황 태그와 함께 받아, 짧은 후속 결과지(4개 장)를 작성한다.
+export function buildReunionFollowupPrompt(input: PromptInput): { system: string; user: string } {
+  const ctx = makeContext({ ...input, concerns: input.concerns.filter((c) => !c.startsWith("[")) });
+  const question = input.concerns.filter((c) => !c.startsWith("[")).join(" ");
+
+  const tag = (label: string) => {
+    const found = input.concerns.find((c) => c.startsWith(`[${label}]`));
+    return found ? found.slice(label.length + 2).trim() : null;
+  };
+  const situation = tag("상황");
+  const situationLines = [
+    tag("연애 기간") && `- 연애 기간: ${tag("연애 기간")}`,
+    tag("이별한 지") && `- 이별한 지: ${tag("이별한 지")}`,
+    tag("이별 원인") && `- 이별의 원인: ${tag("이별 원인")}`,
+    tag("이별 통보한 쪽") && `- 이별을 통보한 쪽: ${tag("이별 통보한 쪽")}`,
+    tag("지금 마음") && `- 재회 결과지를 볼 당시의 마음: ${tag("지금 마음")}`,
+  ].filter(Boolean);
+
+  const p = input.partnerMyeongsik;
+  const partnerName = input.partnerName?.trim() || null;
+  const partnerCall = partnerName ? `${partnerName}님` : "그 사람";
+  const pil = (x: { cheongan: string; jiji: string } | null) => (x ? `${x.cheongan}${x.jiji}` : "(시 미상)");
+  const partnerSection = p
+    ? `
+[헤어진 상대방 정보]
+${partnerName ? `- 이름: ${partnerName}\n` : ""}- 생년월일: ${input.partnerBirthDate ?? "미상"}${input.partnerGender ? ` · ${input.partnerGender === "male" ? "남성" : "여성"}` : ""}
+- 상대방 사주 4기둥: 년주 ${pil(p.year)} / 월주 ${pil(p.month)} / 일주 ${pil(p.day)} / 시주 ${pil(p.hour)}
+`
+    : "";
+
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+  const user = `${ctx}
+${partnerSection}${situationLines.length > 0 ? `\n[이별 상황 정보 — 재회 결과지를 볼 때 입력한 사실]\n${situationLines.join("\n")}\n` : ""}
+---
+이 내담자는 이전에 재회 사주 결과지를 받았고, 그 뒤 상황이 변해서 다시 찾아왔습니다.
+지금 상황: "${situation ?? "미입력"}"
+내담자가 덧붙인 이야기: "${question || "(없음)"}"
+오늘 날짜: ${todayStr}
+
+지금 상황에 정조준한 짧은 후속 결과지를 작성해 주세요. 아래 4개 장을 정확히 이 순서·이 제목 그대로 "## 제목" 형식으로 쓰세요 (장을 더하거나 빼면 안 됩니다). 소제목(###)은 쓰지 마세요.
+
+## 지금 상황 풀이
+## ${partnerCall}의 지금 마음
+## 해야 할 것, 하지 말아야 할 것
+## 다음 흐름
+
+⚠️ 내용 규칙:
+${p ? `- 상대방 사주 4기둥이 제공되었습니다. 상대의 마음·다음 흐름 판단에 두 사람의 사주를 함께 근거로 쓰세요.` : `- 상대방 사주는 없습니다. 내담자 사주에 드러난 관계의 기운으로 조심스럽게 서술하세요.`}
+${partnerName ? `- 상대방은 "${partnerCall}"이라고 부르세요.` : ""}
+- "지금 상황 풀이": 내담자가 겪은 변화("${situation ?? ""}")가 사주 흐름상 무엇을 뜻하는지 첫 문장에 결론부터. 600~900자.
+- "${partnerCall}의 지금 마음": 이 상황에서 상대의 심리를 사주 근거로. 막연한 위로 대신 구체적 해석. 500~800자.
+- "해야 할 것, 하지 말아야 할 것": 지금 당장 적용할 행동 지침. 해야 할 것과 하지 말아야 할 것 각각 불릿(-) 2~3개, 각 항목에 짧은 이유. 이 장만 불릿 허용.
+- "다음 흐름": 앞으로 4~8주의 흐름과, 의미 있는 변화가 가능한 날짜 1~2개를 오늘(${todayStr}) 이후 60일 이내로 구체적으로(YYYY-MM-DD) 제시하고 이유를 서술. 500~800자.
+- 내담자가 덧붙인 이야기가 있으면 가장 관련 있는 장에서 직접 답하세요.
+- 각 장마다 핵심 결론 문장 1개를 **문장** 형태로 강조하세요.
+- 전문 용어 없이 일상 언어로, 반드시 "~요" 체 존댓말, 내담자는 "${input.name ?? "고객"}님" 호칭. 반말 금지.
+- 됩니다/안 됩니다, 하세요/하지 마세요를 얼버무리지 말고 분명하게.`;
+
+  return { system: SYSTEM_BASE, user };
+}
+
 // ─── 점수 블록 파싱 ────────────────────────────────────
 
 export type ReunionScores = {

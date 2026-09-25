@@ -12,6 +12,7 @@ import type { LifeReportPayload } from "@/lib/saju/life-report";
 import { LIFEBOOK_CSS } from "./lifebook-css";
 import { HeaderMenu } from "@/components/HeaderMenu";
 import { AskAnotherConcern, type AskSaju } from "@/components/saju/AskAnotherConcern";
+import { AskReunionFollowup } from "@/components/saju/AskReunionFollowup";
 
 /** "1장" → "01." (장 표기 없이 번호만) */
 function fmtLabel(label: string): string {
@@ -35,8 +36,16 @@ export default function LifeBookViewer({
   currentTabLabel?: string;
   /** 헤더 메뉴(발바닥) 로그인 상태 */
   isLoggedIn?: boolean;
-  /** 추가 질문(50% 할인 followup) — 있으면 하단 내비에 버튼 노출 */
-  ask?: { productId: string; price: number; saju: AskSaju; guestEmail?: string | null };
+  /** 추가 질문(followup) — 있으면 하단 내비 위 플로팅 버튼 노출.
+   *  variant "reunion"이면 재회 후속 질문 시트(상황 선택 + 자유 입력)로 연결 */
+  ask?: {
+    productId: string;
+    price: number;
+    saju: AskSaju;
+    guestEmail?: string | null;
+    variant?: "trouble" | "reunion";
+    contextTags?: string[];
+  };
 }) {
   // 과거 생성분에 표지 뷰(label === "")가 있으면 제외하고 1장부터 시작
   const views = payload.views.filter((v) => v.label !== "");
@@ -203,18 +212,35 @@ export default function LifeBookViewer({
                 boxShadow: "0 6px 18px rgba(122,95,190,0.25)",
               }}
             >
-              또 다른 고민 물어보기{" "}
-              <span
-                style={{
-                  fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
-                  fontSize: 16,
-                  lineHeight: 1,
-                  color: "#C95FC0",
-                  marginLeft: 5,
-                }}
-              >
-                50% 할인
-              </span>
+              {ask.variant === "reunion" ? (
+                <>그 후로 어떻게 됐나요?{" "}
+                  <span
+                    style={{
+                      fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
+                      fontSize: 16,
+                      lineHeight: 1,
+                      color: "#C95FC0",
+                      marginLeft: 5,
+                    }}
+                  >
+                    이어서 묻기
+                  </span>
+                </>
+              ) : (
+                <>또 다른 고민 물어보기{" "}
+                  <span
+                    style={{
+                      fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
+                      fontSize: 16,
+                      lineHeight: 1,
+                      color: "#C95FC0",
+                      marginLeft: 5,
+                    }}
+                  >
+                    50% 할인
+                  </span>
+                </>
+              )}
             </button>
           </div>
         )}
@@ -252,16 +278,27 @@ export default function LifeBookViewer({
           </button>
         </nav>
 
-        {/* 추가 질문 — 고민 입력 후 50% 할인 결제 (기존 followup 플로우 재사용) */}
+        {/* 추가 질문 — 고민(자유 입력) 또는 재회(상황 선택 + 자유 입력) 시트 */}
         {ask && askOpen && (
-          <AskAnotherConcern
-            productId={ask.productId}
-            price={ask.price}
-            saju={ask.saju}
-            guestEmail={ask.guestEmail}
-            defaultOpen
-            onClose={() => setAskOpen(false)}
-          />
+          ask.variant === "reunion" ? (
+            <AskReunionFollowup
+              productId={ask.productId}
+              price={ask.price}
+              saju={ask.saju}
+              contextTags={ask.contextTags ?? []}
+              guestEmail={ask.guestEmail}
+              onClose={() => setAskOpen(false)}
+            />
+          ) : (
+            <AskAnotherConcern
+              productId={ask.productId}
+              price={ask.price}
+              saju={ask.saju}
+              guestEmail={ask.guestEmail}
+              defaultOpen
+              onClose={() => setAskOpen(false)}
+            />
+          )
         )}
 
         <div id="tocSheet" className={tocOpen ? "on" : ""} style={sheetW ? { width: sheetW } : undefined}>

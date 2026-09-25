@@ -313,6 +313,12 @@ export async function generateAndStoreResult(
     const partner = await parsePartnerFromConcerns(input.concerns as string[]);
     const { system, user } = buildReunionPromptV2({ ...promptInput, ...partner });
     llm = await generateInterpretation({ system, user });
+  } else if (promptSlug === "reunion-followup") {
+    // 재회 추가 질문 — 상황 변화([상황] 태그)에 정조준한 4개 장 후속 결과지
+    const { buildReunionFollowupPrompt } = await import("@/lib/saju/reunion");
+    const partner = await parsePartnerFromConcerns(input.concerns as string[]);
+    const { system, user } = buildReunionFollowupPrompt({ ...promptInput, ...partner });
+    llm = await generateInterpretation({ system, user });
   } else if (promptSlug === "love-saju") {
     const partner = await parsePartnerFromConcerns(input.concerns as string[]);
     const { system, user } = buildLoveSajuPrompt({ ...promptInput, ...partner });

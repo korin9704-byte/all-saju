@@ -20,19 +20,41 @@ function esc(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-/** **강조** → 핑크 하이라이트, 나머지는 이스케이프 */
+/** **강조** → 핑크 하이라이트, ISO 날짜 → 한국어 표기, 나머지는 이스케이프 */
 function inline(s: string): string {
-  return esc(s).replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
+  return esc(s)
+    .replace(/(\d{4})-(\d{2})-(\d{2})/g, (_, y, m, d) => `${y}년 ${parseInt(m)}월 ${parseInt(d)}일`)
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
 }
 
-/** 섹션 본문(문단 나열) → 뷰어 문단 html */
+/** 섹션 본문(문단·불릿 나열) → 뷰어 html — "- " 줄은 ✕ 불릿(.dolist)으로 */
 function bodyHtml(text: string): string {
-  return text
-    .split(/\n{2,}/)
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .map((p) => `<p class="para">${inline(p.replace(/\n/g, " "))}</p>`)
-    .join("");
+  const out: string[] = [];
+  let para: string[] = [];
+  let list: string[] = [];
+  const flushPara = () => {
+    if (para.length) out.push(`<p class="para">${inline(para.join(" "))}</p>`);
+    para = [];
+  };
+  const flushList = () => {
+    if (list.length) out.push(`<ul class="dolist">${list.map((l) => `<li>${inline(l)}</li>`).join("")}</ul>`);
+    list = [];
+  };
+  for (const raw of text.split(/\n{2,}/)) {
+    const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
+    for (const line of lines) {
+      if (line.startsWith("- ")) {
+        flushPara();
+        list.push(line.slice(2));
+      } else {
+        flushList();
+        para.push(line);
+      }
+    }
+    flushPara();
+    flushList();
+  }
+  return out.join("");
 }
 
 /** 명식표 카드 html (뷰어 .ms 표 스타일) */

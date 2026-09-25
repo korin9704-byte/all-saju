@@ -229,8 +229,10 @@ export default async function ResultPage({
   ) : null;
 
   // ── 고민 사주 — 인생 사주와 같은 챕터 뷰어로 렌더 (내용·프롬프트는 그대로, 형식만 변환) ──
-  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", "reunion-saju", BUNDLE_SLUG, REUNION_BUNDLE_SLUG];
+  const TROUBLE_VIEWER_SLUGS = ["trouble-saju", "trouble-saju-free", "followup-question", "reunion-saju", "reunion-followup", BUNDLE_SLUG, REUNION_BUNDLE_SLUG];
   const isReunionResult = product?.slug === "reunion-saju" || product?.slug === REUNION_BUNDLE_SLUG;
+  // 재회 계열(본품·번들·추가 질문) — 고민 추가질문 CTA 대신 재회 이어묻기 CTA를 쓴다
+  const isReunionFamily = isReunionResult || product?.slug === "reunion-followup";
   if (product && TROUBLE_VIEWER_SLUGS.includes(product.slug) && sajuInput && result.locked !== true) {
     const question =
       ((sajuInput.concerns ?? []) as string[]).find((c) => !c.startsWith("["))?.trim() || null;
@@ -319,11 +321,34 @@ export default async function ResultPage({
     }
     // 번들 부모면 인생 사주(자식) 결과지 탭 연결
     const lifeTab = bundleTabs?.find((t) => t.resultId);
-    // 재회 사주에는 추가 고민(50% 할인) 플로팅 버튼을 노출하지 않는다
-    const troubleAsk =
-      !isReunionResult && followupProduct && askSaju
-        ? { productId: followupProduct.id, price: followupProduct.price, saju: askSaju, guestEmail: order?.guest_email }
-        : undefined;
+    // 재회 계열: '이어서 물어보기'(상황 선택 + 자유 입력), 그 외: 고민 추가질문(50% 할인)
+    let viewerAsk:
+      | { productId: string; price: number; saju: NonNullable<typeof askSaju>; guestEmail?: string | null; variant?: "trouble" | "reunion"; contextTags?: string[] }
+      | undefined;
+    if (isReunionFamily && askSaju) {
+      const { data: reunionFollowup } = await service
+        .from("products")
+        .select("id, price")
+        .eq("slug", "reunion-followup")
+        .eq("is_active", true)
+        .maybeSingle();
+      if (reunionFollowup) {
+        // 원 결과지의 대괄호 태그를 이어받되, 이전 [상황]은 새 선택으로 대체되므로 제외
+        const contextTags = ((sajuInput.concerns ?? []) as string[]).filter(
+          (c) => c.startsWith("[") && !c.startsWith("[상황]"),
+        );
+        viewerAsk = {
+          productId: reunionFollowup.id,
+          price: reunionFollowup.price,
+          saju: askSaju,
+          guestEmail: order?.guest_email,
+          variant: "reunion",
+          contextTags,
+        };
+      }
+    } else if (!isReunionFamily && followupProduct && askSaju) {
+      viewerAsk = { productId: followupProduct.id, price: followupProduct.price, saju: askSaju, guestEmail: order?.guest_email };
+    }
     return (
       <LifeBookViewer
         payload={troublePayload}
@@ -331,7 +356,7 @@ export default async function ResultPage({
         siblingTab={lifeTab ? { label: lifeTab.label, href: `/results/${lifeTab.resultId}` } : undefined}
         currentTabLabel={isReunionResult ? "재회 사주" : "고민 사주"}
         isLoggedIn={!!viewer}
-        ask={troubleAsk}
+        ask={viewerAsk}
       />
     );
   }

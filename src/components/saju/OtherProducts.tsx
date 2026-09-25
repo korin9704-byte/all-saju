@@ -27,7 +27,7 @@ export async function OtherProducts({ currentSlug }: { currentSlug?: string | nu
     .eq("is_active", true)
     .order("display_order", { ascending: true });
 
-  const others = (products ?? []).filter((p) => p.slug !== currentSlug && p.slug !== FOLLOWUP_SLUG && !p.slug.endsWith("-bundle"));
+  const others = (products ?? []).filter((p) => p.slug !== currentSlug && p.slug !== FOLLOWUP_SLUG && !p.slug.endsWith("-bundle") && !p.slug.endsWith("-followup"));
   if (others.length === 0) return null;
 
   return (

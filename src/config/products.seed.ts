@@ -113,6 +113,16 @@ export const productsSeed: ProductSeed[] = [
     is_active: false,
   },
   {
+    // 재회 결과지 하단 추가 질문 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
+    // 상황 선택 + 자유 입력, 원 결과지의 상대방·이별 상황 태그를 이어받아 풀이
+    slug: "reunion-followup",
+    name: "재회 추가 질문",
+    description: "재회 결과지를 보고 이어서 물어보세요.",
+    price: 4900,
+    display_order: 994,
+    is_active: true,
+  },
+  {
     // 재회 사주 결제 단계 추가 상품 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
     // 재회 사주 + 인생 사주, 39,800원에서 5,000원 할인 = 34,800원
     slug: "reunion-saju-bundle",
