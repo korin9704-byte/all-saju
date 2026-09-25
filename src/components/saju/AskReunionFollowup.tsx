@@ -12,15 +12,14 @@ import type { AskSaju } from "@/components/saju/AskAnotherConcern";
 const MAX_DETAIL = 200;
 
 export const REUNION_FOLLOWUP_SITUATIONS = [
-  "연락했는데 답장이 없어요",
-  "답장이 왔는데 짧고 건조해요",
-  "그 사람이 먼저 연락해왔어요",
-  "골든타임을 놓쳤어요",
-  "새로운 사람이 생긴 것 같아요",
-  "다시 만나기로 했어요",
-  "재회했어요",
-  "놓아주려고 해요",
-  "기타",
+  "연락했는데 답장이 없어요. 어떻게 할까요?",
+  "답장이 짧고 건조해요. 무슨 마음일까요?",
+  "먼저 연락이 왔어요. 어떤 의미일까요?",
+  "골든타임을 놓쳤어요. 너무 늦은 걸까요?",
+  "새로운 사람이 생긴 것 같아요. 맞을까요?",
+  "다시 만나기로 했어요. 잘될까요?",
+  "재회했어요. 이번엔 오래갈까요?",
+  "이제 놓아줘야 할까요?",
 ] as const;
 
 export function AskReunionFollowup({
@@ -45,7 +44,7 @@ export function AskReunionFollowup({
   const [submitting, setSubmitting] = useState(false);
 
   async function submit() {
-    if (!situation) { toast.error("지금 상황을 선택해 주세요."); return; }
+    if (!detail.trim()) { toast.error("질문을 입력해 주세요."); return; }
     if (submitting) return;
     setSubmitting(true);
     try {
@@ -61,9 +60,10 @@ export function AskReunionFollowup({
           gender: saju.gender,
           calendar: saju.calendar,
           concerns: [
-            `[상황] ${situation}`,
+            // 선택지에서 시작했으면 [상황] 태그로도 기록 (직접 입력만 했으면 질문 텍스트만)
+            ...(situation ? [`[상황] ${situation}`] : []),
             ...contextTags,
-            ...(detail.trim() ? [detail.trim()] : []),
+            detail.trim(),
           ],
           guestEmail: guestEmail ?? undefined,
         }),
@@ -95,31 +95,32 @@ export function AskReunionFollowup({
               더 궁금한 게 있나요?
             </h1>
 
-            {/* 상황 선택 (필수) */}
+            {/* 질문 선택지 — 누르면 입력란에 문구가 채워지고 자유롭게 고칠 수 있다 */}
             <div className="grid grid-cols-2 gap-2 mb-4">
               {REUNION_FOLLOWUP_SITUATIONS.map((opt) => (
                 <button
                   key={opt}
                   type="button"
-                  onClick={() => setSituation(opt)}
-                  className={`rounded-full px-3 py-2.5 text-[13px] whitespace-nowrap transition-colors ${
-                    situation === opt
+                  onClick={() => { setSituation(opt); setDetail(opt); }}
+                  className={`rounded-2xl px-3 py-2.5 text-[13px] leading-snug transition-colors ${
+                    detail.trim() === opt
                       ? "bg-[#E7DDF8] border border-[#8F7BD6] text-[#4A3A72]"
                       : "bg-white border border-[#E7DDF8] text-body"
                   }`}
+                  style={{ wordBreak: "keep-all" }}
                 >
                   {opt}
                 </button>
               ))}
             </div>
 
-            {/* 자유 입력 (선택) */}
+            {/* 질문 입력 (필수) */}
             <div className="relative mb-8">
               <textarea
                 value={detail}
                 rows={4}
                 onChange={(e) => setDetail(e.target.value.slice(0, MAX_DETAIL))}
-                placeholder="자세한 상황을 들려주세요. (선택)"
+                placeholder="자유롭게 질문을 남겨보세요."
                 className="block w-full resize-none rounded-2xl bg-white border border-[#E7DDF8] px-5 py-4 text-sm text-[#4A3A72] leading-relaxed placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors"
               />
               <p className="absolute bottom-3 right-5 text-xs text-mute">{detail.length}/{MAX_DETAIL}자</p>
