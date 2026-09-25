@@ -12,14 +12,10 @@ import type { AskSaju } from "@/components/saju/AskAnotherConcern";
 const MAX_DETAIL = 200;
 
 export const REUNION_FOLLOWUP_SITUATIONS = [
-  "연락했는데 답장이 없어요",
-  "답장이 짧고 건조해요",
-  "그 사람이 먼저 연락해왔어요",
-  "골든타임을 놓쳤어요",
-  "새로운 사람이 생긴 것 같아요",
-  "다시 만나기로 했어요",
-  "재회했어요, 오래갈까요?",
-  "이제 놓아줘야 할까요?",
+  "연락했는데 답장이 없어요, 어떻게 해야 할까요?",
+  "그 사람이 먼저 연락해왔는데, 어떤 의미일까요?",
+  "다시 만나기로 했는데, 이번엔 잘될까요?",
+  "이제 그만 놓아줘야 할까요?",
 ] as const;
 
 export function AskReunionFollowup({
@@ -96,7 +92,7 @@ export function AskReunionFollowup({
             </h1>
 
             {/* 질문 선택지 — 누르면 입력란에 문구가 채워지고 자유롭게 고칠 수 있다 */}
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="grid grid-cols-1 gap-2 mb-4">
               {REUNION_FOLLOWUP_SITUATIONS.map((opt) => (
                 <button
                   key={opt}
