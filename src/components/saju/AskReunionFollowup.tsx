@@ -12,13 +12,13 @@ import type { AskSaju } from "@/components/saju/AskAnotherConcern";
 const MAX_DETAIL = 200;
 
 export const REUNION_FOLLOWUP_SITUATIONS = [
-  "연락했는데 답장이 없어요. 어떻게 할까요?",
-  "답장이 짧고 건조해요. 무슨 마음일까요?",
-  "먼저 연락이 왔어요. 어떤 의미일까요?",
-  "골든타임을 놓쳤어요. 너무 늦은 걸까요?",
-  "새로운 사람이 생긴 것 같아요. 맞을까요?",
-  "다시 만나기로 했어요. 잘될까요?",
-  "재회했어요. 이번엔 오래갈까요?",
+  "연락했는데 답장이 없어요",
+  "답장이 짧고 건조해요",
+  "그 사람이 먼저 연락해왔어요",
+  "골든타임을 놓쳤어요",
+  "새로운 사람이 생긴 것 같아요",
+  "다시 만나기로 했어요",
+  "재회했어요, 오래갈까요?",
   "이제 놓아줘야 할까요?",
 ] as const;
 
@@ -102,12 +102,11 @@ export function AskReunionFollowup({
                   key={opt}
                   type="button"
                   onClick={() => { setSituation(opt); setDetail(opt); }}
-                  className={`rounded-2xl px-3 py-2.5 text-[13px] leading-snug transition-colors ${
+                  className={`rounded-full px-3 py-2.5 text-[13px] whitespace-nowrap transition-colors ${
                     detail.trim() === opt
                       ? "bg-[#E7DDF8] border border-[#8F7BD6] text-[#4A3A72]"
                       : "bg-white border border-[#E7DDF8] text-body"
                   }`}
-                  style={{ wordBreak: "keep-all" }}
                 >
                   {opt}
                 </button>
