@@ -37,7 +37,11 @@ function bodyHtml(text: string): string {
     para = [];
   };
   const flushList = () => {
-    if (list.length) out.push(`<ul class="dolist">${list.map((l) => `<li>${inline(l)}</li>`).join("")}</ul>`);
+    if (list.length) {
+      // '해야 할 것' 목록은 ○, '하지 말아야 할 것' 목록은 ✕ 불릿
+      const isDo = /해야\s*할\s*것/.test(list[0]) && !/하지\s*말/.test(list[0]);
+      out.push(`<ul class="dolist${isDo ? " do" : ""}">${list.map((l) => `<li>${inline(l)}</li>`).join("")}</ul>`);
+    }
     list = [];
   };
   for (const raw of text.split(/\n{2,}/)) {
@@ -93,8 +97,10 @@ export function buildTroubleBookPayload(opts: {
   md: string;
   /** 인생 사주식 풀 명식표 카드 html — 있으면 간이 명식표 대신 사용 */
   myeongsikCardHtml?: string;
+  /** 1장에서 쓰는 표현 — 기본 "고민", 추가 질문 결과지는 "질문" */
+  concernWord?: string;
 }): LifeReportPayload {
-  const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml } = opts;
+  const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml, concernWord = "고민" } = opts;
 
   // '## ' 섹션 분리 (내용은 그대로)
   const sections: { title: string; body: string }[] = [];
@@ -111,23 +117,23 @@ export function buildTroubleBookPayload(opts: {
   // label 은 목차 번호로만 쓰고, 본문에서는 "NN. 제목." 소제목으로 표시(sub)
   views.push({
     label: `${no(1)}.`,
-    title: dot("나의 사주와 고민"),
+    title: dot(`나의 사주와 ${concernWord}`),
     html: (() => {
       // 고민(Q)은 명식표 카드 아래에 별도 카드로 둔다 (카드 제목: "OO님의 사주와 고민")
       const qBlock = question
         ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
       let card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
-      if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 고민<`);
+      if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 ${concernWord}<`);
       const cardWithQ = card + qBlock;
       return (
         // 인생 사주와 동일하게 말풍선 그룹의 첫 버블에만 꼬리를 단다
         `<div class="nyan tail"><span class="say">안녕하세요, ${esc(name)}님. 냥점의 점술사 묘묘예요. 이렇게 인연이 닿아 정말 기뻐요.</span></div>` +
-        `<div class="nyan"><span class="say">보내주신 고민, 제가 찬찬히 들여다봤어요.</span></div>` +
+        `<div class="nyan"><span class="say">보내주신 ${concernWord}, 제가 찬찬히 들여다봤어요.</span></div>` +
         `<div class="nyan"><span class="say">먼저 보기 쉽게 표로 정리했어요.</span></div>` +
         cardWithQ +
         `<div class="nyan tail"><span class="say">이제 풀이 준비가 끝났어요.</span></div>` +
-        `<div class="nyan"><span class="say">다음 장부터 ${esc(name)}님의 고민을 본격적으로 풀어드릴게요.</span></div>`
+        `<div class="nyan"><span class="say">다음 장부터 ${esc(name)}님의 ${concernWord}을 본격적으로 풀어드릴게요.</span></div>`
       );
     })(),
     sub: true,

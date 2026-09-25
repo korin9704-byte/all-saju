@@ -317,6 +317,8 @@ export default async function ResultPage({
         myeongsik,
         md: result.interpretation_md,
         myeongsikCardHtml: msCardHtml,
+        // 재회 추가 질문 결과지는 '고민'이 아니라 '질문'으로 표현
+        concernWord: product.slug === "reunion-followup" ? "질문" : undefined,
       });
     }
     // 번들 부모면 인생 사주(자식) 결과지 탭 연결

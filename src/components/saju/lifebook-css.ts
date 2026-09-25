@@ -195,5 +195,6 @@ export const LIFEBOOK_CSS = `
 .lifebook .dolist{margin:0 0 14px;padding-left:2px;list-style:none;}
 .lifebook .dolist li{font-size:14.5px;line-height:1.85;margin:0 0 8px;padding-left:22px;position:relative;}
 .lifebook .dolist li::before{content:'✕';position:absolute;left:0;top:1px;color:var(--pink);font-size:13px;}
+.lifebook .dolist.do li::before{content:'○';}
 @keyframes lb-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 `;

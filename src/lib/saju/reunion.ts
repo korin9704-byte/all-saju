@@ -324,7 +324,9 @@ function paraOrList(block: string): string[] {
   const lines = block.split("\n").map((l) => l.trim()).filter(Boolean);
   const isList = lines.every((l) => l.startsWith("- "));
   if (isList) {
-    return [`<ul class="dolist">${lines.map((l) => `<li>${inline(l.slice(2))}</li>`).join("")}</ul>`];
+    // '해야 할 것' 목록은 ○, '하지 말아야 할 것' 목록은 ✕ 불릿
+    const isDo = /해야\s*할\s*것/.test(lines[0]) && !/하지\s*말/.test(lines[0]);
+    return [`<ul class="dolist${isDo ? " do" : ""}">${lines.map((l) => `<li>${inline(l.slice(2))}</li>`).join("")}</ul>`];
   }
   return [`<p class="para">${inline(lines.join(" "))}</p>`];
 }
