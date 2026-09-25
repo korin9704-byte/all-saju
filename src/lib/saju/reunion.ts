@@ -301,31 +301,46 @@ function inline(s: string): string {
     .replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
 }
 
+/** '해야 할 것'/'하지 말아야 할 것' 문맥 추적 — 이후 불릿의 ○/✕ 결정 */
+function bulletMode(text: string, prev: "do" | "dont" | null): "do" | "dont" | null {
+  if (/하지\s*말/.test(text)) return "dont";
+  if (/해야\s*할\s*것/.test(text)) return "do";
+  return prev;
+}
+
 /** ### 소제목 + 문단 + 불릿을 뷰어 html 로 */
 function bodyHtml(text: string): string {
   const out: string[] = [];
+  let mode: "do" | "dont" | null = null;
   for (const raw of text.split(/\n{2,}/)) {
     const block = raw.trim();
     if (!block) continue;
     if (block.startsWith("### ")) {
       // 블록 첫 줄이 소제목, 나머지는 문단
       const [head, ...rest] = block.split("\n");
+      mode = bulletMode(head, mode);
       out.push(`<p class="sub-h">${inline(head.slice(4).trim())}</p>`);
       const restText = rest.join("\n").trim();
-      if (restText) out.push(...paraOrList(restText));
+      if (restText) out.push(...paraOrList(restText, mode));
     } else {
-      out.push(...paraOrList(block));
+      if (!block.startsWith("- ")) mode = bulletMode(block, mode);
+      out.push(...paraOrList(block, mode));
     }
   }
   return out.join("");
 }
 
-function paraOrList(block: string): string[] {
+function paraOrList(block: string, mode: "do" | "dont" | null = null): string[] {
   const lines = block.split("\n").map((l) => l.trim()).filter(Boolean);
   const isList = lines.every((l) => l.startsWith("- "));
   if (isList) {
     // '해야 할 것' 목록은 ○, '하지 말아야 할 것' 목록은 ✕ 불릿
-    const isDo = /해야\s*할\s*것/.test(lines[0]) && !/하지\s*말/.test(lines[0]);
+    // 목록 첫 항목이 곧 제목이면 그것으로, 아니면 직전 문단 문맥(mode)으로 판단
+    const isDo = /해야\s*할\s*것/.test(lines[0]) && !/하지\s*말/.test(lines[0])
+      ? true
+      : /하지\s*말/.test(lines[0])
+        ? false
+        : mode === "do";
     return [`<ul class="dolist${isDo ? " do" : ""}">${lines.map((l) => `<li>${inline(l.slice(2))}</li>`).join("")}</ul>`];
   }
   return [`<p class="para">${inline(lines.join(" "))}</p>`];

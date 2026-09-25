@@ -27,19 +27,25 @@ function inline(s: string): string {
     .replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
 }
 
-/** 섹션 본문(문단·불릿 나열) → 뷰어 html — "- " 줄은 ✕ 불릿(.dolist)으로 */
+/** 섹션 본문(문단·불릿 나열) → 뷰어 html — "- " 줄은 불릿(.dolist)으로.
+ *  '해야 할 것' 문맥의 불릿은 ○, '하지 말아야 할 것' 문맥은 ✕ */
 function bodyHtml(text: string): string {
   const out: string[] = [];
   let para: string[] = [];
   let list: string[] = [];
+  let mode: "do" | "dont" | null = null;
   const flushPara = () => {
     if (para.length) out.push(`<p class="para">${inline(para.join(" "))}</p>`);
     para = [];
   };
   const flushList = () => {
     if (list.length) {
-      // '해야 할 것' 목록은 ○, '하지 말아야 할 것' 목록은 ✕ 불릿
-      const isDo = /해야\s*할\s*것/.test(list[0]) && !/하지\s*말/.test(list[0]);
+      // 목록 첫 항목이 곧 제목이면 그것으로, 아니면 직전 문단 문맥(mode)으로 판단
+      const isDo = /해야\s*할\s*것/.test(list[0]) && !/하지\s*말/.test(list[0])
+        ? true
+        : /하지\s*말/.test(list[0])
+          ? false
+          : mode === "do";
       out.push(`<ul class="dolist${isDo ? " do" : ""}">${list.map((l) => `<li>${inline(l)}</li>`).join("")}</ul>`);
     }
     list = [];
@@ -52,6 +58,8 @@ function bodyHtml(text: string): string {
         list.push(line.slice(2));
       } else {
         flushList();
+        if (/하지\s*말/.test(line)) mode = "dont";
+        else if (/해야\s*할\s*것/.test(line)) mode = "do";
         para.push(line);
       }
     }
