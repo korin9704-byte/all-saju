@@ -116,7 +116,7 @@ export const productsSeed: ProductSeed[] = [
     // 재회 결과지 하단 추가 질문 — 목록에는 노출하지 않음 (코드에서 slug로 제외)
     // 상황 선택 + 자유 입력, 원 결과지의 상대방·이별 상황 태그를 이어받아 풀이
     slug: "reunion-followup",
-    name: "재회 추가 질문",
+    name: "재회 사주 추가 질문",
     description: "재회 결과지를 보고 이어서 물어보세요.",
     price: 4900,
     display_order: 994,

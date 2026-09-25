@@ -213,7 +213,7 @@ export default function LifeBookViewer({
               }}
             >
               {ask.variant === "reunion" ? (
-                <>추가 질문하기{" "}
+                <>추가 질문{" "}
                   <span
                     style={{
                       fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif",
