@@ -233,20 +233,20 @@ export default function LifeBookViewer({
           {/* 높이 0 컨테이너 위로 세로 스택 — alignSelf로 바닥을 내비 위에 고정 */}
           <div style={{ position: "relative", alignSelf: "flex-end", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
             {/* 공유 팝오버 — 버튼 바로 위에 떠서 열림 */}
-            {/* 공유 칩 — 버튼 위에 원형 칩 2개(링크 복사·카카오톡 공유) + 작은 라벨 */}
+            {/* 공유 칩 — 공유 버튼 위로 세로 스택(스피드 다이얼), 아이콘만 */}
             {share && shareOpen && (
               <div
                 style={{
                   position: "absolute",
-                  bottom: "calc(100% + 10px)",
-                  right: 0,
+                  bottom: "calc(100% + 8px)",
+                  right: 6,
                   display: "flex",
-                  gap: 10,
-                  alignItems: "flex-start",
+                  flexDirection: "column",
+                  gap: 8,
+                  alignItems: "center",
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                  <button
+                <button
                     type="button"
                     onClick={copyShareLink}
                     aria-label="링크 복사"
@@ -268,10 +268,7 @@ export default function LifeBookViewer({
                       <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
                     </svg>
                   </button>
-                  <span style={{ fontSize: 11, color: "#7A6B9E", whiteSpace: "nowrap" }}>링크 복사</span>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                  <button
+                <button
                     type="button"
                     onClick={kakaoShareResult}
                     aria-label="카카오톡 공유"
@@ -295,8 +292,6 @@ export default function LifeBookViewer({
                       />
                     </svg>
                   </button>
-                  <span style={{ fontSize: 11, color: "#7A6B9E", whiteSpace: "nowrap" }}>카카오톡</span>
-                </div>
               </div>
             )}
             {share && (
