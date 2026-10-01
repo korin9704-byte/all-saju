@@ -233,100 +233,69 @@ export default function LifeBookViewer({
           {/* 높이 0 컨테이너 위로 세로 스택 — alignSelf로 바닥을 내비 위에 고정 */}
           <div style={{ position: "relative", alignSelf: "flex-end", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
             {/* 공유 팝오버 — 버튼 바로 위에 떠서 열림 */}
+            {/* 공유 칩 — 버튼 위에 원형 칩 2개(링크 복사·카카오톡 공유) + 작은 라벨 */}
             {share && shareOpen && (
               <div
                 style={{
                   position: "absolute",
                   bottom: "calc(100% + 10px)",
                   right: 0,
-                  width: "min(230px, calc(100vw - 32px))",
+                  display: "flex",
+                  gap: 10,
+                  alignItems: "flex-start",
                 }}
               >
-                {/* 닫기 — 목차 닫기와 같은 흰 원형 + 낙관 도장 ✕, 카드 밖 우측 상단 */}
-                <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
-                  <button
-                    type="button"
-                    aria-label="공유 닫기"
-                    onClick={() => setShareOpen(false)}
-                    style={{
-                      border: 0,
-                      cursor: "pointer",
-                      width: 40,
-                      height: 40,
-                      borderRadius: "50%",
-                      background: "rgba(255,255,255,0.92)",
-                      boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                      <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
-                      <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                    </svg>
-                  </button>
-                </div>
-                <div
-                  style={{
-                    position: "relative",
-                    background: "#F8F4FD",
-                    border: "2px solid #4A3A72",
-                    borderRadius: 16,
-                    padding: 10,
-                    boxShadow: "0 8px 20px rgba(74,58,114,0.25)",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 7,
-                  }}
-                >
-                  {/* 스티커 장식 도트 — 공유 버튼의 주변 도트와 세트 */}
-                  <span style={{ position: "absolute", left: -7, top: -7, width: 10, height: 10, borderRadius: "50%", background: "#C95FC0", border: "1.5px solid #4A3A72" }} />
-                  <span style={{ position: "absolute", right: -6, bottom: -6, width: 8, height: 8, borderRadius: "50%", background: "#DCD2F5", border: "1.5px solid #4A3A72" }} />
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                   <button
                     type="button"
                     onClick={copyShareLink}
+                    aria-label="링크 복사"
                     style={{
-                      height: 37,
-                      borderRadius: 999,
-                      border: "1.5px solid #4A3A72",
+                      width: 42,
+                      height: 42,
+                      borderRadius: "50%",
                       background: "#fff",
-                      color: "#4A3A72",
-                      fontSize: 12.5,
-                      letterSpacing: 2.5,
-                      textIndent: 2.5,
-                      fontFamily: "inherit",
+                      border: "1.5px solid #4A3A72",
+                      boxShadow: "0 6px 14px rgba(74,58,114,0.2)",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: 7,
                     }}
                   >
-                    링크 복사
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
                   </button>
+                  <span style={{ fontSize: 10.5, color: "#7A6B9E", whiteSpace: "nowrap", textShadow: "0 0 6px rgba(248,244,253,0.95)" }}>링크 복사</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                   <button
                     type="button"
                     onClick={kakaoShareResult}
+                    aria-label="카카오톡 공유"
                     style={{
-                      height: 37,
-                      borderRadius: 999,
-                      border: "1.5px solid #4A3A72",
+                      width: 42,
+                      height: 42,
+                      borderRadius: "50%",
                       background: "#FFD520",
-                      color: "#191919",
-                      fontSize: 12.5,
-                      letterSpacing: 2.5,
-                      textIndent: 2.5,
-                      fontFamily: "inherit",
+                      border: "1.5px solid #4A3A72",
+                      boxShadow: "0 6px 14px rgba(74,58,114,0.2)",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: 7,
                     }}
                   >
-                    카카오톡 공유
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <path
+                        d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
+                        fill="#191919"
+                      />
+                    </svg>
                   </button>
+                  <span style={{ fontSize: 10.5, color: "#7A6B9E", whiteSpace: "nowrap", textShadow: "0 0 6px rgba(248,244,253,0.95)" }}>카카오톡 공유</span>
                 </div>
               </div>
             )}
