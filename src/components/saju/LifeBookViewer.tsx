@@ -233,66 +233,62 @@ export default function LifeBookViewer({
           {/* 높이 0 컨테이너 위로 세로 스택 — alignSelf로 바닥을 내비 위에 고정 */}
           <div style={{ position: "relative", alignSelf: "flex-end", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
             {/* 공유 팝오버 — 버튼 바로 위에 떠서 열림 */}
-            {/* 공유 칩 — 공유 버튼 위로 세로 스택(스피드 다이얼), 아이콘만 */}
+            {/* 공유 칩 — 공유 버튼 주위로 위성처럼 전개 (링크=바로 위, 카카오=왼쪽 대각선) */}
             {share && shareOpen && (
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "calc(100% + 8px)",
-                  right: 6,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
-                  alignItems: "center",
-                }}
-              >
+              <>
                 <button
-                    type="button"
-                    onClick={copyShareLink}
-                    aria-label="링크 복사"
-                    style={{
-                      width: 42,
-                      height: 42,
-                      borderRadius: "50%",
-                      background: "#fff",
-                      border: "1.5px solid #4A3A72",
-                      boxShadow: "0 6px 14px rgba(74,58,114,0.2)",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                      <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
-                      <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
-                    </svg>
-                  </button>
+                  type="button"
+                  onClick={copyShareLink}
+                  aria-label="링크 복사"
+                  style={{
+                    position: "absolute",
+                    right: 6,
+                    top: -50,
+                    width: 42,
+                    height: 42,
+                    borderRadius: "50%",
+                    background: "#fff",
+                    border: "1.5px solid #4A3A72",
+                    boxShadow: "0 6px 14px rgba(74,58,114,0.2)",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
+                    <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                </button>
                 <button
-                    type="button"
-                    onClick={kakaoShareResult}
-                    aria-label="카카오톡 공유"
-                    style={{
-                      width: 42,
-                      height: 42,
-                      borderRadius: "50%",
-                      background: "#FFD520",
-                      border: "1.5px solid #4A3A72",
-                      boxShadow: "0 6px 14px rgba(74,58,114,0.2)",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                      <path
-                        d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
-                        fill="#191919"
-                      />
-                    </svg>
-                  </button>
-              </div>
+                  type="button"
+                  onClick={kakaoShareResult}
+                  aria-label="카카오톡 공유"
+                  style={{
+                    position: "absolute",
+                    right: 58,
+                    top: -16,
+                    width: 42,
+                    height: 42,
+                    borderRadius: "50%",
+                    background: "#FFD520",
+                    border: "1.5px solid #4A3A72",
+                    boxShadow: "0 6px 14px rgba(74,58,114,0.2)",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path
+                      d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
+                      fill="#191919"
+                    />
+                  </svg>
+                </button>
+              </>
             )}
             {share && (
               <button
