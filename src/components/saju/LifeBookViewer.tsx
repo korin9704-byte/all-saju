@@ -242,10 +242,12 @@ export default function LifeBookViewer({
                   right: 0,
                   display: "flex",
                   gap: 10,
-                  alignItems: "flex-start",
+                  alignItems: "center",
                 }}
               >
+                {/* 링크 복사는 라벨이 칩 위, 카카오톡 공유는 칩 아래 — 라벨끼리 안 겹치게 지그재그 */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                  <span style={{ fontSize: 11, color: "#4A3A72", whiteSpace: "nowrap", background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.75)", borderRadius: 8, padding: "2px 8px" }}>링크 복사</span>
                   <button
                     type="button"
                     onClick={copyShareLink}
@@ -268,7 +270,6 @@ export default function LifeBookViewer({
                       <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
                     </svg>
                   </button>
-                  <span style={{ fontSize: 11, color: "#4A3A72", whiteSpace: "nowrap", background: "rgba(255,255,255,0.55)", backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.75)", borderRadius: 8, padding: "2px 8px" }}>링크 복사</span>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                   <button
