@@ -83,7 +83,6 @@ export function FreeTroubleWizard({
   const isLastStep = stepIdx === steps.length - 1;
 
   const [calendar, setCalendar] = useState<"solar" | "lunar">("solar");
-  const [isLeapMonth, setIsLeapMonth] = useState(false); // 음력 윤달 출생
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
@@ -100,7 +99,6 @@ export function FreeTroubleWizard({
   const [submitting, setSubmitting] = useState(false);
   // 상대방 정보 (재회 사주 — askPartner일 때만 사용)
   const [pCalendar, setPCalendar] = useState<"solar" | "lunar">("solar");
-  const [pIsLeap, setPIsLeap] = useState(false); // 상대방 음력 윤달 출생
   const [pYear, setPYear] = useState("");
   const [pMonth, setPMonth] = useState("");
   const [pDay, setPDay] = useState("");
@@ -205,13 +203,12 @@ export function FreeTroubleWizard({
       timeUnknown,
       gender,
       calendar,
-      isLeapMonth: calendar === "lunar" ? isLeapMonth : false,
       concerns: [
         ...((askJob || withAddon) && job ? [`[직업] ${job}`] : []),
         ...((askJob || withAddon) && love ? [`[연애] ${love}`] : []),
         // 상대방 정보 (재회 사주) — love-saju와 동일한 [상대방] 태그 포맷
         ...(askPartner && !partnerUnknown && partnerBirthDate && pGender
-          ? [`[상대방] 이름:${pName.trim().replace(/\s+/g, "") || "미입력"} 생년월일:${partnerBirthDate} 시간:${pKnowsTime ? `${pHour.padStart(2, "0")}:${pMinute.padStart(2, "0")}` : "시간모름"} 성별:${pGender === "male" ? "남성" : "여성"} 달력:${pCalendar === "lunar" ? (pIsLeap ? "음력윤달" : "음력") : "양력"}`]
+          ? [`[상대방] 이름:${pName.trim().replace(/\s+/g, "") || "미입력"} 생년월일:${partnerBirthDate} 시간:${pKnowsTime ? `${pHour.padStart(2, "0")}:${pMinute.padStart(2, "0")}` : "시간모름"} 성별:${pGender === "male" ? "남성" : "여성"} 달력:${pCalendar === "lunar" ? "음력" : "양력"}`]
           : []),
         // 연애 기간·이별 시점 (재회 사주 — 선택 시에만)
         ...(askPartner && loveDuration ? [`[연애 기간] ${loveDuration}`] : []),
@@ -294,15 +291,6 @@ export function FreeTroubleWizard({
     <p className="text-[17px] font-bold text-[#9C8FBF] mb-1" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>({label})</p>
   );
 
-  // 음력 선택 시 노출되는 윤달 체크 (radioRow와 같은 알약 스타일)
-  const leapRow = (checked: boolean, onChange: (v: boolean) => void, key: string) => (
-    <label key={key}
-      className={`flex items-center gap-3 cursor-pointer rounded-full px-4 py-3 -mt-2 mb-5 transition-colors ${checked ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}>
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="w-4 h-4 accent-[#7761C8]" />
-      <span className="text-sm text-[#4A3A72] whitespace-nowrap">윤달에 태어났어요</span>
-    </label>
-  );
-
   const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
     <label key={key ?? label}
       className={`flex items-center gap-3 cursor-pointer rounded-full px-4 py-3 transition-colors ${selected ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}>
@@ -353,10 +341,9 @@ export function FreeTroubleWizard({
               {askPartner && subjectTag("본인")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 날이 언제인가요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
-                {radioRow(calendar === "solar", "양력", () => { setCalendar("solar"); setIsLeapMonth(false); }, "solar")}
+                {radioRow(calendar === "solar", "양력", () => setCalendar("solar"), "solar")}
                 {radioRow(calendar === "lunar", "음력", () => setCalendar("lunar"), "lunar")}
               </div>
-              {calendar === "lunar" && leapRow(isLeapMonth, setIsLeapMonth, "leap")}
               <div className="grid grid-cols-3 gap-2 mb-8">
                 <div className="relative">
                   <input type="text" inputMode="numeric" maxLength={4} value={year} placeholder="1990"
@@ -489,10 +476,9 @@ export function FreeTroubleWizard({
               {subjectTag("상대방")}
               <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>태어난 날이 언제인가요?</h1>
               <div className="grid grid-cols-2 gap-3 mb-5">
-                {radioRow(pCalendar === "solar", "양력", () => { setPCalendar("solar"); setPIsLeap(false); }, "p-solar")}
+                {radioRow(pCalendar === "solar", "양력", () => setPCalendar("solar"), "p-solar")}
                 {radioRow(pCalendar === "lunar", "음력", () => setPCalendar("lunar"), "p-lunar")}
               </div>
-              {pCalendar === "lunar" && leapRow(pIsLeap, setPIsLeap, "p-leap")}
               <div className="grid grid-cols-3 gap-2 mb-5">
                 <div className="relative">
                   <input type="text" inputMode="numeric" maxLength={4} value={pYear} placeholder="1990"

@@ -57,7 +57,6 @@ type SajuInputRow = {
   time_unknown: boolean;
   gender: GenderKind;
   calendar: CalendarKind;
-  is_leap_month: boolean;
   concerns: string[];
   created_at: string;
 };
@@ -162,7 +161,6 @@ export type Database = {
           time_unknown?: boolean;
           gender: GenderKind;
           calendar?: CalendarKind;
-          is_leap_month?: boolean;
           concerns?: string[];
           created_at?: string;
         };
