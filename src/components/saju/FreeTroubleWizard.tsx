@@ -294,13 +294,12 @@ export function FreeTroubleWizard({
     <p className="text-[17px] font-bold text-[#9C8FBF] mb-1" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>({label})</p>
   );
 
-  // 음력 선택 시 노출되는 윤달 체크 (radioRow와 같은 알약 스타일)
-  const leapRow = (checked: boolean, onChange: (v: boolean) => void, key: string) => (
-    <label key={key}
-      className={`flex items-center gap-3 cursor-pointer rounded-full px-4 py-3 -mt-2 mb-5 transition-colors ${checked ? "bg-[#E7DDF8] border border-[#8F7BD6]" : "bg-white border border-[#E7DDF8]"}`}>
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="w-4 h-4 accent-[#7761C8]" />
-      <span className="text-sm text-[#4A3A72] whitespace-nowrap">윤달에 태어났어요</span>
-    </label>
+  // 음력 선택 시 노출되는 평달/윤달 선택 — 양력/음력과 같은 2열 라디오 알약 (기본 평달)
+  const leapRow = (isLeap: boolean, onChange: (v: boolean) => void, key: string) => (
+    <div key={key} className="grid grid-cols-2 gap-3 -mt-2 mb-5">
+      {radioRow(!isLeap, "평달", () => onChange(false), `${key}-flat`)}
+      {radioRow(isLeap, "윤달", () => onChange(true), `${key}-leap`)}
+    </div>
   );
 
   const radioRow = (selected: boolean, label: string, onClick: () => void, key?: string) => (
