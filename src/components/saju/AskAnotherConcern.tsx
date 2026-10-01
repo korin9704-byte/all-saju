@@ -60,6 +60,7 @@ export function AskAnotherConcern({
           timeUnknown: saju.timeUnknown,
           gender: saju.gender,
           calendar: saju.calendar,
+          isLeapMonth: saju.isLeapMonth ?? false,
           concerns: [concern.trim()],
           guestEmail: guestEmail ?? undefined,
         }),

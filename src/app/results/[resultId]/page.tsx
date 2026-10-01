@@ -101,7 +101,7 @@ export default async function ResultPage({
 
   const { data: sajuInput } = await service
     .from("saju_inputs")
-    .select("name, birth_date, birth_time, time_unknown, calendar, gender, concerns")
+    .select("name, birth_date, birth_time, time_unknown, calendar, is_leap_month, gender, concerns")
     .eq("order_id", result.order_id)
     .maybeSingle();
 
@@ -144,6 +144,7 @@ export default async function ResultPage({
     birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
     timeUnknown: !!sajuInput.time_unknown,
     calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+    isLeapMonth: !!sajuInput.is_leap_month,
     gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
   } : null;
 
@@ -240,7 +241,7 @@ export default async function ResultPage({
       [
         sajuInput.birth_date ? formatBirthDate(sajuInput.birth_date) : "",
         sajuInput.time_unknown ? "" : sajuInput.birth_time ? formatTime(sajuInput.birth_time) : "",
-        `(${sajuInput.calendar === "lunar" ? "음력" : "양력"})`,
+        `(${sajuInput.calendar === "lunar" ? (sajuInput.is_leap_month ? "음력 윤달" : "음력") : "양력"})`,
       ]
         .filter(Boolean)
         .join(" ") + ` · ${sajuInput.gender === "male" ? "남성" : "여성"}`;
@@ -254,6 +255,7 @@ export default async function ResultPage({
         birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
         timeUnknown: !!sajuInput.time_unknown,
         calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+        isLeapMonth: !!sajuInput.is_leap_month,
         gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
       });
       msCardHtml = buildMyeongsikCardHtml(analysis, sajuInput.name ?? "고객", birthLabel);

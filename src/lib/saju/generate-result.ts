@@ -271,6 +271,7 @@ export async function generateAndStoreResult(
         birthTime: input.birth_time,
         timeUnknown: input.time_unknown,
         calendar: input.calendar,
+        isLeapMonth: !!input.is_leap_month,
         gender: input.gender,
       });
     }
@@ -451,6 +452,7 @@ export async function generateBundleResults(
       time_unknown: input.time_unknown,
       gender: input.gender,
       calendar: input.calendar,
+      is_leap_month: input.is_leap_month ?? false,
       concerns: parentConcerns.filter(
         (c) => typeof c === "string" && (c.startsWith("[직업]") || c.startsWith("[연애]")),
       ),
