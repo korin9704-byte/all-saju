@@ -239,7 +239,7 @@ export default function LifeBookViewer({
                   position: "absolute",
                   bottom: "calc(100% + 10px)",
                   right: 0,
-                  width: "min(300px, calc(100vw - 32px))",
+                  width: "min(230px, calc(100vw - 32px))",
                 }}
               >
                 {/* 닫기 — 목차 닫기와 같은 흰 원형 + 낙관 도장 ✕, 카드 밖 우측 상단 */}
@@ -270,24 +270,24 @@ export default function LifeBookViewer({
                 <div
                   style={{
                     background: "#fff",
-                    borderRadius: 18,
-                    padding: 14,
+                    borderRadius: 16,
+                    padding: 10,
                     boxShadow: "0 10px 30px rgba(74,58,114,0.28)",
                     display: "flex",
                     flexDirection: "column",
-                    gap: 8,
+                    gap: 7,
                   }}
                 >
                   <button
                     type="button"
                     onClick={copyShareLink}
                     style={{
-                      height: 44,
+                      height: 37,
                       borderRadius: 999,
                       border: "1px solid #E3D8F4",
                       background: "#fff",
                       color: "#4A3A72",
-                      fontSize: 13.5,
+                      fontSize: 13,
                       fontFamily: "inherit",
                       cursor: "pointer",
                       display: "flex",
@@ -302,12 +302,12 @@ export default function LifeBookViewer({
                     type="button"
                     onClick={kakaoShareResult}
                     style={{
-                      height: 44,
+                      height: 37,
                       borderRadius: 999,
                       border: 0,
                       background: "#FFD520",
                       color: "#191919",
-                      fontSize: 13.5,
+                      fontSize: 13,
                       fontWeight: 600,
                       fontFamily: "inherit",
                       cursor: "pointer",
