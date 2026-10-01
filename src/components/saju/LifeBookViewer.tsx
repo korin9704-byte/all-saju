@@ -268,7 +268,7 @@ export default function LifeBookViewer({
                       <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
                     </svg>
                   </button>
-                  <span style={{ fontSize: 10.5, color: "#7A6B9E", whiteSpace: "nowrap", textShadow: "0 0 6px rgba(248,244,253,0.95)" }}>링크 복사</span>
+                  <span style={{ fontSize: 11, color: "#4A3A72", whiteSpace: "nowrap", background: "rgba(255,255,255,0.95)", border: "1px solid #E7DDF8", borderRadius: 999, padding: "2px 9px", boxShadow: "0 2px 8px rgba(74,58,114,0.15)" }}>링크 복사</span>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
                   <button
@@ -295,7 +295,7 @@ export default function LifeBookViewer({
                       />
                     </svg>
                   </button>
-                  <span style={{ fontSize: 10.5, color: "#7A6B9E", whiteSpace: "nowrap", textShadow: "0 0 6px rgba(248,244,253,0.95)" }}>카카오톡 공유</span>
+                  <span style={{ fontSize: 11, color: "#4A3A72", whiteSpace: "nowrap", background: "rgba(255,255,255,0.95)", border: "1px solid #E7DDF8", borderRadius: 999, padding: "2px 9px", boxShadow: "0 2px 8px rgba(74,58,114,0.15)" }}>카카오톡 공유</span>
                 </div>
               </div>
             )}
