@@ -239,28 +239,29 @@ export default function LifeBookViewer({
                   position: "absolute",
                   bottom: "calc(100% + 10px)",
                   right: 0,
-                  width: "min(320px, calc(100vw - 32px))",
-                  background: "#fff",
-                  borderRadius: 18,
-                  padding: "14px 14px 16px",
-                  boxShadow: "0 10px 30px rgba(74,58,114,0.28)",
+                  width: "min(300px, calc(100vw - 32px))",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <circle cx="6" cy="12" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
-                    <circle cx="17" cy="5.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
-                    <circle cx="17" cy="18.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
-                    <path d="M8.4 10.8 L14.7 6.9 M8.4 13.2 L14.7 17.1" stroke="#C95FC0" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: "#4A3A72" }}>공유하기</span>
+                {/* 닫기 — 목차 닫기와 같은 흰 원형 + 낙관 도장 ✕, 카드 밖 우측 상단 */}
+                <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
                   <button
                     type="button"
                     aria-label="공유 닫기"
                     onClick={() => setShareOpen(false)}
-                    style={{ marginLeft: "auto", border: 0, background: "none", cursor: "pointer", padding: 0, lineHeight: 0 }}
+                    style={{
+                      border: 0,
+                      cursor: "pointer",
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      background: "rgba(255,255,255,0.92)",
+                      boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                       <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
                       <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
                     </svg>
@@ -268,19 +269,15 @@ export default function LifeBookViewer({
                 </div>
                 <div
                   style={{
-                    background: "#F3EDFB",
-                    borderRadius: 10,
-                    padding: "10px 12px",
-                    fontSize: 11.5,
-                    color: "#7A6B9E",
-                    wordBreak: "break-all",
-                    lineHeight: 1.5,
-                    marginBottom: 12,
+                    background: "#fff",
+                    borderRadius: 18,
+                    padding: 14,
+                    boxShadow: "0 10px 30px rgba(74,58,114,0.28)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
                   }}
                 >
-                  {shareUrl}
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <button
                     type="button"
                     onClick={copyShareLink}
