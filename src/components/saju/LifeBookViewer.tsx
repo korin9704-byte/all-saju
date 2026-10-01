@@ -231,11 +231,114 @@ export default function LifeBookViewer({
             }}
           >
           {/* 높이 0 컨테이너 위로 세로 스택 — alignSelf로 바닥을 내비 위에 고정 */}
-          <div style={{ alignSelf: "flex-end", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
+          <div style={{ position: "relative", alignSelf: "flex-end", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
+            {/* 공유 팝오버 — 버튼 바로 위에 떠서 열림 */}
+            {share && shareOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "calc(100% + 10px)",
+                  right: 0,
+                  width: "min(320px, calc(100vw - 32px))",
+                  background: "#fff",
+                  borderRadius: 18,
+                  padding: "14px 14px 16px",
+                  boxShadow: "0 10px 30px rgba(74,58,114,0.28)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <circle cx="6" cy="12" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
+                    <circle cx="17" cy="5.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
+                    <circle cx="17" cy="18.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
+                    <path d="M8.4 10.8 L14.7 6.9 M8.4 13.2 L14.7 17.1" stroke="#C95FC0" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                  <span style={{ fontSize: 15, fontWeight: 700, color: "#4A3A72" }}>공유하기</span>
+                  <button
+                    type="button"
+                    aria-label="공유 닫기"
+                    onClick={() => setShareOpen(false)}
+                    style={{ marginLeft: "auto", border: 0, background: "none", cursor: "pointer", padding: 0, lineHeight: 0 }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+                      <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  style={{
+                    background: "#F3EDFB",
+                    borderRadius: 10,
+                    padding: "10px 12px",
+                    fontSize: 11.5,
+                    color: "#7A6B9E",
+                    wordBreak: "break-all",
+                    lineHeight: 1.5,
+                    marginBottom: 12,
+                  }}
+                >
+                  {shareUrl}
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <button
+                    type="button"
+                    onClick={copyShareLink}
+                    style={{
+                      height: 44,
+                      borderRadius: 999,
+                      border: "1px solid #E3D8F4",
+                      background: "#fff",
+                      color: "#4A3A72",
+                      fontSize: 13.5,
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 7,
+                    }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                    링크 복사
+                  </button>
+                  <button
+                    type="button"
+                    onClick={kakaoShareResult}
+                    style={{
+                      height: 44,
+                      borderRadius: 999,
+                      border: 0,
+                      background: "#FFD520",
+                      color: "#191919",
+                      fontSize: 13.5,
+                      fontWeight: 600,
+                      fontFamily: "inherit",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 7,
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                      <path
+                        d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
+                        fill="#191919"
+                      />
+                    </svg>
+                    카카오톡으로 공유
+                  </button>
+                </div>
+              </div>
+            )}
             {share && (
               <button
                 type="button"
-                onClick={() => setShareOpen(true)}
+                onClick={() => setShareOpen((v) => !v)}
                 aria-label="결과지 공유"
                 // 스티커 아웃라인 공유 버튼 — 핑크 링 + 연보라 전송 화살표 + 잉크 테두리 + 주변 도트
                 style={{ border: 0, cursor: "pointer", background: "none", padding: 0, width: 54, height: 54, lineHeight: 0 }}
@@ -348,124 +451,10 @@ export default function LifeBookViewer({
           </button>
         </nav>
 
-        {/* 공유 시트 — 링크 복사 / 카카오톡 공유 */}
+
+        {/* 공유 팝오버 바깥 클릭 닫기 (투명 오버레이) */}
         {share && shareOpen && (
-          <div
-            onClick={() => setShareOpen(false)}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 60,
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "center",
-              background: "rgba(74,58,114,0.35)",
-            }}
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                width: "100%",
-                maxWidth: 512,
-                background: "#fff",
-                borderRadius: "20px 20px 0 0",
-                padding: "20px 20px 28px",
-                boxShadow: "0 -8px 28px rgba(122,95,190,0.2)",
-              }}
-            >
-              {/* 헤더 — 핑크 공유 아이콘 + 제목 + 낙관 도장 닫기 */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <circle cx="6" cy="12" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
-                  <circle cx="17" cy="5.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
-                  <circle cx="17" cy="18.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
-                  <path d="M8.4 10.8 L14.7 6.9 M8.4 13.2 L14.7 17.1" stroke="#C95FC0" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
-                <span style={{ fontSize: 16, fontWeight: 700, color: "#4A3A72" }}>공유하기</span>
-                <button
-                  type="button"
-                  aria-label="공유 닫기"
-                  onClick={() => setShareOpen(false)}
-                  style={{ marginLeft: "auto", border: 0, background: "none", cursor: "pointer", padding: 0, lineHeight: 0 }}
-                >
-                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
-                    <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* 결과지 링크 */}
-              <div
-                style={{
-                  background: "#F3EDFB",
-                  borderRadius: 12,
-                  padding: "12px 14px",
-                  fontSize: 12.5,
-                  color: "#7A6B9E",
-                  wordBreak: "break-all",
-                  lineHeight: 1.5,
-                  marginBottom: 14,
-                }}
-              >
-                {shareUrl}
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <button
-                  type="button"
-                  onClick={copyShareLink}
-                  style={{
-                    height: 48,
-                    borderRadius: 999,
-                    border: "1px solid #E3D8F4",
-                    background: "#fff",
-                    color: "#4A3A72",
-                    fontSize: 14,
-                    fontFamily: "inherit",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                  }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
-                    <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
-                  </svg>
-                  링크 복사
-                </button>
-                <button
-                  type="button"
-                  onClick={kakaoShareResult}
-                  style={{
-                    height: 48,
-                    borderRadius: 999,
-                    border: 0,
-                    background: "#FFD520",
-                    color: "#191919",
-                    fontSize: 14,
-                    fontWeight: 600,
-                    fontFamily: "inherit",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                    <path
-                      d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
-                      fill="#191919"
-                    />
-                  </svg>
-                  카카오톡으로 공유
-                </button>
-              </div>
-            </div>
-          </div>
+          <div onClick={() => setShareOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 24 }} />
         )}
 
         {/* 추가 질문 — 고민(자유 입력) 또는 재회(상황 선택 + 자유 입력) 시트 */}
