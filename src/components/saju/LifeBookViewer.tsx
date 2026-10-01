@@ -57,6 +57,7 @@ export default function LifeBookViewer({
   const [cur, setCur] = useState(0);
   const [tocOpen, setTocOpen] = useState(false);
   const [askOpen, setAskOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLSpanElement>(null);
   const [trackW, setTrackW] = useState(170);
@@ -100,10 +101,20 @@ export default function LifeBookViewer({
   const label = `${cur + 1} / ${N}`;
   const fillPct = ((cur + 1) / N) * 100;
 
-  // 결과지 공유 — 카카오톡(SDK) → 기기 공유 시트 → 링크 복사 순 폴백
-  async function doShare() {
+  // 공유 시트 — 링크 복사 / 카카오톡 공유
+  const shareUrl = typeof window !== "undefined" ? window.location.origin + window.location.pathname : "";
+
+  async function copyShareLink() {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("결과지 링크가 복사됐어요!");
+    } catch {
+      toast.error("링크 복사에 실패했어요. 잠시 후 다시 시도해 주세요.");
+    }
+  }
+
+  async function kakaoShareResult() {
     if (!share) return;
-    const url = window.location.origin + window.location.pathname;
     const kakao = window.Kakao;
     if (kakao?.isInitialized?.() && kakao.Share) {
       try {
@@ -113,7 +124,7 @@ export default function LifeBookViewer({
             title: share.title,
             description: "냥이가 답을 찾아 드릴게요!",
             imageUrl: `${window.location.origin}/images/${share.imageSlug}.png`,
-            link: { mobileWebUrl: url, webUrl: url },
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
           },
         });
         return;
@@ -121,20 +132,8 @@ export default function LifeBookViewer({
         // SDK 오류 — 아래 폴백으로
       }
     }
-    if (navigator.share) {
-      try {
-        await navigator.share({ text: `${share.title} ${url}` });
-      } catch {
-        // 공유 시트를 닫은 경우 등 — 무시
-      }
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success("결과지 링크가 복사됐어요. 붙여넣어 공유해 보세요!");
-    } catch {
-      toast.error("링크 복사에 실패했어요. 잠시 후 다시 시도해 주세요.");
-    }
+    // 카카오 SDK 불가 — 링크 복사로 대신
+    await copyShareLink();
   }
 
   return (
@@ -236,7 +235,7 @@ export default function LifeBookViewer({
             {share && (
               <button
                 type="button"
-                onClick={doShare}
+                onClick={() => setShareOpen(true)}
                 aria-label="결과지 공유"
                 style={{
                   border: 0,
@@ -348,6 +347,126 @@ export default function LifeBookViewer({
             &#8250;
           </button>
         </nav>
+
+        {/* 공유 시트 — 링크 복사 / 카카오톡 공유 */}
+        {share && shareOpen && (
+          <div
+            onClick={() => setShareOpen(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 60,
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              background: "rgba(74,58,114,0.35)",
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: "100%",
+                maxWidth: 512,
+                background: "#fff",
+                borderRadius: "20px 20px 0 0",
+                padding: "20px 20px 28px",
+                boxShadow: "0 -8px 28px rgba(122,95,190,0.2)",
+              }}
+            >
+              {/* 헤더 — 핑크 공유 아이콘 + 제목 + 낙관 도장 닫기 */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <circle cx="6" cy="12" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
+                  <circle cx="17" cy="5.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
+                  <circle cx="17" cy="18.5" r="2.6" stroke="#C95FC0" strokeWidth="1.8" />
+                  <path d="M8.4 10.8 L14.7 6.9 M8.4 13.2 L14.7 17.1" stroke="#C95FC0" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+                <span style={{ fontSize: 16, fontWeight: 700, color: "#4A3A72" }}>공유하기</span>
+                <button
+                  type="button"
+                  aria-label="공유 닫기"
+                  onClick={() => setShareOpen(false)}
+                  style={{ marginLeft: "auto", border: 0, background: "none", cursor: "pointer", padding: 0, lineHeight: 0 }}
+                >
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="#C95FC0" />
+                    <path d="M7.5 7.5 L14.5 14.5 M14.5 7.5 L7.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* 결과지 링크 */}
+              <div
+                style={{
+                  background: "#F3EDFB",
+                  borderRadius: 12,
+                  padding: "12px 14px",
+                  fontSize: 12.5,
+                  color: "#7A6B9E",
+                  wordBreak: "break-all",
+                  lineHeight: 1.5,
+                  marginBottom: 14,
+                }}
+              >
+                {shareUrl}
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <button
+                  type="button"
+                  onClick={copyShareLink}
+                  style={{
+                    height: 48,
+                    borderRadius: 999,
+                    border: "1px solid #E3D8F4",
+                    background: "#fff",
+                    color: "#4A3A72",
+                    fontSize: 14,
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
+                    <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                  링크 복사
+                </button>
+                <button
+                  type="button"
+                  onClick={kakaoShareResult}
+                  style={{
+                    height: 48,
+                    borderRadius: 999,
+                    border: 0,
+                    background: "#FFD520",
+                    color: "#191919",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    fontFamily: "inherit",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                    <path
+                      d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
+                      fill="#191919"
+                    />
+                  </svg>
+                  카카오톡으로 공유
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* 추가 질문 — 고민(자유 입력) 또는 재회(상황 선택 + 자유 입력) 시트 */}
         {ask && askOpen && (
