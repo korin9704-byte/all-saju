@@ -325,7 +325,7 @@ export default function LifeBookViewer({
                       gap: 7,
                     }}
                   >
-                    카카오톡으로 공유
+                    카카오톡 공유
                   </button>
                 </div>
               </div>
