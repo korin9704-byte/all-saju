@@ -321,7 +321,11 @@ export default function LifeBookViewer({
                   <circle cx="42.5" cy="9" r="2.2" fill="#DCD2F5" stroke="#4A3A72" strokeWidth="1.4" />
                   <circle cx="24" cy="25" r="16.5" fill="#C95FC0" stroke="#4A3A72" strokeWidth="2.2" />
                   <circle cx="24" cy="25" r="12.3" fill="#F8F4FD" stroke="#4A3A72" strokeWidth="2" />
-                  <path d="M31.5 17.5 L15.5 24.3 L22.2 26.3 L24.2 33.3 Z" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.8" strokeLinejoin="round" />
+                  {/* 노드 공유 글리프 — 굵은 채움형 */}
+                  <path d="M18 25 L30 18.5 M18 25 L30 31.5" stroke="#8F7BD6" strokeWidth="3" strokeLinecap="round" />
+                  <circle cx="18" cy="25" r="3.4" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.5" />
+                  <circle cx="30" cy="18.5" r="3.4" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.5" />
+                  <circle cx="30" cy="31.5" r="3.4" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.5" />
                 </svg>
               </button>
             )}
