@@ -269,22 +269,27 @@ export default function LifeBookViewer({
                 </div>
                 <div
                   style={{
-                    background: "#fff",
+                    position: "relative",
+                    background: "#F8F4FD",
+                    border: "2px solid #4A3A72",
                     borderRadius: 16,
                     padding: 10,
-                    boxShadow: "0 10px 30px rgba(74,58,114,0.28)",
+                    boxShadow: "0 8px 20px rgba(74,58,114,0.25)",
                     display: "flex",
                     flexDirection: "column",
                     gap: 7,
                   }}
                 >
+                  {/* 스티커 장식 도트 — 공유 버튼의 주변 도트와 세트 */}
+                  <span style={{ position: "absolute", left: -7, top: -7, width: 10, height: 10, borderRadius: "50%", background: "#C95FC0", border: "1.5px solid #4A3A72" }} />
+                  <span style={{ position: "absolute", right: -6, bottom: -6, width: 8, height: 8, borderRadius: "50%", background: "#DCD2F5", border: "1.5px solid #4A3A72" }} />
                   <button
                     type="button"
                     onClick={copyShareLink}
                     style={{
                       height: 37,
                       borderRadius: 999,
-                      border: "1px solid #E3D8F4",
+                      border: "1.5px solid #4A3A72",
                       background: "#fff",
                       color: "#4A3A72",
                       fontSize: 13,
@@ -304,7 +309,7 @@ export default function LifeBookViewer({
                     style={{
                       height: 37,
                       borderRadius: 999,
-                      border: 0,
+                      border: "1.5px solid #4A3A72",
                       background: "#FFD520",
                       color: "#191919",
                       fontSize: 13,
