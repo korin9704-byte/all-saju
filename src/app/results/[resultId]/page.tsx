@@ -131,15 +131,7 @@ export default async function ResultPage({
           };
       }
       // 인생 사주에는 추가 질문(플로팅) 버튼을 노출하지 않는다 — 고민 사주 뷰어 전용
-      return (
-        <LifeBookViewer
-          payload={lifePayload}
-          storageKey={`nyang_life_pos_${result.id}`}
-          siblingTab={siblingTab}
-          isLoggedIn={!!viewer}
-          share={{ title: "내 ‘인생 사주’ 결과지 봐봐~", imageSlug: "life-saju" }}
-        />
-      );
+      return <LifeBookViewer payload={lifePayload} storageKey={`nyang_life_pos_${result.id}`} siblingTab={siblingTab} isLoggedIn={!!viewer} />;
     }
   }
 
@@ -372,10 +364,6 @@ export default async function ResultPage({
         currentTabLabel={isReunionResult ? "재회 사주" : "고민 사주"}
         isLoggedIn={!!viewer}
         ask={viewerAsk}
-        share={{
-          title: `내 ‘${isReunionFamily ? "재회 사주" : "고민 사주"}’ 결과지 봐봐~`,
-          imageSlug: isReunionFamily ? "reunion-saju" : "trouble-saju",
-        }}
       />
     );
   }
