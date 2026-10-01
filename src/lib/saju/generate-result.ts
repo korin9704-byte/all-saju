@@ -56,12 +56,13 @@ export async function parsePartnerFromConcerns(concerns: string[]): Promise<{
   const birthMatch     = partnerConcern.match(/생년월일:(\d{4}-\d{2}-\d{2})/);
   const timeMatch      = partnerConcern.match(/시간:([^\s]+)/);
   const genderMatch    = partnerConcern.match(/성별:(남성|여성)/);
-  const calendarMatch  = partnerConcern.match(/달력:(양력|음력)/);
+  const calendarMatch  = partnerConcern.match(/달력:(양력|음력윤달|음력)/);
 
   const partnerName      = nameMatch?.[1] === "미입력" ? undefined : nameMatch?.[1];
   const partnerBirthDate = birthMatch?.[1];
   const partnerGender    = genderMatch?.[1] === "남성" ? ("male" as const) : ("female" as const);
-  const partnerCalendar: "solar" | "lunar" = calendarMatch?.[1] === "음력" ? "lunar" : "solar";
+  const partnerCalendar: "solar" | "lunar" = calendarMatch?.[1]?.startsWith("음력") ? "lunar" : "solar";
+  const partnerIsLeap = calendarMatch?.[1] === "음력윤달";
   const partnerTimeRaw = timeMatch?.[1] ?? "";
   const partnerTimeUnknown = !partnerTimeRaw || partnerTimeRaw === "시간모름" || partnerTimeRaw === "미입력";
   const partnerBirthTime: string | null = partnerTimeUnknown ? null : partnerTimeRaw;
@@ -81,6 +82,7 @@ export async function parsePartnerFromConcerns(concerns: string[]): Promise<{
       birthDay: String(parseInt(pd, 10)),
       ...(hasT ? { birthHour: String(parseInt(phh!, 10)), birthMinute: String(parseInt(pmm!, 10)) } : {}),
       calendarType: partnerCalendar === "lunar" ? "음력" : "양력",
+      ...(partnerIsLeap ? { isLeapMonth: true } : {}),
     });
     const pillar = (p: { gan: string; ji: string }) => ({ cheongan: p.gan, jiji: p.ji });
     partnerMyeongsik = {
@@ -110,6 +112,7 @@ type SajuInputRow = {
   birth_time: string | null;     // "HH:mm"
   time_unknown: boolean;
   calendar: "solar" | "lunar";
+  is_leap_month?: boolean | null;
   gender: "male" | "female";
   concerns: string[];
 };
@@ -124,6 +127,7 @@ function toBirthInfo(input: SajuInputRow): BirthInfo {
     birthDay: String(parseInt(d, 10)),
     ...(hasTime ? { birthHour: String(parseInt(hh!, 10)), birthMinute: String(parseInt(mm!, 10)) } : {}),
     calendarType: input.calendar === "lunar" ? "음력" : "양력",
+    ...(input.calendar === "lunar" && input.is_leap_month ? { isLeapMonth: true } : {}),
     gender: input.gender,
   };
 }
@@ -147,6 +151,7 @@ function toComputeInput(input: SajuInputRow) {
     birthTime: input.birth_time,
     timeUnknown: input.time_unknown,
     calendar: input.calendar,
+    isLeapMonth: !!input.is_leap_month,
     gender: input.gender,
   };
 }
@@ -266,6 +271,7 @@ export async function generateAndStoreResult(
         birthTime: input.birth_time,
         timeUnknown: input.time_unknown,
         calendar: input.calendar,
+        isLeapMonth: !!input.is_leap_month,
         gender: input.gender,
       });
     }
@@ -446,6 +452,7 @@ export async function generateBundleResults(
       time_unknown: input.time_unknown,
       gender: input.gender,
       calendar: input.calendar,
+      is_leap_month: input.is_leap_month ?? false,
       concerns: parentConcerns.filter(
         (c) => typeof c === "string" && (c.startsWith("[직업]") || c.startsWith("[연애]")),
       ),

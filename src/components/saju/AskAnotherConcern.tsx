@@ -16,6 +16,8 @@ export type AskSaju = {
   birthTime: string | null;
   timeUnknown: boolean;
   calendar: "solar" | "lunar";
+  /** 음력 윤달 출생 여부 */
+  isLeapMonth?: boolean;
   gender: "male" | "female";
 };
 
@@ -58,6 +60,7 @@ export function AskAnotherConcern({
           timeUnknown: saju.timeUnknown,
           gender: saju.gender,
           calendar: saju.calendar,
+          isLeapMonth: saju.isLeapMonth ?? false,
           concerns: [concern.trim()],
           guestEmail: guestEmail ?? undefined,
         }),

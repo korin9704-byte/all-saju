@@ -76,6 +76,8 @@ export type LocalFullInput = {
   birthTime: string | null;      // "HH:mm"
   timeUnknown: boolean;
   calendar: "solar" | "lunar";
+  /** 음력일 때만 의미 — 윤달 출생 여부 */
+  isLeapMonth?: boolean;
   gender: "male" | "female";
 };
 
@@ -90,6 +92,7 @@ export function computeLocalFullAnalysis(input: LocalFullInput, now: Date = new 
     birthDay: String(parseInt(d, 10)),
     ...(hasTime ? { birthHour: String(parseInt(hh!, 10)), birthMinute: String(parseInt(mm!, 10)) } : {}),
     calendarType: input.calendar === "lunar" ? "음력" : "양력",
+    ...(input.calendar === "lunar" && input.isLeapMonth ? { isLeapMonth: true } : {}),
     gender: input.gender,
   }, now);
 

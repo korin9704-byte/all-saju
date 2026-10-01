@@ -101,7 +101,7 @@ export default async function ResultPage({
 
   const { data: sajuInput } = await service
     .from("saju_inputs")
-    .select("name, birth_date, birth_time, time_unknown, calendar, gender, concerns")
+    .select("name, birth_date, birth_time, time_unknown, calendar, is_leap_month, gender, concerns")
     .eq("order_id", result.order_id)
     .maybeSingle();
 
@@ -144,6 +144,7 @@ export default async function ResultPage({
     birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
     timeUnknown: !!sajuInput.time_unknown,
     calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+    isLeapMonth: !!sajuInput.is_leap_month,
     gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
   } : null;
 
@@ -240,7 +241,7 @@ export default async function ResultPage({
       [
         sajuInput.birth_date ? formatBirthDate(sajuInput.birth_date) : "",
         sajuInput.time_unknown ? "" : sajuInput.birth_time ? formatTime(sajuInput.birth_time) : "",
-        `(${sajuInput.calendar === "lunar" ? "음력" : "양력"})`,
+        `(${sajuInput.calendar === "lunar" ? (sajuInput.is_leap_month ? "음력 윤달" : "음력") : "양력"})`,
       ]
         .filter(Boolean)
         .join(" ") + ` · ${sajuInput.gender === "male" ? "남성" : "여성"}`;
@@ -254,6 +255,7 @@ export default async function ResultPage({
         birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
         timeUnknown: !!sajuInput.time_unknown,
         calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+        isLeapMonth: !!sajuInput.is_leap_month,
         gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
       });
       msCardHtml = buildMyeongsikCardHtml(analysis, sajuInput.name ?? "고객", birthLabel);
@@ -274,19 +276,22 @@ export default async function ResultPage({
           const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
           const { buildMyeongsikCardHtml } = await import("@/lib/saju/life-report");
           const pTime = partnerTag.match(/시간:([0-2]?\d:\d{2})/)?.[1] ?? null;
-          const pCalendar = (partnerTag.match(/달력:(양력|음력)/)?.[1] === "음력" ? "lunar" : "solar") as "lunar" | "solar";
+          const pCalRaw = partnerTag.match(/달력:(양력|음력윤달|음력)/)?.[1];
+          const pCalendar = (pCalRaw?.startsWith("음력") ? "lunar" : "solar") as "lunar" | "solar";
+          const pIsLeap = pCalRaw === "음력윤달";
           const pAnalysis = computeLocalFullAnalysis({
             birthDate: partner.partnerBirthDate,
             birthTime: pTime,
             timeUnknown: !pTime,
             calendar: pCalendar,
+            isLeapMonth: pIsLeap,
             gender: (partner.partnerGender ?? "male") as "male" | "female",
           });
           const pBirthLabel =
             [
               formatBirthDate(partner.partnerBirthDate),
               pTime ? formatTime(pTime) : "",
-              `(${pCalendar === "lunar" ? "음력" : "양력"})`,
+              `(${pCalendar === "lunar" ? (pIsLeap ? "음력 윤달" : "음력") : "양력"})`,
             ]
               .filter(Boolean)
               .join(" ") + (partner.partnerGender ? ` · ${partner.partnerGender === "male" ? "남성" : "여성"}` : "");

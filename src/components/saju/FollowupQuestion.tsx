@@ -14,6 +14,8 @@ export type FollowupSaju = {
   birthTime: string | null;        // HH:MM
   timeUnknown: boolean;
   calendar: "solar" | "lunar";
+  /** 음력 윤달 출생 여부 */
+  isLeapMonth?: boolean;
   gender: "male" | "female";
 };
 
@@ -48,6 +50,7 @@ export function FollowupQuestion({
           timeUnknown: saju.timeUnknown,
           gender: saju.gender,
           calendar: saju.calendar,
+          isLeapMonth: saju.isLeapMonth ?? false,
           concerns: [question.trim()],
           guestEmail: guestEmail ?? undefined,
         }),

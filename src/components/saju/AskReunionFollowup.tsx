@@ -55,6 +55,7 @@ export function AskReunionFollowup({
           timeUnknown: saju.timeUnknown,
           gender: saju.gender,
           calendar: saju.calendar,
+          isLeapMonth: saju.isLeapMonth ?? false,
           concerns: [
             // 선택지에서 시작했으면 [상황] 태그로도 기록 (직접 입력만 했으면 질문 텍스트만)
             ...(situation ? [`[상황] ${situation}`] : []),

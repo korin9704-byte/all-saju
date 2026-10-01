@@ -9,6 +9,21 @@
 // luckyloveme 응답과 대조 검증을 통과한 뒤 교체한다.
 
 import { Solar, Lunar } from "lunar-typescript";
+import KoreanLunarCalendar from "korean-lunar-calendar";
+
+/** 음력 → 양력 변환 — 한국천문연구원(KASI) 기준.
+ *  lunar-typescript 는 중국 음력(UTC+8 합삭)이라 한국 음력과 달에 따라 하루 어긋날 수 있다.
+ *  korean-lunar-calendar(KASI 데이터, 1000~2050년)를 주경로로 쓰고, 범위 밖이면 중국 음력으로 폴백. */
+function lunarToSolarKorean(y: number, mo: number, d: number, isLeap: boolean): { y: number; mo: number; d: number } {
+  const cal = new KoreanLunarCalendar();
+  if (cal.setLunarDate(y, mo, d, isLeap)) {
+    const s = cal.getSolarCalendar();
+    return { y: s.year, mo: s.month, d: s.day };
+  }
+  console.warn(`[local-ganji] KASI 음양력 변환 범위 밖(${y}-${mo}-${d}${isLeap ? " 윤달" : ""}) — 중국 음력으로 폴백`);
+  const solar = Lunar.fromYmd(y, isLeap ? -mo : mo, d).getSolar();
+  return { y: solar.getYear(), mo: solar.getMonth(), d: solar.getDay() };
+}
 
 export type LocalGanjiInput = {
   birthYear: string;   // "1990"
@@ -94,8 +109,8 @@ export function resolveBirth(input: LocalGanjiInput): ResolvedBirth {
 
   let sy = y, smo = mo, sd = d;
   if (input.calendarType === "음력") {
-    const solar = Lunar.fromYmd(y, input.isLeapMonth ? -mo : mo, d).getSolar();
-    sy = solar.getYear(); smo = solar.getMonth(); sd = solar.getDay();
+    const solar = lunarToSolarKorean(y, mo, d, !!input.isLeapMonth);
+    sy = solar.y; smo = solar.mo; sd = solar.d;
   }
 
   let cy = sy, cmo = smo, cd = sd, ch = h, cmi = mi;

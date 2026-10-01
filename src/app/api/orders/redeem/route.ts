@@ -17,6 +17,7 @@ const bodySchema = z.object({
   timeUnknown: z.boolean(),
   gender: z.enum(["male", "female"]),
   calendar: z.enum(["solar", "lunar"]),
+  isLeapMonth: z.boolean().optional(),
   concerns: z.array(z.string().max(350)).max(20),
   guestEmail: z.string().email().optional(),
 });
@@ -102,6 +103,7 @@ export async function POST(request: NextRequest) {
     time_unknown: body.timeUnknown,
     gender: body.gender,
     calendar: body.calendar,
+    is_leap_month: body.calendar === "lunar" ? (body.isLeapMonth ?? false) : false,
     concerns: body.concerns,
   });
 
