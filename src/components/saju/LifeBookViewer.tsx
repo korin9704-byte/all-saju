@@ -296,10 +296,6 @@ export default function LifeBookViewer({
                       gap: 7,
                     }}
                   >
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                      <path d="M10 14a4.5 4.5 0 006.4 0l3.2-3.2a4.5 4.5 0 00-6.4-6.4l-1.6 1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
-                      <path d="M14 10a4.5 4.5 0 00-6.4 0l-3.2 3.2a4.5 4.5 0 006.4 6.4l1.6-1.6" stroke="#7A6B9E" strokeWidth="1.8" strokeLinecap="round" />
-                    </svg>
                     링크 복사
                   </button>
                   <button
@@ -321,12 +317,6 @@ export default function LifeBookViewer({
                       gap: 7,
                     }}
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                      <path
-                        d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 6l-.9 3.3c-.1.3.3.6.6.4l3.9-2.6c.4 0 .8.1 1.2.1 5 0 9-3.1 9-7.2S17 4 12 4z"
-                        fill="#191919"
-                      />
-                    </svg>
                     카카오톡으로 공유
                   </button>
                 </div>
