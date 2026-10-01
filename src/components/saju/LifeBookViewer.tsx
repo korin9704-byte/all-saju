@@ -8,6 +8,7 @@
 // 표지 없이 1장부터 바로 시작한다 (과거 payload 의 표지 뷰는 걸러냄).
 
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import type { LifeReportPayload } from "@/lib/saju/life-report";
 import { LIFEBOOK_CSS } from "./lifebook-css";
 import { HeaderMenu } from "@/components/HeaderMenu";
@@ -27,6 +28,7 @@ export default function LifeBookViewer({
   currentTabLabel = "인생 사주",
   isLoggedIn = false,
   ask,
+  share,
 }: {
   payload: LifeReportPayload;
   storageKey: string;
@@ -46,6 +48,8 @@ export default function LifeBookViewer({
     variant?: "trouble" | "reunion";
     contextTags?: string[];
   };
+  /** 플로팅 공유 버튼 — 카카오톡 → 기기 공유 시트 → 링크 복사 순 폴백 */
+  share?: { title: string; imageSlug: string };
 }) {
   // 과거 생성분에 표지 뷰(label === "")가 있으면 제외하고 1장부터 시작
   const views = payload.views.filter((v) => v.label !== "");
@@ -95,6 +99,43 @@ export default function LifeBookViewer({
 
   const label = `${cur + 1} / ${N}`;
   const fillPct = ((cur + 1) / N) * 100;
+
+  // 결과지 공유 — 카카오톡(SDK) → 기기 공유 시트 → 링크 복사 순 폴백
+  async function doShare() {
+    if (!share) return;
+    const url = window.location.origin + window.location.pathname;
+    const kakao = window.Kakao;
+    if (kakao?.isInitialized?.() && kakao.Share) {
+      try {
+        kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: share.title,
+            description: "냥이가 답을 찾아 드릴게요!",
+            imageUrl: `${window.location.origin}/images/${share.imageSlug}.png`,
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+        });
+        return;
+      } catch {
+        // SDK 오류 — 아래 폴백으로
+      }
+    }
+    if (navigator.share) {
+      try {
+        await navigator.share({ text: `${share.title} ${url}` });
+      } catch {
+        // 공유 시트를 닫은 경우 등 — 무시
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("결과지 링크가 복사됐어요. 붙여넣어 공유해 보세요!");
+    } catch {
+      toast.error("링크 복사에 실패했어요. 잠시 후 다시 시도해 주세요.");
+    }
+  }
 
   return (
     <div className="lifebook" ref={rootRef}>
@@ -166,7 +207,7 @@ export default function LifeBookViewer({
         })()}
 
         {/* 플로팅 버튼이 본문 마지막 줄을 가리지 않도록 하단 여백 확보 */}
-        <main style={ask ? { paddingBottom: 76 } : undefined}>
+        <main style={ask || share ? { paddingBottom: ask && share ? 132 : 76 } : undefined}>
           <article className="view on">
             {/* "01. 제목" 한 줄 — 제목 끝 마침표 제거, sub 뷰(고민·재회)도 인생 사주와 같은 장 제목 스타일 */}
             <h2 className="chapter">
@@ -177,8 +218,8 @@ export default function LifeBookViewer({
           </article>
         </main>
 
-        {/* 플로팅 추가 질문 버튼 — 모든 장에서 하단 내비 위에 떠 있음 */}
-        {ask && (
+        {/* 플로팅 공유·추가 질문 버튼 — 모든 장에서 하단 내비 위에 떠 있음 */}
+        {(ask || share) && (
           <div
             style={{
               position: "sticky",
@@ -190,11 +231,39 @@ export default function LifeBookViewer({
               zIndex: 25,
             }}
           >
+          {/* 높이 0 컨테이너 위로 세로 스택 — alignSelf로 바닥을 내비 위에 고정 */}
+          <div style={{ alignSelf: "flex-end", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
+            {share && (
+              <button
+                type="button"
+                onClick={doShare}
+                aria-label="결과지 공유"
+                style={{
+                  border: 0,
+                  cursor: "pointer",
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  background: "#C95FC0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 6px 18px rgba(201,95,192,0.35)",
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <circle cx="6" cy="12" r="2.6" stroke="#fff" strokeWidth="1.8" />
+                  <circle cx="17" cy="5.5" r="2.6" stroke="#fff" strokeWidth="1.8" />
+                  <circle cx="17" cy="18.5" r="2.6" stroke="#fff" strokeWidth="1.8" />
+                  <path d="M8.4 10.8 L14.7 6.9 M8.4 13.2 L14.7 17.1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+              </button>
+            )}
+            {ask && (
             <button
               type="button"
               onClick={() => setAskOpen(true)}
               style={{
-                transform: "translateY(-100%)",
                 border: 0,
                 cursor: "pointer",
                 borderRadius: 999,
@@ -242,6 +311,8 @@ export default function LifeBookViewer({
                 </>
               )}
             </button>
+            )}
+          </div>
           </div>
         )}
 
