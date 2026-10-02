@@ -30,12 +30,14 @@ export const LIFEBOOK_CSS = `
 .lifebook .avatar{flex:none;width:38px;height:38px;border-radius:50%;background:#F6DDF0 center/cover no-repeat;overflow:hidden;}
 .lifebook .nyan.noav .avatar{visibility:hidden;}
 .lifebook .say{position:relative;}
-.lifebook .nyan.tail .say::after{content:'';position:absolute;left:-6px;bottom:2px;width:14px;height:14px;background:#EDE6F9;border-radius:0 0 14px 0;clip-path:polygon(0 100%,100% 100%,100% 0);}
+/* 인스타툰식 말풍선 꼬리 — 잉크 테두리 삼각형 위에 흰 삼각형을 겹쳐 선 느낌을 만든다 */
+.lifebook .nyan.tail .say::before{content:'';position:absolute;left:-10px;bottom:1px;width:17px;height:17px;background:#4A3A72;border-radius:0 0 15px 0;clip-path:polygon(0 100%,100% 100%,100% 0);}
+.lifebook .nyan.tail .say::after{content:'';position:absolute;left:-5px;bottom:3.5px;width:12px;height:12px;background:#fff;border-radius:0 0 11px 0;clip-path:polygon(0 100%,100% 100%,100% 0);}
 .lifebook .me{display:flex;justify-content:flex-end;margin:14px 0;}
 .lifebook .say-me{position:relative;max-width:80%;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border-radius:16px;padding:12px 16px;font-size:14.5px;line-height:1.85;}
 .lifebook .say-me::after{content:'';position:absolute;right:-6px;bottom:2px;width:14px;height:14px;background:var(--pink);border-radius:0 0 0 14px;clip-path:polygon(0 100%,100% 100%,0 0);}
 .lifebook .nyan.noav{margin-top:-6px;}
-.lifebook .say{background:#EDE6F9;border:0;border-radius:16px;padding:12px 16px;font-size:14.5px;line-height:1.85;}
+.lifebook .say{background:#fff;border:2px solid #4A3A72;border-radius:18px;padding:12px 16px;font-size:14.5px;line-height:1.85;}
 .lifebook .say b{font-family:'Gowun Dodum';font-weight:400;color:#7761C8;}
 .lifebook .tbl{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:12.5px;}
 .lifebook .tbl th,.lifebook .tbl td{border:1px solid var(--line);padding:7px 4px;text-align:center;}
@@ -62,7 +64,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .ch-banner{background:linear-gradient(135deg,#EDE6F9 0%,#FBE7F3 55%,#FDEFE3 100%);border-radius:16px;padding:38px 20px 34px;text-align:center;margin:2px 0 22px;}
 .lifebook .ch-label{font-size:12px;color:var(--pink);letter-spacing:.24em;margin:0 0 8px;}
 .lifebook .ch-title{font-family:'Gowun Dodum';font-weight:400;font-size:27px;margin:0;color:var(--ink);}
-.lifebook .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px 16px;margin:20px 0;}
+.lifebook .card{background:#fff;border:2px solid #4A3A72;border-radius:14px;padding:18px 14px 16px;margin:20px 0;}
 .lifebook .card.slim{padding:8px 14px 4px;}
 .lifebook .card.slim .gauge{margin:6px 2px 8px;}
 .lifebook .card-title{font-family:'Gowun Dodum';font-weight:400;font-size:18px;text-align:center;margin:0 0 4px;}
