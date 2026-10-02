@@ -101,6 +101,14 @@ type SajuApiCallRow = {
   source: string | null;
 };
 
+type ShareEventRow = {
+  id: string;
+  result_id: string;
+  product_slug: string;
+  channel: "link" | "kakao";
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -222,6 +230,18 @@ export type Database = {
           source?: string | null;
         };
         Update: Partial<SajuApiCallRow>;
+        Relationships: [];
+      };
+      share_events: {
+        Row: ShareEventRow;
+        Insert: {
+          id?: string;
+          result_id: string;
+          product_slug?: string;
+          channel: "link" | "kakao";
+          created_at?: string;
+        };
+        Update: Partial<ShareEventRow>;
         Relationships: [];
       };
     };
