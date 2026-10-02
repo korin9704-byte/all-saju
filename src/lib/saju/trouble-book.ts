@@ -135,10 +135,8 @@ export function buildTroubleBookPayload(opts: {
       if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 ${concernWord}<`);
       const cardWithQ = card + qBlock;
       return (
-        // 인생 사주와 동일하게 말풍선 그룹의 첫 버블에만 꼬리를 단다
-        `<div class="nyan tail"><span class="say">안녕하세요, ${esc(name)}님. 냥점의 점술사 묘묘예요. 이렇게 인연이 닿아 정말 기뻐요.</span></div>` +
-        `<div class="nyan"><span class="say">보내주신 ${concernWord}, 제가 찬찬히 들여다봤어요.</span></div>` +
-        `<div class="nyan"><span class="say">먼저 보기 쉽게 표로 정리했어요.</span></div>` +
+        // 인사 말풍선 세 개 대신 인스타툰 컷 이미지 (이름 없는 범용 인사)
+        `<img class="toon-intro" src="/images/moyo-intro.png" alt="냥점의 점술사 묘묘의 인사" />` +
         cardWithQ +
         `<div class="nyan tail"><span class="say">이제 풀이 준비가 끝났어요.</span></div>` +
         `<div class="nyan"><span class="say">다음 장부터 ${esc(name)}님의 ${concernWord}을 본격적으로 풀어드릴게요.</span></div>`

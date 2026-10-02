@@ -26,6 +26,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .sec-div{display:flex;align-items:center;gap:12px;margin:34px 0 16px;}
 .lifebook .sec-div span{font-family:'Gowun Dodum';font-size:18px;color:var(--ink);flex:none;}
 .lifebook .sec-div::before,.lifebook .sec-div::after{content:'';height:1px;background:var(--line);flex:1;}
+.lifebook .toon-intro{display:block;width:100%;border-radius:16px;margin:4px 0 16px;}
 .lifebook .nyan{display:flex;gap:9px;align-items:flex-start;margin:16px 0;}
 .lifebook .avatar{flex:none;width:38px;height:38px;border-radius:50%;background:#F6DDF0 center/cover no-repeat;overflow:hidden;}
 .lifebook .nyan.noav .avatar{visibility:hidden;}
