@@ -209,15 +209,14 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 알약 세그먼트 — 연보라 트랙 + 활성은 흰 알약
+          // 박스 속 박스 스타일 — 바깥 먹 테두리 트랙, 활성 칸만 먹 테두리 + 연보라 채움 미니 박스
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
           const cell: React.CSSProperties = {
-            padding: "8px 22px",
+            padding: "8px 20px",
             fontSize: 14,
             textDecoration: "none",
-            borderRadius: 999,
-            color: "#7A6B9E",
+            color: "#1E1B28",
           };
           const link = (
             <a key="link" href={siblingTab.href} style={cell}>
@@ -229,9 +228,9 @@ export default function LifeBookViewer({
               key="cur"
               style={{
                 ...cell,
-                background: "#fff",
-                color: "#4A3A72",
-                boxShadow: "0 2px 6px rgba(74,58,114,.15)",
+                background: "#EDE6F9",
+                border: "2px solid #1E1B28",
+                borderRadius: 2,
               }}
             >
               {currentTabLabel}
@@ -243,8 +242,9 @@ export default function LifeBookViewer({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  background: "#E7DDF8",
-                  borderRadius: 999,
+                  background: "#fff",
+                  border: "2px solid #1E1B28",
+                  borderRadius: 2,
                   padding: 4,
                 }}
               >
