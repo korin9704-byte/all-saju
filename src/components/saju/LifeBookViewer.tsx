@@ -187,8 +187,9 @@ export default function LifeBookViewer({
       />
       <style dangerouslySetInnerHTML={{ __html: LIFEBOOK_CSS }} />
       <div className="app">
-        {/* 사이트 공통 헤더와 같은 모습 — 로고는 홈으로, 발바닥은 목차 열기 */}
-        <header className="top">
+        {/* 사이트 공통 헤더와 같은 모습 — 로고는 홈으로, 발바닥은 목차 열기.
+            번들 탭이 있으면 헤더 선을 먹색으로 바꿔 탭 박스와 한 몸으로 잇는다 */}
+        <header className="top" style={siblingTab ? { borderBottom: "2px solid #1E1B28" } : undefined}>
           <a
             href="/"
             className="logo"
@@ -232,14 +233,16 @@ export default function LifeBookViewer({
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
           return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 2px" }}>
+            <div style={{ display: "flex", justifyContent: "center", padding: "0 16px 2px" }}>
+              {/* 헤더 먹색 선을 물고 내려오는 박스 — 위로 2px 겹쳐 한 몸으로 */}
               <div
                 style={{
                   display: "flex",
                   background: "#fff",
                   border: "2px solid #1E1B28",
-                  borderRadius: 2,
+                  borderRadius: "0 0 4px 4px",
                   padding: 3,
+                  marginTop: -2,
                 }}
               >
                 {currentFirst ? [current, link] : [link, current]}
