@@ -509,7 +509,7 @@ export function buildReunionBookPayload(opts: {
   );
   views.push({
     label: "1장",
-    title: "이야기를 시작하며",
+    title: "프롤로그 Prologue",
     html: prologueParts.join(""),
     sub: true,
   });
