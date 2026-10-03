@@ -209,23 +209,30 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 두 칸 표 스타일 — 먹 테두리, 가운데 구분선, 활성 칸 연보라 채움
+          // 박스 속 박스 스타일 — 바깥 먹 테두리 트랙, 활성 칸만 먹 테두리 + 연보라 채움 미니 박스
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
-          const cell = (first: boolean): React.CSSProperties => ({
-            padding: "9px 22px",
+          const cell: React.CSSProperties = {
+            padding: "8px 20px",
             fontSize: 14,
             textDecoration: "none",
             color: "#1E1B28",
-            borderRight: first ? "2px solid #1E1B28" : undefined,
-          });
-          const link = (first: boolean) => (
-            <a key="link" href={siblingTab.href} style={cell(first)}>
+          };
+          const link = (
+            <a key="link" href={siblingTab.href} style={cell}>
               {siblingTab.label}
             </a>
           );
-          const current = (first: boolean) => (
-            <span key="cur" style={{ ...cell(first), background: "#EDE6F9" }}>
+          const current = (
+            <span
+              key="cur"
+              style={{
+                ...cell,
+                background: "#EDE6F9",
+                border: "2px solid #1E1B28",
+                borderRadius: 2,
+              }}
+            >
               {currentTabLabel}
             </span>
           );
@@ -234,13 +241,14 @@ export default function LifeBookViewer({
               <div
                 style={{
                   display: "flex",
+                  alignItems: "center",
                   background: "#fff",
                   border: "2px solid #1E1B28",
                   borderRadius: 2,
-                  overflow: "hidden",
+                  padding: 4,
                 }}
               >
-                {currentFirst ? [current(true), link(false)] : [link(true), current(false)]}
+                {currentFirst ? [current, link] : [link, current]}
               </div>
             </div>
           );
