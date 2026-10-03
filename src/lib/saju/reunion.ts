@@ -377,9 +377,8 @@ function gaugeCard(title: string, score: number, caption: string, note?: string)
   return `<div class="card gauge-card">
 <h4 class="sub-h">${esc(title)}</h4>
 ${note ? `<p class="sub-note">${esc(note)}</p>` : ""}
-<div class="gauge"><div class="g-lab"><span class="g-cur" style="left:${score}%">${score}점</span></div>
-<div class="g-track"><span class="g-dot" style="left:${score}%"></span></div>
-<div class="g-ends"><span>낮음</span><span>보통</span><span>높음</span></div></div>
+<div class="gauge"><div class="g-lab kr"><span class="g-cur" style="left:${score}%">${score}점</span></div>
+<div class="g-track"><span class="g-dot" style="left:${score}%"></span></div></div>
 <p class="gauge-cap">${esc(caption)}</p>
 </div>`;
 }
@@ -390,9 +389,8 @@ function miniGaugesCard(items: { label: string; score: number }[]): string {
     .map(
       (it) => `<div class="mini-g">
 <p class="mini-g-label">${esc(it.label)}</p>
-<div class="gauge"><div class="g-lab"><span class="g-cur" style="left:${it.score}%">${it.score}점</span></div>
-<div class="g-track"><span class="g-dot" style="left:${it.score}%"></span></div>
-<div class="g-ends"><span>낮음</span><span>보통</span><span>높음</span></div></div>
+<div class="gauge"><div class="g-lab kr"><span class="g-cur" style="left:${it.score}%">${it.score}점</span></div>
+<div class="g-track"><span class="g-dot" style="left:${it.score}%"></span></div></div>
 </div>`,
     )
     .join("");
