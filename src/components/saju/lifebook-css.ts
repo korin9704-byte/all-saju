@@ -183,7 +183,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .ms-tag{font-size:12.5px;color:var(--mute);margin:0 0 3px;}
 .lifebook .gw svg{display:block;width:100%;height:150px;}
 .lifebook .gw-lbl{display:flex;justify-content:space-between;margin-top:4px;}
-.lifebook .gw-lbl p{flex:1;text-align:center;font-size:11.5px;color:var(--body);margin:0;line-height:1.5;}
+.lifebook .gw-lbl p{flex:1;text-align:center;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:14px;color:var(--body);margin:0;line-height:1.5;}
 .lifebook .gw-lbl b{display:block;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-weight:400;font-size:15px;color:#C0399F;}
 .lifebook .sub-h.kr-h{font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:20px;font-weight:400;}
 .lifebook .ring-row{display:flex;justify-content:space-between;gap:8px;}
