@@ -168,8 +168,10 @@ export function buildTroubleBookPayload(opts: {
       const qBlock = question
         ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
-      let card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
-      if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 ${concernWord}<`);
+      // 카드 제목 제거, 부제를 "이름 · 생년월일시 (양력) · 성별" 한 줄로
+      const card = (myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik))
+        .replace(/<(h3|p) class="card-title">[\s\S]*?<\/\1>/, "")
+        .replace('<p class="card-sub">', `<p class="card-sub">${esc(name)} · `);
       const cardWithQ = card + qBlock;
       return (
         // 묘묘 아바타 + 채팅 버블 (이름표 없음)
