@@ -390,8 +390,8 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     return `<td${cls ? ` class="${cls}"` : ""}>${content}</td>`;
   };
   const seunCard = seun.length
-    ? `<section class="card"><h3 class="card-title">${name}님의 세운표</h3>` +
-      `<p class="card-desc">해마다 바뀌는 한 해의 기운, 앞으로 5년의 세운이에요.</p>` +
+    ? `<section class="card"><h4 class="sub-h">세운 — 해마다 바뀌는 한 해의 기운</h4>` +
+      `<p class="sub-note">앞으로 5년, ${name}님에게 찾아올 한 해 한 해의 기운이에요.</p>` +
       `<div class="daeun-scroll"><table class="daeun">` +
       `<tr><th>연도</th>${seun.map((s) => scell(Number(s.year), String(s.year))).join("")}</tr>` +
       `<tr><th>나이</th>${seun.map((s) => scell(Number(s.year), `${s.age}세`)).join("")}</tr>` +
