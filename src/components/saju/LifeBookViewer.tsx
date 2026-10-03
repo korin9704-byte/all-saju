@@ -111,6 +111,12 @@ export default function LifeBookViewer({
       }, 1100);
       const img = new Image();
       const started = Date.now();
+      // 연출이 도는 동안 붓글씨 폰트를 미리 로드해 둔다
+      try {
+        document.fonts?.load("80px 'Nanum Brush Script'");
+      } catch {
+        /* ignore */
+      }
       img.onload = () => {
         const wait = Math.max(0, 5300 - (Date.now() - started));
         setTimeout(() => {
@@ -124,26 +130,40 @@ export default function LifeBookViewer({
             const ctx = cv.getContext("2d");
             if (ctx) {
               ctx.drawImage(img, 0, 0);
-              // 세로 이름 각인 — 문양 위에서도 읽히게 괴황지 색 후광을 먼저 두른다
-              const fs = Math.round(cv.width * 0.055);
-              ctx.font = `${fs}px 'Gowun Dodum', serif`;
+              // 세로 이름 각인 — 다른 문양처럼 종이에 먹이 스며든 붓글씨 느낌:
+              // multiply 블렌딩(종이 질감이 비침) + 글자별 흔들림 + 번짐 레이어
+              const fs = Math.round(cv.width * 0.075);
+              ctx.font = `${fs}px 'Nanum Brush Script', 'Gowun Dodum', serif`;
               ctx.textAlign = "center";
               ctx.textBaseline = "middle";
-              ctx.lineJoin = "round";
-              const x = cv.width * 0.935;
-              const drawCol = (pass: "halo" | "ink") => {
-                let y = cv.height * 0.075;
-                for (const ch of name) {
-                  if (pass === "halo") ctx.strokeText(ch, x, y);
-                  else ctx.fillText(ch, x, y);
-                  y += fs * 1.16;
-                }
+              ctx.globalCompositeOperation = "multiply";
+              const x0 = cv.width * 0.915;
+              let y = cv.height * 0.07;
+              let seed = 0;
+              for (const ch of name) seed += ch.charCodeAt(0);
+              const rnd = () => {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280 - 0.5;
               };
-              ctx.lineWidth = fs * 0.42;
-              ctx.strokeStyle = "rgba(242,197,92,0.9)";
-              drawCol("halo");
-              ctx.fillStyle = "rgba(110,16,6,0.88)";
-              drawCol("ink");
+              for (const ch of name) {
+                const jx = rnd() * fs * 0.14;
+                const rot = rnd() * 0.09;
+                ctx.save();
+                ctx.translate(x0 + jx, y);
+                ctx.rotate(rot);
+                // 1) 먹 번짐 — 흐린 그림자를 넓게 (그림과 같은 주사 빨강 계열)
+                ctx.shadowColor = "rgba(205,50,22,0.5)";
+                ctx.shadowBlur = fs * 0.14;
+                ctx.fillStyle = "rgba(205,52,24,0.45)";
+                ctx.fillText(ch, 0, 0);
+                // 2) 본 획 — 주사 빨강
+                ctx.shadowBlur = fs * 0.04;
+                ctx.fillStyle = "rgba(186,32,14,0.85)";
+                ctx.fillText(ch, 0, 0);
+                ctx.restore();
+                y += fs * 1.08;
+              }
+              ctx.globalCompositeOperation = "source-over";
               url = cv.toDataURL("image/png");
             }
           } catch {
