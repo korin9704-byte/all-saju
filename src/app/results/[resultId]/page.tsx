@@ -109,6 +109,16 @@ export default async function ResultPage({
   if (product?.slug === LIFE_SLUG) {
     const lifePayload = parseLifePayload(result.interpretation_md);
     if (lifePayload) {
+      // 과거 생성분 소급 — 1장 제목과 명식표 카드 헤더를 현행 규격으로 치환
+      const pn = lifePayload.name;
+      lifePayload.views = lifePayload.views.map((v) => ({
+        ...v,
+        title: v.title === "나의 사주팔자" ? "프롤로그 Prologue" : v.title,
+        html: v.html.replace(
+          `<h3 class="card-title">${pn}님의 사주</h3><p class="card-sub">`,
+          `<p class="card-sub">${pn} · `,
+        ),
+      }));
       // 번들 자식 주문(-jt)이면 부모(고민/재회 사주) 결과지로 가는 탭 제공
       let siblingTab: { label: string; href: string } | undefined;
       if (order?.order_id?.endsWith("-jt")) {
