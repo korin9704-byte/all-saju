@@ -209,10 +209,10 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 둥근 먹 테두리 세그먼트 — 활성 탭은 연보라 알약 + 잉크 테두리
+          // 각진 네모 세그먼트 — 장 제목 박스와 세트 (그림자 없음)
           const base: React.CSSProperties = {
             padding: "7px 20px",
-            borderRadius: 999,
+            borderRadius: 2,
             fontSize: 14,
             textDecoration: "none",
           };
@@ -238,7 +238,7 @@ export default function LifeBookViewer({
                   display: "flex",
                   background: "#fff",
                   border: "2px solid #1E1B28",
-                  borderRadius: 999,
+                  borderRadius: 2,
                   padding: 3,
                 }}
               >
