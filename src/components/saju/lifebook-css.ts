@@ -14,8 +14,9 @@ export const LIFEBOOK_CSS = `
 .lifebook .view.on{display:block;}
 .lifebook .part{margin:0 0 8px;}
 .lifebook .part span{display:inline-block;background:var(--soft);color:var(--ink);font-size:11.5px;letter-spacing:.06em;padding:4px 12px;border-radius:999px;}
-.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 22px;line-height:1.4;position:relative;padding:0 0 14px;border-bottom:2px dashed #D4C7EE;}
-.lifebook .chapter::after{content:'✂';position:absolute;right:4px;bottom:-12px;font-size:15px;color:#B9A8DE;background:#FFFEFE;padding:0 5px;transform:scaleX(-1);}
+.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 22px;line-height:1.4;position:relative;padding:0 0 16px;}
+.lifebook .chapter::before{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:repeating-linear-gradient(90deg,#B79BE0 0 7px,transparent 7px 13px,#E899BC 13px 20px,transparent 20px 26px);}
+.lifebook .chapter::after{content:'☽';position:absolute;right:2px;bottom:-10px;font-size:17px;color:#D9A93E;background:#FFFEFE;padding:0 5px;}
 .lifebook .para{font-size:15px;line-height:2.0;margin:0 0 14px;text-align:justify;}
 .lifebook .para.small{font-size:12px;color:var(--mute);}
 .lifebook .hl{color:var(--pink);font-weight:400;}
