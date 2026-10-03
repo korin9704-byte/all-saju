@@ -224,7 +224,7 @@ export default function LifeBookViewer({
           const current = (
             <span
               key="cur"
-              style={{ ...base, background: "#1E1B28", color: "#fff" }}
+              style={{ ...base, background: "#C0399F", color: "#fff" }}
             >
               {currentTabLabel}
             </span>
