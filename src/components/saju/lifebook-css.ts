@@ -176,6 +176,8 @@ export const LIFEBOOK_CSS = `
 /* ── 재회 사주 위젯: 점수 게이지 · 미니 게이지 · 골든타임 캘린더 · 행동 리스트 ── */
 .lifebook .gauge-card{text-align:center;}
 .lifebook .gauge-card .sub-h,.lifebook .gauge-card .sub-note{text-align:left;}
+.lifebook .g-track.sm{height:7px;border-radius:4px;background:var(--pink);position:relative;margin:2px 0 14px;}
+.lifebook .g-dot.sm{position:absolute;top:50%;transform:translate(-50%,-50%);width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--pink);box-shadow:0 1px 3px rgba(74,58,114,.25);}
 .lifebook .gauge-num{font-family:'Gowun Dodum';font-size:28px;line-height:1.1;margin:8px 0 10px;color:var(--pink);}
 .lifebook .gauge-num small{font-size:14px;color:var(--body);margin-left:2px;}
 .lifebook .gauge-track{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;}
