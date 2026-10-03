@@ -181,7 +181,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge-ring::after{content:'';position:absolute;inset:11px;border-radius:50%;background:#fff;}
 .lifebook .gauge-ring b{position:relative;z-index:1;font-weight:400;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:30px;color:#C0399F;}
 .lifebook .ms-tag{font-size:12.5px;color:var(--mute);margin:0 0 3px;}
-.lifebook .sub-h.kr-h{font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:20px;font-weight:400;}
+.lifebook .sub-h.kr-h,.lifebook .gauge-card .sub-h.kr-h{font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:20px;font-weight:400;text-align:center;}
 .lifebook .ring-row{display:flex;justify-content:space-between;gap:8px;}
 .lifebook .ring-item{flex:1;text-align:center;}
 .lifebook .gauge-ring.sm{width:78px;height:78px;}
