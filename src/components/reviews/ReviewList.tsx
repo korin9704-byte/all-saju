@@ -26,16 +26,11 @@ export function ReviewList({ reviews, title = "생생 후기", initialCount = 2 
           </h2>
         </div>
       )}
-      {/* 결과지 묘묘 말풍선 스타일 — 별점·날짜 위, 꼬리 달린 연보라 버블 */}
+      {/* 결과지 묘묘 말풍선 스타일 — 흰 버블 + 연보라 테두리 + 비대칭 라운드 */}
       <ul className="space-y-[18px]">
         {displayed.map((r) => (
           <li key={r.id}>
-            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
-              <span
-                className="absolute -left-1.5 bottom-0.5 w-3.5 h-3.5 bg-[#EDE6F9] rounded-br-[14px]"
-                style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
-                aria-hidden
-              />
+            <div className="w-fit max-w-full rounded-[4px_16px_16px_16px] bg-white border border-[#E7DDF8] px-4 py-3 shadow-[0_2px_6px_rgba(74,58,114,0.06)]">
               <p className="text-[14.5px] text-charcoal leading-[1.85]">{r.content}</p>
             </div>
             {/* 상품명 — 전체 리뷰 페이지처럼 여러 상품이 섞일 때 구분용 */}
@@ -50,7 +45,7 @@ export function ReviewList({ reviews, title = "생생 후기", initialCount = 2 
         <div className="relative mt-[18px]">
           {/* 잘려 보이는 다음 리뷰 */}
           <div className="max-h-[110px] overflow-hidden" aria-hidden>
-            <div className="relative w-fit max-w-full rounded-2xl bg-[#EDE6F9] px-4 py-3">
+            <div className="w-fit max-w-full rounded-[4px_16px_16px_16px] bg-white border border-[#E7DDF8] px-4 py-3 shadow-[0_2px_6px_rgba(74,58,114,0.06)]">
               <p className="text-[14.5px] text-charcoal leading-[1.85]">{teaser.content}</p>
             </div>
           </div>
