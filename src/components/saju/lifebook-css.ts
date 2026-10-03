@@ -176,6 +176,14 @@ export const LIFEBOOK_CSS = `
 /* ── 재회 사주 위젯: 점수 게이지 · 미니 게이지 · 골든타임 캘린더 · 행동 리스트 ── */
 .lifebook .gauge-card{text-align:center;}
 .lifebook .gauge-card .sub-h,.lifebook .gauge-card .sub-note{text-align:left;}
+.lifebook .gauge-ring{width:122px;height:122px;border-radius:50%;margin:6px auto 0;display:flex;align-items:center;justify-content:center;position:relative;}
+.lifebook .gauge-ring::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--pink) calc(var(--p)*1%),var(--soft) 0);}
+.lifebook .gauge-ring::after{content:'';position:absolute;inset:11px;border-radius:50%;background:#fff;}
+.lifebook .gauge-ring b{position:relative;z-index:1;font-weight:400;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:30px;color:#C0399F;}
+.lifebook .mini-g{display:flex;align-items:center;gap:12px;}
+.lifebook .mini-g-lb{flex:1;font-size:13.5px;margin:0;color:var(--ink);}
+.lifebook .mini-g .gauge-track{width:130px;flex:none;}
+.lifebook .mini-g-sc{font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:20px;color:#C0399F;width:44px;text-align:right;}
 .lifebook .g-track.sm{height:7px;border-radius:4px;background:var(--pink);position:relative;margin:2px 0 14px;}
 .lifebook .g-dot.sm{position:absolute;top:50%;transform:translate(-50%,-50%);width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--pink);box-shadow:0 1px 3px rgba(74,58,114,.25);}
 .lifebook .gauge-num{font-family:'Gowun Dodum';font-size:28px;line-height:1.1;margin:8px 0 10px;color:var(--pink);}
