@@ -127,7 +127,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .oh-chip.zero .oh-badge{opacity:.55}
 .lifebook .sub-note{font-size:12px;color:var(--mute);margin:0 0 10px;line-height:1.7;}
 .lifebook .card .sub-h{margin-top:20px;}
-.lifebook .card .sub-h:first-of-type{margin-top:14px;}
+.lifebook .card .sub-h:first-of-type{margin-top:2px;}
 .lifebook .card.nt .sub-h:first-of-type{margin-top:2px;}
 .lifebook .oh-bars .bar-val{width:92px;}
 .lifebook .ys-chips{display:flex;gap:8px;margin:18px 2px 6px;}
