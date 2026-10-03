@@ -14,7 +14,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .view.on{display:block;}
 .lifebook .part{margin:0 0 8px;}
 .lifebook .part span{display:inline-block;background:var(--soft);color:var(--ink);font-size:11.5px;letter-spacing:.06em;padding:4px 12px;border-radius:999px;}
-.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:17.5px;margin:0 auto 22px;line-height:1.55;text-align:center;color:#1E1B28;background:#EDE6F9;border:2px solid #1E1B28;border-radius:2px;padding:10px 24px;width:fit-content;max-width:100%;}
+.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:17.5px;margin:0 auto 24px;line-height:1.55;text-align:center;color:#1E1B28;background:#EDE6F9;border:2px solid #1E1B28;border-radius:2px;padding:10px 24px;width:fit-content;max-width:calc(100% - 6px);box-shadow:4px 4px 0 rgba(30,27,40,.85);}
 .lifebook .para{font-size:15px;line-height:2.0;margin:0 0 14px;text-align:justify;}
 .lifebook .para.small{font-size:12px;color:var(--mute);}
 .lifebook .hl{color:var(--pink);font-weight:400;}
