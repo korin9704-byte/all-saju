@@ -372,10 +372,11 @@ function simpleMsCard(title: string, subtitle: string, ms: Myeongsik): string {
 </div>`;
 }
 
-/** 큰 점수 게이지 카드 */
-function gaugeCard(title: string, score: number, caption: string): string {
+/** 큰 점수 게이지 카드 — 소제목(sub-h) + 선택 설명(sub-note) 형식 */
+function gaugeCard(title: string, score: number, caption: string, note?: string): string {
   return `<div class="card gauge-card">
-<p class="card-title">${esc(title)}</p>
+<h4 class="sub-h">${esc(title)}</h4>
+${note ? `<p class="sub-note">${esc(note)}</p>` : ""}
 <p class="gauge-num">${score}<small>점</small></p>
 <div class="gauge-track"><div class="gauge-fill" style="width:${score}%"></div></div>
 <p class="gauge-cap">${esc(caption)}</p>
@@ -392,7 +393,7 @@ function miniGaugesCard(items: { label: string; score: number }[]): string {
 </div>`,
     )
     .join("");
-  return `<div class="card">${rows}</div>`;
+  return `<div class="card"><h4 class="sub-h">세부 흐름</h4><p class="sub-note">재회를 좌우하는 세 가지 흐름이에요.</p>${rows}</div>`;
 }
 
 function reunionCaption(score: number): string {
@@ -480,7 +481,7 @@ export function buildReunionBookPayload(opts: {
   if (scores) {
     prologueParts.push(
       `<div class="nyan"><span class="say">가장 궁금하실 것부터 먼저 보여드릴게요.</span></div>`,
-      gaugeCard("두 사람이 다시 만날 가능성", scores.reunion, reunionCaption(scores.reunion)),
+      gaugeCard("재회 가능성", scores.reunion, reunionCaption(scores.reunion), "사주 궁합과 현재 흐름을 종합해 계산했어요."),
       miniGaugesCard([
         { label: "그 사람의 재회 마음", score: scores.partnerMind },
         { label: "두 사람의 인연 궁합", score: scores.chemistry },
