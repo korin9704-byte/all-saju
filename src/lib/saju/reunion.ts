@@ -402,44 +402,33 @@ function reunionCaption(score: number): string {
   return "이 인연은 놓아주는 쪽이 편할 수 있어요.";
 }
 
-/** 골든타임 캘린더 카드 — 날짜가 속한 달들을 달력으로 그리고 해당 날짜에 표식 */
+/** 골든타임 캘린더 카드 — 날짜가 든 한 주만 잘라서 보여주는 주간 스트립 */
 function calendarCard(golden: { date: string; pct: number }[]): string {
   if (golden.length === 0) return "";
-  const byMonth = new Map<string, { day: number; pct: number }[]>();
-  for (const g of golden) {
-    const [y, m, d] = g.date.split("-").map(Number);
-    const key = `${y}-${String(m).padStart(2, "0")}`;
-    if (!byMonth.has(key)) byMonth.set(key, []);
-    byMonth.get(key)!.push({ day: d, pct: g.pct });
-  }
-  const months = [...byMonth.keys()].sort().slice(0, 3);
-  const tables = months
-    .map((key) => {
-      const [y, m] = key.split("-").map(Number);
-      const marks = new Map(byMonth.get(key)!.map((x) => [x.day, x.pct]));
-      const first = new Date(y, m - 1, 1);
-      const daysInMonth = new Date(y, m, 0).getDate();
+  const W = ["일", "월", "화", "수", "목", "금", "토"];
+  const ORD = ["첫째", "둘째", "셋째", "넷째", "다섯째", "여섯째"];
+  const weeks = golden
+    .slice(0, 3)
+    .map((g) => {
+      const [y, m, d] = g.date.split("-").map(Number);
+      const dow = new Date(y, m - 1, d).getDay();
+      const start = new Date(y, m - 1, d - dow);
+      const firstDow = new Date(y, m - 1, 1).getDay();
+      const ord = ORD[Math.floor((d + firstDow - 1) / 7)] ?? "";
       let cells = "";
-      let row = "";
-      for (let i = 0; i < first.getDay(); i++) row += "<td></td>";
-      for (let d = 1; d <= daysInMonth; d++) {
-        const pct = marks.get(d);
-        row += pct !== undefined
-          ? `<td><span class="cal-hit">${d}</span><span class="cal-pct">${pct}%</span></td>`
-          : `<td>${d}</td>`;
-        if ((first.getDay() + d) % 7 === 0) { cells += `<tr>${row}</tr>`; row = ""; }
+      for (let i = 0; i < 7; i++) {
+        const c = new Date(start);
+        c.setDate(start.getDate() + i);
+        const inMonth = c.getMonth() === m - 1;
+        const hit = inMonth && c.getDate() === d;
+        cells += hit
+          ? `<div class="gt-cell hit"><small>${W[i]}</small>${c.getDate()}<b>${g.pct}%</b></div>`
+          : `<div class="gt-cell"><small>${W[i]}</small>${inMonth ? c.getDate() : "&nbsp;"}</div>`;
       }
-      if (row) cells += `<tr>${row}</tr>`;
-      return `<div class="cal">
-<p class="cal-title">${y}년 ${m}월</p>
-<table class="cal-tbl">
-<tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr>
-${cells}
-</table>
-</div>`;
+      return `<div class="gt-week"><p class="gt-title">${y}년 ${m}월 ${ord} 주</p><div class="gt-row">${cells}</div></div>`;
     })
     .join("");
-  return `<div class="card cal-card">${tables}</div>`;
+  return `<div class="card"><h4 class="sub-h kr-h">재회의 골든타임</h4>${weeks}</div>`;
 }
 
 export function buildReunionBookPayload(opts: {

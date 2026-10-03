@@ -181,6 +181,15 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge-ring::after{content:'';position:absolute;inset:11px;border-radius:50%;background:#fff;}
 .lifebook .gauge-ring b{position:relative;z-index:1;font-weight:400;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:30px;color:#C0399F;}
 .lifebook .ms-tag{font-size:12.5px;color:var(--mute);margin:0 0 3px;}
+.lifebook .gt-week{margin:0 0 16px;}
+.lifebook .gt-week:last-child{margin-bottom:0;}
+.lifebook .gt-title{font-size:12.5px;color:var(--mute);margin:0 0 7px;}
+.lifebook .gt-row{display:flex;gap:4px;}
+.lifebook .gt-cell{flex:1;text-align:center;padding:8px 0 9px;border-radius:9px;background:#F8F4FE;font-size:13px;color:var(--body);}
+.lifebook .gt-cell small{display:block;font-size:10px;color:var(--mute);margin-bottom:3px;}
+.lifebook .gt-cell.hit{background:var(--pink);color:#fff;}
+.lifebook .gt-cell.hit small{color:#F6DFF3;}
+.lifebook .gt-cell.hit b{display:block;font-weight:400;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:12px;margin-top:2px;}
 .lifebook .sub-h.kr-h{font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:20px;font-weight:400;}
 .lifebook .ring-row{display:flex;justify-content:space-between;gap:8px;}
 .lifebook .ring-item{flex:1;text-align:center;}
