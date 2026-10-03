@@ -392,7 +392,7 @@ function miniGaugesCard(items: { label: string; score: number }[]): string {
 </div>`,
     )
     .join("");
-  return `<div class="card"><h4 class="sub-h">세부 흐름 — 재회를 움직이는 세 개의 축</h4><p class="sub-note">하나씩 뜯어보면 두 사람의 지금이 보여요.</p><div class="ring-row">${rows}</div></div>`;
+  return `<div class="card"><h4 class="sub-h">세부 흐름 — 재회를 움직이는 세 개의 축</h4><div class="ring-row" style="margin-top:16px">${rows}</div></div>`;
 }
 
 function reunionCaption(score: number): string {
@@ -480,7 +480,7 @@ export function buildReunionBookPayload(opts: {
   if (scores) {
     prologueParts.push(
       `<div class="nyan"><span class="say">가장 궁금하실 것부터 먼저 보여드릴게요.</span></div>`,
-      gaugeCard("재회 가능성 — 끊어진 인연이 다시 이어질 힘", scores.reunion, reunionCaption(scores.reunion), "사주 궁합과 현재 흐름을 종합해 계산했어요."),
+      gaugeCard("재회 가능성 — 끊어진 인연이 다시 이어질 힘", scores.reunion, reunionCaption(scores.reunion)),
       miniGaugesCard([
         { label: "그 사람의\n재회 마음", score: scores.partnerMind },
         { label: "두 사람의\n인연 궁합", score: scores.chemistry },
