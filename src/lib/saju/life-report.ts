@@ -433,7 +433,7 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
   const ysChips = `<div class="ys-chips">${ysChip("용신", yong, true)}${ysChip("희신", hee)}${ysChip("기신", gi)}</div>`;
 
   const ohengCardFull =
-    `<section class="card"><h3 class="card-title">${name}님의 오행 &amp; 용신</h3>` +
+    `<section class="card">` +
     `<h4 class="sub-h">오행 분포 — 겉으로 보이는 오행의 개수</h4>` +
     `<p class="sub-note">천간과 지지 여덟 글자를 오행별로 세어 본 숫자예요.</p>` +
     `<div class="oh-chips">${ohChips}</div>` +
@@ -444,9 +444,7 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     `<p class="sub-note">사주의 균형을 잡아 주는 오행(용신)과 돕는 오행(희신), 조심할 오행(기신)이에요.</p>` +
     ysChips +
     `</section>`;
-  const ohengCardCompact = ohengCardFull
-    .replace(`<h3 class="card-title">${name}님의 오행 &amp; 용신</h3>`, "")
-    .replace('<section class="card">', '<section class="card nt">');
+  const ohengCardCompact = ohengCardFull.replace('<section class="card">', '<section class="card nt">');
 
   // 신강신약 슬라이더
   const GAUGE = ["극약", "태약", "신약", "중화", "신강", "태강", "극왕"];

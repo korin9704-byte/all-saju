@@ -120,6 +120,7 @@ export default async function ResultPage({
             `<p class="card-sub">${pn} · `,
           )
           .replace(`<h3 class="card-title">${pn}님의 대운표</h3>`, "")
+          .replace(`<h3 class="card-title">${pn}님의 오행 &amp; 용신</h3>`, "")
           // 카드 설명 캡션도 묘묘 말풍선으로
           .replace(/<p class="caption">([\s\S]*?)<\/p>/g, '<div class="nyan"><span class="say">$1</span></div>'),
       }));
