@@ -209,26 +209,26 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 알약 세그먼트 — 연보라 트랙 + 활성은 흰 알약
+          // 알약 세그먼트 — 왼쪽 벽에 딱 붙임, 오른쪽만 둥글게
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
-          const cell: React.CSSProperties = {
+          const cell = (first: boolean): React.CSSProperties => ({
             padding: "8px 22px",
             fontSize: 14,
             textDecoration: "none",
-            borderRadius: 999,
+            borderRadius: first ? "0 999px 999px 0" : 999,
             color: "#7A6B9E",
-          };
-          const link = (
-            <a key="link" href={siblingTab.href} style={cell}>
+          });
+          const link = (first: boolean) => (
+            <a key="link" href={siblingTab.href} style={cell(first)}>
               {siblingTab.label}
             </a>
           );
-          const current = (
+          const current = (first: boolean) => (
             <span
               key="cur"
               style={{
-                ...cell,
+                ...cell(first),
                 background: "#fff",
                 color: "#4A3A72",
                 boxShadow: "0 2px 6px rgba(74,58,114,.15)",
@@ -238,17 +238,17 @@ export default function LifeBookViewer({
             </span>
           );
           return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 2px" }}>
+            <div style={{ display: "flex", padding: "12px 16px 2px 0" }}>
               <div
                 style={{
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
                   background: "#E7DDF8",
-                  borderRadius: 999,
-                  padding: 4,
+                  borderRadius: "0 999px 999px 0",
+                  padding: "4px 4px 4px 0",
                 }}
               >
-                {currentFirst ? [current, link] : [link, current]}
+                {currentFirst ? [current(true), link(false)] : [link(true), current(false)]}
               </div>
             </div>
           );
