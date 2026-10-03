@@ -374,7 +374,7 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     return `<td${cls ? ` class="${cls}"` : ""}>${content}</td>`;
   };
   const daeunCard = allDaeun.length
-    ? `<section class="card"><h3 class="card-title">${name}님의 대운표</h3>` +
+    ? `<section class="card">` +
       `<p class="card-desc">${name}님의 대운 주기는 ${d.daeun_start_age}세부터 시작해 10년 주기로 찾아와요.</p>` +
       `<div class="daeun-scroll"><table class="daeun">` +
       `<tr><th>연도</th>${allDaeun.map((x) => dcell(x, String(x.year_start))).join("")}</tr>` +
