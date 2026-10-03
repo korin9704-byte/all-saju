@@ -27,6 +27,9 @@ export const LIFEBOOK_CSS = `
 .lifebook .sec-div span{font-family:'Gowun Dodum';font-size:18px;color:var(--ink);flex:none;}
 .lifebook .sec-div::before,.lifebook .sec-div::after{content:'';height:1px;background:var(--line);flex:1;}
 .lifebook .toon-intro{display:block;width:100%;border-radius:16px;margin:4px 0 16px;}
+.lifebook .bujeok-img{display:block;width:74%;max-width:300px;margin:18px auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(74,58,114,.22);}
+.lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;height:48px;max-width:320px;margin:18px auto 8px;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border-radius:14px;font-family:'Gowun Dodum';font-size:15px;text-decoration:none;box-shadow:0 4px 14px rgba(240,128,170,.35);}
+.lifebook .bujeok-btn:active{transform:scale(.98);}
 .lifebook .nyan{display:flex;gap:9px;align-items:flex-start;margin:16px 0;}
 .lifebook .avatar{flex:none;width:38px;height:38px;border-radius:50%;background:#F6DDF0 center/cover no-repeat;overflow:hidden;}
 .lifebook .nyan.noav .avatar{visibility:hidden;}
