@@ -217,7 +217,7 @@ export default function LifeBookViewer({
             fontSize: 14,
             textDecoration: "none",
             borderRadius: first ? "0 999px 999px 0" : 999,
-            color: "#7A6B9E",
+            color: "#1E1B28",
           });
           const link = (first: boolean) => (
             <a key="link" href={siblingTab.href} style={cell(first)}>
@@ -230,7 +230,7 @@ export default function LifeBookViewer({
               style={{
                 ...cell(first),
                 background: "#fff",
-                color: "#4A3A72",
+                color: "#1E1B28",
                 boxShadow: "0 2px 6px rgba(74,58,114,.15)",
               }}
             >
