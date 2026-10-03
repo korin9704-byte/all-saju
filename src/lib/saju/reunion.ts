@@ -375,7 +375,7 @@ function simpleMsCard(title: string, subtitle: string, ms: Myeongsik): string {
 /** 큰 점수 게이지 카드 — 도넛 링 + 기랑해랑 점수 */
 function gaugeCard(title: string, score: number, caption: string, note?: string): string {
   return `<div class="card gauge-card">
-<h4 class="sub-h">${esc(title)}</h4>
+<h4 class="sub-h kr-h">${esc(title)}</h4>
 ${note ? `<p class="sub-note">${esc(note)}</p>` : ""}
 <div class="gauge-ring" style="--p:${score}"><b>${score}점</b></div>
 <p class="gauge-cap">${esc(caption)}</p>
@@ -392,7 +392,7 @@ function miniGaugesCard(items: { label: string; score: number }[]): string {
 </div>`,
     )
     .join("");
-  return `<div class="card"><h4 class="sub-h">세부 흐름 — 재회를 움직이는 세 개의 축</h4><div class="ring-row" style="margin-top:16px">${rows}</div></div>`;
+  return `<div class="card"><h4 class="sub-h kr-h">세부 흐름 — 재회를 움직이는 세 개의 축</h4><div class="ring-row" style="margin-top:16px">${rows}</div></div>`;
 }
 
 function reunionCaption(score: number): string {
