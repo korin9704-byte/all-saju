@@ -163,10 +163,10 @@ export const LIFEBOOK_CSS = `
 .lifebook .toc-btn{border:0;width:40px;height:40px;border-radius:50%;background:var(--soft);color:var(--ink);font-size:11.5px;font-family:'Gowun Dodum';display:flex;align-items:center;justify-content:center;flex:none;}
 .lifebook #prog{flex:1;display:flex;justify-content:center;padding:0 16px;}
 .lifebook .prog-track{position:relative;display:block;width:100%;max-width:170px;height:20px;border-radius:10px;background:var(--soft);overflow:hidden;}
-.lifebook #progFill{position:absolute;inset:0 auto 0 0;width:0;border-radius:10px;background:#E7DDF8;transition:width .25s ease;overflow:hidden;}
+.lifebook #progFill{position:absolute;inset:0 auto 0 0;width:0;border-radius:10px;background:var(--pink);transition:width .25s ease;overflow:hidden;}
 .lifebook .prog-lab{position:absolute;top:0;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:.06em;}
 .lifebook #progLabel{color:var(--ink);}
-.lifebook #progLabelW{color:var(--ink);right:auto;}
+.lifebook #progLabelW{color:#fff;right:auto;}
 .lifebook .arrow{border:0;width:40px;height:40px;border-radius:50%;background:var(--soft);color:var(--ink);font-size:18px;display:flex;align-items:center;justify-content:center;flex:none;margin-left:8px;}
 .lifebook .arrow:disabled{color:#D8CCEE;background:#F8F4FD;}
 .lifebook #tocSheet{position:fixed;inset:0;z-index:40;display:none;}
