@@ -209,26 +209,28 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 두 칸 표 스타일 — 먹 테두리, 가운데 구분선, 활성 칸 연보라 채움
-          // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
-          const currentFirst = currentTabLabel !== "인생 사주";
-          const cell = (first: boolean): React.CSSProperties => ({
-            padding: "9px 22px",
+          // 각진 네모 세그먼트 — 장 제목 박스와 세트 (그림자 없음)
+          const base: React.CSSProperties = {
+            padding: "7px 20px",
+            borderRadius: 2,
             fontSize: 14,
             textDecoration: "none",
-            color: "#1E1B28",
-            borderRight: first ? "2px solid #1E1B28" : undefined,
-          });
-          const link = (first: boolean) => (
-            <a key="link" href={siblingTab.href} style={cell(first)}>
+          };
+          const link = (
+            <a key="link" href={siblingTab.href} style={{ ...base, color: "#1E1B28" }}>
               {siblingTab.label}
             </a>
           );
-          const current = (first: boolean) => (
-            <span key="cur" style={{ ...cell(first), background: "#EDE6F9" }}>
+          const current = (
+            <span
+              key="cur"
+              style={{ ...base, background: "#EDE6F9", color: "#1E1B28", border: "1.5px solid #1E1B28" }}
+            >
               {currentTabLabel}
             </span>
           );
+          // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
+          const currentFirst = currentTabLabel !== "인생 사주";
           return (
             <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 2px" }}>
               <div
@@ -237,10 +239,10 @@ export default function LifeBookViewer({
                   background: "#fff",
                   border: "2px solid #1E1B28",
                   borderRadius: 2,
-                  overflow: "hidden",
+                  padding: 3,
                 }}
               >
-                {currentFirst ? [current(true), link(false)] : [link(true), current(false)]}
+                {currentFirst ? [current, link] : [link, current]}
               </div>
             </div>
           );
