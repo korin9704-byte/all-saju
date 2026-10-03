@@ -369,11 +369,8 @@ export default function LifeBookViewer({
         {/* 플로팅 버튼이 본문 마지막 줄을 가리지 않도록 하단 여백 확보 */}
         <main style={ask || share ? { paddingBottom: ask && share ? 132 : 76 } : undefined}>
           <article className="view on">
-            {/* "01. 제목" 한 줄 — 제목 끝 마침표 제거, sub 뷰(고민·재회)도 인생 사주와 같은 장 제목 스타일 */}
-            <h2 className="chapter">
-              {views[cur].label ? `${fmtLabel(views[cur].label)} ` : ""}
-              {views[cur].title.replace(/\.$/, "")}
-            </h2>
+            {/* 장 제목 — 번호 없이 제목만 (목차에는 번호 유지), 제목 끝 마침표 제거 */}
+            <h2 className="chapter">{views[cur].title.replace(/\.$/, "")}</h2>
             <div dangerouslySetInnerHTML={{ __html: views[cur].html }} />
           </article>
         </main>
