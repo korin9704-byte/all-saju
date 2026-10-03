@@ -209,7 +209,7 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 각진 네모 세그먼트 + 오프셋 그림자 — 장 제목 박스와 세트
+          // 각진 네모 세그먼트 — 장 제목 박스와 세트 (그림자 없음)
           const base: React.CSSProperties = {
             padding: "7px 20px",
             borderRadius: 2,
@@ -240,7 +240,6 @@ export default function LifeBookViewer({
                   border: "2px solid #1E1B28",
                   borderRadius: 2,
                   padding: 3,
-                  boxShadow: "4px 4px 0 rgba(30,27,40,.85)",
                 }}
               >
                 {currentFirst ? [current, link] : [link, current]}
