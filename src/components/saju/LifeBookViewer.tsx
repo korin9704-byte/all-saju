@@ -209,18 +209,14 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 폴더 탭 스타일 — 활성 탭이 아래 본문과 이어짐 (바닥 선 위에 얹힌 탭)
+          // 알약 세그먼트 — 연보라 트랙 + 활성은 흰 알약
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
           const cell: React.CSSProperties = {
-            padding: "9px 20px 8px",
-            fontSize: 13.5,
+            padding: "8px 22px",
+            fontSize: 14,
             textDecoration: "none",
-            borderRadius: "12px 12px 0 0",
-            border: "1.5px solid #D8C9F0",
-            borderBottom: "none",
-            marginBottom: -1.5,
-            background: "#E3D7F5",
+            borderRadius: 999,
             color: "#7A6B9E",
           };
           const link = (
@@ -233,26 +229,27 @@ export default function LifeBookViewer({
               key="cur"
               style={{
                 ...cell,
-                background: "#FDFBFF",
+                background: "#fff",
                 color: "#4A3A72",
-                position: "relative",
-                zIndex: 1,
+                boxShadow: "0 2px 6px rgba(74,58,114,.15)",
               }}
             >
               {currentTabLabel}
             </span>
           );
           return (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: 5,
-                padding: "14px 16px 0",
-                borderBottom: "1.5px solid #D8C9F0",
-              }}
-            >
-              {currentFirst ? [current, link] : [link, current]}
+            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 2px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  background: "#E7DDF8",
+                  borderRadius: 999,
+                  padding: 4,
+                }}
+              >
+                {currentFirst ? [current, link] : [link, current]}
+              </div>
             </div>
           );
         })()}
