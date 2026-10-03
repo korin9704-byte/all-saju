@@ -75,21 +75,21 @@ export default function LifeBookViewer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 행운 부적 장 — '내 부적 받기' 클릭 시 생성 연출(약 5초) 후 이름을 각인해 공개
+  // 행운 부적 장 — '내 부적 받기'(서버 렌더 버튼) 클릭을 위임으로 받아
+  // 생성 연출(약 5초) 후 이름을 각인해 공개. 위임이라 렌더 타이밍과 무관하게 동작.
   useEffect(() => {
-    const stage = rootRef.current?.querySelector<HTMLDivElement>(".bujeok-stage:not([data-init])");
-    if (!stage) return;
-    stage.dataset.init = "1";
-    const key = stage.dataset.key || "earth";
-    const name = stage.dataset.name || "";
-    const elKr = stage.dataset.el || "";
-    const escHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "bujeok-btn";
-    btn.textContent = "🐾 내 부적 받기";
-    stage.appendChild(btn);
-    btn.onclick = () => {
+    const root = rootRef.current;
+    if (!root) return;
+    const onClick = (e: MouseEvent) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".bujeok-start");
+      if (!btn) return;
+      const stage = btn.closest<HTMLDivElement>(".bujeok-stage");
+      if (!stage || stage.dataset.busy) return;
+      stage.dataset.busy = "1";
+      const key = stage.dataset.key || "earth";
+      const name = stage.dataset.name || "";
+      const elKr = stage.dataset.el || "";
+      const escHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
       btn.remove();
       const load = document.createElement("div");
       load.className = "bujeok-loading";
@@ -165,11 +165,14 @@ export default function LifeBookViewer({
         setTimeout(() => {
           load.remove();
           stage.appendChild(btn);
+          delete stage.dataset.busy;
         }, 1800);
       };
       img.src = `/images/bujeok/${key}.png`;
     };
-  }, [cur]);
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, []);
 
   // 진행 바 흰 라벨 폭 (채움 위 글자용 이중 레이어)
   useEffect(() => {

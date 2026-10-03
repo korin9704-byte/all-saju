@@ -123,7 +123,9 @@ export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
     `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님께 드리는 작은 선물이 있어요.</span></div>` +
     `<div class="nyan"><span class="say">${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
     `<div class="nyan"><span class="say">지금 이 자리에서 ${esc(name)}님만을 위한 부적을 한 장 그려드릴게요.</span></div>` +
-    `<div class="bujeok-stage" data-key="${el.key}" data-name="${esc(name)}" data-el="${el.kr}"></div>`
+    `<div class="bujeok-stage" data-key="${el.key}" data-name="${esc(name)}" data-el="${el.kr}">` +
+    `<button type="button" class="bujeok-btn bujeok-start">🐾 내 부적 받기</button>` +
+    `</div>`
   );
 }
 
