@@ -612,11 +612,8 @@ export default function LifeBookViewer({
               <ul>
                 {views.map((v, i) => (
                   <li key={i} className={i === cur ? "cur" : ""} onClick={() => go(i)}>
-                    {/* "01. 제목" 한 줄 — 목차에서는 제목 끝 마침표 제거 */}
-                    <span className="toc-t">
-                      {v.label ? `${fmtLabel(v.label)} ` : ""}
-                      {v.title.replace(/\.$/, "")}
-                    </span>
+                    {/* 목차 — 번호 없이 제목만, 끝 마침표 제거 */}
+                    <span className="toc-t">{v.title.replace(/\.$/, "")}</span>
                   </li>
                 ))}
               </ul>
