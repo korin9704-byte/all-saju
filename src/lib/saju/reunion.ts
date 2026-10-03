@@ -491,7 +491,9 @@ export function buildReunionBookPayload(opts: {
   prologueParts.push(
     `<div class="nyan tail"><span class="say">이 숫자가 나온 이유, 지금부터 차근차근 풀어드릴게요.</span></div>`,
     `<div class="nyan"><span class="say">먼저 두 분의 사주를 표로 정리했어요.</span></div>`,
-    myeongsikCardHtml ?? simpleMsCard(`${name}님의 사주`, birthLabel, myeongsik),
+    myeongsikCardHtml
+      ? myeongsikCardHtml.replace('<h4 class="sub-h">', '<p class="ms-tag">(본인)</p><h4 class="sub-h">')
+      : simpleMsCard(`${name}님의 사주 (본인)`, birthLabel, myeongsik),
   );
   if (opts.partnerMsCardHtml) {
     prologueParts.push(opts.partnerMsCardHtml);
