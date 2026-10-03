@@ -545,11 +545,16 @@ export default function LifeBookViewer({
             </svg>
           </button>
           <span id="prog">
-            {/* 별이 길을 따라가는 진행 바 */}
-            <span className="star-track" ref={trackRef}>
-              <span className="star-marker" style={{ left: `${fillPct}%` }}>⭐</span>
+            <span className="prog-track" ref={trackRef}>
+              <span id="progLabel" className="prog-lab">
+                {label}
+              </span>
+              <span id="progFill" style={{ width: `${fillPct}%` }}>
+                <span id="progLabelW" className="prog-lab" style={{ width: trackW }}>
+                  {label}
+                </span>
+              </span>
             </span>
-            <span className="prog-num">{label}</span>
           </span>
           <button className="arrow" disabled={cur === 0} onClick={() => go(cur - 1)} aria-label="이전 장">
             &#8249;
