@@ -453,7 +453,7 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
   const gPos = ((gi2 + 0.5) / GAUGE.length) * 100;
   const dayGan = g.day.gan;
   const singangCard =
-    `<section class="card"><h3 class="card-title">신강신약</h3>` +
+    `<section class="card"><p class="card-desc">신강신약 — 사주에서 나(일간)의 기운이 얼마나 강한지 나타내는 지표예요.</p>` +
     `<div class="gauge"><div class="g-lab"><span class="g-cur" style="left:${gPos.toFixed(1)}%">${strength}</span></div>` +
     `<div class="g-track"><span class="g-dot" style="left:${gPos.toFixed(1)}%"></span></div>` +
     `<div class="g-ends"><span>극약</span><span>중화</span><span>극왕</span></div></div>` +
