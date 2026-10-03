@@ -393,7 +393,7 @@ function miniGaugesCard(items: { label: string; score: number }[]): string {
 </div>`,
     )
     .join("");
-  return `<div class="card"><h4 class="sub-h">세부 흐름 — 재회를 움직이는 세 개의 축</h4><p class="sub-note">재회를 좌우하는 세 가지 흐름이에요.</p>${rows}</div>`;
+  return `<div class="card"><h4 class="sub-h">세부 흐름 — 재회를 움직이는 세 개의 축</h4><p class="sub-note">하나씩 뜯어보면 두 사람의 지금이 보여요.</p>${rows}</div>`;
 }
 
 function reunionCaption(score: number): string {
