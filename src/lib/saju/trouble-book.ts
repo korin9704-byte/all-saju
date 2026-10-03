@@ -111,7 +111,9 @@ const OHENG_BY_GAN: Record<string, { key: string; kr: string; hanja: string; des
   계: { key: "water", kr: "수", hanja: "水", desc: "달빛 어린 물결처럼, 지혜롭게 흘러가 뜻을 이루는 기운을 담았어요." },
 };
 
-/** 결과지 마지막 장 — 일간 오행에 맞는 행운 부적 + 다운로드 버튼. 일간을 모르면 null */
+/** 결과지 마지막 장 — 일간 오행에 맞는 행운 부적. 버튼을 누르면 뷰어에서
+ *  생성 연출 후 고객 이름을 각인해 보여준다(LifeBookViewer의 .bujeok-stage 초기화 로직).
+ *  일간을 모르면 null */
 export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
   const gan = ms.day?.cheongan;
   const el = gan ? OHENG_BY_GAN[gan] : undefined;
@@ -120,9 +122,8 @@ export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
   return (
     `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님께 드리는 작은 선물이 있어요.</span></div>` +
     `<div class="nyan"><span class="say">${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
-    `<img class="bujeok-img" src="/images/bujeok/${el.key}.png" alt="${el.kr}(${el.hanja}) 기운 행운 부적" />` +
-    `<div class="nyan tail"><span class="say">핸드폰 배경화면으로 간직하면, 묘묘가 ${esc(name)}님의 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
-    `<a class="bujeok-btn" href="/images/bujeok/${el.key}.png" download="냥점_행운부적_${el.kr}.png">🐾 행운 부적 저장하기</a>`
+    `<div class="nyan"><span class="say">지금 이 자리에서 ${esc(name)}님만을 위한 부적을 한 장 그려드릴게요.</span></div>` +
+    `<div class="bujeok-stage" data-key="${el.key}" data-name="${esc(name)}" data-el="${el.kr}"></div>`
   );
 }
 

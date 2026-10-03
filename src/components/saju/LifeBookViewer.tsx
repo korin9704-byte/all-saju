@@ -75,6 +75,102 @@ export default function LifeBookViewer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 행운 부적 장 — '내 부적 받기' 클릭 시 생성 연출(약 5초) 후 이름을 각인해 공개
+  useEffect(() => {
+    const stage = rootRef.current?.querySelector<HTMLDivElement>(".bujeok-stage:not([data-init])");
+    if (!stage) return;
+    stage.dataset.init = "1";
+    const key = stage.dataset.key || "earth";
+    const name = stage.dataset.name || "";
+    const elKr = stage.dataset.el || "";
+    const escHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "bujeok-btn";
+    btn.textContent = "🐾 내 부적 받기";
+    stage.appendChild(btn);
+    btn.onclick = () => {
+      btn.remove();
+      const load = document.createElement("div");
+      load.className = "bujeok-loading";
+      load.innerHTML = `<span class="bujeok-spin"></span><p></p>`;
+      stage.appendChild(load);
+      const msgEl = load.querySelector("p")!;
+      const msgs = [
+        `${name}님의 사주를 읽는 중…`,
+        "괴황지를 펼치는 중…",
+        "경면주사를 가는 중…",
+        "묘묘가 붓을 드는 중…",
+        `${elKr} 기운을 불어넣는 중…`,
+      ];
+      let mi = 0;
+      msgEl.textContent = msgs[0];
+      const iv = setInterval(() => {
+        mi = Math.min(mi + 1, msgs.length - 1);
+        msgEl.textContent = msgs[mi];
+      }, 1100);
+      const img = new Image();
+      const started = Date.now();
+      img.onload = () => {
+        const wait = Math.max(0, 5300 - (Date.now() - started));
+        setTimeout(() => {
+          clearInterval(iv);
+          // 고객 이름 세로 각인 합성 — 실패하면 원본 그대로
+          let url = `/images/bujeok/${key}.png`;
+          try {
+            const cv = document.createElement("canvas");
+            cv.width = img.naturalWidth;
+            cv.height = img.naturalHeight;
+            const ctx = cv.getContext("2d");
+            if (ctx) {
+              ctx.drawImage(img, 0, 0);
+              // 세로 이름 각인 — 문양 위에서도 읽히게 괴황지 색 후광을 먼저 두른다
+              const fs = Math.round(cv.width * 0.055);
+              ctx.font = `${fs}px 'Gowun Dodum', serif`;
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.lineJoin = "round";
+              const x = cv.width * 0.935;
+              const drawCol = (pass: "halo" | "ink") => {
+                let y = cv.height * 0.075;
+                for (const ch of name) {
+                  if (pass === "halo") ctx.strokeText(ch, x, y);
+                  else ctx.fillText(ch, x, y);
+                  y += fs * 1.16;
+                }
+              };
+              ctx.lineWidth = fs * 0.42;
+              ctx.strokeStyle = "rgba(242,197,92,0.9)";
+              drawCol("halo");
+              ctx.fillStyle = "rgba(110,16,6,0.88)";
+              drawCol("ink");
+              url = cv.toDataURL("image/png");
+            }
+          } catch {
+            /* 캔버스 합성 실패 — 원본 이미지 사용 */
+          }
+          load.remove();
+          const out = document.createElement("div");
+          out.className = "bujeok-result";
+          out.innerHTML =
+            `<img class="bujeok-img" src="${url}" alt="행운 부적" />` +
+            `<div class="nyan tail"><span class="say">완성이에요! 핸드폰 배경화면으로 간직하면, 묘묘가 ${escHtml(name)}님 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
+            `<a class="bujeok-btn" href="${url}" download="냥점_행운부적_${escHtml(name)}.png">🐾 행운 부적 저장하기</a>`;
+          stage.appendChild(out);
+        }, wait);
+      };
+      img.onerror = () => {
+        clearInterval(iv);
+        msgEl.textContent = "부적을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";
+        setTimeout(() => {
+          load.remove();
+          stage.appendChild(btn);
+        }, 1800);
+      };
+      img.src = `/images/bujeok/${key}.png`;
+    };
+  }, [cur]);
+
   // 진행 바 흰 라벨 폭 (채움 위 글자용 이중 레이어)
   useEffect(() => {
     const update = () => {
