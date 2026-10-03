@@ -489,7 +489,7 @@ function assembleViews(
   // 1장 — 프롤로그 (데이터 카드)
   views.push({
     label: "1장",
-    title: "프롤로그 Prologue — 묘묘의 인사",
+    title: "프롤로그 Prologue",
     html: [
       nyan(`안녕하세요, ${name}님. 냥점의 점술사 묘묘예요. 이렇게 인연이 닿아 정말 기뻐요.`),
       nyan(`오늘은 ${name}님이 타고난 여덟 글자를 펼쳐 놓고, 그 안에 담긴 이야기를 처음부터 끝까지 들려드릴게요.`),

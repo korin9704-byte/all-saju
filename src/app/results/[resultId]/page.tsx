@@ -113,7 +113,7 @@ export default async function ResultPage({
       const pn = lifePayload.name;
       lifePayload.views = lifePayload.views.map((v) => ({
         ...v,
-        title: v.title === "나의 사주팔자" ? "프롤로그 Prologue — 묘묘의 인사" : v.title,
+        title: v.title === "나의 사주팔자" ? "프롤로그 Prologue" : v.title,
         html: v.html
           .replace(
             `<h3 class="card-title">${pn}님의 사주</h3><p class="card-sub">`,
