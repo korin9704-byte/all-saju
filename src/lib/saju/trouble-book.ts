@@ -130,7 +130,7 @@ export function buildTroubleBookPayload(opts: {
   // label 은 목차 번호로만 쓰고, 본문에서는 "NN. 제목." 소제목으로 표시(sub)
   views.push({
     label: `${no(1)}.`,
-    title: "프롤로그 — 이야기를 시작하며",
+    title: dot("프롤로그 Prologue"),
     html: (() => {
       // 고민(Q)은 명식표 카드 아래에 별도 카드로 둔다 (카드 제목: "OO님의 사주와 고민")
       const qBlock = question
