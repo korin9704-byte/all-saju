@@ -209,9 +209,10 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
+          // 각진 네모 세그먼트 + 오프셋 그림자 — 장 제목 박스와 세트
           const base: React.CSSProperties = {
             padding: "7px 20px",
-            borderRadius: 999,
+            borderRadius: 2,
             fontSize: 14,
             textDecoration: "none",
           };
@@ -223,7 +224,7 @@ export default function LifeBookViewer({
           const current = (
             <span
               key="cur"
-              style={{ ...base, background: "#fff", color: "#4A3A72", boxShadow: "0 2px 8px rgba(122,95,190,0.18)" }}
+              style={{ ...base, background: "#EDE6F9", color: "#1E1B28", border: "1.5px solid #1E1B28" }}
             >
               {currentTabLabel}
             </span>
@@ -231,14 +232,15 @@ export default function LifeBookViewer({
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
           return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 0" }}>
+            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 2px" }}>
               <div
                 style={{
                   display: "flex",
-                  background: "#F3EDFB",
-                  border: "1px solid #E7DDF8",
-                  borderRadius: 999,
-                  padding: 4,
+                  background: "#fff",
+                  border: "2px solid #1E1B28",
+                  borderRadius: 2,
+                  padding: 3,
+                  boxShadow: "4px 4px 0 rgba(30,27,40,.85)",
                 }}
               >
                 {currentFirst ? [current, link] : [link, current]}
