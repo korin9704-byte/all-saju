@@ -129,6 +129,11 @@ export default async function ResultPage({
             '<h3 class="card-title">신강신약</h3>',
             '<h4 class="sub-h">신강신약 — 나의 기운의 세기</h4><p class="sub-note">사주에서 나(일간)의 기운이 얼마나 강한지 나타내는 지표예요.</p>',
           )
+          // 신강신약 결론 문장을 설명 뒤로 합치고 하단 문장은 제거
+          .replace(
+            /<p class="sub-note">사주에서 나\(일간\)의 기운이 얼마나 강한지 나타내는 지표예요\.<\/p>([\s\S]*?)<p class="para">(일간[\s\S]*?사주예요\.)<\/p>/,
+            '<p class="sub-note">사주에서 나(일간)의 기운이 얼마나 강한지 나타내는 지표예요.<br/>$2</p>$1',
+          )
           // 카드 설명 캡션도 묘묘 말풍선으로
           .replace(/<p class="caption">([\s\S]*?)<\/p>/g, '<div class="nyan"><span class="say">$1</span></div>'),
       }));

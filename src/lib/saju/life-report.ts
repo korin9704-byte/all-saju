@@ -454,11 +454,10 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
   const dayGan = g.day.gan;
   const singangCard =
     `<section class="card"><h4 class="sub-h">신강신약 — 나의 기운의 세기</h4>` +
-    `<p class="sub-note">사주에서 나(일간)의 기운이 얼마나 강한지 나타내는 지표예요.</p>` +
+    `<p class="sub-note">사주에서 나(일간)의 기운이 얼마나 강한지 나타내는 지표예요.<br/>일간 '${dayGan}(${g.day.ganHanja})', <strong>${strength}</strong>한 사주예요.</p>` +
     `<div class="gauge"><div class="g-lab"><span class="g-cur" style="left:${gPos.toFixed(1)}%">${strength}</span></div>` +
     `<div class="g-track"><span class="g-dot" style="left:${gPos.toFixed(1)}%"></span></div>` +
-    `<div class="g-ends"><span>극약</span><span>중화</span><span>극왕</span></div></div>` +
-    `<p class="para">일간 '${dayGan}(${g.day.ganHanja})', <strong>${strength}</strong>한 사주예요.</p></section>`;
+    `<div class="g-ends"><span>극약</span><span>중화</span><span>극왕</span></div></div></section>`;
 
   const coverPillars = cols.map((c) => `<span>${c.ganHanja}<br>${c.jiHanja}</span>`).join("");
 
