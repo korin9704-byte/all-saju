@@ -117,7 +117,7 @@ export default async function ResultPage({
         html: v.html
           .replace(
             `<h3 class="card-title">${pn}님의 사주</h3><p class="card-sub">`,
-            `<p class="card-sub">${pn} · `,
+            `<h4 class="sub-h">사주팔자 — 타고난 여덟 글자</h4><p class="sub-note">${pn} · `,
           )
           .replace(`<h3 class="card-title">${pn}님의 대운표</h3>`, "")
           .replace(

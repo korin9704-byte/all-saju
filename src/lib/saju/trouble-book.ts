@@ -92,7 +92,8 @@ function myeongsikCard(name: string, birthLabel: string, ms: Myeongsik): string 
     .join("");
 
   return `<div class="card">
-<p class="card-sub">${esc(name)} · ${esc(birthLabel)}</p>
+<h4 class="sub-h">사주팔자 — 타고난 여덟 글자</h4>
+<p class="sub-note">${esc(name)} · ${esc(birthLabel)}</p>
 <table class="tbl ms">
 <tr><th class="corner"></th>${head}</tr>
 <tr><th>天干<small>(천간)</small></th>${gan}</tr>

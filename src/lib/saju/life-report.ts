@@ -334,10 +334,10 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     })),
   ];
 
-  // 카드 제목 없이 "이름 · 생년월일시 (양력) · 성별" 한 줄 (고민 사주 1장과 동일 규격)
+  // 소제목 + 설명(이름 · 생년월일시 · 성별) 형식 — 다른 카드들과 동일 규격
   const myeongsikCard =
-    `<section class="card">` +
-    `<p class="card-sub">${name} · ${birthLabel}</p>` +
+    `<section class="card"><h4 class="sub-h">사주팔자 — 타고난 여덟 글자</h4>` +
+    `<p class="sub-note">${name} · ${birthLabel}</p>` +
     `<table class="tbl ms">${msRows.join("")}</table></section>`;
 
   // 특정 행/열 강조 명식표
