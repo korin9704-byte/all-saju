@@ -26,7 +26,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .sec-div{display:flex;align-items:center;gap:12px;margin:34px 0 16px;}
 .lifebook .sec-div span{font-family:'Gowun Dodum';font-size:18px;color:var(--ink);flex:none;}
 .lifebook .sec-div::before,.lifebook .sec-div::after{content:'';height:1px;background:var(--line);flex:1;}
-.lifebook .toon-intro{display:block;width:100%;border-radius:16px;margin:4px 0 16px;}
+.lifebook .toon-intro{display:block;width:100%;margin:4px 0 16px;}
 .lifebook .bujeok-stage{margin:18px 0 8px;}
 .lifebook .bujeok-img{display:block;width:74%;max-width:300px;margin:18px auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(74,58,114,.22);}
 .lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;max-width:320px;margin:18px auto 8px;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border:0;border-radius:14px;font-family:'Gowun Dodum';font-size:15px;text-decoration:none;cursor:pointer;box-shadow:0 4px 14px rgba(240,128,170,.35);}
@@ -74,7 +74,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .ch-label{font-size:12px;color:var(--pink);letter-spacing:.24em;margin:0 0 8px;}
 .lifebook .ch-title{font-family:'Gowun Dodum';font-weight:400;font-size:27px;margin:0;color:var(--ink);}
 .lifebook .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px 16px;margin:20px 0;}
-.lifebook .card.toon{border:2px solid #1E1B28;border-radius:2px;box-shadow:none;}
+.lifebook .card.toon{border:3px solid #1E1B28;border-radius:2px;box-shadow:none;}
 .lifebook .card.slim{padding:8px 14px 4px;}
 .lifebook .card.slim .gauge{margin:6px 2px 8px;}
 .lifebook .card-title{font-family:'Gowun Dodum';font-weight:400;font-size:18px;text-align:center;margin:0 0 4px;}
