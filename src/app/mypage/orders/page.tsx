@@ -63,7 +63,8 @@ export default async function MyOrdersPage() {
             const resultId = resultMap.get(o.id);
             const canReview = o.status === "paid" && o.user_id === user.id && !reviewedSet.has(o.id);
             return (
-              <li key={o.id} className="py-5 flex items-center justify-between gap-4">
+              <li key={o.id} className="py-5">
+                <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
                   <p className="text-[15px] font-medium text-ink truncate">
                     {/* 상품명 속 +는 냥점 로고와 같은 기랑해랑 폰트로 */}
@@ -93,23 +94,29 @@ export default async function MyOrdersPage() {
                   >
                     {STATUS_LABEL[o.status] ?? o.status}
                   </Badge>
-                  {resultId && o.status === "paid" && (
-                    <Link
-                      href={`/results/${resultId}`}
-                      className="whitespace-nowrap rounded-xl border-[1.5px] border-dashed border-[#DDA3D2] px-3 py-1.5 text-[13px] font-medium text-[#C95FC0]"
-                    >
-                      결과지 보기
-                    </Link>
-                  )}
-                  {canReview && (
-                    <Link
-                      href={`/mypage/orders/${o.id}/review`}
-                      className="whitespace-nowrap rounded-xl border-[1.5px] border-dashed border-[#E3D8F4] px-3 py-1.5 text-[13px] font-medium text-body"
-                    >
-                      후기 쓰기
-                    </Link>
-                  )}
                 </div>
+                </div>
+                {/* 하단 풀폭 분할 바 — 결과지 보기(연핑크) · 후기 쓰기 */}
+                {((resultId && o.status === "paid") || canReview) && (
+                  <div className="mt-3 flex overflow-hidden rounded-xl border-[1.5px] border-[#E7DDF8]">
+                    {resultId && o.status === "paid" && (
+                      <Link
+                        href={`/results/${resultId}`}
+                        className={`flex-1 bg-[#F6DDF0] py-2 text-center text-[12.5px] font-medium text-[#A3327F] ${canReview ? "border-r-[1.5px] border-[#E7DDF8]" : ""}`}
+                      >
+                        결과지 보기
+                      </Link>
+                    )}
+                    {canReview && (
+                      <Link
+                        href={`/mypage/orders/${o.id}/review`}
+                        className="flex-1 bg-white py-2 text-center text-[12.5px] font-medium text-body"
+                      >
+                        후기 쓰기
+                      </Link>
+                    )}
+                  </div>
+                )}
               </li>
             );
           })}
