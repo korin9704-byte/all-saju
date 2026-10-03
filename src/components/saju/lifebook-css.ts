@@ -185,7 +185,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge-track{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;}
 .lifebook .gauge-track.sm{height:7px;flex:1;}
 .lifebook .gauge-fill{height:100%;border-radius:999px;background:var(--pink);}
-.lifebook .gauge-cap{font-size:13px;color:var(--body);margin:12px 0 0;}
+.lifebook .gauge-cap{font-size:12.5px;color:var(--mute);margin:12px 0 0;text-align:left;}
 .lifebook .mini-g{margin:14px 0;}
 .lifebook .mini-g-top{display:flex;justify-content:space-between;align-items:baseline;margin:0 2px 6px;}
 .lifebook .mini-g-label{font-size:12.5px;color:var(--ink);}
