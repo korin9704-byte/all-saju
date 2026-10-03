@@ -209,39 +209,50 @@ export default function LifeBookViewer({
 
         {/* 번들 형제 결과지 탭 — 세그먼트 토글, '고민 사주'가 항상 왼쪽 */}
         {siblingTab && (() => {
-          // 두 칸 표 스타일 — 먹 테두리, 가운데 구분선, 활성 칸 연보라 채움
+          // 폴더 탭 스타일 — 활성 탭이 아래 본문과 이어짐 (바닥 선 위에 얹힌 탭)
           // 본 상품(고민/재회 사주)이 항상 왼쪽, 인생 사주가 오른쪽
           const currentFirst = currentTabLabel !== "인생 사주";
-          const cell = (first: boolean): React.CSSProperties => ({
-            padding: "9px 22px",
-            fontSize: 14,
+          const cell: React.CSSProperties = {
+            padding: "9px 20px 8px",
+            fontSize: 13.5,
             textDecoration: "none",
-            color: "#1E1B28",
-            borderRight: first ? "2px solid #1E1B28" : undefined,
-          });
-          const link = (first: boolean) => (
-            <a key="link" href={siblingTab.href} style={cell(first)}>
+            borderRadius: "12px 12px 0 0",
+            border: "1.5px solid #D8C9F0",
+            borderBottom: "none",
+            marginBottom: -1.5,
+            background: "#E3D7F5",
+            color: "#7A6B9E",
+          };
+          const link = (
+            <a key="link" href={siblingTab.href} style={cell}>
               {siblingTab.label}
             </a>
           );
-          const current = (first: boolean) => (
-            <span key="cur" style={{ ...cell(first), background: "#EDE6F9" }}>
+          const current = (
+            <span
+              key="cur"
+              style={{
+                ...cell,
+                background: "#FDFBFF",
+                color: "#4A3A72",
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
               {currentTabLabel}
             </span>
           );
           return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "12px 16px 2px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  background: "#fff",
-                  border: "2px solid #1E1B28",
-                  borderRadius: 2,
-                  overflow: "hidden",
-                }}
-              >
-                {currentFirst ? [current(true), link(false)] : [link(true), current(false)]}
-              </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 5,
+                padding: "14px 16px 0",
+                borderBottom: "1.5px solid #D8C9F0",
+              }}
+            >
+              {currentFirst ? [current, link] : [link, current]}
             </div>
           );
         })()}
