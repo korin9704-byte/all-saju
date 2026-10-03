@@ -402,33 +402,39 @@ function reunionCaption(score: number): string {
   return "이 인연은 놓아주는 쪽이 편할 수 있어요.";
 }
 
-/** 골든타임 캘린더 카드 — 날짜가 든 한 주만 잘라서 보여주는 주간 스트립 */
+/** 골든타임 카드 — 세 날짜가 봉우리인 기운 물결 그래프 */
 function calendarCard(golden: { date: string; pct: number }[]): string {
   if (golden.length === 0) return "";
   const W = ["일", "월", "화", "수", "목", "금", "토"];
-  const ORD = ["첫째", "둘째", "셋째", "넷째", "다섯째", "여섯째"];
-  const weeks = golden
-    .slice(0, 3)
-    .map((g) => {
-      const [y, m, d] = g.date.split("-").map(Number);
-      const dow = new Date(y, m - 1, d).getDay();
-      const start = new Date(y, m - 1, d - dow);
-      const firstDow = new Date(y, m - 1, 1).getDay();
-      const ord = ORD[Math.floor((d + firstDow - 1) / 7)] ?? "";
-      let cells = "";
-      for (let i = 0; i < 7; i++) {
-        const c = new Date(start);
-        c.setDate(start.getDate() + i);
-        const inMonth = c.getMonth() === m - 1;
-        const hit = inMonth && c.getDate() === d;
-        cells += hit
-          ? `<div class="gt-cell hit"><small>${W[i]}</small>${c.getDate()}<b>${g.pct}%</b></div>`
-          : `<div class="gt-cell"><small>${W[i]}</small>${inMonth ? c.getDate() : "&nbsp;"}</div>`;
-      }
-      return `<div class="gt-week"><p class="gt-title">${y}년 ${m}월 ${ord} 주</p><div class="gt-row">${cells}</div></div>`;
-    })
+  const items = golden.slice(0, 3).map((g) => {
+    const [y, m, d] = g.date.split("-").map(Number);
+    return { ...g, m, d, wd: W[new Date(y, m - 1, d).getDay()] };
+  });
+  const n = items.length;
+  const pts = items.map((it, i) => ({
+    x: Math.round((400 * (2 * i + 1)) / (2 * n)),
+    y: Math.max(30, Math.round(130 - it.pct * 2.3)),
+  }));
+  let d = "M0,130";
+  pts.forEach((p, i) => {
+    const px = i === 0 ? 0 : (pts[i - 1].x + p.x) / 2;
+    const py = i === 0 ? 130 : 120;
+    d += ` C${Math.round(px + (p.x - px) * 0.4)},${py} ${Math.round(p.x - (p.x - px) * 0.4)},${p.y} ${p.x},${p.y}`;
+    const nx = i === pts.length - 1 ? 400 : (p.x + pts[i + 1].x) / 2;
+    const ny = i === pts.length - 1 ? 128 : 120;
+    d += ` C${Math.round(p.x + (nx - p.x) * 0.4)},${p.y} ${Math.round(nx - (nx - p.x) * 0.4)},${ny} ${Math.round(nx)},${ny}`;
+  });
+  const dots = pts.map((p) => `<circle cx="${p.x}" cy="${p.y}" r="6" fill="#fff" stroke="#C95FC0" stroke-width="4"/>`).join("");
+  const labels = items
+    .map((it) => `<p><b>${it.pct}%</b>${it.m}월 ${it.d}일 (${it.wd})</p>`)
     .join("");
-  return `<div class="card"><h4 class="sub-h kr-h">재회의 골든타임</h4>${weeks}</div>`;
+  return `<div class="card"><h4 class="sub-h kr-h">재회의 골든타임</h4>
+<div class="gw"><svg viewBox="0 0 400 150" preserveAspectRatio="none">
+<path d="${d} L400,150 L0,150 Z" fill="#F3EDFB"/>
+<path d="${d}" fill="none" stroke="#C95FC0" stroke-width="2.5"/>
+${dots}</svg>
+<div class="gw-lbl">${labels}</div></div>
+</div>`;
 }
 
 export function buildReunionBookPayload(opts: {
