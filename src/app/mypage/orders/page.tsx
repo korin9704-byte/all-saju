@@ -102,7 +102,7 @@ export default async function MyOrdersPage() {
                     {resultId && o.status === "paid" && (
                       <Link
                         href={`/results/${resultId}`}
-                        className={`flex-1 bg-[#F6DDF0] py-2 text-center text-[12.5px] font-medium text-[#A3327F] ${canReview ? "border-r-[1.5px] border-[#E7DDF8]" : ""}`}
+                        className={`flex-1 bg-[#EDE6F9] py-2 text-center text-[12.5px] font-medium text-[#4A3A72] ${canReview ? "border-r-[1.5px] border-[#E7DDF8]" : ""}`}
                       >
                         결과지 보기
                       </Link>
