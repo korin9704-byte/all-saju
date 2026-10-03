@@ -7,7 +7,6 @@
 import { SYSTEM_BASE, makeContext, type PromptInput } from "@/lib/saju/prompt";
 import type { LifeReportPayload } from "@/lib/saju/life-report";
 import type { Myeongsik } from "@/lib/saju/manseryeok";
-import { buildBujeokHtml } from "@/lib/saju/trouble-book";
 
 // ─── 프롬프트 ─────────────────────────────────────────
 
@@ -543,17 +542,6 @@ export function buildReunionBookPayload(opts: {
       sub: true,
     });
   });
-
-  // 마지막 장 — 일간 오행 행운 부적
-  const bujeokHtml = buildBujeokHtml(name, myeongsik);
-  if (bujeokHtml) {
-    views.push({
-      label: `${sections.length + 2}장`,
-      title: "묘묘의 행운 부적",
-      html: bujeokHtml,
-      sub: true,
-    });
-  }
 
   return { type: "life-saju-v1", name, birthLabel, views };
 }
