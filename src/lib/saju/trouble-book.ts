@@ -170,8 +170,8 @@ export function buildTroubleBookPayload(opts: {
         // 인사 말풍선 세 개 대신 인스타툰 컷 이미지 (이름 없는 범용 인사)
         `<img class="toon-intro" src="/images/moyo-intro.png" alt="냥점의 점술사 묘묘의 인사" />` +
         cardWithQ +
-        `<div class="nyan tail"><span class="say">이제 풀이 준비가 끝났어요.</span></div>` +
-        `<div class="nyan"><span class="say">다음 장부터 ${esc(name)}님의 ${concernWord}을 본격적으로 풀어드릴게요.</span></div>`
+        // 마무리 말풍선 2개 대신 인스타툰 컷 이미지 (인사 컷과 세트)
+        `<img class="toon-intro" src="/images/moyo-closing.png" alt="이제 풀이 준비가 끝났어요. 다음 장부터 본격적으로 풀어드릴게요." />`
       );
     })(),
     sub: true,
