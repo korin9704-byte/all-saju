@@ -374,8 +374,8 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     return `<td${cls ? ` class="${cls}"` : ""}>${content}</td>`;
   };
   const daeunCard = allDaeun.length
-    ? `<section class="card">` +
-      `<p class="card-desc">${name}님의 대운 주기는 ${d.daeun_start_age}세부터 시작해 10년 주기로 찾아와요.</p>` +
+    ? `<section class="card"><h4 class="sub-h">대운 — 10년마다 바뀌는 운의 흐름</h4>` +
+      `<p class="sub-note">${name}님의 대운 주기는 ${d.daeun_start_age}세부터 시작해 10년 주기로 찾아와요.</p>` +
       `<div class="daeun-scroll"><table class="daeun">` +
       `<tr><th>연도</th>${allDaeun.map((x) => dcell(x, String(x.year_start))).join("")}</tr>` +
       `<tr><th>나이</th>${allDaeun.map((x) => dcell(x, `${x.age_start}세`)).join("")}</tr>` +

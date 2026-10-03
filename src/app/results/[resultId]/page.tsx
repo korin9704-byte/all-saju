@@ -120,6 +120,10 @@ export default async function ResultPage({
             `<p class="card-sub">${pn} · `,
           )
           .replace(`<h3 class="card-title">${pn}님의 대운표</h3>`, "")
+          .replace(
+            `<p class="card-desc">${pn}님의 대운 주기는`,
+            `<h4 class="sub-h">대운 — 10년마다 바뀌는 운의 흐름</h4><p class="sub-note">${pn}님의 대운 주기는`,
+          )
           .replace(`<h3 class="card-title">${pn}님의 오행 &amp; 용신</h3>`, "")
           .replace(
             '<h3 class="card-title">신강신약</h3>',
