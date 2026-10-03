@@ -92,8 +92,7 @@ function myeongsikCard(name: string, birthLabel: string, ms: Myeongsik): string 
     .join("");
 
   return `<div class="card">
-<p class="card-title">${esc(name)}님의 사주</p>
-<p class="card-sub">${esc(birthLabel)}</p>
+<p class="card-sub">${esc(name)} · ${esc(birthLabel)}</p>
 <table class="tbl ms">
 <tr><th class="corner"></th>${head}</tr>
 <tr><th>天干<small>(천간)</small></th>${gan}</tr>
@@ -136,10 +135,8 @@ export function buildTroubleBookPayload(opts: {
       const qBlock = question
         ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
-      // 카드 제목 제거, 부제를 "이름 · 생년월일시 (양력) · 성별" 한 줄로
-      const card = (myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik))
-        .replace(/<(h3|p) class="card-title">[\s\S]*?<\/\1>/, "")
-        .replace('<p class="card-sub">', `<p class="card-sub">${esc(name)} · `);
+      // 명식표 카드 — 빌더가 "이름 · 생년월일시 (양력) · 성별" 한 줄 헤더로 생성
+      const card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
       const cardWithQ = card + qBlock;
       return (
         // 묘묘 아바타 + 채팅 버블 (이름표 없음)

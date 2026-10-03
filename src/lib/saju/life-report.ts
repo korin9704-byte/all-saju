@@ -334,9 +334,10 @@ function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
     })),
   ];
 
+  // 카드 제목 없이 "이름 · 생년월일시 (양력) · 성별" 한 줄 (고민 사주 1장과 동일 규격)
   const myeongsikCard =
-    `<section class="card"><h3 class="card-title">${name}님의 사주</h3>` +
-    `<p class="card-sub">${birthLabel}</p>` +
+    `<section class="card">` +
+    `<p class="card-sub">${name} · ${birthLabel}</p>` +
     `<table class="tbl ms">${msRows.join("")}</table></section>`;
 
   // 특정 행/열 강조 명식표
@@ -486,10 +487,10 @@ function assembleViews(
   const views: LifeView[] = [];
   const R = (key: string) => renderBody(parts[key] ?? "");
 
-  // 1장 — 나의 사주팔자 (데이터 카드)
+  // 1장 — 프롤로그 (데이터 카드)
   views.push({
     label: "1장",
-    title: "나의 사주팔자",
+    title: "프롤로그",
     html: [
       nyan(`안녕하세요, ${name}님. 냥점의 점술사 묘묘예요. 이렇게 인연이 닿아 정말 기뻐요.`),
       nyan(`오늘은 ${name}님이 타고난 여덟 글자를 펼쳐 놓고, 그 안에 담긴 이야기를 처음부터 끝까지 들려드릴게요.`),
