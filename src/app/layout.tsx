@@ -36,8 +36,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* 본문: 고운돋움 / 메뉴 항목: 도현 / 부적 이름 각인: 나눔 붓글씨 */}
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Do+Hyeon&family=Kirang+Haerang&family=Nanum+Brush+Script&display=swap" rel="stylesheet" />
-        {/* 결과지 뷰어: 나눔스퀘어라운드 (네이버 한글한글아름답게 CDN) */}
-        <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning className="bg-[#EFE7FA]">
         <MetaPixel pixelId="2209519539888659" />

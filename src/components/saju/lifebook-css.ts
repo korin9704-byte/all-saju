@@ -4,32 +4,31 @@ export const LIFEBOOK_CSS = `
 .lifebook{--ink:#4A3A72;--body:#7A6B9E;--mute:#9C8FBF;--line:#E7DDF8;--soft:#F3EDFB;--pink:#C95FC0;--vio:#8F7BD6;}
 .lifebook *{box-sizing:border-box}
 .lifebook{margin:0;background:#EFE7FA;}
-.lifebook{font-family:'NanumSquareRound','Gowun Dodum','Apple SD Gothic Neo',sans-serif;color:var(--ink);}
+.lifebook{font-family:'Gowun Dodum','Apple SD Gothic Neo',sans-serif;color:var(--ink);}
 .lifebook .app{max-width:480px;margin:0 auto;background:#FDFBFF;min-height:100dvh;position:relative;display:flex;flex-direction:column;}
 .lifebook header.top{position:sticky;top:0;z-index:20;background:rgba(253,251,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px;}
-.lifebook .logo{font-family:'NanumSquareRound','Gowun Dodum';letter-spacing:.08em;font-size:15px;flex:none;}
+.lifebook .logo{font-family:'Gowun Dodum';letter-spacing:.08em;font-size:15px;flex:none;}
 .lifebook .menu-btn{margin-left:auto;border:0;background:none;color:var(--ink);font-size:19px;line-height:1;padding:2px 2px;cursor:pointer;}
 .lifebook main{padding:22px 20px 24px;flex:1 0 auto;}
 .lifebook .view{display:none;animation:lb-fade .25s ease;}
 .lifebook .view.on{display:block;}
 .lifebook .part{margin:0 0 8px;}
 .lifebook .part span{display:inline-block;background:var(--soft);color:var(--ink);font-size:11.5px;letter-spacing:.06em;padding:4px 12px;border-radius:999px;}
-.lifebook .chapter{font-family:'NanumSquareRound','Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 18px;line-height:1.4;}
+.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 18px;line-height:1.4;}
 .lifebook .para{font-size:15px;line-height:2.0;margin:0 0 14px;text-align:justify;}
 .lifebook .para.small{font-size:12px;color:var(--mute);}
 .lifebook .hl{color:var(--pink);font-weight:400;}
-.lifebook .sub-h{font-family:'NanumSquareRound','Gowun Dodum';font-weight:400;font-size:16.5px;margin:24px 0 8px;color:#7761C8;}
+.lifebook .sub-h{font-family:'Gowun Dodum';font-weight:400;font-size:16.5px;margin:24px 0 8px;color:#7761C8;}
 .lifebook .sec-hero{display:flex;flex-direction:column;align-items:center;margin:44px 0 20px;}
-.lifebook .sec-hero .sd-hj{font-family:'NanumSquareRound','Gowun Dodum';font-size:26px;line-height:1.55;color:var(--ink);letter-spacing:.08em;text-align:center;}
+.lifebook .sec-hero .sd-hj{font-family:'Gowun Dodum';font-size:26px;line-height:1.55;color:var(--ink);letter-spacing:.08em;text-align:center;}
 .lifebook .sec-hero .sd-line{width:20px;height:1.5px;background:var(--ink);opacity:.45;margin:12px 0;}
 .lifebook .sec-hero .sd-kr{font-size:15px;color:var(--body);letter-spacing:.18em;}
 .lifebook .sec-div{display:flex;align-items:center;gap:12px;margin:34px 0 16px;}
-.lifebook .sec-div span{font-family:'NanumSquareRound','Gowun Dodum';font-size:18px;color:var(--ink);flex:none;}
+.lifebook .sec-div span{font-family:'Gowun Dodum';font-size:18px;color:var(--ink);flex:none;}
 .lifebook .sec-div::before,.lifebook .sec-div::after{content:'';height:1px;background:var(--line);flex:1;}
-.lifebook .toon-intro{display:block;width:100%;margin:4px 0 16px;}
 .lifebook .bujeok-stage{margin:18px 0 8px;}
 .lifebook .bujeok-img{display:block;width:74%;max-width:300px;margin:18px auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(74,58,114,.22);}
-.lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;max-width:320px;margin:18px auto 8px;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border:0;border-radius:14px;font-family:'NanumSquareRound','Gowun Dodum';font-size:15px;text-decoration:none;cursor:pointer;box-shadow:0 4px 14px rgba(240,128,170,.35);}
+.lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;max-width:320px;margin:18px auto 8px;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border:0;border-radius:14px;font-family:'Gowun Dodum';font-size:15px;text-decoration:none;cursor:pointer;box-shadow:0 4px 14px rgba(240,128,170,.35);}
 .lifebook .bujeok-btn:active{transform:scale(.98);}
 .lifebook .bujeok-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px 16px;background:#FBF7FF;border:1.5px dashed #D8CBF2;border-radius:16px;}
 .lifebook .bujeok-spin{width:38px;height:38px;border-radius:50%;border:3px solid #E6DAF8;border-top-color:#8F7BD6;animation:bujeok-spin 1s linear infinite;}
@@ -47,13 +46,13 @@ export const LIFEBOOK_CSS = `
 .lifebook .say-me::after{content:'';position:absolute;right:-6px;bottom:2px;width:14px;height:14px;background:var(--pink);border-radius:0 0 0 14px;clip-path:polygon(0 100%,100% 100%,0 0);}
 .lifebook .nyan.noav{margin-top:-6px;}
 .lifebook .say{background:#EDE6F9;border:0;border-radius:16px;padding:12px 16px;font-size:14.5px;line-height:1.85;}
-.lifebook .say b{font-family:'NanumSquareRound','Gowun Dodum';font-weight:400;color:#7761C8;}
+.lifebook .say b{font-family:'Gowun Dodum';font-weight:400;color:#7761C8;}
 .lifebook .tbl{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:12.5px;}
 .lifebook .tbl th,.lifebook .tbl td{border:1px solid var(--line);padding:7px 4px;text-align:center;}
 .lifebook .tbl th{background:var(--soft);font-weight:400;color:var(--body);}
 .lifebook .bars{margin:6px 0 4px;}
 .lifebook .bar-row{display:flex;align-items:center;gap:8px;margin:7px 0;}
-.lifebook .bar-name{width:46px;font-family:'NanumSquareRound','Gowun Dodum';font-size:14px;white-space:nowrap;}
+.lifebook .bar-name{width:46px;font-family:'Gowun Dodum';font-size:14px;white-space:nowrap;}
 .lifebook .bar-name small{font-size:11px;color:var(--mute);margin-left:1px;}
 .lifebook .bar-track{flex:1;height:13px;background:var(--soft);border-radius:7px;overflow:hidden;}
 .lifebook .bar-fill{height:100%;border-radius:7px;}
@@ -72,12 +71,10 @@ export const LIFEBOOK_CSS = `
 .lifebook .g-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:8px;}
 .lifebook .ch-banner{background:linear-gradient(135deg,#EDE6F9 0%,#FBE7F3 55%,#FDEFE3 100%);border-radius:16px;padding:38px 20px 34px;text-align:center;margin:2px 0 22px;}
 .lifebook .ch-label{font-size:12px;color:var(--pink);letter-spacing:.24em;margin:0 0 8px;}
-.lifebook .ch-title{font-family:'NanumSquareRound','Gowun Dodum';font-weight:400;font-size:27px;margin:0;color:var(--ink);}
-.lifebook .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px 16px;margin:20px 0;}
-.lifebook .card.toon{border:3px solid #1E1B28;border-radius:2px;box-shadow:none;}
-.lifebook .card.slim{padding:8px 14px 4px;}
+.lifebook .ch-title{font-family:'Gowun Dodum';font-weight:400;font-size:27px;margin:0;color:var(--ink);}
+.lifebook .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px 16px;margin:20px 0;}.lifebook .card.slim{padding:8px 14px 4px;}
 .lifebook .card.slim .gauge{margin:6px 2px 8px;}
-.lifebook .card-title{font-family:'NanumSquareRound','Gowun Dodum';font-weight:400;font-size:18px;text-align:center;margin:0 0 4px;}
+.lifebook .card-title{font-family:'Gowun Dodum';font-weight:400;font-size:18px;text-align:center;margin:0 0 4px;}
 .lifebook .card-sub{text-align:center;font-size:12px;color:var(--mute);margin:0 0 12px;}
 .lifebook .card-desc{text-align:center;font-size:12.5px;color:var(--body);margin:0 0 12px;line-height:1.7;}
 .lifebook .ms{table-layout:fixed;font-size:10.5px;margin:0;}
@@ -85,8 +82,8 @@ export const LIFEBOOK_CSS = `
 .lifebook .ms th.corner,.lifebook .ms th:first-child{width:17%;}
 .lifebook .ms small{font-size:9px;color:var(--mute);}
 .lifebook .ms td small{color:var(--mute);}
-.lifebook .ms .big{font-family:'NanumSquareRound','Gowun Dodum';font-size:22px;background:#FBEFF7;line-height:1.15;padding:9px 2px 7px;}
-.lifebook .ms .big span{display:block;font-size:10px;font-family:'NanumSquareRound','Gowun Dodum';color:var(--mute);margin-top:2px;}
+.lifebook .ms .big{font-family:'Gowun Dodum';font-size:22px;background:#FBEFF7;line-height:1.15;padding:9px 2px 7px;}
+.lifebook .ms .big span{display:block;font-size:10px;font-family:'Gowun Dodum';color:var(--mute);margin-top:2px;}
 .lifebook .ms .dim{color:#C9BEE2;}
 .lifebook .tbl td.wl{font-size:11.5px;text-align:left;padding-left:8px;word-break:keep-all;line-height:1.6;color:var(--body);}
 .lifebook .tbl.wolun td:first-child{white-space:nowrap;font-size:12px;}
@@ -112,13 +109,13 @@ export const LIFEBOOK_CSS = `
 .lifebook .daeun tr:first-child th,.lifebook .daeun tr:first-child td{border-top:1px solid var(--line);}
 .lifebook .daeun th{background:var(--soft);font-weight:400;color:var(--body);position:sticky;left:0;z-index:1;border-left:1px solid var(--line);box-shadow:-2px 0 0 #fff;}
 .lifebook .daeun td.cur{background:#F6DDF0;}
-.lifebook .daeun td.gj{font-family:'NanumSquareRound','Gowun Dodum';font-size:13.5px;}
+.lifebook .daeun td.gj{font-family:'Gowun Dodum';font-size:13.5px;}
 .lifebook .oh-penta-wrap{margin:6px auto 2px;max-width:290px;}
 .lifebook .oh-penta{display:block;width:100%;height:auto;}
 .lifebook .oh-chips{display:flex;gap:6px;margin:16px 2px 6px;}
 .lifebook .oh-chip{position:relative;flex:1;border:1px solid var(--line);border-radius:12px;padding:12px 0 10px;text-align:center;background:#FDFBFF;}
-.lifebook .oh-chip .oh-el{display:block;font-family:'NanumSquareRound','Gowun Dodum';font-size:18px;line-height:1.2;}
-.lifebook .oh-chip .oh-el small{display:block;font-size:10px;color:var(--mute);font-family:'NanumSquareRound','Gowun Dodum';margin-top:2px;}
+.lifebook .oh-chip .oh-el{display:block;font-family:'Gowun Dodum';font-size:18px;line-height:1.2;}
+.lifebook .oh-chip .oh-el small{display:block;font-size:10px;color:var(--mute);font-family:'Gowun Dodum';margin-top:2px;}
 .lifebook .oh-badge{position:absolute;top:-8px;right:-4px;min-width:20px;height:20px;border-radius:10px;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0 5px;}
 .lifebook .oc-목 .oh-el{color:#8FBF8F}
 .lifebook .oc-화 .oh-el{color:#E58A9E}
@@ -139,7 +136,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .oh-bars .bar-val{width:92px;}
 .lifebook .ys-chips{display:flex;gap:8px;margin:18px 2px 6px;}
 .lifebook .ys-chip{position:relative;flex:1;text-align:center;border:1px solid var(--line);border-radius:12px;padding:16px 0 12px;background:#FDFBFF;}
-.lifebook .ys-chip .ys-h{font-family:'NanumSquareRound','Gowun Dodum';font-size:20px;color:var(--ink);display:block;}
+.lifebook .ys-chip .ys-h{font-family:'Gowun Dodum';font-size:20px;color:var(--ink);display:block;}
 .lifebook .ys-chip .ys-k{display:block;font-size:11px;color:var(--mute);margin-top:3px;}
 .lifebook .ys-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);border-radius:9px;color:#fff;font-size:10.5px;padding:2px 9px;white-space:nowrap;}
 .lifebook .yc-금 .ys-badge{background:#A8A8B8}
@@ -148,16 +145,16 @@ export const LIFEBOOK_CSS = `
 .lifebook .ys-chip.main.yc-금{border-color:#A8A8B8;background:#F4F4F7;}
 .lifebook .cover-view{margin:-22px -20px 0;}
 .lifebook .cover-typo{background:linear-gradient(170deg,#F3EDFB 0%,#E7DDF8 60%,#F6DDF0 100%);min-height:calc(100dvh - 150px);display:flex;flex-direction:column;justify-content:center;padding:40px 20px 30px;}
-.lifebook .cover-title{font-family:'NanumSquareRound','Gowun Dodum';font-weight:400;font-size:46px;text-align:center;margin:10px 0 4px;letter-spacing:.04em;}
+.lifebook .cover-title{font-family:'Gowun Dodum';font-weight:400;font-size:46px;text-align:center;margin:10px 0 4px;letter-spacing:.04em;}
 .lifebook .cover-typo .brand{text-align:center;font-size:16px;}
 .lifebook .cover-typo .sub{text-align:center;color:var(--body);font-size:16px;margin:2px 0 8px;}
-.lifebook .brand{font-family:'NanumSquareRound','Gowun Dodum';letter-spacing:.08em;margin:0;}
+.lifebook .brand{font-family:'Gowun Dodum';letter-spacing:.08em;margin:0;}
 .lifebook .cover-pillars{display:flex;gap:10px;justify-content:center;margin:18px 0 10px;}
-.lifebook .cover-pillars span{background:#E8B7D8;border-radius:10px;padding:10px 11px;font-size:20px;line-height:1.4;font-family:'NanumSquareRound','Gowun Dodum';text-align:center;}
+.lifebook .cover-pillars span{background:#E8B7D8;border-radius:10px;padding:10px 11px;font-size:20px;line-height:1.4;font-family:'Gowun Dodum';text-align:center;}
 .lifebook .meta{text-align:center;font-size:13px;color:var(--mute);}
-.lifebook .start-btn{display:block;width:calc(100% - 40px);margin:22px auto 30px;height:52px;border:0;border-radius:26px;color:#fff;font-size:15px;font-family:'NanumSquareRound','Gowun Dodum';background:linear-gradient(90deg,var(--vio),var(--pink));}
+.lifebook .start-btn{display:block;width:calc(100% - 40px);margin:22px auto 30px;height:52px;border:0;border-radius:26px;color:#fff;font-size:15px;font-family:'Gowun Dodum';background:linear-gradient(90deg,var(--vio),var(--pink));}
 .lifebook nav.bottom{position:sticky;bottom:0;width:100%;z-index:30;background:rgba(253,251,255,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);display:flex;align-items:center;padding:8px 14px calc(8px + env(safe-area-inset-bottom));}
-.lifebook .toc-btn{border:0;width:40px;height:40px;border-radius:50%;background:var(--soft);color:var(--ink);font-size:11.5px;font-family:'NanumSquareRound','Gowun Dodum';display:flex;align-items:center;justify-content:center;flex:none;}
+.lifebook .toc-btn{border:0;width:40px;height:40px;border-radius:50%;background:var(--soft);color:var(--ink);font-size:11.5px;font-family:'Gowun Dodum';display:flex;align-items:center;justify-content:center;flex:none;}
 .lifebook #prog{flex:1;display:flex;justify-content:center;padding:0 16px;}
 .lifebook .prog-track{position:relative;display:block;width:100%;max-width:170px;height:20px;border-radius:10px;background:var(--soft);overflow:hidden;}
 .lifebook #progFill{position:absolute;inset:0 auto 0 0;width:0;border-radius:10px;background:#E7DDF8;transition:width .25s ease;overflow:hidden;}
@@ -172,17 +169,17 @@ export const LIFEBOOK_CSS = `
 .lifebook .toc-wrap{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none;}
 .lifebook .toc-panel{pointer-events:auto;width:100%;max-height:72dvh;background:#FDFBFF;border-radius:18px 18px 0 0;overflow:auto;padding:10px 0 24px;box-shadow:0 -8px 32px rgba(74,58,114,.18);}
 .lifebook .toc-close{pointer-events:auto;border:0;cursor:pointer;margin:0 16px 10px 0;display:flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.92);box-shadow:0 4px 14px rgba(0,0,0,0.2);}
-.lifebook .toc-head{font-family:'NanumSquareRound','Gowun Dodum';font-size:17px;padding:0 22px 8px;}
+.lifebook .toc-head{font-family:'Gowun Dodum';font-size:17px;padding:0 22px 8px;}
 .lifebook .toc-panel ul{list-style:none;margin:0;padding:0;}
 .lifebook .toc-panel li{display:flex;align-items:baseline;gap:10px;padding:12px 20px;background:#FDFBFF;}
 .lifebook .toc-panel li+li{border-top:1.5px dashed #E9DFF6;}
 .lifebook .toc-no{flex:none;font-size:10.5px;color:var(--ink);background:var(--soft);border-radius:999px;padding:3px 10px;letter-spacing:.04em;}
-.lifebook .toc-t{font-family:'NanumSquareRound','Gowun Dodum',sans-serif;font-size:13.5px;line-height:1.6;color:var(--ink);}
+.lifebook .toc-t{font-family:'Gowun Dodum',sans-serif;font-size:13.5px;line-height:1.6;color:var(--ink);}
 .lifebook .toc-panel li.cur .toc-no,.lifebook .toc-panel li.cur .toc-t{color:var(--pink);}
 .lifebook footer.disc{padding:26px 20px 10px;text-align:center;font-size:11px;color:var(--mute);}
 /* ── 재회 사주 위젯: 점수 게이지 · 미니 게이지 · 골든타임 캘린더 · 행동 리스트 ── */
 .lifebook .gauge-card{text-align:center;}
-.lifebook .gauge-num{font-family:'NanumSquareRound','Gowun Dodum';font-size:28px;line-height:1.1;margin:8px 0 10px;color:var(--pink);}
+.lifebook .gauge-num{font-family:'Gowun Dodum';font-size:28px;line-height:1.1;margin:8px 0 10px;color:var(--pink);}
 .lifebook .gauge-num small{font-size:14px;color:var(--body);margin-left:2px;}
 .lifebook .gauge-track{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;}
 .lifebook .gauge-track.sm{height:7px;flex:1;}
@@ -198,7 +195,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .cal-card{padding:12px 14px 8px;}
 .lifebook .cal-card .cal:first-child{margin-top:0;}
 .lifebook .cal-card .cal:last-child{margin-bottom:0;}
-.lifebook .cal-title{font-family:'NanumSquareRound','Gowun Dodum';font-size:15px;text-align:center;margin:0 0 8px;color:var(--ink);}
+.lifebook .cal-title{font-family:'Gowun Dodum';font-size:15px;text-align:center;margin:0 0 8px;color:var(--ink);}
 .lifebook .cal-tbl{width:100%;border-collapse:collapse;table-layout:fixed;}
 .lifebook .cal-tbl th{font-size:10.5px;font-weight:400;color:var(--mute);padding:4px 0;}
 .lifebook .cal-tbl td{font-size:12px;color:var(--body);text-align:center;padding:5px 0;height:38px;vertical-align:top;}

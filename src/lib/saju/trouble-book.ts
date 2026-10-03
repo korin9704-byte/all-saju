@@ -161,21 +161,19 @@ export function buildTroubleBookPayload(opts: {
     html: (() => {
       // 고민(Q)은 명식표 카드 아래에 별도 카드로 둔다 (카드 제목: "OO님의 사주와 고민")
       const qBlock = question
-        ? `<div class="card toon"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
+        ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
-      // 1장 카드만 인스타툰 패널(잉크 테두리+오프셋 그림자) 스타일 — 풀 명식표는 <section>, 간이는 <div>
-      let card = (myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik)).replace(
-        'class="card"',
-        'class="card toon"',
-      );
+      let card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
       if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 ${concernWord}<`);
       const cardWithQ = card + qBlock;
       return (
-        // 인사 말풍선 세 개 대신 인스타툰 컷 이미지 (이름 없는 범용 인사)
-        `<img class="toon-intro" src="/images/moyo-intro.png" alt="냥점의 점술사 묘묘의 인사" />` +
+        // 인생 사주와 동일하게 말풍선 그룹의 첫 버블에만 꼬리를 단다
+        `<div class="nyan tail"><span class="say">안녕하세요, ${esc(name)}님. 냥점의 점술사 묘묘예요. 이렇게 인연이 닿아 정말 기뻐요.</span></div>` +
+        `<div class="nyan"><span class="say">보내주신 ${concernWord}, 제가 찬찬히 들여다봤어요.</span></div>` +
+        `<div class="nyan"><span class="say">먼저 보기 쉽게 표로 정리했어요.</span></div>` +
         cardWithQ +
-        // 마무리 말풍선 2개 대신 인스타툰 컷 이미지 (인사 컷과 세트)
-        `<img class="toon-intro" src="/images/moyo-closing.png" alt="이제 풀이 준비가 끝났어요. 다음 장부터 본격적으로 풀어드릴게요." />`
+        `<div class="nyan tail"><span class="say">이제 풀이 준비가 끝났어요.</span></div>` +
+        `<div class="nyan"><span class="say">다음 장부터 ${esc(name)}님의 ${concernWord}을 본격적으로 풀어드릴게요.</span></div>`
       );
     })(),
     sub: true,
