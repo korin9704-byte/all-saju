@@ -180,7 +180,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .gauge-ring::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--pink) calc(var(--p)*1%),var(--soft) 0);}
 .lifebook .gauge-ring::after{content:'';position:absolute;inset:11px;border-radius:50%;background:#fff;}
 .lifebook .gauge-ring b{position:relative;z-index:1;font-weight:400;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:30px;color:#C0399F;}
-.lifebook .ms-tag{font-size:16.5px;color:#7761C8;margin:0 0 3px;}
+.lifebook .ms-tag{font-size:12.5px;color:var(--mute);margin:0 0 3px;}
 .lifebook .ring-row{display:flex;justify-content:space-between;gap:8px;}
 .lifebook .ring-item{flex:1;text-align:center;}
 .lifebook .gauge-ring.sm{width:78px;height:78px;}
