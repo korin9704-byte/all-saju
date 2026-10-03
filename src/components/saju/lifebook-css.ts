@@ -36,6 +36,10 @@ export const LIFEBOOK_CSS = `
 @keyframes bujeok-spin{to{transform:rotate(360deg)}}
 .lifebook .bujeok-result{animation:bujeok-in .8s ease;}
 @keyframes bujeok-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.lifebook .moyo-chat{display:flex;gap:10px;align-items:flex-start;margin:16px 0;}
+.lifebook .moyo-chat .mav{flex:none;width:40px;height:40px;border-radius:50%;background:#EDE6F9 url('/images/moyo-avatar.png') center/cover no-repeat;border:1.5px solid #E8D9F5;}
+.lifebook .moyo-chat .mcol{display:flex;flex-direction:column;gap:8px;min-width:0;}
+.lifebook .moyo-chat .msay{background:#fff;border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:11px 15px;font-size:14.5px;line-height:1.85;width:fit-content;box-shadow:0 2px 6px rgba(74,58,114,.06);}
 .lifebook .nyan{display:flex;gap:9px;align-items:flex-start;margin:16px 0;}
 .lifebook .avatar{flex:none;width:38px;height:38px;border-radius:50%;background:#F6DDF0 center/cover no-repeat;overflow:hidden;}
 .lifebook .nyan.noav .avatar{visibility:hidden;}
