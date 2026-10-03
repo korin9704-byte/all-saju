@@ -372,27 +372,24 @@ function simpleMsCard(title: string, subtitle: string, ms: Myeongsik): string {
 </div>`;
 }
 
-/** 큰 점수 게이지 카드 — 신강신약 슬라이더 스타일 (풀 트랙 + 흰 점 + 점수 라벨) */
+/** 큰 점수 게이지 카드 — 기랑해랑 큰 숫자 + 채움 바 */
 function gaugeCard(title: string, score: number, caption: string, note?: string): string {
   return `<div class="card gauge-card">
 <h4 class="sub-h">${esc(title)}</h4>
 ${note ? `<p class="sub-note">${esc(note)}</p>` : ""}
-<div class="gauge"><div class="g-lab"><span class="g-cur" style="left:${score}%">${score}점</span></div>
-<div class="g-track"><span class="g-dot" style="left:${score}%"></span></div>
-<div class="g-ends"><span>낮음</span><span>보통</span><span>높음</span></div></div>
+<p class="gauge-big">${score}점</p>
+<div class="gauge-track"><div class="gauge-fill" style="width:${score}%"></div></div>
 <p class="gauge-cap">${esc(caption)}</p>
 </div>`;
 }
 
-/** 미니 게이지 3종 카드 (프롤로그) — 작은 슬라이더 스타일 */
+/** 미니 게이지 3종 카드 (프롤로그) — 라벨 + 기랑해랑 점수 + 채움 바 */
 function miniGaugesCard(items: { label: string; score: number }[]): string {
   const rows = items
     .map(
       (it) => `<div class="mini-g">
-<p class="mini-g-label">${esc(it.label)}</p>
-<div class="gauge"><div class="g-lab"><span class="g-cur" style="left:${it.score}%">${it.score}점</span></div>
-<div class="g-track"><span class="g-dot" style="left:${it.score}%"></span></div>
-<div class="g-ends"><span>낮음</span><span>보통</span><span>높음</span></div></div>
+<p class="mini-g-lb"><span>${esc(it.label)}</span><span class="mini-g-sc">${it.score}점</span></p>
+<div class="gauge-track sm"><div class="gauge-fill" style="width:${it.score}%"></div></div>
 </div>`,
     )
     .join("");
