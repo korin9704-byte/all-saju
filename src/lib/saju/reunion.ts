@@ -376,9 +376,8 @@ function simpleMsCard(title: string, subtitle: string, ms: Myeongsik): string {
 function gaugeCard(title: string, score: number, caption: string, note?: string): string {
   return `<div class="card gauge-card">
 <h4 class="sub-h">${esc(title)}</h4>
-${note ? `<p class="sub-note">${esc(note)}</p>` : ""}
+<p class="sub-note">${note ? `${esc(note)}<br/>` : ""}${esc(caption)}</p>
 <div class="gauge-ring" style="--p:${score}"><b>${score}점</b></div>
-<p class="gauge-cap">${esc(caption)}</p>
 </div>`;
 }
 
