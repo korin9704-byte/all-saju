@@ -208,8 +208,6 @@ export const LIFEBOOK_CSS = `
 .lifebook .cal-hit{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%;background:var(--pink);color:#fff;}
 .lifebook .cal-pct{display:block;font-size:12.5px;color:var(--pink);margin-top:2px;}
 .lifebook .dolist{margin:0 0 14px;padding-left:2px;list-style:none;}
-.lifebook .dolist li{font-size:14.5px;line-height:1.85;margin:0 0 8px;padding-left:22px;position:relative;}
-.lifebook .dolist li::before{content:'X';position:absolute;left:1px;top:1px;color:var(--pink);font-family:'Kirang Haerang';font-size:17px;line-height:1.6;}
-.lifebook .dolist.do li::before{content:'O';}
+.lifebook .dolist li{font-size:14.5px;line-height:1.85;margin:0 0 10px;padding-left:0;position:relative;}
 @keyframes lb-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 `;
