@@ -44,12 +44,14 @@ export const LIFEBOOK_CSS = `
 .lifebook .avatar{flex:none;width:38px;height:38px;border-radius:50%;background:#F6DDF0 center/cover no-repeat;overflow:hidden;}
 .lifebook .nyan.noav .avatar{visibility:hidden;}
 .lifebook .say{position:relative;}
-.lifebook .nyan.tail .say::after{content:'';position:absolute;left:-6px;bottom:2px;width:14px;height:14px;background:#EDE6F9;border-radius:0 0 14px 0;clip-path:polygon(0 100%,100% 100%,100% 0);}
+/* 아바타 채팅 스타일 통일 — 연속 버블 그룹의 첫 버블에 뷰어가 .mav 아바타를 부착, 나머지는 .mpad 들여쓰기 */
+.lifebook .nyan .mav{flex:none;width:40px;height:40px;border-radius:50%;background:#EDE6F9 url('/images/moyo-avatar.png') center/cover no-repeat;border:1.5px solid #E8D9F5;}
+.lifebook .nyan.mpad{padding-left:51.5px;}
 .lifebook .me{display:flex;justify-content:flex-end;margin:14px 0;}
 .lifebook .say-me{position:relative;max-width:80%;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border-radius:16px;padding:12px 16px;font-size:14.5px;line-height:1.85;}
 .lifebook .say-me::after{content:'';position:absolute;right:-6px;bottom:2px;width:14px;height:14px;background:var(--pink);border-radius:0 0 0 14px;clip-path:polygon(0 100%,100% 100%,0 0);}
 .lifebook .nyan.noav{margin-top:-6px;}
-.lifebook .say{background:#EDE6F9;border:0;border-radius:16px;padding:12px 16px;font-size:14.5px;line-height:1.85;}
+.lifebook .say{background:#fff;border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:11px 15px;font-size:14.5px;line-height:1.85;box-shadow:0 2px 6px rgba(74,58,114,.06);}
 .lifebook .say b{font-family:'Gowun Dodum';font-weight:400;color:#7761C8;}
 .lifebook .tbl{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:12.5px;}
 .lifebook .tbl th,.lifebook .tbl td{border:1px solid var(--line);padding:7px 4px;text-align:center;}

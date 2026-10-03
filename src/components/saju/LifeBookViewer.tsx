@@ -174,7 +174,7 @@ export default function LifeBookViewer({
           out.className = "bujeok-result";
           out.innerHTML =
             `<img class="bujeok-img" src="${url}" alt="행운 부적" />` +
-            `<div class="nyan tail"><span class="say">완성이에요! 핸드폰 배경화면으로 간직하면, 묘묘가 ${escHtml(name)}님 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
+            `<div class="nyan tail" data-av="1"><span class="mav"></span><span class="say">완성이에요! 핸드폰 배경화면으로 간직하면, 묘묘가 ${escHtml(name)}님 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
             `<a class="bujeok-btn" href="${url}" download="냥점_행운부적_${escHtml(name)}.png">🐾 행운 부적 저장하기</a>`;
           stage.appendChild(out);
         }, wait);
@@ -192,6 +192,31 @@ export default function LifeBookViewer({
     };
     root.addEventListener("click", onClick);
     return () => root.removeEventListener("click", onClick);
+  }, []);
+
+  // 묘묘 말풍선 아바타 통일 — 연속 .nyan 그룹의 첫 버블에 아바타, 나머지는 들여쓰기.
+  // 렌더 타이밍과 무관하게 동작하도록 DOM 변화를 관찰한다.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const process = () => {
+      root.querySelectorAll<HTMLDivElement>(".nyan").forEach((el) => {
+        if (el.dataset.av) return;
+        el.dataset.av = "1";
+        const prev = el.previousElementSibling;
+        if (prev?.classList.contains("nyan")) {
+          el.classList.add("mpad");
+        } else if (!el.querySelector(".mav")) {
+          const av = document.createElement("span");
+          av.className = "mav";
+          el.prepend(av);
+        }
+      });
+    };
+    process();
+    const mo = new MutationObserver(process);
+    mo.observe(root, { childList: true, subtree: true });
+    return () => mo.disconnect();
   }, []);
 
   // 진행 바 흰 라벨 폭 (채움 위 글자용 이중 레이어)
