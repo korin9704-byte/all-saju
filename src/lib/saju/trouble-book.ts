@@ -161,9 +161,13 @@ export function buildTroubleBookPayload(opts: {
     html: (() => {
       // 고민(Q)은 명식표 카드 아래에 별도 카드로 둔다 (카드 제목: "OO님의 사주와 고민")
       const qBlock = question
-        ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
+        ? `<div class="card toon"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
-      let card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
+      // 1장 카드만 인스타툰 패널(잉크 테두리+오프셋 그림자) 스타일 — 풀 명식표는 <section>, 간이는 <div>
+      let card = (myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik)).replace(
+        'class="card"',
+        'class="card toon"',
+      );
       if (question) card = card.replace(`${name}님의 사주<`, `${name}님의 사주와 ${concernWord}<`);
       const cardWithQ = card + qBlock;
       return (

@@ -74,6 +74,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .ch-label{font-size:12px;color:var(--pink);letter-spacing:.24em;margin:0 0 8px;}
 .lifebook .ch-title{font-family:'Gowun Dodum';font-weight:400;font-size:27px;margin:0;color:var(--ink);}
 .lifebook .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 14px 16px;margin:20px 0;}
+.lifebook .card.toon{border:2.5px solid #2E2A3E;border-radius:16px;box-shadow:4px 4px 0 rgba(46,42,62,.18);}
 .lifebook .card.slim{padding:8px 14px 4px;}
 .lifebook .card.slim .gauge{margin:6px 2px 8px;}
 .lifebook .card-title{font-family:'Gowun Dodum';font-weight:400;font-size:18px;text-align:center;margin:0 0 4px;}
