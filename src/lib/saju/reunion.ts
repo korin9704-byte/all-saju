@@ -496,9 +496,9 @@ export function buildReunionBookPayload(opts: {
       : simpleMsCard(`${name}님의 사주 (본인)`, birthLabel, myeongsik),
   );
   if (opts.partnerMsCardHtml) {
-    prologueParts.push(opts.partnerMsCardHtml);
+    prologueParts.push(opts.partnerMsCardHtml.replace('<h4 class="sub-h">', '<p class="ms-tag">(상대방)</p><h4 class="sub-h">'));
   } else if (opts.partnerMyeongsik) {
-    const pTitle = opts.partnerName ? `${opts.partnerName}님의 사주` : "그 사람의 사주";
+    const pTitle = opts.partnerName ? `${opts.partnerName}님의 사주 (상대방)` : "그 사람의 사주 (상대방)";
     prologueParts.push(simpleMsCard(pTitle, partnerLabel, opts.partnerMyeongsik));
   }
   if (question) {
