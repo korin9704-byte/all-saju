@@ -109,11 +109,19 @@ export default async function ResultPage({
   if (product?.slug === LIFE_SLUG) {
     const lifePayload = parseLifePayload(result.interpretation_md);
     if (lifePayload) {
-      // 과거 생성분 소급 — 1장 제목과 명식표 카드 헤더를 현행 규격으로 치환
+      // 과거 생성분 소급 — 장 제목과 명식표 카드 헤더를 현행 규격으로 치환
       const pn = lifePayload.name;
+      const TITLE_MAP: Record<string, string> = {
+        "나의 사주팔자": "프롤로그 Prologue",
+        재물운: "돈은 언제, 어떻게 들어올까 — 재물운",
+        "연애 & 결혼운": "사랑은 어떻게 찾아올까 — 연애 & 결혼운",
+        직업운: "나에게 맞는 일과 성공의 길 — 직업운",
+        건강운: "몸이 보내는 신호 — 건강운",
+        마치며: "에필로그 Epilogue",
+      };
       lifePayload.views = lifePayload.views.map((v) => ({
         ...v,
-        title: v.title === "나의 사주팔자" ? "프롤로그 Prologue" : v.title,
+        title: TITLE_MAP[v.title] ?? v.title,
         html: v.html
           .replace(
             `<h3 class="card-title">${pn}님의 사주</h3><p class="card-sub">`,
