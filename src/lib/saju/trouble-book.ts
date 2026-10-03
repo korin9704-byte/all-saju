@@ -38,14 +38,19 @@ function bodyHtml(text: string): string {
     if (para.length) out.push(`<p class="para">${inline(para.join(" "))}</p>`);
     para = [];
   };
+  // '해도 돼요/해야 할 것' 계열 = ○, '하면 안 돼요/하지 말' 계열 = ✕
+  const DO_RE = /해도\s*(돼요|됩니다|되는|좋아요)|해야\s*할\s*것|해\s*보세요/;
+  const DONT_RE = /하면\s*안\s*돼|하지\s*마|하지\s*말|피하(는|세요)/;
   const flushList = () => {
     if (list.length) {
-      // 목록 첫 항목이 곧 제목이면 그것으로, 아니면 직전 문단 문맥(mode)으로 판단
-      const isDo = /해야\s*할\s*것/.test(list[0]) && !/하지\s*말/.test(list[0])
-        ? true
-        : /하지\s*말/.test(list[0])
-          ? false
-          : mode === "do";
+      // 항목들 자체의 표현으로 다수결 판정, 비기면 직전 문단 문맥(mode)으로
+      let doCnt = 0;
+      let dontCnt = 0;
+      for (const l of list) {
+        if (DONT_RE.test(l)) dontCnt++;
+        else if (DO_RE.test(l)) doCnt++;
+      }
+      const isDo = doCnt !== dontCnt ? doCnt > dontCnt : mode === "do";
       out.push(`<ul class="dolist${isDo ? " do" : ""}">${list.map((l) => `<li>${inline(l)}</li>`).join("")}</ul>`);
     }
     list = [];
@@ -58,8 +63,8 @@ function bodyHtml(text: string): string {
         list.push(line.slice(2));
       } else {
         flushList();
-        if (/하지\s*말/.test(line)) mode = "dont";
-        else if (/해야\s*할\s*것/.test(line)) mode = "do";
+        if (/하지\s*말|피하는\s*게\s*좋아/.test(line)) mode = "dont";
+        else if (/해야\s*할\s*것|해\s*보세요/.test(line)) mode = "do";
         para.push(line);
       }
     }
