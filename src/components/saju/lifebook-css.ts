@@ -14,7 +14,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .view.on{display:block;}
 .lifebook .part{margin:0 0 8px;}
 .lifebook .part span{display:inline-block;background:var(--soft);color:var(--ink);font-size:11.5px;letter-spacing:.06em;padding:4px 12px;border-radius:999px;}
-.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 22px;line-height:1.4;text-align:center;color:#C0399F;}
+.lifebook .chapter{font-family:'Gowun Dodum';font-weight:400;font-size:22px;margin:0 0 22px;line-height:1.4;text-align:center;color:#fff;-webkit-text-stroke:1.2px #2E2A3E;paint-order:stroke fill;text-shadow:0 2px 0 rgba(46,42,62,.12);}
 .lifebook .para{font-size:15px;line-height:2.0;margin:0 0 14px;text-align:justify;}
 .lifebook .para.small{font-size:12px;color:var(--mute);}
 .lifebook .hl{color:var(--pink);font-weight:400;}
