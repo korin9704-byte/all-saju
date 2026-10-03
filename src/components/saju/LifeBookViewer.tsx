@@ -217,7 +217,7 @@ export default function LifeBookViewer({
             textDecoration: "none",
           };
           const link = (
-            <a key="link" href={siblingTab.href} style={{ ...base, color: "#7A6B9E" }}>
+            <a key="link" href={siblingTab.href} style={{ ...base, color: "#1E1B28" }}>
               {siblingTab.label}
             </a>
           );
