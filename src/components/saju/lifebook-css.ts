@@ -28,6 +28,16 @@ export const LIFEBOOK_CSS = `
 .lifebook .sec-div{display:flex;align-items:center;gap:12px;margin:34px 0 16px;}
 .lifebook .sec-div span{font-family:'Gowun Dodum';font-size:18px;color:var(--ink);flex:none;}
 .lifebook .sec-div::before,.lifebook .sec-div::after{content:'';height:1px;background:var(--line);flex:1;}
+.lifebook .bujeok-stage{margin:18px 0 8px;}
+.lifebook .bujeok-img{display:block;width:74%;max-width:300px;margin:18px auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(74,58,114,.22);}
+.lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;max-width:320px;margin:18px auto 8px;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border:0;border-radius:14px;font-family:'Gowun Dodum';font-size:15px;text-decoration:none;cursor:pointer;box-shadow:0 4px 14px rgba(240,128,170,.35);}
+.lifebook .bujeok-btn:active{transform:scale(.98);}
+.lifebook .bujeok-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px 16px;background:#FBF7FF;border:1.5px dashed #D8CBF2;border-radius:16px;}
+.lifebook .bujeok-spin{width:38px;height:38px;border-radius:50%;border:3px solid #E6DAF8;border-top-color:#8F7BD6;animation:bujeok-spin 1s linear infinite;}
+.lifebook .bujeok-loading p{margin:0;font-size:13.5px;color:#7761C8;}
+@keyframes bujeok-spin{to{transform:rotate(360deg)}}
+.lifebook .bujeok-result{animation:bujeok-in .8s ease;}
+@keyframes bujeok-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 .lifebook .moyo-chat{display:flex;gap:10px;align-items:flex-start;margin:16px 0;}
 .lifebook .moyo-chat .mav{flex:none;width:40px;height:40px;border-radius:50%;background:#EDE6F9 url('/images/moyo-avatar.png') center/cover no-repeat;border:1.5px solid #E8D9F5;}
 .lifebook .moyo-chat .mcol{display:flex;flex-direction:column;gap:8px;min-width:0;}

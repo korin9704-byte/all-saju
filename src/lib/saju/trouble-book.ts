@@ -102,6 +102,38 @@ function myeongsikCard(name: string, birthLabel: string, ms: Myeongsik): string 
 </div>`;
 }
 
+// ── 행운 부적 (일간 오행 매칭) ──────────────────────────
+const OHENG_BY_GAN: Record<string, { key: string; kr: string; hanja: string; desc: string }> = {
+  갑: { key: "wood",  kr: "목", hanja: "木", desc: "쭉쭉 뻗는 나무처럼, 막힌 일이 풀리고 성장하는 기운을 담았어요." },
+  을: { key: "wood",  kr: "목", hanja: "木", desc: "쭉쭉 뻗는 나무처럼, 막힌 일이 풀리고 성장하는 기운을 담았어요." },
+  병: { key: "fire",  kr: "화", hanja: "火", desc: "타오르는 태양처럼, 주변을 밝히고 좋은 인연을 끌어당기는 기운을 담았어요." },
+  정: { key: "fire",  kr: "화", hanja: "火", desc: "타오르는 태양처럼, 주변을 밝히고 좋은 인연을 끌어당기는 기운을 담았어요." },
+  무: { key: "earth", kr: "토", hanja: "土", desc: "든든한 산처럼, 흔들리지 않는 안정과 결실의 기운을 담았어요." },
+  기: { key: "earth", kr: "토", hanja: "土", desc: "든든한 산처럼, 흔들리지 않는 안정과 결실의 기운을 담았어요." },
+  경: { key: "metal", kr: "금", hanja: "金", desc: "맑게 울리는 종처럼, 재물과 귀인을 부르는 기운을 담았어요." },
+  신: { key: "metal", kr: "금", hanja: "金", desc: "맑게 울리는 종처럼, 재물과 귀인을 부르는 기운을 담았어요." },
+  임: { key: "water", kr: "수", hanja: "水", desc: "달빛 어린 물결처럼, 지혜롭게 흘러가 뜻을 이루는 기운을 담았어요." },
+  계: { key: "water", kr: "수", hanja: "水", desc: "달빛 어린 물결처럼, 지혜롭게 흘러가 뜻을 이루는 기운을 담았어요." },
+};
+
+/** 결과지 마지막 장 — 일간 오행에 맞는 행운 부적. 버튼을 누르면 뷰어에서
+ *  생성 연출 후 고객 이름을 각인해 보여준다(LifeBookViewer의 .bujeok-stage 클릭 위임).
+ *  일간을 모르면 null */
+export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
+  const gan = ms.day?.cheongan;
+  const el = gan ? OHENG_BY_GAN[gan] : undefined;
+  if (!gan || !el) return null;
+  const ganLabel = `${gan}${el.kr}(${CHEONGAN_HANJA[gan] ?? ""}${el.hanja})`;
+  return (
+    `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님께 드리는 작은 선물이 있어요.</span></div>` +
+    `<div class="nyan"><span class="say">${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
+    `<div class="nyan"><span class="say">지금 이 자리에서 ${esc(name)}님만을 위한 부적을 한 장 그려드릴게요.</span></div>` +
+    `<div class="bujeok-stage" data-key="${el.key}" data-name="${esc(name)}" data-el="${el.kr}">` +
+    `<button type="button" class="bujeok-btn bujeok-start">🐾 내 부적 받기</button>` +
+    `</div>`
+  );
+}
+
 export function buildTroubleBookPayload(opts: {
   name: string;
   birthLabel: string;
@@ -164,6 +196,17 @@ export function buildTroubleBookPayload(opts: {
       sub: true,
     });
   });
+
+  // 마지막 장 — 일간 오행 행운 부적
+  const bujeokHtml = buildBujeokHtml(name, myeongsik);
+  if (bujeokHtml) {
+    views.push({
+      label: `${no(sections.length + 2)}.`,
+      title: dot("묘묘의 행운 부적"),
+      html: bujeokHtml,
+      sub: true,
+    });
+  }
 
   return { type: "life-saju-v1", name, birthLabel, views };
 }

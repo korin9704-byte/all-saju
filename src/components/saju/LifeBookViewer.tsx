@@ -75,6 +75,125 @@ export default function LifeBookViewer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 행운 부적 장 — '내 부적 받기'(서버 렌더 버튼) 클릭을 위임으로 받아
+  // 생성 연출(약 5초) 후 이름을 각인해 공개. 위임이라 렌더 타이밍과 무관하게 동작.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const onClick = (e: MouseEvent) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".bujeok-start");
+      if (!btn) return;
+      const stage = btn.closest<HTMLDivElement>(".bujeok-stage");
+      if (!stage || stage.dataset.busy) return;
+      stage.dataset.busy = "1";
+      const key = stage.dataset.key || "earth";
+      const name = stage.dataset.name || "";
+      const elKr = stage.dataset.el || "";
+      const escHtml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      btn.remove();
+      const load = document.createElement("div");
+      load.className = "bujeok-loading";
+      load.innerHTML = `<span class="bujeok-spin"></span><p></p>`;
+      stage.appendChild(load);
+      const msgEl = load.querySelector("p")!;
+      const msgs = [
+        `${name}님의 사주를 읽는 중…`,
+        "괴황지를 펼치는 중…",
+        "경면주사를 가는 중…",
+        "묘묘가 붓을 드는 중…",
+        `${elKr} 기운을 불어넣는 중…`,
+      ];
+      let mi = 0;
+      msgEl.textContent = msgs[0];
+      const iv = setInterval(() => {
+        mi = Math.min(mi + 1, msgs.length - 1);
+        msgEl.textContent = msgs[mi];
+      }, 1100);
+      const img = new Image();
+      const started = Date.now();
+      // 연출이 도는 동안 붓글씨 폰트를 미리 로드해 둔다
+      try {
+        document.fonts?.load("80px 'Nanum Brush Script'");
+      } catch {
+        /* ignore */
+      }
+      img.onload = () => {
+        const wait = Math.max(0, 5300 - (Date.now() - started));
+        setTimeout(() => {
+          clearInterval(iv);
+          // 고객 이름 세로 각인 합성 — 실패하면 원본 그대로
+          let url = `/images/bujeok/${key}.png`;
+          try {
+            const cv = document.createElement("canvas");
+            cv.width = img.naturalWidth;
+            cv.height = img.naturalHeight;
+            const ctx = cv.getContext("2d");
+            if (ctx) {
+              ctx.drawImage(img, 0, 0);
+              // 세로 이름 각인 — 종이에 먹이 스며든 붓글씨 느낌:
+              // multiply 블렌딩(종이 질감이 비침) + 글자별 흔들림 + 번짐 레이어
+              const fs = Math.round(cv.width * 0.075);
+              ctx.font = `${fs}px 'Nanum Brush Script', 'Gowun Dodum', serif`;
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.globalCompositeOperation = "multiply";
+              const x0 = cv.width * 0.915;
+              let y = cv.height * 0.07;
+              let seed = 0;
+              for (const ch of name) seed += ch.charCodeAt(0);
+              const rnd = () => {
+                seed = (seed * 9301 + 49297) % 233280;
+                return seed / 233280 - 0.5;
+              };
+              for (const ch of name) {
+                const jx = rnd() * fs * 0.14;
+                const rot = rnd() * 0.09;
+                ctx.save();
+                ctx.translate(x0 + jx, y);
+                ctx.rotate(rot);
+                // 1) 먹 번짐 — 흐린 그림자를 넓게 (주사 빨강 계열)
+                ctx.shadowColor = "rgba(205,50,22,0.5)";
+                ctx.shadowBlur = fs * 0.14;
+                ctx.fillStyle = "rgba(205,52,24,0.45)";
+                ctx.fillText(ch, 0, 0);
+                // 2) 본 획 — 주사 빨강
+                ctx.shadowBlur = fs * 0.04;
+                ctx.fillStyle = "rgba(186,32,14,0.85)";
+                ctx.fillText(ch, 0, 0);
+                ctx.restore();
+                y += fs * 1.08;
+              }
+              ctx.globalCompositeOperation = "source-over";
+              url = cv.toDataURL("image/png");
+            }
+          } catch {
+            /* 캔버스 합성 실패 — 원본 이미지 사용 */
+          }
+          load.remove();
+          const out = document.createElement("div");
+          out.className = "bujeok-result";
+          out.innerHTML =
+            `<img class="bujeok-img" src="${url}" alt="행운 부적" />` +
+            `<div class="nyan tail" data-av="1"><span class="mav"></span><span class="say">완성이에요! 핸드폰 배경화면으로 간직하면, 묘묘가 ${escHtml(name)}님 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
+            `<a class="bujeok-btn" href="${url}" download="냥점_행운부적_${escHtml(name)}.png">🐾 행운 부적 저장하기</a>`;
+          stage.appendChild(out);
+        }, wait);
+      };
+      img.onerror = () => {
+        clearInterval(iv);
+        msgEl.textContent = "부적을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.";
+        setTimeout(() => {
+          load.remove();
+          stage.appendChild(btn);
+          delete stage.dataset.busy;
+        }, 1800);
+      };
+      img.src = `/images/bujeok/${key}.png`;
+    };
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, []);
+
   // 묘묘 말풍선 아바타 통일 — 연속 .nyan 그룹의 첫 버블에 아바타, 나머지는 들여쓰기.
   // 렌더 타이밍과 무관하게 동작하도록 DOM 변화를 관찰한다.
   useEffect(() => {
