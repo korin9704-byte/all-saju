@@ -124,12 +124,21 @@ export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
   const el = gan ? OHENG_BY_GAN[gan] : undefined;
   if (!gan || !el) return null;
   const ganLabel = `${gan}${el.kr}(${CHEONGAN_HANJA[gan] ?? ""}${el.hanja})`;
+  // 버튼 색 — 각 오행 부적 그림의 팔레트에 맞춤
+  const BTN_COLORS: Record<string, { bg: string; fg: string }> = {
+    wood: { bg: "#E3EEDA", fg: "#4C7A4A" },
+    fire: { bg: "#FBE0CF", fg: "#C25B33" },
+    earth: { bg: "#F5E7C8", fg: "#8A6530" },
+    metal: { bg: "#EAE8F0", fg: "#7A7690" },
+    water: { bg: "#DBEAF8", fg: "#4A7FB0" },
+  };
+  const c = BTN_COLORS[el.key] ?? { bg: "#E7DDF8", fg: "#4A3A72" };
   return (
     `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
     `<div class="nyan"><span class="say">${esc(name)}님을 위한 행운 부적이에요. 핸드폰 배경화면으로 간직하면, 묘묘가 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
     `<div class="bujeok-stage" data-key="${el.key}">` +
     `<img class="bujeok-img" src="/images/bujeok/${el.key}.png" alt="행운 부적" />` +
-    `<a class="bujeok-btn" href="/images/bujeok/${el.key}.png" download="냥점_행운부적_${esc(name)}.png">내 부적 저장하기!!</a>` +
+    `<a class="bujeok-btn" style="background:${c.bg};color:${c.fg}" href="/images/bujeok/${el.key}.png" download="냥점_행운부적_${esc(name)}.png">내 부적 저장하기!!</a>` +
     `</div>`
   );
 }
