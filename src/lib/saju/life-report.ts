@@ -8,6 +8,7 @@
 
 import { generateInterpretation } from "@/lib/saju/llm";
 import type { SajuAnalysisResponse } from "@/lib/saju/saju-api";
+import { buildBujeokHtml } from "@/lib/saju/trouble-book";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Api = any;
@@ -593,6 +594,12 @@ function assembleViews(
   ch("12장", "앞으로 5년 — 연운과 삼재", ch12);
 
   ch("13장", "에필로그 Epilogue", [R("closing")]);
+
+  // 14장 — 일간 오행 행운 부적 (고민·재회 결과지와 동일)
+  const bujeokHtml = buildBujeokHtml(name, { day: { cheongan: a.ganji?.day?.gan } } as Parameters<typeof buildBujeokHtml>[1]);
+  if (bujeokHtml) {
+    views.push({ label: "14장", title: "보너스 Bonus — 행운 부적", html: bujeokHtml });
+  }
 
   return views.map((v) => ({ ...v, html: addTails(v.html) }));
 }

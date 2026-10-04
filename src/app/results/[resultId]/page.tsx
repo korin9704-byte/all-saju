@@ -146,6 +146,17 @@ export default async function ResultPage({
           // 카드 설명 캡션도 묘묘 말풍선으로
           .replace(/<p class="caption">([\s\S]*?)<\/p>/g, '<div class="nyan"><span class="say">$1</span></div>'),
       }));
+      // 과거 생성분 소급 — 부적 장이 없으면 렌더 시 덧붙인다 (신규분은 빌더가 직접 포함)
+      if (!lifePayload.views.some((v) => v.title.includes("행운 부적"))) {
+        const { buildBujeokHtml } = await import("@/lib/saju/trouble-book");
+        const bj = buildBujeokHtml(pn, result.myeongsik as unknown as Myeongsik);
+        if (bj) {
+          lifePayload.views = [
+            ...lifePayload.views,
+            { label: `${lifePayload.views.length + 1}장`, title: "보너스 Bonus — 행운 부적", html: bj },
+          ];
+        }
+      }
       // 번들 자식 주문(-jt)이면 부모(고민/재회 사주) 결과지로 가는 탭 제공
       let siblingTab: { label: string; href: string } | undefined;
       if (order?.order_id?.endsWith("-jt")) {
