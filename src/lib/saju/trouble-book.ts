@@ -102,28 +102,27 @@ function myeongsikCard(name: string, birthLabel: string, ms: Myeongsik): string 
 </div>`;
 }
 
-// ── 행운 부적 (일간 오행 매칭) ──────────────────────────
-const OHENG_BY_GAN: Record<string, { key: string; kr: string; hanja: string; desc: string }> = {
-  갑: { key: "wood",  kr: "목", hanja: "木", desc: "쭉쭉 뻗는 나무처럼, 막힌 일이 풀리고 성장하는 기운을 담았어요." },
-  을: { key: "wood",  kr: "목", hanja: "木", desc: "쭉쭉 뻗는 나무처럼, 막힌 일이 풀리고 성장하는 기운을 담았어요." },
-  병: { key: "fire",  kr: "화", hanja: "火", desc: "타오르는 태양처럼, 주변을 밝히고 좋은 인연을 끌어당기는 기운을 담았어요." },
-  정: { key: "fire",  kr: "화", hanja: "火", desc: "타오르는 태양처럼, 주변을 밝히고 좋은 인연을 끌어당기는 기운을 담았어요." },
-  무: { key: "earth", kr: "토", hanja: "土", desc: "든든한 산처럼, 흔들리지 않는 안정과 결실의 기운을 담았어요." },
-  기: { key: "earth", kr: "토", hanja: "土", desc: "든든한 산처럼, 흔들리지 않는 안정과 결실의 기운을 담았어요." },
-  경: { key: "metal", kr: "금", hanja: "金", desc: "맑게 울리는 종처럼, 재물과 귀인을 부르는 기운을 담았어요." },
-  신: { key: "metal", kr: "금", hanja: "金", desc: "맑게 울리는 종처럼, 재물과 귀인을 부르는 기운을 담았어요." },
-  임: { key: "water", kr: "수", hanja: "水", desc: "달빛 어린 물결처럼, 지혜롭게 흘러가 뜻을 이루는 기운을 담았어요." },
-  계: { key: "water", kr: "수", hanja: "水", desc: "달빛 어린 물결처럼, 지혜롭게 흘러가 뜻을 이루는 기운을 담았어요." },
+// ── 행운 부적 (용신 오행 매칭 — 사주에 가장 필요한 기운) ──────────────────────────
+const OHENG_META: Record<string, { key: string; kr: string; hanja: string; desc: string }> = {
+  목: { key: "wood",  kr: "목", hanja: "木", desc: "쭉쭉 뻗는 나무의 기운이 막힌 일을 풀고 성장을 도와줄 거예요." },
+  화: { key: "fire",  kr: "화", hanja: "火", desc: "타오르는 태양의 기운이 주변을 밝히고 좋은 인연을 끌어당겨 줄 거예요." },
+  토: { key: "earth", kr: "토", hanja: "土", desc: "든든한 산의 기운이 흔들리지 않는 안정과 결실을 가져다줄 거예요." },
+  금: { key: "metal", kr: "금", hanja: "金", desc: "맑게 울리는 종의 기운이 재물과 귀인을 불러줄 거예요." },
+  수: { key: "water", kr: "수", hanja: "水", desc: "달빛 어린 물결의 기운이 지혜롭게 흘러 뜻을 이루게 해줄 거예요." },
 };
 
-/** 결과지 마지막 장 — 일간 오행에 맞는 행운 부적. 버튼을 누르면 뷰어에서
- *  생성 연출 후 고객 이름을 각인해 보여준다(LifeBookViewer의 .bujeok-stage 클릭 위임).
- *  일간을 모르면 null */
-export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
-  const gan = ms.day?.cheongan;
-  const el = gan ? OHENG_BY_GAN[gan] : undefined;
-  if (!gan || !el) return null;
-  const ganLabel = `${gan}${el.kr}(${CHEONGAN_HANJA[gan] ?? ""}${el.hanja})`;
+// 일간 천간 → 오행 (용신을 모를 때 폴백)
+const OHENG_BY_GAN: Record<string, string> = {
+  갑: "목", 을: "목", 병: "화", 정: "화", 무: "토", 기: "토", 경: "금", 신: "금", 임: "수", 계: "수",
+};
+
+/** 결과지 마지막 장 — 용신(사주에 가장 필요한 기운) 오행에 맞는 행운 부적.
+ *  용신을 모르면 일간 오행으로 폴백, 그것도 없으면 null */
+export function buildBujeokHtml(name: string, yongsinOheng?: string | null, ms?: Myeongsik): string | null {
+  const oheng = (yongsinOheng && OHENG_META[yongsinOheng] ? yongsinOheng : undefined)
+    ?? (ms?.day?.cheongan ? OHENG_BY_GAN[ms.day.cheongan] : undefined);
+  const el = oheng ? OHENG_META[oheng] : undefined;
+  if (!el) return null;
   // 버튼 색 — 각 오행 부적 그림의 팔레트에 맞춤 (테두리·글씨)
   const BTN_COLORS: Record<string, { bd: string; fg: string }> = {
     wood: { bd: "#8FB57E", fg: "#4C7A4A" },
@@ -134,8 +133,8 @@ export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
   };
   const c = BTN_COLORS[el.key] ?? { bd: "#C95FC0", fg: "#A3327F" };
   return (
-    `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
-    `<div class="nyan"><span class="say">${esc(name)}님을 위한 행운 부적이에요. 핸드폰 배경화면으로 간직하면, 묘묘가 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
+    `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님의 사주에 지금 가장 필요한 기운은 <b>${el.kr}(${el.hanja})</b>이에요. ${el.desc}</span></div>` +
+    `<div class="nyan"><span class="say">그 기운을 가득 담아 ${esc(name)}님만을 위한 행운 부적을 준비했어요. 핸드폰 배경화면으로 간직하면, 묘묘가 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
     `<div class="bujeok-stage" data-key="${el.key}">` +
     `<div class="bujeok-wrap">` +
     `<img class="bujeok-img" src="/images/bujeok/${el.key}.png" alt="행운 부적" />` +
@@ -156,8 +155,10 @@ export function buildTroubleBookPayload(opts: {
   partnerMsCardHtml?: string;
   /** 1장에서 쓰는 표현 — 기본 "고민", 추가 질문 결과지는 "질문" */
   concernWord?: string;
+  /** 용신 오행(목·화·토·금·수) — 행운 부적 매칭용. 없으면 일간 오행 폴백 */
+  bujeokOheng?: string;
 }): LifeReportPayload {
-  const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml, partnerMsCardHtml, concernWord = "고민" } = opts;
+  const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml, partnerMsCardHtml, concernWord = "고민", bujeokOheng } = opts;
 
   // '## ' 섹션 분리 (내용은 그대로)
   const sections: { title: string; body: string }[] = [];
@@ -216,7 +217,7 @@ export function buildTroubleBookPayload(opts: {
   });
 
   // 마지막 장 — 일간 오행 행운 부적
-  const bujeokHtml = buildBujeokHtml(name, myeongsik);
+  const bujeokHtml = buildBujeokHtml(name, bujeokOheng, myeongsik);
   if (bujeokHtml) {
     views.push({
       label: `${no(sections.length + 2)}.`,

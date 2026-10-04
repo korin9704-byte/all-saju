@@ -596,7 +596,11 @@ function assembleViews(
   ch("13장", "에필로그 Epilogue", [R("closing")]);
 
   // 14장 — 일간 오행 행운 부적 (고민·재회 결과지와 동일)
-  const bujeokHtml = buildBujeokHtml(name, { day: { cheongan: a.ganji?.day?.gan } } as Parameters<typeof buildBujeokHtml>[1]);
+  const bujeokHtml = buildBujeokHtml(
+    name,
+    a.gyeokguk?.yongsin?.오행,
+    { day: { cheongan: a.ganji?.day?.gan } } as Parameters<typeof buildBujeokHtml>[2],
+  );
   if (bujeokHtml) {
     views.push({ label: "14장", title: "보너스 Bonus — 행운 부적", html: bujeokHtml });
   }

@@ -449,6 +449,8 @@ export function buildReunionBookPayload(opts: {
   partnerName?: string;
   partnerBirthDate?: string;
   partnerGender?: "male" | "female";
+  /** 용신 오행(목·화·토·금·수) — 행운 부적 매칭용 */
+  bujeokOheng?: string;
   /** 상대방 풀 명식표 html — 있으면 간이 명식표 대신 사용 */
   partnerMsCardHtml?: string;
 }): LifeReportPayload {
@@ -545,7 +547,7 @@ export function buildReunionBookPayload(opts: {
   });
 
   // 마지막 장 — 일간 오행 행운 부적
-  const bujeokHtml = buildBujeokHtml(name, myeongsik);
+  const bujeokHtml = buildBujeokHtml(name, opts.bujeokOheng, myeongsik);
   if (bujeokHtml) {
     views.push({
       label: `${sections.length + 2}장`,

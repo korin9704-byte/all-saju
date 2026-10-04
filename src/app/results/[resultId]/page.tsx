@@ -149,7 +149,25 @@ export default async function ResultPage({
       // 과거 생성분 소급 — 부적 장이 없으면 렌더 시 덧붙인다 (신규분은 빌더가 직접 포함)
       if (!lifePayload.views.some((v) => v.title.includes("행운 부적"))) {
         const { buildBujeokHtml } = await import("@/lib/saju/trouble-book");
-        const bj = buildBujeokHtml(pn, result.myeongsik as unknown as Myeongsik);
+        // 용신 오행 계산 — 실패하면 일간 폴백
+        let lifeYongsin: string | undefined;
+        if (sajuInput) {
+          try {
+            const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+            const analysis = computeLocalFullAnalysis({
+              birthDate: sajuInput.birth_date as string,
+              birthTime: sajuInput.birth_time ? (sajuInput.birth_time as string).slice(0, 5) : null,
+              timeUnknown: !!sajuInput.time_unknown,
+              calendar: (sajuInput.calendar === "lunar" ? "lunar" : "solar") as "lunar" | "solar",
+              isLeapMonth: !!sajuInput.is_leap_month,
+              gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
+            });
+            lifeYongsin = (analysis as { gyeokguk?: { yongsin?: { 오행?: string } } }).gyeokguk?.yongsin?.오행;
+          } catch {
+            /* 일간 폴백 */
+          }
+        }
+        const bj = buildBujeokHtml(pn, lifeYongsin, result.myeongsik as unknown as Myeongsik);
         if (bj) {
           lifePayload.views = [
             ...lifePayload.views,
@@ -303,6 +321,7 @@ export default async function ResultPage({
         .join(" ") + ` · ${sajuInput.gender === "male" ? "남성" : "여성"}`;
     // 인생 사주식 풀 명식표(십성·십이운성·신살·귀인) — 로컬 만세력으로 계산
     let msCardHtml: string | undefined;
+    let bujeokOheng: string | undefined; // 용신 오행 — 행운 부적 매칭용
     try {
       const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
       const { buildMyeongsikCardHtml } = await import("@/lib/saju/life-report");
@@ -315,6 +334,7 @@ export default async function ResultPage({
         gender: (sajuInput.gender === "male" ? "male" : "female") as "male" | "female",
       });
       msCardHtml = buildMyeongsikCardHtml(analysis, sajuInput.name ?? "고객", birthLabel);
+      bujeokOheng = (analysis as { gyeokguk?: { yongsin?: { 오행?: string } } }).gyeokguk?.yongsin?.오행;
     } catch (err) {
       console.error("[trouble-book] 풀 명식표 생성 실패 — 간이 명식표로 폴백:", err);
     }
@@ -370,6 +390,7 @@ export default async function ResultPage({
           partnerBirthDate: partner.partnerBirthDate,
           partnerGender: partner.partnerGender,
           partnerMsCardHtml,
+          bujeokOheng,
         });
       } else {
         // 재회 추가 질문 — 고민식 북이지만 상대방 명식표도 함께 보여준다
@@ -382,6 +403,7 @@ export default async function ResultPage({
           myeongsikCardHtml: msCardHtml,
           partnerMsCardHtml,
           concernWord: "질문",
+          bujeokOheng,
         });
       }
     } else {
@@ -392,6 +414,7 @@ export default async function ResultPage({
         myeongsik,
         md: result.interpretation_md,
         myeongsikCardHtml: msCardHtml,
+        bujeokOheng,
       });
     }
     // 번들 부모면 인생 사주(자식) 결과지 탭 연결
