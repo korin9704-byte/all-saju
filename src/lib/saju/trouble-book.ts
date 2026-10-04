@@ -203,7 +203,7 @@ export function buildTroubleBookPayload(opts: {
   if (bujeokHtml) {
     views.push({
       label: `${no(sections.length + 2)}.`,
-      title: dot("묘묘의 행운 부적"),
+      title: "보너스 Bonus — 행운 부적",
       html: bujeokHtml,
       sub: true,
     });

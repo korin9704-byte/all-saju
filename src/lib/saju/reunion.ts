@@ -549,7 +549,7 @@ export function buildReunionBookPayload(opts: {
   if (bujeokHtml) {
     views.push({
       label: `${sections.length + 2}장`,
-      title: "묘묘의 행운 부적",
+      title: "보너스 Bonus — 행운 부적",
       html: bujeokHtml,
       sub: true,
     });
