@@ -309,8 +309,7 @@ export default async function ResultPage({
     }
     // 재회 사주는 전용 북 빌더(프롤로그 게이지·상대 명식표·골든타임 캘린더) 사용
     let troublePayload;
-    if (isReunionResult) {
-      const { buildReunionBookPayload } = await import("@/lib/saju/reunion");
+    if (isReunionFamily) {
       const { parsePartnerFromConcerns } = await import("@/lib/saju/generate-result");
       const partner = await parsePartnerFromConcerns((sajuInput.concerns ?? []) as string[]);
       // 상대방도 본인과 같은 풀 명식표(십성·십이운성·신살·귀인)로 렌더
@@ -346,19 +345,34 @@ export default async function ResultPage({
           console.error("[reunion-book] 상대방 풀 명식표 생성 실패 — 간이 명식표로 폴백:", err);
         }
       }
-      troublePayload = buildReunionBookPayload({
-        name: sajuInput.name ?? "고객",
-        birthLabel,
-        question,
-        myeongsik,
-        md: result.interpretation_md,
-        myeongsikCardHtml: msCardHtml,
-        partnerMyeongsik: partner.partnerMyeongsik,
-        partnerName: partner.partnerName,
-        partnerBirthDate: partner.partnerBirthDate,
-        partnerGender: partner.partnerGender,
-        partnerMsCardHtml,
-      });
+      if (isReunionResult) {
+        const { buildReunionBookPayload } = await import("@/lib/saju/reunion");
+        troublePayload = buildReunionBookPayload({
+          name: sajuInput.name ?? "고객",
+          birthLabel,
+          question,
+          myeongsik,
+          md: result.interpretation_md,
+          myeongsikCardHtml: msCardHtml,
+          partnerMyeongsik: partner.partnerMyeongsik,
+          partnerName: partner.partnerName,
+          partnerBirthDate: partner.partnerBirthDate,
+          partnerGender: partner.partnerGender,
+          partnerMsCardHtml,
+        });
+      } else {
+        // 재회 추가 질문 — 고민식 북이지만 상대방 명식표도 함께 보여준다
+        troublePayload = buildTroubleBookPayload({
+          name: sajuInput.name ?? "고객",
+          birthLabel,
+          question,
+          myeongsik,
+          md: result.interpretation_md,
+          myeongsikCardHtml: msCardHtml,
+          partnerMsCardHtml,
+          concernWord: "질문",
+        });
+      }
     } else {
       troublePayload = buildTroubleBookPayload({
         name: sajuInput.name ?? "고객",
@@ -367,8 +381,6 @@ export default async function ResultPage({
         myeongsik,
         md: result.interpretation_md,
         myeongsikCardHtml: msCardHtml,
-        // 재회 추가 질문 결과지는 '고민'이 아니라 '질문'으로 표현
-        concernWord: product.slug === "reunion-followup" ? "질문" : undefined,
       });
     }
     // 번들 부모면 인생 사주(자식) 결과지 탭 연결

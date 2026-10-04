@@ -152,10 +152,12 @@ export function buildTroubleBookPayload(opts: {
   md: string;
   /** 인생 사주식 풀 명식표 카드 html — 있으면 간이 명식표 대신 사용 */
   myeongsikCardHtml?: string;
+  /** 상대방 풀 명식표 html — 재회 추가 질문처럼 두 사람 사주를 함께 보여줄 때 */
+  partnerMsCardHtml?: string;
   /** 1장에서 쓰는 표현 — 기본 "고민", 추가 질문 결과지는 "질문" */
   concernWord?: string;
 }): LifeReportPayload {
-  const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml, concernWord = "고민" } = opts;
+  const { name, birthLabel, question, myeongsik, md, myeongsikCardHtml, partnerMsCardHtml, concernWord = "고민" } = opts;
 
   // '## ' 섹션 분리 (내용은 그대로)
   const sections: { title: string; body: string }[] = [];
@@ -179,7 +181,13 @@ export function buildTroubleBookPayload(opts: {
         ? `<div class="card"><p class="card-desc" style="margin:0">${esc(question)}</p></div>`
         : "";
       // 명식표 카드 — 빌더가 "이름 · 생년월일시 (양력) · 성별" 한 줄 헤더로 생성
-      const card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
+      let card = myeongsikCardHtml ?? myeongsikCard(name, birthLabel, myeongsik);
+      // 상대방 표가 함께 오면 재회 결과지처럼 (본인)/(상대방) 라벨을 붙인다
+      if (partnerMsCardHtml) {
+        card =
+          card.replace('<h4 class="sub-h">', '<p class="ms-tag">(본인)</p><h4 class="sub-h">') +
+          partnerMsCardHtml.replace('<h4 class="sub-h">', '<p class="ms-tag">(상대방)</p><h4 class="sub-h">');
+      }
       const cardWithQ = card + qBlock;
       return (
         // 묘묘 아바타 + 채팅 버블 (이름표 없음)
