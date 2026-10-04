@@ -2,10 +2,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 
-// 결과지 공유 버튼 클릭 기록 — 실패해도 사용자 흐름에는 영향 없음 (fire-and-forget)
+// 결과지 공유 버튼·부적 다운로드 클릭 기록 — 실패해도 사용자 흐름에는 영향 없음 (fire-and-forget)
 const bodySchema = z.object({
   resultId: z.string().uuid(),
-  channel: z.enum(["link", "kakao"]),
+  channel: z.enum(["link", "kakao", "bujeok"]),
+  oheng: z.enum(["wood", "fire", "earth", "metal", "water"]).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "잘못된 요청입니다" }, { status: 400 });
   }
-  const { resultId, channel } = parsed.data;
+  const { resultId, channel, oheng } = parsed.data;
 
   const service = createServiceClient();
   try {
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
       result_id: resultId,
       product_slug: productSlug,
       channel,
+      ...(channel === "bujeok" && oheng ? { oheng } : {}),
     });
     if (error) console.error("[share-events] 기록 실패:", error.message);
   } catch (err) {

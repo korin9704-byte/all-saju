@@ -105,7 +105,8 @@ type ShareEventRow = {
   id: string;
   result_id: string;
   product_slug: string;
-  channel: "link" | "kakao";
+  channel: "link" | "kakao" | "bujeok";
+  oheng: string | null;
   created_at: string;
 };
 
@@ -238,7 +239,8 @@ export type Database = {
           id?: string;
           result_id: string;
           product_slug?: string;
-          channel: "link" | "kakao";
+          channel: "link" | "kakao" | "bujeok";
+          oheng?: string | null;
           created_at?: string;
         };
         Update: Partial<ShareEventRow>;

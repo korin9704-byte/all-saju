@@ -75,6 +75,31 @@ export default function LifeBookViewer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 행운 부적 다운로드 집계 — 서버 렌더된 버튼이라 클릭 위임으로 받는다 (다운로드는 막지 않음)
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const onClick = (e: MouseEvent) => {
+      const btn = (e.target as HTMLElement).closest<HTMLAnchorElement>(".bujeok-btn");
+      if (!btn) return;
+      try {
+        const resultId = window.location.pathname.match(/\/results\/([0-9a-f-]{36})/)?.[1];
+        const oheng = btn.closest<HTMLElement>(".bujeok-stage")?.dataset.key;
+        if (!resultId) return;
+        void fetch("/api/share-events", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ resultId, channel: "bujeok", oheng }),
+          keepalive: true,
+        }).catch(() => {});
+      } catch {
+        /* ignore */
+      }
+    };
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, []);
+
   // 묘묘 말풍선 아바타 통일 — 연속 .nyan 그룹의 첫 버블에 아바타, 나머지는 들여쓰기.
   // 렌더 타이밍과 무관하게 동작하도록 DOM 변화를 관찰한다.
   useEffect(() => {
