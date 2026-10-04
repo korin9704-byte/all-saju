@@ -30,7 +30,7 @@ export const LIFEBOOK_CSS = `
 .lifebook .sec-div::before,.lifebook .sec-div::after{content:'';height:1px;background:var(--line);flex:1;}
 .lifebook .bujeok-stage{margin:18px 0 8px;}
 .lifebook .bujeok-img{display:block;width:52%;max-width:210px;margin:18px auto 14px;border-radius:14px;box-shadow:0 8px 28px rgba(74,58,114,.22);filter:blur(5px);}
-.lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;max-width:320px;margin:18px auto 8px;background:linear-gradient(90deg,var(--vio),var(--pink));color:#fff;border:0;border-radius:14px;font-family:'Gowun Dodum';font-size:15px;text-decoration:none;cursor:pointer;box-shadow:0 4px 14px rgba(240,128,170,.35);}
+.lifebook .bujeok-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:52px;margin:18px auto 8px;background:#E7DDF8;color:var(--ink);border:0;border-radius:999px;font-family:'Gowun Dodum';font-size:15px;text-decoration:none;cursor:pointer;}
 .lifebook .bujeok-btn:active{transform:scale(.98);}
 .lifebook .bujeok-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px 16px;background:#FBF7FF;border:1.5px dashed #D8CBF2;border-radius:16px;}
 .lifebook .bujeok-spin{width:38px;height:38px;border-radius:50%;border:3px solid #E6DAF8;border-top-color:#8F7BD6;animation:bujeok-spin 1s linear infinite;}
