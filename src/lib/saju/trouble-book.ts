@@ -125,12 +125,11 @@ export function buildBujeokHtml(name: string, ms: Myeongsik): string | null {
   if (!gan || !el) return null;
   const ganLabel = `${gan}${el.kr}(${CHEONGAN_HANJA[gan] ?? ""}${el.hanja})`;
   return (
-    `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님께 드리는 작은 선물이 있어요.</span></div>` +
-    `<div class="nyan"><span class="say">${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
-    `<div class="nyan"><span class="say">${esc(name)}님의 이름을 새긴 부적이에요. 핸드폰 배경화면으로 간직하면, 묘묘가 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
-    `<div class="bujeok-stage" data-key="${el.key}" data-name="${esc(name)}" data-el="${el.kr}">` +
+    `<div class="nyan tail"><span class="say">마지막 장까지 와주셨네요. ${esc(name)}님의 일간은 <b>${ganLabel}</b>. ${el.desc}</span></div>` +
+    `<div class="nyan"><span class="say">${esc(name)}님을 위한 행운 부적이에요. 핸드폰 배경화면으로 간직하면, 묘묘가 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
+    `<div class="bujeok-stage" data-key="${el.key}">` +
     `<img class="bujeok-img" src="/images/bujeok/${el.key}.png" alt="행운 부적" />` +
-    `<a class="bujeok-btn bujeok-dl" href="/images/bujeok/${el.key}.png" download="냥점_행운부적_${esc(name)}.png">내 부적 저장하기!!</a>` +
+    `<a class="bujeok-btn" href="/images/bujeok/${el.key}.png" download="냥점_행운부적_${esc(name)}.png">내 부적 저장하기!!</a>` +
     `</div>`
   );
 }
