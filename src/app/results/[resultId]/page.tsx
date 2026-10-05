@@ -144,7 +144,10 @@ export default async function ResultPage({
           // 신강신약 결론 문장(슬라이더 아래)을 설명과 같은 작은 글씨로
           .replace(/<p class="para">(일간[\s\S]*?사주예요\.)<\/p>/, '<p class="sub-note">$1</p>')
           // 카드 설명 캡션도 묘묘 말풍선으로
-          .replace(/<p class="caption">([\s\S]*?)<\/p>/g, '<div class="nyan"><span class="say">$1</span></div>'),
+          .replace(/<p class="caption">([\s\S]*?)<\/p>/g, '<div class="nyan"><span class="say">$1</span></div>')
+          // 저장된 부적 이미지 경로 — 화면은 가벼운 webp, 저장 버튼은 고화질 jpg
+          .replace(/src="\/images\/bujeok\/(\w+)\.png"/g, 'src="/images/bujeok/$1.webp"')
+          .replace(/href="\/images\/bujeok\/(\w+)\.png" download="([^"]*)\.png"/g, 'href="/images/bujeok/$1-hd.jpg" download="$2.jpg"'),
       }));
       // 과거 생성분 소급 — 부적 장이 없으면 렌더 시 덧붙인다 (신규분은 빌더가 직접 포함)
       if (!lifePayload.views.some((v) => v.title.includes("행운 부적"))) {

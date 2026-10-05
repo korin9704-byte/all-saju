@@ -137,8 +137,8 @@ export function buildBujeokHtml(name: string, yongsinOheng?: string | null, ms?:
     `<div class="nyan"><span class="say">그 기운을 가득 담아 ${esc(name)}님만을 위한 행운 부적을 준비했어요. 핸드폰 배경화면으로 간직하면, 묘묘가 곁에서 좋은 기운을 지켜드릴게요.</span></div>` +
     `<div class="bujeok-stage" data-key="${el.key}">` +
     `<div class="bujeok-wrap">` +
-    `<img class="bujeok-img" src="/images/bujeok/${el.key}.png" alt="행운 부적" />` +
-    `<a class="bujeok-btn" style="border-color:${c.bd};color:${c.fg}" href="/images/bujeok/${el.key}.png" download="냥점_행운부적_${esc(name)}.png">내 부적 저장하기!!</a>` +
+    `<img class="bujeok-img" src="/images/bujeok/${el.key}.webp" alt="행운 부적" />` +
+    `<a class="bujeok-btn" style="border-color:${c.bd};color:${c.fg}" href="/images/bujeok/${el.key}-hd.jpg" download="냥점_행운부적_${esc(name)}.jpg">내 부적 저장하기!!</a>` +
     `</div></div>`
   );
 }
