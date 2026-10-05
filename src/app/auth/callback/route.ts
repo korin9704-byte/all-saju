@@ -29,6 +29,9 @@ export async function GET(request: NextRequest) {
       }
       return NextResponse.redirect(`${origin}${next}`);
     }
+    console.error("[auth/callback] exchangeCodeForSession 실패:", error.code, error.message);
+  } else {
+    console.error("[auth/callback] code 없음:", Object.fromEntries(searchParams));
   }
 
   return NextResponse.redirect(`${origin}/login?error=callback`);

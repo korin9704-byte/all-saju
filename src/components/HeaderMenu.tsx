@@ -9,6 +9,11 @@ import { usePathname } from "next/navigation";
 export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  // 로그인·가입 후 지금 보던 페이지로 돌아오게 (로그인·가입 화면 자체에서는 기본값 유지)
+  const authHref = (base: string) =>
+    pathname && !pathname.startsWith("/login") && !pathname.startsWith("/signup") && pathname !== "/"
+      ? `${base}?redirect=${encodeURIComponent(pathname)}`
+      : base;
 
   // 페이지 이동 시 메뉴 닫기
   useEffect(() => {
@@ -108,8 +113,8 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                   </>
                 ) : (
                   <>
-                    <MenuLink href="/login">Login</MenuLink>
-                    <MenuLink href="/signup">Register</MenuLink>
+                    <MenuLink href={authHref("/login")}>Login</MenuLink>
+                    <MenuLink href={authHref("/signup")}>Register</MenuLink>
                   </>
                 )}
               </nav>
