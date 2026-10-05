@@ -338,7 +338,7 @@ function SajuFormInner({ productId, productSlug, isLoggedIn, miniMode = false, f
           provider: "kakao",
           options: {
             redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/generating")}`,
-            scopes: "account_email profile_nickname",
+            scopes: "account_email profile_nickname plusfriends",
           },
         });
         if (error) {

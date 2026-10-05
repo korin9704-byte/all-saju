@@ -22,7 +22,7 @@ export function KakaoLoginButton({ next = "/mypage", label = "카카오 1초 로
       provider: "kakao",
       options: {
         redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
-        scopes: "account_email profile_nickname",
+        scopes: "account_email profile_nickname plusfriends",
       },
     });
     if (error) {
