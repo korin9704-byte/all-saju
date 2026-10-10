@@ -832,7 +832,7 @@ export function FreeTroubleWizard({
                       className="text-[17px] leading-none text-[#C95FC0]"
                       style={{ fontFamily: "'Kirang Haerang', 'Gowun Dodum', sans-serif" }}
                     >
-                      5,000원 할인
+                      25,000원 할인
                     </span>
                   </span>
                   <span className="relative mx-2 block border-t-[1.5px] border-dashed border-[#E3D8F4]" />
