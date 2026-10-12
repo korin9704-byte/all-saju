@@ -36,7 +36,7 @@ export const productsSeed: ProductSeed[] = [
     slug: "classic-saju",
     name: "정통 사주",
     description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
-    price: 9900,
+    price: 29900,
     display_order: 96,
     is_active: true,
   },
