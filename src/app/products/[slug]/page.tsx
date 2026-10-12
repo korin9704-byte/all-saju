@@ -20,6 +20,7 @@ import {
   businessSajuReviews,
   troubleSajuReviews,
   lifeSajuReviews,
+  classicSajuReviews,
   reunionSajuReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
@@ -38,7 +39,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "business-saju":   businessSajuReviews,
   "trouble-saju":    troubleSajuReviews,
   "life-saju":       lifeSajuReviews,
-  "classic-saju":    lifeSajuReviews,
+  "classic-saju":    classicSajuReviews,
   "reunion-saju":    reunionSajuReviews,
 };
 
