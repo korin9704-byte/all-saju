@@ -101,7 +101,7 @@ export default async function ProductDetailPage({
     "reunion-saju": "/images/reunion.png",
     "today-fortune": "/images/today.webp",
     "life-saju": "/images/life.png",
-    "classic-saju": "/images/life.png",
+    "classic-saju": "/images/classic.webp",
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
