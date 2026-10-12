@@ -187,7 +187,7 @@ export default async function ProductDetailPage({
                 askPartner={product.slug === "reunion-saju"}
                 basePrice={product.price}
                 bundle={bundle}
-                label={product.slug === "life-saju" || product.slug === "classic-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
+                label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "classic-saju" ? "내 팔자 풀이 시작!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
                 addonTitle={product.slug === "reunion-saju" ? "재회 사주" : undefined}
                 addonSingleDescLines={product.slug === "reunion-saju" ? ["재회에 온전히 집중한", "맞춤 풀이"] : undefined}
                 addonBundleDescLine1={product.slug === "reunion-saju" ? "재회에 온전히 집중한 맞춤 풀이" : undefined}
