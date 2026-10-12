@@ -35,7 +35,7 @@ export const productsSeed: ProductSeed[] = [
     // 인생 사주 복제 상품 — 동일 13장 리포트, 상품명만 다름
     slug: "classic-saju",
     name: "정통 사주",
-    description: "용하다고 소문났어요.\n불만족 시 100% 환불!",
+    description: "타고난 팔자, 제대로 알려 드려요.\n불만족 시 100% 환불!",
     price: 29900,
     display_order: 96,
     is_active: true,
