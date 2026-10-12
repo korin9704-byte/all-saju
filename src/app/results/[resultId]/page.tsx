@@ -13,7 +13,7 @@ import { fetchSajuAnalysis, ganjiToMyeongsik, isSajuApiConfigured, type BirthInf
 import type { Myeongsik } from "@/lib/saju/manseryeok";
 import { formatDate } from "@/lib/utils";
 import { MINI_PRODUCTS, isMiniBaseSlug } from "@/lib/mini";
-import { parseLifePayload, LIFE_SLUG } from "@/lib/saju/life-report";
+import { parseLifePayload, isLifeSlug } from "@/lib/saju/life-report";
 import { buildTroubleBookPayload } from "@/lib/saju/trouble-book";
 import LifeBookViewer from "@/components/saju/LifeBookViewer";
 
@@ -106,7 +106,7 @@ export default async function ResultPage({
     .maybeSingle();
 
   // ── 인생 사주 — 13장 모바일 챕터 뷰어로 렌더 ──
-  if (product?.slug === LIFE_SLUG) {
+  if (isLifeSlug(product?.slug)) {
     const lifePayload = parseLifePayload(result.interpretation_md);
     if (lifePayload) {
       // 과거 생성분 소급 — 장 제목과 명식표 카드 헤더를 현행 규격으로 치환
@@ -206,7 +206,7 @@ export default async function ResultPage({
           storageKey={`nyang_life_pos_${result.id}`}
           siblingTab={siblingTab}
           isLoggedIn={!!viewer}
-          share={{ title: "내 ‘인생 사주’ 결과지 봐봐~", imageSlug: "life-saju" }}
+          share={{ title: `내 ‘${product?.name ?? "인생 사주"}’ 결과지 봐봐~`, imageSlug: "life-saju" }}
         />
       );
     }

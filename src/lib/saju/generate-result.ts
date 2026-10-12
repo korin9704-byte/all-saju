@@ -28,7 +28,7 @@ import {
   type BirthInfo,
   type SajuAnalysisResponse,
 } from "@/lib/saju/saju-api";
-import { generateLifeReport, LIFE_SLUG } from "@/lib/saju/life-report";
+import { generateLifeReport, isLifeSlug } from "@/lib/saju/life-report";
 
 type Service = ReturnType<typeof createServiceClient>;
 
@@ -259,7 +259,7 @@ export async function generateAndStoreResult(
   };
 
   let llm;
-  if (promptSlug === LIFE_SLUG) {
+  if (isLifeSlug(promptSlug)) {
     // 인생 사주 — 13장 평생 리포트 (27개 파트 병렬 생성)
     // luckyloveme 풀 분석을 우선 사용하고, 불가하면 로컬 만세력 어댑터로 폴백
     let analysisForLife = opts?.forceLocalLife ? null : fullAnalysis;

@@ -38,3 +38,6 @@ export const productDescriptions: Record<string, React.ReactNode[]> = {
     <React.Fragment key="p1">잊으라는 말은 이제 그만 듣고 싶으시죠. 나와 그 사람, 두 사람의 사주를 나란히 놓고 어떤 인연이었는지, 왜 여기서 멈췄는지부터 짚어 드려요. 연애 기간과 이별 상황, 지금 마음까지 반영해서 — <span style={{ color: "#C95FC0" }}>재회 가능성 몇 점, 지금 그 사람의 마음 몇 점, 재회 확률이 가장 높은 골든타임 날짜 3개까지 콕 집어 알려 드려요.</span> 먼저 연락해도 되는지, 한다면 언제 어떤 말로 시작해야 하는지, 매달리는 대신 지금 해도 되는 행동과 하면 안 되는 행동까지 정리해 드리고 — 다시 만난다면 그 관계가 결혼까지 어떻게 흘러갈지, 만약 놓아준다면 새 인연은 언제 오는지도 미리 보여 드려요. 막연한 희망이 아닌 확실한 방향이 필요하다면 지금 이야기를 적어 보세요.</React.Fragment>,
   ],
 };
+
+// 정통 사주 — 인생 사주와 동일 상품 (이름만 다름)
+productDescriptions["classic-saju"] = productDescriptions["life-saju"];

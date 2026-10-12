@@ -14,6 +14,12 @@ import { buildBujeokHtml } from "@/lib/saju/trouble-book";
 type Api = any;
 
 export const LIFE_SLUG = "life-saju";
+/** 정통 사주 — 인생 사주와 동일한 13장 리포트, 상품명만 다름 */
+export const CLASSIC_SLUG = "classic-saju";
+/** 인생 사주 파이프라인(13장 리포트)을 쓰는 상품 slug 여부 */
+export function isLifeSlug(slug: string | null | undefined): boolean {
+  return slug === LIFE_SLUG || slug === CLASSIC_SLUG;
+}
 export const LIFE_PAYLOAD_TYPE = "life-saju-v1";
 
 export type LifeView = {

@@ -38,6 +38,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "business-saju":   businessSajuReviews,
   "trouble-saju":    troubleSajuReviews,
   "life-saju":       lifeSajuReviews,
+  "classic-saju":    lifeSajuReviews,
   "reunion-saju":    reunionSajuReviews,
 };
 
@@ -100,6 +101,7 @@ export default async function ProductDetailPage({
     "reunion-saju": "/images/reunion.png",
     "today-fortune": "/images/today.webp",
     "life-saju": "/images/life.png",
+    "classic-saju": "/images/life.png",
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
@@ -180,11 +182,11 @@ export default async function ProductDetailPage({
                 productId={product.id}
                 mode="paid"
                 askConcern={product.slug === "trouble-saju"}
-                askJob={product.slug === "life-saju"}
+                askJob={product.slug === "life-saju" || product.slug === "classic-saju"}
                 askPartner={product.slug === "reunion-saju"}
                 basePrice={product.price}
                 bundle={bundle}
-                label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
+                label={product.slug === "life-saju" || product.slug === "classic-saju" ? "인생 설명서 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
                 addonTitle={product.slug === "reunion-saju" ? "재회 사주" : undefined}
                 addonSingleDescLines={product.slug === "reunion-saju" ? ["재회에 온전히 집중한", "맞춤 풀이"] : undefined}
                 addonBundleDescLine1={product.slug === "reunion-saju" ? "재회에 온전히 집중한 맞춤 풀이" : undefined}

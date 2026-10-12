@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
   try {
     // 인생 사주: saju_inputs 저장 후 실제 파이프라인 그대로 실행 (13장 병렬 생성)
-    if (slug === "life-saju") {
+    if (slug === "life-saju" || slug === "classic-saju") {
       const { error: inputErr } = await service.from("saju_inputs").insert({
         order_id: order.id,
         name: testInput.name,
