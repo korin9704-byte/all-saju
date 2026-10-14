@@ -366,7 +366,7 @@ export default function LifeBookViewer({
                 type="button"
                 onClick={() => setShareOpen((v) => !v)}
                 aria-label="결과지 공유"
-                // 스티커 아웃라인 공유 버튼 — 핑크 링 + 연보라 전송 화살표 + 잉크 테두리 + 주변 도트
+                // 스티커 아웃라인 공유 버튼 — 핑크 링 + 공유 노드(시작점 핑크·크게, 끝점 연보라) + 잉크 테두리
                 style={{ border: 0, cursor: "pointer", background: "none", padding: 0, width: 54, height: 54, lineHeight: 0 }}
               >
                 <svg
@@ -378,12 +378,12 @@ export default function LifeBookViewer({
                   aria-hidden
                   style={{ filter: "drop-shadow(0 5px 12px rgba(122,95,190,0.35))" }}
                 >
-                  <circle cx="15" cy="7" r="3" fill="#C95FC0" stroke="#4A3A72" strokeWidth="1.6" />
-                  <circle cx="42" cy="38" r="3.4" fill="#C95FC0" stroke="#4A3A72" strokeWidth="1.6" />
-                  <circle cx="42.5" cy="9" r="2.2" fill="#DCD2F5" stroke="#4A3A72" strokeWidth="1.4" />
                   <circle cx="24" cy="25" r="16.5" fill="#C95FC0" stroke="#4A3A72" strokeWidth="2.2" />
                   <circle cx="24" cy="25" r="12.3" fill="#F8F4FD" stroke="#4A3A72" strokeWidth="2" />
-                  <path d="M31.5 17.5 L15.5 24.3 L22.2 26.3 L24.2 33.3 Z" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.8" strokeLinejoin="round" />
+                  <path d="M19 25 L28.5 20 M19 25 L28.5 30" stroke="#4A3A72" strokeWidth="1.8" strokeLinecap="round" />
+                  <circle cx="18" cy="25" r="3.8" fill="#C95FC0" stroke="#4A3A72" strokeWidth="1.8" />
+                  <circle cx="29" cy="19.5" r="2.6" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.6" />
+                  <circle cx="29" cy="30.5" r="2.6" fill="#8F7BD6" stroke="#4A3A72" strokeWidth="1.6" />
                 </svg>
               </button>
             )}
