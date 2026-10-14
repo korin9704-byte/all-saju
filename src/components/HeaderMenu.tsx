@@ -95,7 +95,6 @@ export function HeaderMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               <nav className="flex flex-col">
                 <MenuLink href="/products/trouble-saju">고민 사주</MenuLink>
                 <MenuLink href="/products/life-saju">인생 사주</MenuLink>
-                <MenuLink href="/products/classic-saju">정통 사주</MenuLink>
                 <MenuLink href="/products/reunion-saju">재회 사주</MenuLink>
                 {/* 상품 메뉴와 계정 메뉴 구분선 */}
                 <div className="mx-[20px] my-[6px] border-t border-[#E7DDF8]" />

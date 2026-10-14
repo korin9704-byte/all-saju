@@ -38,7 +38,7 @@ export const productsSeed: ProductSeed[] = [
     description: "타고난 팔자, 제대로 알려 드려요.\n불만족 시 100% 환불!",
     price: 29900,
     display_order: 96,
-    is_active: true,
+    is_active: false,
   },
   {
     slug: "premium-saju",
