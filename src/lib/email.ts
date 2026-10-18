@@ -18,7 +18,8 @@ export async function sendResultEmail({
   productName: string;
   name?: string | null;
 }) {
-  const url = `${SITE_URL}/results/${resultId}`;
+  // 메일 링크로 다시 들어와 결제하면 주문 유입이 '결과지 메일'로 기록됨
+  const url = `${SITE_URL}/results/${resultId}?utm_source=email&utm_medium=result`;
   const greeting = name ? `${name}님의` : "구매하신";
 
   await resend.emails.send({

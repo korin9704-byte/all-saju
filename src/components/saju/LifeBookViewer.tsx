@@ -153,6 +153,8 @@ export default function LifeBookViewer({
 
   // 공유 시트 — 링크 복사 / 카카오톡 공유
   const shareUrl = typeof window !== "undefined" ? window.location.origin + window.location.pathname : "";
+  // 공유받은 사람이 이 링크로 들어와 결제하면 주문 유입이 '결과지 공유'로 기록됨
+  const sharedLink = (via: "link" | "kakao") => `${shareUrl}?utm_source=share&utm_medium=${via}`;
 
   // 공유 클릭 집계 — 실패해도 조용히 무시 (fire-and-forget)
   function trackShare(channel: "link" | "kakao") {
@@ -170,9 +172,9 @@ export default function LifeBookViewer({
     }
   }
 
-  async function copyShareLink() {
+  async function copyShareLink(via: "link" | "kakao" = "link") {
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(sharedLink(via));
       toast.success("결과지 링크가 복사됐어요!");
     } catch {
       toast.error("링크 복사에 실패했어요. 잠시 후 다시 시도해 주세요.");
@@ -191,7 +193,7 @@ export default function LifeBookViewer({
             title: share.title,
             description: "냥이가 답을 찾아 드릴게요!",
             imageUrl: `${window.location.origin}/images/${share.imageSlug}.png`,
-            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+            link: { mobileWebUrl: sharedLink("kakao"), webUrl: sharedLink("kakao") },
           },
         });
         return;
@@ -200,7 +202,7 @@ export default function LifeBookViewer({
       }
     }
     // 카카오 SDK 불가 — 링크 복사로 대신
-    await copyShareLink();
+    await copyShareLink("kakao");
   }
 
   return (

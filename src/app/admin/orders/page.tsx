@@ -40,6 +40,8 @@ const SOURCE_LABEL: Record<string, string> = {
   naver: "네이버",
   google: "구글",
   kakao: "카카오",
+  share: "결과지 공유",
+  email: "결과지 메일",
   other: "기타 사이트",
   direct: "직접·알 수 없음",
 };
