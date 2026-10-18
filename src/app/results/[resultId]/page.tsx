@@ -206,7 +206,6 @@ export default async function ResultPage({
           storageKey={`nyang_life_pos_${result.id}`}
           siblingTab={siblingTab}
           isLoggedIn={!!viewer}
-          share={{ title: `내 ‘${product?.name ?? "인생 사주"}’ 결과지 봐봐~`, imageSlug: "life-saju" }}
         />
       );
     }
@@ -458,10 +457,6 @@ export default async function ResultPage({
         currentTabLabel={isReunionResult ? "재회 사주" : "고민 사주"}
         isLoggedIn={!!viewer}
         ask={viewerAsk}
-        share={{
-          title: `내 ‘${isReunionFamily ? "재회 사주" : "고민 사주"}’ 결과지 봐봐~`,
-          imageSlug: isReunionFamily ? "reunion-saju" : "trouble-saju",
-        }}
       />
     );
   }
