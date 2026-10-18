@@ -1,11 +1,12 @@
 // 인생 사주(13장, LLM 27회 병렬)까지 감당하도록 함수 실행 한도를 늘린다
 export const maxDuration = 300;
 
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, after, type NextRequest } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
 import { generateAndStoreResult, generateBundleResults, isBundleSlug } from "@/lib/saju/generate-result";
+import { sendTikTokCompletePayment } from "@/lib/tiktok";
 
 const bodySchema = z.object({
   paymentKey: z.string().min(1),
@@ -67,6 +68,28 @@ export async function POST(request: NextRequest) {
       paid_at: toss.data.approvedAt,
     })
     .eq("id", order.id);
+
+  // 틱톡 이벤트 API — 결제 완료 서버 전송 (응답 후 백그라운드 실행, 실패해도 결제 흐름에 영향 없음)
+  after(async () => {
+    const { data: product } = await service.from("products").select("slug, name").eq("id", order.product_id).maybeSingle();
+    let email = order.guest_email;
+    if (!email && order.user_id) {
+      const { data } = await service.auth.admin.getUserById(order.user_id);
+      email = data.user?.email ?? null;
+    }
+    await sendTikTokCompletePayment({
+      orderId,
+      amount,
+      productSlug: product?.slug,
+      productName: product?.name,
+      email,
+      ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim(),
+      userAgent: request.headers.get("user-agent"),
+      ttp: request.cookies.get("_ttp")?.value,
+      ttclid: request.cookies.get("ttclid")?.value,
+      pageUrl: request.headers.get("referer"),
+    });
+  });
 
   // 3-a. 언락 주문: MINI 잠금 해제 (LLM 재생성 없음, 즉시 공개)
   if (order.unlock_result_id) {
