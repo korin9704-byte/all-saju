@@ -28,7 +28,52 @@ type OrderRow = {
   guest_email: string | null;
   product_id: string;
   toss_payment_key: string | null;
+  source: string | null;
+  attribution: { utm_campaign?: string } | null;
 };
+
+/** 주문 유입 경로 표시 이름 (orders.source) */
+const SOURCE_LABEL: Record<string, string> = {
+  meta: "메타",
+  instagram: "인스타",
+  tiktok: "틱톡",
+  naver: "네이버",
+  google: "구글",
+  kakao: "카카오",
+  other: "기타 사이트",
+  direct: "직접·알 수 없음",
+};
+const sourceLabel = (s: string | null) => (s ? SOURCE_LABEL[s] ?? s : "기록 전");
+
+/** 유입별 결제 집계 — KST 기준 days일 전 0시부터 (번들 자식 -jt 0원 주문 제외) */
+async function sourceSummary(service: ReturnType<typeof createServiceClient>, days: number) {
+  const kstNow = new Date(Date.now() + 9 * 3600e3);
+  const startKst = Date.UTC(kstNow.getUTCFullYear(), kstNow.getUTCMonth(), kstNow.getUTCDate() - (days - 1));
+  const from = new Date(startKst - 9 * 3600e3).toISOString();
+  const rows: { source: string | null; amount: number; order_id: string }[] = [];
+  for (let off = 0; ; off += 1000) {
+    const { data } = await service
+      .from("orders")
+      .select("source, amount, order_id")
+      .eq("status", "paid")
+      .gte("created_at", from)
+      .range(off, off + 999);
+    rows.push(...((data ?? []) as typeof rows));
+    if (!data || data.length < 1000) break;
+  }
+  const map = new Map<string, { n: number; amt: number }>();
+  for (const r of rows) {
+    if (r.order_id.endsWith("-jt")) continue;
+    const k = r.source ?? "";
+    const v = map.get(k) ?? { n: 0, amt: 0 };
+    v.n++;
+    v.amt += r.amount;
+    map.set(k, v);
+  }
+  return Array.from(map.entries())
+    .map(([source, v]) => ({ source: source || null, ...v }))
+    .sort((a, b) => b.amt - a.amt);
+}
 
 const PAGE_SIZE = 200;
 
@@ -44,13 +89,15 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
   let hasNext = false;
   let productMap = new Map<string, string>();
   let resultMap = new Map<string, string>();
+  let todaySources: Awaited<ReturnType<typeof sourceSummary>> = [];
+  let weekSources: Awaited<ReturnType<typeof sourceSummary>> = [];
 
   if (!demoMode) {
     const service = createServiceClient();
 
     let query = service
       .from("orders")
-      .select("id, order_id, amount, status, created_at, user_id, guest_email, product_id, toss_payment_key")
+      .select("id, order_id, amount, status, created_at, user_id, guest_email, product_id, toss_payment_key, source, attribution")
       .order("created_at", { ascending: false })
       // 다음 페이지 존재 여부 판단용으로 1건 더 조회
       .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -77,6 +124,8 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
       ? await service.from("saju_results").select("id, order_id").in("order_id", orderIds)
       : { data: [] };
     resultMap = new Map((results ?? []).map((r) => [r.order_id, r.id]));
+
+    [todaySources, weekSources] = await Promise.all([sourceSummary(service, 1), sourceSummary(service, 7)]);
   }
 
   const filters = [
@@ -101,6 +150,35 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
           실제 결제 내역을 보려면 Supabase 프로젝트를 연결하고 마이그레이션을 적용하세요.
         </div>
       ) : null}
+
+      {/* 유입 경로별 결제 — 마지막 광고 클릭/유입처 기준, 번들 자식 주문 제외 */}
+      {!demoMode && (
+        <div className="mb-8 grid gap-4 sm:grid-cols-2">
+          {[
+            { title: "오늘 유입별 결제", rows: todaySources },
+            { title: "최근 7일 유입별 결제", rows: weekSources },
+          ].map((box) => (
+            <div key={box.title} className="rounded-lg border border-hairline p-4">
+              <p className="text-xs font-semibold text-ink mb-2">{box.title}</p>
+              {box.rows.length === 0 ? (
+                <p className="text-xs text-mute">결제 없음</p>
+              ) : (
+                <table className="w-full text-xs">
+                  <tbody>
+                    {box.rows.map((r) => (
+                      <tr key={r.source ?? "none"} className="border-b border-hairline last:border-0">
+                        <td className="py-1.5">{sourceLabel(r.source)}</td>
+                        <td className="py-1.5 text-right font-mono">{r.n}건</td>
+                        <td className="py-1.5 text-right font-mono">{formatKRW(r.amt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2 mb-4">
         {filters.map((f) => {
@@ -158,6 +236,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
               <th className="px-4 py-3 text-left text-[11px] font-mono uppercase tracking-wider text-mute">주문번호</th>
               <th className="px-4 py-3 text-left text-[11px] font-mono uppercase tracking-wider text-mute">상품</th>
               <th className="px-4 py-3 text-left text-[11px] font-mono uppercase tracking-wider text-mute">고객</th>
+              <th className="px-4 py-3 text-left text-[11px] font-mono uppercase tracking-wider text-mute">유입</th>
               <th className="px-4 py-3 text-right text-[11px] font-mono uppercase tracking-wider text-mute">금액</th>
               <th className="px-4 py-3 text-left text-[11px] font-mono uppercase tracking-wider text-mute">상태</th>
               <th className="px-4 py-3 text-left text-[11px] font-mono uppercase tracking-wider text-mute">결과</th>
@@ -170,6 +249,10 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                 <td className="px-4 py-3 font-mono text-xs">{o.order_id}</td>
                 <td className="px-4 py-3">{productMap.get(o.product_id) ?? "-"}</td>
                 <td className="px-4 py-3 text-xs">{o.user_id ? "회원" : o.guest_email}</td>
+                <td className="px-4 py-3 text-xs">
+                  {sourceLabel(o.source)}
+                  {o.attribution?.utm_campaign ? <span className="block text-mute">{o.attribution.utm_campaign}</span> : null}
+                </td>
                 <td className="px-4 py-3 text-right font-mono">{formatKRW(o.amount)}</td>
                 <td className="px-4 py-3">
                   <Badge

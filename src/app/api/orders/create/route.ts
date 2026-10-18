@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { ATTR_COOKIE, attributionFromCookie } from "@/lib/attribution";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
@@ -56,6 +57,7 @@ export async function POST(request: NextRequest) {
       product_id: product.id,
       amount: product.price,
       status: "pending",
+      ...attributionFromCookie(request.cookies.get(ATTR_COOKIE)?.value),
     })
     .select("id")
     .single();

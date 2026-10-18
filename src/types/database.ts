@@ -45,6 +45,8 @@ type OrderRow = {
   toss_payment_key: string | null;
   paid_at: string | null;
   unlock_result_id: string | null;
+  source: string | null;
+  attribution: Json | null;
   created_at: string;
 };
 
@@ -155,6 +157,8 @@ export type Database = {
           toss_payment_key?: string | null;
           paid_at?: string | null;
           unlock_result_id?: string | null;
+          source?: string | null;
+          attribution?: Json | null;
           created_at?: string;
         };
         Update: Partial<OrderRow>;
