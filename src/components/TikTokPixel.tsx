@@ -1,8 +1,21 @@
 'use client'
+import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import Script from 'next/script'
 
 /** 틱톡 광고 픽셀 — 기본 코드(페이지 조회). 이벤트는 각 페이지 컴포넌트에서 ttq.track 으로 전송 */
 export default function TikTokPixel({ pixelId }: { pixelId: string }) {
+  // 사이트 내 이동(새로고침 없는 화면 전환)마다 페이지 조회 전송 — 첫 진입은 기본 코드의 ttq.page()가 처리
+  const pathname = usePathname()
+  const first = useRef(true)
+  useEffect(() => {
+    if (first.current) {
+      first.current = false
+      return
+    }
+    ;(window as any).ttq?.page?.()
+  }, [pathname])
+
   return (
     <Script id="tiktok-pixel" strategy="afterInteractive">
       {`
