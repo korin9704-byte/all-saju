@@ -20,9 +20,12 @@ export type Attribution = {
 };
 
 /** utm_source·클릭 ID·referrer 로 유입처 이름을 정한다 */
-export function classifySource(a: { utm_source?: string; click?: string; referrer?: string }): string {
+export function classifySource(a: { utm_source?: string; utm_medium?: string; click?: string; referrer?: string }): string {
   const u = (a.utm_source ?? "").toLowerCase();
+  const m = (a.utm_medium ?? "").toLowerCase();
   if (a.click === "ttclid" || u.includes("tiktok")) return "tiktok";
+  // 메타 광고 — 노출 위치(ig 인스타·fb 페이스북·th 스레드·an 오디언스 네트워크·msg 메신저)와 상관없이 하나로
+  if (m === "paid" && (a.click === "fbclid" || ["ig", "fb", "th", "an", "msg"].includes(u))) return "meta";
   if (u.includes("insta") || u === "ig") return "instagram";
   if (a.click === "fbclid" || u.includes("meta") || u.includes("facebook") || u === "fb") return "meta";
   if (u.includes("naver")) return "naver";

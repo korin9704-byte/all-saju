@@ -34,8 +34,8 @@ type OrderRow = {
 
 /** 주문 유입 경로 표시 이름 (orders.source) */
 const SOURCE_LABEL: Record<string, string> = {
-  meta: "메타",
-  instagram: "인스타",
+  meta: "메타 광고",
+  instagram: "인스타 (광고 아님)",
   tiktok: "틱톡",
   naver: "네이버",
   google: "구글",
