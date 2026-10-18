@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PurchasePixel } from "@/components/checkout/PurchasePixel";
+import { createServiceClient } from "@/lib/supabase/server";
 import { ConfirmProgress } from "@/components/checkout/ConfirmProgress";
 
 export default async function CheckoutSuccessPage({
@@ -21,9 +22,16 @@ export default async function CheckoutSuccessPage({
     );
   }
 
+  // 픽셀용 상품 정보 (주문번호 → 상품). 조회 실패해도 결제 진행에는 영향 없음
+  const service = createServiceClient();
+  const { data: order } = await service.from("orders").select("product_id").eq("order_id", orderId).maybeSingle();
+  const { data: product } = order
+    ? await service.from("products").select("slug, name").eq("id", order.product_id).maybeSingle()
+    : { data: null };
+
   return (
     <>
-      <PurchasePixel amount={Number(amount)} orderId={orderId} />
+      <PurchasePixel amount={Number(amount)} orderId={orderId} productSlug={product?.slug} productName={product?.name} />
       {/* 승인 대기 로딩 — /generating 과 동일한 냥이 별자리 진행 화면 */}
       <ConfirmProgress paymentKey={paymentKey} orderId={orderId} amount={Number(amount)} />
     </>

@@ -47,7 +47,7 @@ export default async function CheckoutPage({
 
   const { data: product } = await service
     .from("products")
-    .select("name")
+    .select("slug, name")
     .eq("id", order.product_id)
     .single();
 
@@ -56,7 +56,7 @@ export default async function CheckoutPage({
 
   return (
     <div className="container py-12 max-w-2xl">
-      <CheckoutPixel amount={order.amount} />
+      <CheckoutPixel amount={order.amount} productSlug={product?.slug} productName={product?.name} />
       <h1 className="text-xl font-bold text-ink">결제</h1>
       <p className="mt-2 text-sm text-body">
         {/* 상품명 속 +는 냥점 로고와 같은 기랑해랑 폰트로 — 색·굵기는 가격과 동일 */}
