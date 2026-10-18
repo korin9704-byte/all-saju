@@ -5,6 +5,7 @@ import { siteConfig, businessInfo } from "@/config/site";
 import { isSupabaseConfigured } from "@/lib/env";
 import { getCurrentUser } from "@/lib/auth";
 import MetaPixel from "@/components/MetaPixel";
+import TikTokPixel from "@/components/TikTokPixel";
 import { HeaderMenu } from "@/components/HeaderMenu";
 import { KakaoScript } from "@/components/KakaoScript";
 import "./globals.css";
@@ -39,6 +40,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body suppressHydrationWarning className="bg-[#EFE7FA]">
         <MetaPixel pixelId="2209519539888659" />
+        <TikTokPixel pixelId="DBA9ALRC77U6POU9B3V0" />
         <KakaoScript />
         {/* 앱형 셸 — 모바일 폭(448px) 칼럼을 가운데 고정, 안쪽은 무료 페이지와 같은 연보라 배경 */}
         <div className="mx-auto w-full max-w-md min-h-screen bg-[#F8F4FD] flex flex-col shadow-[0_0_32px_rgba(143,123,214,0.12)]">

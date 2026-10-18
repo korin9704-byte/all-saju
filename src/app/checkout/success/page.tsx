@@ -23,7 +23,7 @@ export default async function CheckoutSuccessPage({
 
   return (
     <>
-      <PurchasePixel amount={Number(amount)} />
+      <PurchasePixel amount={Number(amount)} orderId={orderId} />
       {/* 승인 대기 로딩 — /generating 과 동일한 냥이 별자리 진행 화면 */}
       <ConfirmProgress paymentKey={paymentKey} orderId={orderId} amount={Number(amount)} />
     </>

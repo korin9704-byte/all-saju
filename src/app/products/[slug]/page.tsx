@@ -24,6 +24,7 @@ import {
   reunionSajuReviews,
   type DummyReview,
 } from "@/config/dummy-reviews";
+import { TikTokViewContent } from "@/components/TikTokViewContent";
 
 type Product = { id: string; slug: string; name: string; description: string; price: number };
 type Review = { id: string; rating: number; content: string; created_at: string };
@@ -125,6 +126,7 @@ export default async function ProductDetailPage({
     }
     return (
       <div className="min-h-screen flex justify-center ft-theme" style={{ backgroundColor: "#F8F4FD" }}>
+        <TikTokViewContent slug={product.slug} name={product.name} price={product.price} />
         <style>{`
           .ft-theme .text-ink { color: #4A3A72; }
           .ft-theme .text-body { color: #7A6B9E; }
@@ -213,6 +215,7 @@ export default async function ProductDetailPage({
 
   return (
     <div className="container py-12 max-w-lg">
+      <TikTokViewContent slug={product.slug} name={product.name} price={product.price} />
       <header className="mb-10 pb-10 border-b border-hairline">
         <h1 className="text-2xl font-bold text-ink">{product.name}</h1>
         {product.description && (
