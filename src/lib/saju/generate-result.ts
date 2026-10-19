@@ -29,6 +29,7 @@ import {
   type SajuAnalysisResponse,
 } from "@/lib/saju/saju-api";
 import { generateLifeReport, isLifeSlug } from "@/lib/saju/life-report";
+import { CAREER_SLUG, generateCareerReport, parseCareerConcerns } from "@/lib/saju/career-report";
 
 type Service = ReturnType<typeof createServiceClient>;
 
@@ -288,6 +289,30 @@ export async function generateAndStoreResult(
       loveStatus: loveConcern?.replace("[연애]", "").trim() || undefined,
     });
     llm = { text: JSON.stringify(life.payload), provider: life.provider, model: life.model };
+  } else if (promptSlug === CAREER_SLUG) {
+    // 커리어 사주 — 7장 커리어 리포트 (인생 사주와 같은 풀 분석 기반, 챕터 뷰어 공유)
+    let analysisForCareer = fullAnalysis;
+    if (!analysisForCareer) {
+      const { computeLocalFullAnalysis } = await import("@/lib/saju/local-adapter");
+      analysisForCareer = computeLocalFullAnalysis({
+        birthDate: input.birth_date,
+        birthTime: input.birth_time,
+        timeUnknown: input.time_unknown,
+        calendar: input.calendar,
+        isLeapMonth: !!input.is_leap_month,
+        gender: input.gender,
+      });
+    }
+    const career = await generateCareerReport(analysisForCareer, {
+      name: input.name ?? "",
+      birthDate: input.birth_date,
+      birthTime: input.birth_time,
+      timeUnknown: input.time_unknown,
+      calendar: input.calendar,
+      gender: input.gender,
+      ...parseCareerConcerns(input.concerns as string[]),
+    });
+    llm = { text: JSON.stringify(career.payload), provider: career.provider, model: career.model };
   } else if (promptSlug === "worry-saju") {
     const { system, user } = buildWorryPrompt(promptInput);
     llm = await generateInterpretation({ system, user });

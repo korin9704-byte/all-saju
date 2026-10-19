@@ -232,4 +232,19 @@ export const LIFEBOOK_CSS = `
 .lifebook .dolist{margin:0 0 14px;padding-left:2px;list-style:none;}
 .lifebook .dolist li{font-size:14.5px;line-height:1.85;margin:0 0 10px;padding-left:0;position:relative;}
 @keyframes lb-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* 커리어 사주 — 순위 목록·회사 칩·역전 기회 달 칩 */
+.lifebook .rank-list{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px;}
+.lifebook .rank-item{display:flex;align-items:flex-start;gap:12px;background:#F8F4FD;border:1px solid #E7DDF8;border-radius:14px;padding:12px 14px;}
+.lifebook .rank-no{flex:none;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:17px;margin-top:1px;}
+.lifebook .rank-body{min-width:0;}
+.lifebook .rank-body b{display:block;font-size:15px;font-weight:700;color:#1E1B28;line-height:1.5;}
+.lifebook .rank-body span{display:block;font-size:13px;color:#7A6B9E;line-height:1.7;margin-top:3px;}
+.lifebook .co-wrap{margin:6px 0 2px;}
+.lifebook .co-head{display:flex;align-items:center;gap:8px;margin:14px 0 8px;font-size:14.5px;font-weight:700;color:#4A3A72;}
+.lifebook .co-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.lifebook .co-grid span{background:#fff;border:1px solid #E7DDF8;border-radius:999px;padding:6px 12px;font-size:12.5px;color:#4A3A72;}
+.lifebook .mon-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 4px;}
+.lifebook .mon-chips span{background:#fff;border:1.5px solid var(--pink);color:#C0399F;border-radius:999px;padding:6px 12px;font-size:14px;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;}
+.lifebook .big-num{text-align:center;margin:10px 0 2px;font-family:'Kirang Haerang','Gowun Dodum',sans-serif;font-size:46px;color:#C0399F;line-height:1;}
+.lifebook .big-num small{font-size:18px;color:#4A3A72;margin-left:4px;}
 `;

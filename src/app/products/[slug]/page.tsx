@@ -41,6 +41,7 @@ const dummyReviewsBySlug: Record<string, DummyReview[]> = {
   "trouble-saju":    troubleSajuReviews,
   "life-saju":       lifeSajuReviews,
   "classic-saju":    classicSajuReviews,
+  "career-saju":     jobSajuReviews,
   "reunion-saju":    reunionSajuReviews,
 };
 
@@ -104,6 +105,7 @@ export default async function ProductDetailPage({
     "today-fortune": "/images/today.webp",
     "life-saju": "/images/life.png",
     "classic-saju": "/images/classic.webp",
+    "career-saju": "/images/job-saju_2.png",
   };
   const wizardHero = wizardHeroes[product.slug];
   if (wizardHero) {
@@ -184,12 +186,15 @@ export default async function ProductDetailPage({
               <FreeTroubleStart
                 productId={product.id}
                 mode="paid"
-                askConcern={product.slug === "trouble-saju"}
+                askConcern={product.slug === "trouble-saju" || product.slug === "career-saju"}
                 askJob={product.slug === "life-saju" || product.slug === "classic-saju"}
                 askPartner={product.slug === "reunion-saju"}
+                askCareer={product.slug === "career-saju"}
+                concernQuestion={product.slug === "career-saju" ? "커리어 고민을 한 줄로 적어 주세요" : undefined}
+                concernPlaceholder={product.slug === "career-saju" ? "예: 지금 이직해도 될까요? / 어떤 직무가 저한테 맞을까요?" : undefined}
                 basePrice={product.price}
                 bundle={bundle}
-                label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "classic-saju" ? "타고난 팔자 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
+                label={product.slug === "life-saju" ? "인생 설명서 보기!!" : product.slug === "classic-saju" ? "타고난 팔자 보기!!" : product.slug === "career-saju" ? "내 커리어 보기!!" : product.slug === "reunion-saju" ? "재회 가능성 보기!!" : undefined}
                 addonTitle={product.slug === "reunion-saju" ? "재회 사주" : undefined}
                 addonSingleDescLines={product.slug === "reunion-saju" ? ["재회에 온전히 집중한", "맞춤 풀이"] : undefined}
                 addonBundleDescLine1={product.slug === "reunion-saju" ? "재회에 온전히 집중한 맞춤 풀이" : undefined}

@@ -10,6 +10,7 @@ export function FreeTroubleStart({
   askConcern = true,
   askJob = false,
   askPartner = false,
+  askCareer = false,
   basePrice,
   bundle,
   label = "고민 오늘 끝내기!!",
@@ -24,6 +25,7 @@ export function FreeTroubleStart({
   askConcern?: boolean;
   askJob?: boolean;
   askPartner?: boolean;
+  askCareer?: boolean;
   basePrice?: number;
   bundle?: { productId: string; price: number } | null;
   /** 시작 버튼 문구 — 상품별로 다르게 지정 가능 */
@@ -41,7 +43,7 @@ export function FreeTroubleStart({
   if (started) {
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto">
-        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} addonTitle={addonTitle} addonSingleDescLines={addonSingleDescLines} addonBundleDescLine1={addonBundleDescLine1} onBack={() => setStarted(false)} />
+        <FreeTroubleWizard productId={productId} mode={mode} askConcern={askConcern} askJob={askJob} askPartner={askPartner} askCareer={askCareer} basePrice={basePrice} bundle={bundle} concernQuestion={concernQuestion} concernPlaceholder={concernPlaceholder} addonTitle={addonTitle} addonSingleDescLines={addonSingleDescLines} addonBundleDescLine1={addonBundleDescLine1} onBack={() => setStarted(false)} />
       </div>
     );
   }

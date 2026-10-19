@@ -41,6 +41,15 @@ export const productsSeed: ProductSeed[] = [
     is_active: false,
   },
   {
+    // 커리어 사주 — 7장 커리어 리포트 (강점·직무·회사·전략·귀인·빌런·로드맵)
+    slug: "career-saju",
+    name: "커리어 사주",
+    description: "내 자리는 어디일까?\n불만족 시 100% 환불!",
+    price: 19900,
+    display_order: 97,
+    is_active: false,
+  },
+  {
     slug: "premium-saju",
     name: "대운 풀이",
     description: "물 들어올 때 노 젓는 방법",

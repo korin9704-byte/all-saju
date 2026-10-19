@@ -90,7 +90,7 @@ const OH_HANJA: Record<string, string> = { 목: "木", 화: "火", 토: "土", �
 // ── 마크다운 → HTML ─────────────────────────────────
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const em = (s: string) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
-function renderBody(text: string): string {
+export function renderBody(text: string): string {
   return text
     .split(/\n+/)
     .filter((p) => p.trim())
@@ -102,16 +102,16 @@ function renderBody(text: string): string {
     })
     .join("");
 }
-const nyan = (text: string) => `<div class="nyan"><span class="say">${text}</span></div>`;
+export const nyan = (text: string) => `<div class="nyan"><span class="say">${text}</span></div>`;
 
 // 연속 말풍선 그룹의 마지막 버블에 꼬리(tail) 부여
-function addTails(doc: string): string {
+export function addTails(doc: string): string {
   return doc.replace(/<div class="nyan">([\s\S]*?)<\/div>(?!\s*<div class="nyan")/g,
     '<div class="nyan tail">$1</div>');
 }
 
 // ── 컨텍스트 ────────────────────────────────────────
-function buildBaseCtx(a: Api, name: string, job?: string, loveStatus?: string): string {
+export function buildBaseCtx(a: Api, name: string, job?: string, loveStatus?: string): string {
   const g = a.ganji;
   const parts = [
     `[사주 원국] 년주 ${g.year.gan}${g.year.ji} / 월주 ${g.month.gan}${g.month.ji} / 일주 ${g.day.gan}${g.day.ji}` +
@@ -162,13 +162,13 @@ function buildBaseCtx(a: Api, name: string, job?: string, loveStatus?: string): 
   return parts.join("\n");
 }
 
-function collectSeun(a: Api): Api[] {
+export function collectSeun(a: Api): Api[] {
   const all = [a.seun?.currentSeun, a.seun?.nextSeun, ...(a.seun?.upcomingSeuns ?? []), ...(a.seun?.recentSeuns ?? [])].filter(Boolean);
   const map = new Map<number, Api>();
   for (const s of all) map.set(Number(s.year), s);
   return [...map.entries()].sort((x, y) => x[0] - y[0]).map(([, v]) => v);
 }
-function seunCtx(a: Api, year: number): string {
+export function seunCtx(a: Api, year: number): string {
   const s = collectSeun(a).find((x) => Number(x.year) === year);
   if (!s) return `[${year}년 세운] 자료 없음`;
   return `[${year}년 세운] ${s.ganji}(${s.ganji_hanja ?? ""}), 나이 ${s.age}세, 기운 ${s.sipseongRelation?.gan}/${s.sipseongRelation?.ji}, 12운성 ${s.twelveFortune?.fortune ?? "-"}, 오행 ${s.ganElement ?? "-"}/${s.jiElement ?? "-"}`;
@@ -290,7 +290,7 @@ async function runJobs(jobs: Job[], baseCtx: string, name: string): Promise<{ re
 // ── 데이터 카드 조립 ────────────────────────────────
 type Cards = ReturnType<typeof buildCards>;
 
-function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
+export function buildCards(a: Api, name: string, birthLabel: string, years: number[]) {
   const g = a.ganji;
   const cols: Api[] = [g.hour, g.day, g.month, g.year].filter(Boolean); // 시/일/월/년
   const hasHour = !!g.hour;

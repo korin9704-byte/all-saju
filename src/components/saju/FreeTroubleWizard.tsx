@@ -9,11 +9,13 @@ import { Spinner } from "@/components/ui/spinner";
 
 const MAX_CONCERN = 200;
 
-const STEPS = ["birth", "time", "gender", "name", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "pconcern", "job", "love", "concern", "email", "product"] as const;
+const STEPS = ["birth", "time", "gender", "name", "mbti", "status", "pbirth", "ptime", "pgender", "pname", "relation", "breakup", "feeling", "pconcern", "job", "love", "concern", "email", "product"] as const;
 type Step = typeof STEPS[number];
 
 const JOB_OPTIONS = ["직장인", "사업·자영업", "취업 준비중", "학생", "주부", "기타"] as const;
 const LOVE_OPTIONS = ["솔로", "연애중", "기혼"] as const;
+// 커리어 사주 — 현재 상황
+const STATUS_OPTIONS = ["취업 준비 중", "재직 중", "이직 준비 중", "프리랜서·창업 고민 중", "학생", "기타"] as const;
 
 // 재회 사주 — 연애 기간·이별 시점 선택지 (선택 안 해도 진행 가능)
 const DURATION_OPTIONS = ["3개월 미만", "3개월 이상 ~ 1년 미만", "1~3년", "3~5년", "5~10년", "10년 이상"] as const;
@@ -35,6 +37,7 @@ export function FreeTroubleWizard({
   askConcern = true,
   askJob = false,
   askPartner = false,
+  askCareer = false,
   basePrice,
   bundle,
   concernQuestion = "어떤 고민이 있으세요?",
@@ -53,6 +56,8 @@ export function FreeTroubleWizard({
   askJob?: boolean;
   /** true면 고민 입력 전에 상대방 생년월일·성별 단계 추가 (재회 사주용) */
   askPartner?: boolean;
+  /** true면 이름 뒤에 MBTI·현재 상황 단계 추가 (커리어 사주용) */
+  askCareer?: boolean;
   /** 단품 가격 (추가 상품 선택 UI 표시용) */
   basePrice?: number;
   /** 추가 상품(정통 사주) 번들 — 있으면 마지막 단계에 패키지 선택 노출 */
@@ -76,6 +81,7 @@ export function FreeTroubleWizard({
     (s) =>
       (askConcern || s !== "concern") &&
       (askJob || (s !== "job" && s !== "love")) &&
+      (askCareer || (s !== "mbti" && s !== "status")) &&
       (askPartner || (s !== "pbirth" && s !== "ptime" && s !== "pgender" && s !== "pname" && s !== "relation" && s !== "breakup" && s !== "feeling" && s !== "pconcern")) &&
       (showAddon || s !== "product"),
   );
@@ -97,6 +103,9 @@ export function FreeTroubleWizard({
   const [love, setLove] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [concern, setConcern] = useState("");
+  // 커리어 사주 — MBTI(선택)·현재 상황
+  const [mbti, setMbti] = useState("");
+  const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   // 상대방 정보 (재회 사주 — askPartner일 때만 사용)
   const [pCalendar, setPCalendar] = useState<"solar" | "lunar">("solar");
@@ -167,6 +176,8 @@ export function FreeTroubleWizard({
     if (step === "gender" && !gender) { toast.error("성별을 선택해 주세요."); return; }
     if (step === "name" && !name.trim()) { toast.error("이름 또는 닉네임을 입력해 주세요."); return; }
     if (step === "job" && !job) { toast.error("지금 하시는 일을 선택해 주세요."); return; }
+    if (step === "mbti" && mbti && !/^[EI][NS][TF][JP]$/.test(mbti)) { toast.error("MBTI는 ENFP처럼 영문 4글자로 적어 주세요. 모르면 비워 두셔도 돼요."); return; }
+    if (step === "status" && !status) { toast.error("현재 상황을 선택해 주세요."); return; }
     if (step === "love" && !love) { toast.error("연애 상태를 선택해 주세요."); return; }
     if (step === "email") {
       if (!email.trim()) { toast.error("결과지를 받을 이메일을 입력해 주세요."); return; }
@@ -207,6 +218,9 @@ export function FreeTroubleWizard({
       calendar,
       isLeapMonth: calendar === "lunar" ? isLeapMonth : false,
       concerns: [
+        // 커리어 사주 — MBTI·현재 상황 태그
+        ...(askCareer && mbti ? [`[MBTI] ${mbti}`] : []),
+        ...(askCareer && status ? [`[상황] ${status}`] : []),
         ...((askJob || withAddon) && job ? [`[직업] ${job}`] : []),
         ...((askJob || withAddon) && love ? [`[연애] ${love}`] : []),
         // 상대방 정보 (재회 사주) — love-saju와 동일한 [상대방] 태그 포맷
@@ -434,6 +448,34 @@ export function FreeTroubleWizard({
                 onChange={(e) => setName(e.target.value)}
                 placeholder={askPartner ? "풀네임으로 적어 주세요." : "풀이에서 이렇게 불러드릴게요."}
                 className={`${textInputCls} mb-8`} />
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "mbti" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-2" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>MBTI가 무엇인가요?</h1>
+              <p className="text-sm text-[#7A6B9E] mb-6">모르면 비워 두고 넘어가셔도 돼요.</p>
+              <input type="text" value={mbti} maxLength={4}
+                onChange={(e) => setMbti(e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4))}
+                placeholder="예: ENFP"
+                className="block w-full rounded-full bg-white border border-[#E7DDF8] px-6 h-12 text-center text-base tracking-[0.3em] text-[#4A3A72] placeholder:tracking-normal placeholder:text-[#4A3A72]/35 focus:outline-none focus:border-[#8F7BD6] transition-colors mb-8" />
+              <div className="flex items-center gap-3 justify-center">
+                <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
+                <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>
+              </div>
+            </>
+          )}
+
+          {step === "status" && (
+            <>
+              <h1 className="text-2xl font-bold text-[#4A3A72] mb-6" style={{ textShadow: "0 0 10px rgba(255,255,255,0.95), 0 0 22px rgba(255,255,255,0.85)" }}>지금 어떤 상황인가요?</h1>
+              <div className="grid grid-cols-2 gap-3 mb-8">
+                {STATUS_OPTIONS.map((opt) => radioRow(status === opt, opt, () => setStatus(opt), opt))}
+              </div>
               <div className="flex items-center gap-3 justify-center">
                 <button type="button" onClick={prev} className={prevBtnCls} aria-label="이전">{prevIcon}</button>
                 <button type="button" onClick={next} className={nextBtnCls} style={nextBtnStyle} aria-label="다음">{nextIcon}</button>

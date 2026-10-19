@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
   try {
     // 인생 사주: saju_inputs 저장 후 실제 파이프라인 그대로 실행 (13장 병렬 생성)
-    if (slug === "life-saju" || slug === "classic-saju") {
+    if (slug === "life-saju" || slug === "classic-saju" || slug === "career-saju") {
       const { error: inputErr } = await service.from("saju_inputs").insert({
         order_id: order.id,
         name: testInput.name,
@@ -72,8 +72,8 @@ export async function POST(request: NextRequest) {
         time_unknown: testInput.time_unknown,
         gender: testInput.gender,
         calendar: testInput.calendar,
-        // 인생 사주는 [직업]/[연애] 태그만 사용 (자유 고민 텍스트 없음)
-        concerns: (testInput.concerns as string[]).filter((c) => c.startsWith("[")),
+        // 인생 사주는 [직업]/[연애] 태그만 사용 (자유 고민 텍스트 없음) — 커리어 사주는 고민 한 줄도 사용
+        concerns: slug === "career-saju" ? (testInput.concerns as string[]) : (testInput.concerns as string[]).filter((c) => c.startsWith("[")),
       });
       if (inputErr) {
         return NextResponse.json({ error: "사주 입력 저장 실패", detail: inputErr.message }, { status: 500 });
