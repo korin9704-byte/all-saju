@@ -24,6 +24,8 @@ export function classifySource(a: { utm_source?: string; utm_medium?: string; cl
   const u = (a.utm_source ?? "").toLowerCase();
   const m = (a.utm_medium ?? "").toLowerCase();
   if (a.click === "ttclid" || u.includes("tiktok")) return "tiktok";
+  // 챗GPT — 광고(utm_medium=paid)와 답변 속 추천 링크(기본 utm_source=chatgpt.com)를 구분
+  if (u.includes("chatgpt") || u.includes("openai")) return m === "paid" ? "chatgpt" : "chatgpt-organic";
   // 메타 광고 — 노출 위치(ig 인스타·fb 페이스북·th 스레드·an 오디언스 네트워크·msg 메신저)와 상관없이 하나로
   if (m === "paid" && (a.click === "fbclid" || ["ig", "fb", "th", "an", "msg"].includes(u))) return "meta";
   if (u.includes("insta") || u === "ig") return "instagram";
@@ -40,6 +42,7 @@ export function classifySource(a: { utm_source?: string; utm_medium?: string; cl
   }
   if (!host) return "direct";
   if (host.includes("tiktok")) return "tiktok";
+  if (host.includes("chatgpt") || host.includes("openai")) return "chatgpt-organic";
   if (host.includes("instagram")) return "instagram";
   if (host.includes("facebook") || host === "l.facebook.com" || host === "lm.facebook.com") return "meta";
   if (host.includes("naver")) return "naver";

@@ -37,6 +37,8 @@ const SOURCE_LABEL: Record<string, string> = {
   meta: "메타 광고",
   instagram: "인스타 (광고 아님)",
   tiktok: "틱톡",
+  chatgpt: "챗GPT 광고",
+  "chatgpt-organic": "챗GPT (추천)",
   naver: "네이버",
   google: "구글",
   kakao: "카카오",
