@@ -7,6 +7,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { confirmTossPayment } from "@/lib/toss/confirm";
 import { generateAndStoreResult, generateBundleResults, isBundleSlug } from "@/lib/saju/generate-result";
 import { sendTikTokCompletePayment } from "@/lib/tiktok";
+import { sendOpenAIOrderCreated } from "@/lib/openai-ads";
 
 const bodySchema = z.object({
   paymentKey: z.string().min(1),
@@ -88,6 +89,14 @@ export async function POST(request: NextRequest) {
       ttp: request.cookies.get("_ttp")?.value,
       ttclid: request.cookies.get("ttclid")?.value,
       pageUrl: request.headers.get("referer"),
+    });
+    // 챗GPT 전환 API — 결제 완료 서버 전송 (브라우저 픽셀과 같은 주문번호로 중복 제거)
+    await sendOpenAIOrderCreated({
+      orderId,
+      amount,
+      productSlug: product?.slug,
+      productName: product?.name,
+      sourceUrl: request.headers.get("referer"),
     });
   });
 
