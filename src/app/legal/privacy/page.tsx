@@ -182,7 +182,7 @@ export default function PrivacyPage() {
         아래와 같이 행태정보를 수집하고 해당 광고 플랫폼에 제공합니다.
       </p>
       <ul>
-        <li><strong>제공받는 자:</strong> Meta Platforms, Inc.(페이스북·인스타그램 광고), TikTok(틱톡 광고)</li>
+        <li><strong>제공받는 자:</strong> Meta Platforms, Inc.(페이스북·인스타그램 광고), TikTok(틱톡 광고), OpenAI(챗GPT 광고)</li>
         <li><strong>수집 항목:</strong> 웹사이트 방문 기록, 조회한 상품, 결제 시작 및 결제 완료 여부와 결제 금액, 쿠키 및 광고 식별자, 기기·브라우저 정보, 그리고 회원 가입·주문 시 입력한 이메일 주소(해시 처리되어 원래 값을 알아볼 수 없는 형태)</li>
         <li><strong>수집 방법:</strong> 이용자가 웹사이트를 방문하거나 상품을 조회·결제할 때 픽셀을 통해 자동 수집</li>
         <li><strong>이용 목적:</strong> 광고 전환 측정, 광고 효과 분석 및 맞춤형 광고 제공</li>

@@ -6,6 +6,7 @@ import { isSupabaseConfigured } from "@/lib/env";
 import { getCurrentUser } from "@/lib/auth";
 import MetaPixel from "@/components/MetaPixel";
 import TikTokPixel from "@/components/TikTokPixel";
+import OpenAIPixel from "@/components/OpenAIPixel";
 import { AttributionTracker } from "@/components/AttributionTracker";
 import { TIKTOK_PIXEL_ID } from "@/lib/tiktok";
 import { HeaderMenu } from "@/components/HeaderMenu";
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body suppressHydrationWarning className="bg-[#EFE7FA]">
         <MetaPixel pixelId="2209519539888659" />
         <TikTokPixel pixelId={TIKTOK_PIXEL_ID} />
+        <OpenAIPixel pixelId="H7VUdhd6ahTUdncCVzR1R3" />
         <AttributionTracker />
         <KakaoScript />
         {/* 앱형 셸 — 모바일 폭(448px) 칼럼을 가운데 고정, 안쪽은 무료 페이지와 같은 연보라 배경 */}
