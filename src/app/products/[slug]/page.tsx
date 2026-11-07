@@ -95,7 +95,8 @@ export default async function ProductDetailPage({
     }))
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
 
-  const displayReviews = (reviews && reviews.length > 0) ? reviews : dummyReviews;
+  // 실제 후기가 있으면 맨 앞에 두고, 뒤에 더미 후기를 이어 붙인다 (실제 후기 1개 때문에 목록이 비어 보이지 않도록)
+  const displayReviews = [...(reviews ?? []), ...dummyReviews];
 
   /* ── 위저드형 상품: 무료 고민 사주와 동일한 디자인 (히어로 + 설명 + 리뷰 + 시작하기 위저드)
         today-fortune은 고민 입력 단계 없이 진행 ── */
