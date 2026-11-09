@@ -1,5 +1,4 @@
 import { Resend } from "resend";
-import { businessInfo } from "@/config/site";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM ?? "냥점 <no-reply@nyangjeom.com>";
@@ -59,9 +58,8 @@ export async function sendResultEmail({
           <p style="margin:0;font-size:12.5px;color:#B9A8DD;line-height:1.6;">
             이 메일은 냥점(nyangjeom.com) 결제 완료 후 자동 발송됩니다.
           </p>
-          <p style="margin:8px 0 0;font-size:12.5px;color:#B9A8DD;line-height:1.6;">
-            발신 전용 메일이라 답장은 확인할 수 없어요.<br>
-            문의는 <a href="sms:${businessInfo.phone}" style="color:#F3BFE7;text-decoration:none;">${businessInfo.phone}</a> (문자만) 으로 보내 주세요.
+          <p style="margin:6px 0 0;font-size:12.5px;color:#B9A8DD;line-height:1.6;">
+            발신 전용 메일입니다.
           </p>
         </td></tr>
       </table>
