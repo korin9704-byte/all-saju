@@ -69,6 +69,21 @@ ${partnerName ? `- 이름: ${partnerName}\n` : ""}- 생년월일: ${input.partne
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
+  // 내담자별 점수 기준선 — 생년월일(+상대 생년월일)로 정해지는 고정값(60~78, 평균 69)에
+  // 이별 상황을 조금 반영한다. 모델이 특정 숫자(58·74 등)로 몰리는 것을 막고,
+  // 같은 사람은 재생성해도 비슷한 점수대가 나오게 한다. 실제 결과는 기준선보다 2~3점 높게 나오는 경향.
+  const seedStr = `${input.birthDate}|${input.birthTime ?? ""}|${input.partnerBirthDate ?? ""}`;
+  let h = 2166136261;
+  for (let i = 0; i < seedStr.length; i++) h = Math.imul(h ^ seedStr.charCodeAt(i), 16777619) >>> 0;
+  h = (h ^ (h >>> 13)) >>> 0; h = Math.imul(h, 2654435761) >>> 0; h = (h ^ (h >>> 16)) >>> 0;
+  let baseline = 60 + (h % 19);
+  if (breakupCause && /환승|다른 사람/.test(breakupCause)) baseline -= 6;
+  if (breakupBy && /상대/.test(breakupBy)) baseline -= 2;
+  else if (breakupBy && /나|제가/.test(breakupBy)) baseline += 2;
+  if (notYetBroken) baseline += 4;
+  baseline = Math.max(56, Math.min(82, baseline));
+  const lo = baseline - 6, hi = baseline + 6;
+
   const user = `${ctx}
 ${partnerSection}${situationSection}
 ---
@@ -90,6 +105,13 @@ ${partnerSection}${situationSection}
 [/점수]
 
 - 골든타임은 오늘(${todayStr}) 이후 90일 이내의 서로 다른 날짜 3개, 확률 높은 순으로 쓰세요.
+
+⚠️ 채점 기준 (반드시 따르세요):
+- 이 내담자의 재회 기준선은 ${baseline}점입니다. 재회가능성은 ${lo}~${hi}점 사이에서 사주 근거(합·충, 인연운의 시기, 상대의 마음 흐름)에 따라 최종 결정하세요. 이 범위를 벗어나는 것은 충·형이 겹치고 상대 운이 닫혀 있는 등 근거가 아주 뚜렷할 때만 허용합니다.
+- 상대마음: 재회가능성보다 2~12점 낮게. 인연궁합: 재회가능성 ±8점 안에서. 재회후관계: 재회가능성 -10~+4점 안에서. 각각 사주 근거로 차이를 두고, 네 점수가 서로 같은 숫자가 되지 않게 하세요.
+- 새인연: 다른 점수와 독립적으로 45~85점 사이에서 매기세요.
+- 끝자리를 다양하게 쓰고, 5점·0점 단위는 피하세요. 같은 숫자를 습관적으로 반복하지 마세요.
+- 골든타임 확률은 재회가능성 점수의 -8~+4점 범위에서, 날짜별로 서로 다르게 쓰세요.
 
 그 다음, 아래 7개 장을 정확히 이 순서·이 제목 그대로 "## 제목" 형식으로 작성하세요 (제목을 바꾸거나 장을 더하거나 빼면 안 됩니다). 각 장 안의 소제목은 "### 소제목" 형식으로, 지정된 소제목을 그대로 쓰세요.
 
